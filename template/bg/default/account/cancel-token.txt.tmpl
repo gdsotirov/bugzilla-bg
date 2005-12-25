@@ -1,0 +1,98 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s):     John Vandenberg <zeroj@null.net>
+  #                     Tobias Burnus <burnus@net-b.de>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+From: bugzilla-admin-daemon
+To: [% emailaddress %]
+Subject: [% PROCESS subject %]
+
+Заявка беше отхвърлена от [% remoteaddress %].
+
+Ако не сте заявили това, то може би това е или искрена грешка
+или някой се опитва да открадне вашата регистрация в [% terms.Bugzilla %].
+
+Разгледайте информацията по-долу и препратете това писмо
+до [% maintainer %] ако подозирате нечестна игра.
+
+          Признак: [% token %]
+  Тип на признака: [% tokentype %]
+       Потребител: [% emailaddress %]
+ Дата на издаване: [% issuedate %]
+Дата на събитието: [% eventdata %]
+  Отказано поради:
+[% PROCESS cancelactionmessage %]
+
+[% BLOCK subject %]
+  [% IF tokentype == 'password' %]
+    Отхвърлена заявка за смяна на парола
+  [% ELSIF tokentype == 'emailnew' OR tokentype == 'emailold' %]
+    Отхвърлена заявка за смяна на електронен пощенски адрес
+  [% ELSE %]
+    Отхвърлена заявка за смяна на признака [% tokentype %]
+  [% END %]
+[% END %]
+
+[% BLOCK cancelactionmessage %]
+  [% IF    cancelaction == 'account_exists' %]
+    Регистрацията [% email %] вече съществува.
+
+  [% ELSIF cancelaction == 'email_change_cancelled' %]
+    Заявката за смяна на електронния пощенски адрес за
+    регистрацията [% old_email %] на [% new_email %] беше
+    отхвърлена.
+
+  [% ELSIF cancelaction == 'email_change_cancelled_reinstated' %]
+    Заявката за смяна на електронния пощенски адрес на регистрацята ви
+   на [% new_email %] беше отхвърлена. Старите настройки на
+   регистрацията ви бяха възстановени.
+
+  [% ELSIF cancelaction == 'emailold_change_cancelled' %]
+    Заявката за смяна на електронния пощенски адрес на регистрацията ви
+    на [% new_email %] беше отхвърлена.
+
+  [% ELSIF cancelaction == 'password_change_cancelled' %]
+    Заявили сте отхвърляне.
+
+  [% ELSIF cancelaction == 'user_logged_in' %]
+    Влезли сте.
+
+  [% ELSIF cancelaction == 'wrong_token_for_changing_passwd' %]
+    Опитахте се да използвате признака за смяна на паролата.
+
+  [% ELSIF cancelaction == 'wrong_token_for_cancelling_email_change' %]
+    Опитахте се да използвате признака за отхвърляне на промяната на електронния пощенски адрес.
+
+  [% ELSIF cancelaction == 'wrong_token_for_confirming_email_change' %]
+    Опитахте се да използвате признака за потвърждаване на промяната на електронния пощенски адрес.
+
+  [% ELSE %]
+    [%# Give sensible error if the cancel-token function is used incorrectly.
+      #%]
+    Използвате функцията за отхвърляне на признаци на [% terms.Bugzilla %] неправилно. Подали
+    сте низа '[% cancelaction %]'. Правилното използване е да подадете етикет
+    и да определите този етикет във файла cancel-token.txt.tmpl.
+
+    Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля препратете
+    писмото до [% Param('maintainer') %].
+  [% END %]
+[% END %]

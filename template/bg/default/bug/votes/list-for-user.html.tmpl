@@ -1,0 +1,152 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% IF !header_done %]
+  [% h2 = voting_user.login FILTER html %]
+  [% IF canedit %]
+    [% title = "Промяна на гласове" %]
+  [% ELSE %]
+    [% title = "Показване на гласове" %]
+  [% END %]
+  [% PROCESS global/header.html.tmpl %]
+[% ELSE %]
+  <hr>
+[% END %]
+
+[% IF votes_recorded %]
+  <p>
+    <font color="red">
+      Промените по вашите гласове бяха съхранени.
+    </font>
+  </p>
+[% ELSE %]
+  <br>
+[% END %]
+
+[% IF products.size %]
+  <form method="post" action="votes.cgi">
+    <input type="hidden" name="action" value="vote">
+    <table cellspacing="4">
+      <tr>
+        <td></td>
+        <th>Гласове</th>
+        <th>[% terms.Bug %] №</th>
+        <th>Резюме</th>
+      </tr>
+
+      [% onevoteproduct = 0 %]
+      [% multivoteproduct = 0 %]
+      [% FOREACH product = products %]
+        [% IF product.onevoteonly %]
+          [% onevoteproduct = 1 %]
+        [% ELSE %]
+          [% multivoteproduct = 1 %]
+        [% END %]
+        <tr>
+          <th>[% product.name FILTER html %]</th>
+          <td></td>
+          [% IF product.maxperbug < product.maxvotes AND
+                product.maxperbug > 1 %]
+            <td>
+              <font size="-1">
+                (Забележка: само [% product.maxperbug %] глас
+                [% "а" IF product.maxperbug != 1 %] за [% terms.bug %]
+                [% IF product.maxperbug != 1 %]са[% ELSE %]е[% END %]
+                разрешен[% "и" IF product.maxperbug != 1 %] в този продукт.)
+              </font>
+            </td>
+          [% END %]
+        </tr>
+
+        [% FOREACH bug = product.bugs %]
+          <tr>
+            <td></td>
+            <td align="right">
+              [% IF canedit %]
+                [% IF product.onevoteonly %]
+                  <input type="checkbox" name="[% bug.id %]" value="1"
+                    [% " checked" IF bug.count %]>
+                [% ELSE %]
+                  <input name="[% bug.id %]" value="[% bug.count %]"
+                         size="2">
+                [% END %]
+              [% ELSE %]
+                [% bug.count %]
+              [% END %]
+            </td>
+            <td align="right">
+              [% isclosed = !bug.opened %]
+                <a href="show_bug.cgi?id=[% bug.id %]">
+                  [% bug.id FILTER closed(isclosed) %]</a>
+            </td>
+            <td>
+              <a href="votes.cgi?action=show_bug&amp;bug_id=[% bug.id %]">
+                [% bug.summary FILTER html %]
+              </a>
+            </td>
+          </tr>
+        [% END %]
+
+        <tr>
+          <td></td>
+          <td colspan="3">[% product.total %] използвани глас
+            [% "а" IF product.total != 1 %] от [% product.maxvotes %]
+            разрешени.
+            <br>
+            <br>
+          </td>
+        </tr>
+      [% END %]
+    </table>
+
+    [% IF canedit %]
+      <input type="submit" value="Промяна на гласовете ми">
+      <br>
+      <br>
+      За да промените вашите гласове,
+      [% IF multivoteproduct %]
+        въведете нови бройки (използвайки нула, за да отбележите, че не гласувате)
+        [% " или " IF onevoteproduct %]
+      [% END %]
+      [% IF onevoteproduct %]
+        променете полето за отметки
+      [% END %]
+      и тогава кликнете върху <b>Промяна на гласовете ми</b>.
+    [% END %]
+  </form>
+[% ELSE %]
+  <p>
+    [% IF canedit %]
+    В момента не гласувате 
+    [% ELSE %]
+    Потребителя в момента не гласува 
+    [% END %]
+    по никой [% terms.bug %].
+  </p>
+[% END %]
+
+<p>
+  <a href="page.cgi?id=voting.html">Помощ за гласуването</a>.
+</p>
+
+[% PROCESS global/footer.html.tmpl %]

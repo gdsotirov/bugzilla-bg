@@ -1,0 +1,60 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Myk Melez <myk@mozilla.org>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[%# Filter off the name here to be used multiple times below %]
+[% name = BLOCK %][% flag_type.name FILTER html %][% END %]
+
+[% PROCESS global/header.html.tmpl
+  title = "Потвърждаване на изтриването на тип флаг '$name'"
+%]
+
+<p>
+   Съществуват [% flag_count %] флага от тип [% name FILTER html %].
+   Ако изтриете този тип, флаговете също ще бъдат изтрити. Забележете, че
+   вместо да изтривате типа можете да го 
+   <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]">деактивирате</a>,
+   като в този случай типа и неговите флагове ще останат в базата данни,
+   но няма да се появяват в потребителския интерфейс на [% terms.Bugzilla %].
+</p>
+
+<table>
+   <tr>
+      <td colspan="2">
+         Наистина ли желаете да изтриете този тип?
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <a href="editflagtypes.cgi?action=delete&amp;id=[% flag_type.id %]">
+            Да, изтриване
+         </a>
+      </td>
+      <td align="right">
+         <a href="editflagtypes.cgi">
+            Не, запазване
+         </a>
+      </td>
+   </tr>
+</table>
+
+[% PROCESS global/footer.html.tmpl %]

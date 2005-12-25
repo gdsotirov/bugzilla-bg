@@ -1,0 +1,812 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# INTERFACE:
+  # header_done: boolean. True if the header has already been printed.
+  # error: string. The tag of the error, or the error message to be displayed
+  # (deprecated). May contain HTML if it's an error message.
+  #%]
+
+[%# This is a list of all the possible user errors. Please keep them in
+  # alphabetical order by error tag, and leave a blank line between errors.
+  #
+  # Note that you must explicitly filter every single template variable
+  # in this file; if you do not wish to change it, use the "none" filter.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% PROCESS "global/field-descs.none.tmpl" %]
+
+[% DEFAULT title = "Грешка" %]
+
+[% error_message = BLOCK %]
+  [% IF    error == "account_creation_disabled" %]
+    [% title = "Създаването на потребители е невъзможно" %]
+    Създаването на потребители е забранено или ограничено.
+    <hr>
+    Нови потребители трябва да бъдат създавани от администратор.
+
+  [% ELSIF error == "account_disabled" %]
+    [% title = "Извадена от употреба регистрация" %]
+    [% disabled_reason FILTER none %]
+    <hr>
+    Ако вярвате, че регистрацията ви трябва да бъде възстановена, моля
+    изпратете поща до [% Param("maintainer") %], обяснявайки защо.
+
+  [% ELSIF error == "account_exists" %]
+    [% title = "Регистрацията вече съществува" %]
+    Вече има регистрация с
+    [% IF email %]
+      потребителското име [% email FILTER html %].
+    [% ELSE %]
+      това потребителско име.
+    [% END %]
+
+  [% ELSIF error == "account_inexistent" %]
+    [% title = "Регистрацията не съществува" %]
+    Няма [% terms.Bugzilla %] регистрация с това име.
+
+  [% ELSIF error == "alias_has_comma_or_space" %]
+    [% title = "Неправилни символи в псевдоним" %]
+    Псевдонима, който сте въвели, <em>[% alias FILTER html %]</em>,
+    съдържа една или повече запетайки или интервали. Псевдонимите не могат да
+    съдържат запетайки или интервали, защото тези символи се използват за
+    разделяне на псевдоними един от друг в списъци.  Моля изберете друг
+    псевдоним, който не съдържа запетайки или интервали.
+
+  [% ELSIF error == "alias_in_use" %]
+    [% title = "Псевдонима се използва" %]
+    [% bug_link FILTER none %] вече е взел псевдонима
+    <em>[% alias FILTER html %]</em>. Моля, изберете друг.
+
+  [% ELSIF error == "alias_is_numeric" %]
+    [% title = "Псевдонима е цифров" %]
+    Опитахте се да зададете псевдонима <em>[% alias FILTER html %]</em> на
+    този [% terms.bug %], но псевдонимите не могат да бъдат само числа,
+    тъй като така могат да бъдат объркани с номер на [% terms.bug %].
+    Моля, изберете друг псевдоним съдържащ поне една буква.
+
+  [% ELSIF error == "alias_too_long" %]
+    [% title = "Псевдонима е твърде дълъг" %]
+    Псевдонимите на [% terms.bug %] не могат да бъдат по-дълги от 20 символа.
+    Моля, изберете по-къс псевдоним.
+
+  [% ELSIF error == "auth_cant_create_account" %]
+    [% title = "Невъзможност за създаване на регистрации" %]
+    Този сайт използва схема на удостоверяване, която не разрешава създаването
+    на регистрации. Моля, свържете се с администратор, за да ви бъде създадена
+    такава.
+
+  [% ELSIF error == "authorization_failure" %]
+    [% title = "Проверката пропадна" %]
+    Не ви е разрешено да [% action FILTER html %].
+
+  [% ELSIF error == "attachment_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Не ви е позволен достъп до тази приставка.
+
+  [% ELSIF error == "bug_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
+
+  [% ELSIF error == "bug_access_query" %]
+    [% title = "Достъпът отказан" %]
+    Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
+    За да видите този [% terms.bug %] първо
+    трябва <a href="show_bug.cgi?id=
+                   [% bug_id FILTER url_quote %]&amp;GoAheadAndLogIn=1">влезете
+    като потребител</a> с подходящите позволения.
+
+  [% ELSIF error == "buglist_parameters_required" %]
+    [% title = "Необходими са параметри" %]
+    Не можете да търсите или да създавате съхранени търсения без никакви
+    термини за търсене.
+
+  [% ELSIF error == "bugs_not_changed" %]
+    [% title = BLOCK %][% terms.Bugs %]те не са променени[% END %]
+    Ъ, вие очевидно не сте променили нищо по избраните [% terms.bugs %].
+
+  [% ELSIF error == "chart_too_large" %]
+    [% title = "Графиката твърде голяма" %]
+    Съжалявам, но 2000 x 2000 пиксела е максималният размер за графика.
+
+  [% ELSIF error == "comment_required" %]
+    [% title = "Необходим е коментар" %]
+    Трябва да попълните <b>коментар</b> за тази промяна.
+    Моля, обяснете я.
+
+  [% ELSIF error == "comment_too_long" %]
+    [% title = "Коментарът твърде дълъг" %]
+    Коментарите нсе могат да бъдат по-дълги от 65,535 символа.
+
+  [% ELSIF error == "dependency_loop_multi" %]
+    [% title = "Установено зацикляне на зависимост" %]
+    Следващия(те) [% terms.bug %](ове) ще се появят и на "зависи от"
+    и на "блокира" частите на дървото на зависимостите ако тези промени
+    бъдат прeдадени: [% both FILTER none %]. Това би създало зациклена
+    зависимост, което не е позволено.
+
+  [% ELSIF error == "dependency_loop_single" %]
+    [% title = "Установено зацикляне на зависимост" %]
+    Не можете да направите [% terms.bug %] блокиран или зависим от самия себе си.
+
+  [% ELSIF error == "description_required" %]
+    [% title = "Необходимо е описание" %]
+    Трябва да осигурите описание за [% terms.abug %].
+
+  [% ELSIF error == "dupe_of_self_disallowed" %]
+    [% title = "Не може да се отбелязва $terms.bug като двойник на самия себе си" %]
+    Не можете да обелязвате [% terms.abug %] като двойник на самия себе си.
+
+  [% ELSIF error == "email_change_in_progress" %]
+    [% title = "Промяната на е-пощенски адрес се обработва" %]
+    Промяната на е-пощенски адрес се обработва; моля, проверете пощата си.
+
+  [% ELSIF error == "email_confirmation_failed" %]
+    [% title = "Потвърждението на е-пощенски адрес пропадна" %]
+    Потвърждението на е-пощенски адрес пропадна.
+
+  [% ELSIF error == "entry_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Съжалявам; нямате необходимите разрешения, за да въвеждате [% terms.bug %]
+    за продукта [% product FILTER html %].
+
+  [% ELSIF error == "file_not_specified" %]
+    [% title = "Не е указан файл" %]
+    Не сте указали файл за прикрепяне.
+
+  [% ELSIF error == "file_too_large" %]
+    [% title = "Файлът твърде голям" %]
+    Файлът, който се опитвате да прикачите, е с размер
+    [% filesize FILTER html %] килобайта (КБ).
+    Приставки, които не са кръпки, не могат да бъдат по-големи от
+    [% Param('maxattachmentsize') %] КБ.
+    Ако приставката ви е картинка опитайте да я обърнете в компресиран
+    формат като <abbr title="Joint Photographic Experts Group" lang="en">JPG</abbr>
+    или <abbr title="Portable Network Graphics" lang="en">PNG</abbr> или я
+    поставете някъде другаде по мрежата и направете връзка към нея в полето
+    <abbr title="Uniform Resource Locator" lang="en">URL</abbr> на
+    [% terms.bug %]а или в негов коментар.
+
+  [% ELSIF error == "flag_requestee_unauthorized" %]
+    [% title = "Изпълнителя на заявката за флаг неупълномощен" %]
+
+    Пискахте от [% requestee.identity FILTER html %]
+    задаване на флага <code>[% flag_type.name FILTER html %]</code> върху [% terms.bug %] 
+    [% bug_id FILTER html -%]
+    [% IF attach_id %], приставката [% attach_id FILTER html %][% END %], 
+    но този [% terms.bug %] е ограничен до потребители в определни групи, а
+    потребителия, от който сте пискали не е във всички групи до които
+    [% terms.аbug %] е ограничен.
+    Моля, изберете някой друг от когото да поискате или направете [% terms.аbug %]
+    достъпен за потребителите в неговия
+    <abbr title=\"Точно Копие\">ТК</abbr>: списък и добавете потребителя
+    към него.
+
+  [% ELSIF error == "flag_requestee_unauthorized_attachment" %]
+    [% title = "Изпълнителя на заявката за флаг не е упълномощен" %]
+
+    Поискахте от [% requestee.identity FILTER html %]
+    задаване на флага <code>[% flag_type.name FILTER html %]</code> на 
+    [%+ terms.bug %] [%+ bug_id FILTER html %],
+    приставката [% attach_id FILTER html %], но тази приставка е ограничена
+    до потребители
+    членове на [% Param("insidergroup") FILTER html %] група, а потребителя
+    от когото сте поискали не е в нея. Моля, изберете някой друг от когото да поискате
+    или помолете някой администратор да добави потребителя в групата.
+
+  [% ELSIF error == "flag_type_cc_list_invalid" %]
+    [% title = "Невалиден ТК списък на тип флаг" %]
+    Списъка <abbr title="Точно Копие">ТК</abbr>
+    [% cc_list FILTER html %] трябва да бъде дълъг не повече от 200 символа.
+
+  [% ELSIF error == "flag_type_description_invalid" %]
+    [% title = "Невалидно описание на тип флаг" %]
+    Описанието трябва да бъде по-малко от 32 <abbr title="Кило Байта">КБ</abbr>.
+
+  [% ELSIF error == "flag_type_name_invalid" %]
+    [% title = "Невалидно име на тип флаг" %]
+    Името <em>[% name FILTER html %]</em> трябва да бъде дълго между 1 и 50
+    символа и не трябва да съдържа запетайки или интервали.
+
+  [% ELSIF error == "format_not_found" %]
+    [% title = "Формата не е намерен" %]
+    Заявеният формат <em>[% format FILTER html %]</em> не съществува с
+    тип на съдържанието <em>[% ctype FILTER html %]</em>.
+    
+  [% ELSIF error == "flag_type_sortkey_invalid" %]
+    [% title = "Недействителен ключ за подреждане на тип флаг" %]
+    Ключа за подреждане трябва да бъде цяло число между 0 и 32767 включително.
+    Не може да бъде <em>[% sortkey FILTER html %]</em>.
+  
+  [% ELSIF error == "illegal_at_least_x_votes" %]
+    [% title = "Търсенето ви няма смисъл" %]
+    Полето <em>Най-малко ___ гласа</em> трябва да бъде цяло число. 
+    Въведохте <tt>[% value FILTER html %]</tt>, което не е.
+    
+  [% ELSIF error == "illegal_attachment_edit" %]
+    [% title = "Неупълномощено действие" %]
+    Не сте упълномощен да редактирате приставката [% attach_id FILTER html %].
+
+  [% ELSIF error == "illegal_attachment_edit_bug" %]
+    [% title = "Неупълномощено действие" %]
+    Не сте упълномощен да редактирате приставките на [% terms.bug %] 
+    [%+ bug_id FILTER html %].
+         
+  [% ELSIF error == "illegal_attachment_is_patch" %]
+    [% title = "Търсенето ви няма смисъл" %]
+    Единствените правилни стойности за полето <em>Приставката е кръпка</em> са
+    0 и 1.
+         
+  [% ELSIF error == "illegal_change" %]
+    [% title = "Непозволено" %]
+    Опитахте се да смените 
+    полето <strong>[% field_descs.$field FILTER html %]</strong> 
+    от <em>[% oldvalue FILTER html %]</em> на 
+    <em>[% newvalue FILTER html %]</em>, 
+    но само собственика или докладвалия [% terms.abug %] или
+    достатъчно упълномощен потребител може да го променя.
+
+  [% ELSIF error == "illegal_changed_in_last_x_days" %]
+    [% title = "Търсенето ви няма смисъл" %]
+    Полето <em>Променен в последните ___ дни</em> трябва да е число. 
+    Въведохте <tt>[% value FILTER html %]</tt>, което не е.
+    
+  [% ELSIF error == "illegal_date" %]
+    [% title = "Неправилна дата" %]
+    '<tt>[% date FILTER html %]</tt>' е правилна дата.
+    
+  [% ELSIF error == "illegal_email_address" %]
+    [% title = "Недействителен адрес за електронна поща" %]
+    Адреса за електронна поща, който въведохте, 
+    (<b>[% addr FILTER html %]</b>) 
+    не премина нашата синтактична проверка за действителен адрес за електронна
+    поща [%+ Param('emailregexpdesc') %].
+    Също така той не трябва да съдържа някой от следващите символи:
+    <tt>\ ( ) &amp; &lt; &gt; , ; : &quot; [ ]</tt> или някакви непечатими символи.
+    
+  [% ELSIF error == "illegal_frequency" %]
+    [% title = "Твърде често" %]
+    Освен ако не сте администратор, не можете да създавате редици, които 
+    се пускат по-често от веднъж на [% minimum FILTER html %] дни.
+    
+  [% ELSIF error == "illegal_group_control_combination" %]
+    [% title = "Комбинацията ви за групов контрол е недействителна" %]
+    Комбинацията за групов контрол за групата &quot;
+    [% groupname FILTER html %]&quot; е недействителна.
+
+  [% ELSIF error == "illegal_is_obsolete" %]
+    [% title = "Търсенето ви няма смисъл" %]
+    Единствените правилни стойности за полето <em>Приставката е стара</em> 
+    са 0 и 1.
+
+  [% ELSIF error == "illegal_query_name" %]
+    [% title = "Недействително име на търсене" %]
+    Името на търсенето ви не може да съдържа някой от следващите символи: 
+    &lt;, &gt;, &amp;.
+
+  [% ELSIF error == "illegal_series_creation" %]
+    Не сте упълномощен да създавате редици.
+        
+  [% ELSIF error == "illegal_series_edit" %]
+    Не сте упълномощен да редактирате тези редици. За да направите това
+    трябва да сте или техния създател или администратор.
+        
+  [% ELSIF error == "insufficient_data" %]
+    [% title = "Недостатъчно данни" %]
+    Нито една от редиците, които сте избрали, нямат данни свързанис тях,
+    така че графика не може да бъде изчертана.
+        
+  [% ELSIF error == "insufficient_data_points" %]
+    Нямаме достатъчно единици данни за направата на графика (все още).
+        
+  [% ELSIF error == "insufficient_privs_for_multi" %]
+    [% title = "Недостатъчни права" %]
+    Съжалявам, нямате достатъчно права, за редактиране на множество 
+    [% terms.bugs %].
+    
+  [% ELSIF error == "invalid_attach_id" %]
+    [% title = "Недействителен идентификатор на притурка" %]
+    Идентификатора на притурка [% attach_id FILTER html %] е недействителен.
+
+  [% ELSIF error == "invalid_bug_id_non_existent" %]
+    [% title = BLOCK %]Недействителен идентификатор на [% terms.bug %].[% END %]
+    [% terms.Bug %] №[% bug_id FILTER html %] не съществува.
+    
+  [% ELSIF error == "invalid_bug_id_or_alias" %]
+    [% title = BLOCK %]Недействителен идентификатор на [% terms.bug %][% END %]
+    [% IF bug_id %]
+      '[% bug_id FILTER html %]' не е действителен номер на [% terms.bug %]
+      [% IF Param("usebugaliases") %]
+        нито псевдоним на [% terms.bug %]
+      [% END %].
+    [% ELSE %]
+      [% IF field %]
+        Полето '[% field_descs.$field FILTER html %]' 
+        не може да бъде празно.
+      [% END %]
+      Трябва да въведете действителен номер на [% terms.bug %]!
+    [% END %]
+    <noscript>
+      Ако се опитвате да ползвате Бързо Търсене, ще трябва да
+      разрешите JavaScript във вашата търсачка.
+    </noscript>
+
+  [% ELSIF error == "invalid_changedsince" %]
+    [% title = "Невалидно поле 'променен от'" %]
+    Стойността на полето 'променен от', '[% changedsince FILTER html %]', трябва да
+    бъде цяло число >= 0.
+
+  [% ELSIF error == "invalid_content_type" %]
+    [% title = "Неправилен тип на съдържанието" %]
+    Типа на съдържанието <em>[% contenttype FILTER html %]</em> е неправилен.
+    Правилните типове трябва да са във формат <em>foo/bar</em> където <em>foo</em>
+    е едно от <em>application, audio, image, message, model, multipart,
+    text,</em> или <em>video</em>.
+    
+  [% ELSIF error == "invalid_context" %]
+    [% title = "Неправилен контекст" %]
+    Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
+    "файл" или "кръпка").
+
+  [% ELSIF error == "invalid_format" %]
+    [% title = "Неправилен формат" %]
+    Формата "[% format FILTER html %]" е неправилен (трябва да бъде един от
+    [% FOREACH my_format = formats %]
+      "[% my_format FILTER html %]"
+    [% END %]
+    ).
+
+  [% ELSIF error == "invalid_maxrows" %]
+    [% title = "Недействителен максимален брой редове" %]
+    Максималният брой редове, '[% maxrows FILTER html %]', трябва да бъде
+    положително цяло число.
+
+  [% ELSIF error == "invalid_product_name" %]
+    [% title = "Недействително име на продукт" %]
+    Името на продукт '[% product FILTER html %]' е недействително или не съществува.
+    
+  [% ELSIF error == "invalid_username" %]
+    [% title = "Невалидно потребителско име" %]
+    Името <tt>[% name FILTER html %]</tt> е непознато потребителско име.  
+    Или сте го написали неправилно или лицето не се е регистрирало в
+    [% terms.Bugzilla %].
+
+  [% ELSIF error == "invalid_username_or_password" %]
+    [% title = "Невалидно потребителско име или парола" %]
+    Потребителското име или паролата, които въведохте са непознати.
+
+  [% ELSIF error == "keyword_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Съжалявам, не сте член групата 'editkeywords', така че
+    не ви е позволено да добавяте, редактирате или изтривате ключови думи.
+
+  [% ELSIF error == "keyword_already_exists" %]
+    [% title = "Ключовата дума вече съществува" %]
+    Ключова дума с име [% name FILTER html %] вече съществува.
+
+  [% ELSIF error == "keyword_blank_description" %]
+    [% title = "Не е позволено празно описание за ключова дума" %]
+    Трябва да въведете някакво описани за ключовата дума.
+     
+  [% ELSIF error == "keyword_blank_name" %]
+    [% title = "Не е позволено празно име на ключова дума" %]
+    Трябва да въведете някакво име за ключовата дума.
+     
+  [% ELSIF error == "keyword_invalid_name" %]
+    [% title = "Невалидно име на ключова дума" %]
+    Не можете да използвате запетайки или непечатими символи в името на
+    ключова дума.
+     
+  [% ELSIF error == "login_needed_for_password_change" %]
+    [% title = "Необходимо е потребителско име" %]
+    Трябва да въведте потребителско име, при искане за смяна на паролата ви.
+
+  [% ELSIF error == "milestone_required" %]
+    [% title = "Необходимо е Целево събитие" %]
+    Трябва да определите целево събитие за [% terms.bug %] 
+    [%+ bug_id FILTER html %]
+    ако искате да го приемете. Част от приемането на [% terms.abug %]
+    е даването на приблизителна оценка, кога той ще бъде оправен.
+
+  [% ELSIF error == "misarranged_dates" %]
+    [% title = "Неправилно подредени дати" %]
+    Началната ви дата  ([% datefrom FILTER html %]) е след 
+    крайната ([% dateto FILTER html %]).
+    
+  [% ELSIF error == "missing_attachment_description" %]
+    [% title = "Липсващо описание на приставка" %]
+    Трябва да добавите описание за приставката.
+    
+  [% ELSIF error == "missing_category" %]
+    [% title = "Липсваща категория" %]
+    Не сте указали категория за тази поредица.
+                
+  [% ELSIF error == "missing_content_type" %]
+    [% title = "Липсващ тип на съдържанието" %]
+     Пожелахте [% terms.Bugzilla %] да определи автоматично типа на
+     съдържанието, но вашият агент не указа тип на съдържанието при качването
+     на файла, така че трябва да въведете типа ръчно.
+                
+  [% ELSIF error == "missing_content_type_method" %]
+    [% title = "Липсващ метод за определяне на типа на съдържанието" %]
+    Трябва да изберете метод за определяне на типа на съдържанието, един от:
+    <em>автоматично определяне</em>, <em>избор от списък</em> или <em>ръчно
+    въвеждане</em>.
+        
+  [% ELSIF error == "missing_cookie" %]
+    [% title = "Липсваща бисквитка" %]
+    Съжалявам, изглежда съм загубила бисквитката, в която са записани
+    резултатите от последното ви търсене. Страхувам се, че ще трябва да
+    започнете отново на <a href="query.cgi">страницата за търсене</a>.
+          
+  [% ELSIF error == "missing_datasets" %]
+    [% title = "Няма избрани набори данни" %]
+    Трябва да укажете един или повече набора данни за изчертаване.
+    
+  [% ELSIF error == "missing_email_type" %]
+    [% title = "Търсенето ви няма смисъл" %]
+    Трябва да укажете едно или повече полета, в които да търсите
+    за <tt>[% email FILTER html %]</tt>.
+    
+  [% ELSIF error == "missing_frequency" %]
+    [% title = "Липсваща честота" %]
+    Не сте указали правилна честота за тези поредици.
+                
+  [% ELSIF error == "missing_name" %]
+    [% title = "Липсващо име" %]
+    Не сте указали име за тези поредици.
+                
+  [% ELSIF error == "missing_query" %]
+    [% title = "Липсващо търсене" %]
+    Търсенето именовано <em>[% queryname FILTER html %]</em> не
+    съществува.
+        
+  [% ELSIF error == "must_be_patch" %]
+    [% title = "Приставката трябва да бъде кръпка" %]
+    Приставката №[% attach_id FILTER html %] трябва да бъде кръпка.
+
+  [% ELSIF error == "missing_subcategory" %]
+    [% title = "Липсваща подкатегория" %]
+    Не сте указали подкатегория за тези поредици.
+                
+  [% ELSIF error == "need_component" %]
+    [% title = "Необходим е компонент" %]
+    Трябва да укажете компонент, за да помогнете в определянето на новото
+    назначение не тези [% terms.bugs %].
+
+  [% ELSIF error == "need_numeric_value" %]
+    [% title = "Изисква се цифрова стойност" %]
+    Часовете изискват цифрова стойност.
+
+  [% ELSIF error == "need_positive_number" %]
+    [% title = "Изисква се положително число" %]
+    Полето <em>[% field_descs.$field FILTER html %]</em> изисква положително
+    число.
+
+  [% ELSIF error == "need_product" %]
+    [% title = "Изисква се продукт" %]
+    Трябва да укажете продукт, за да помогнете в определянето на новото
+    назначение на тези [% terms.bugs %].
+
+  [% ELSIF error == "need_quip" %]
+    [% title = "Изисква се остроумие" %]
+    Моля, въведете остроумие в текстовото поле.
+
+  [% ELSIF error == "new_password_missing" %]
+    [% title = "Липсва нова парола" %]
+    Трябва да въведете нова парола.
+
+  [% ELSIF error == "no_axes_defined" %]
+    [% title = "Не са определени оси" %]
+    Не сте определили никакви оси за изчертаване.
+
+  [% ELSIF error == "no_bugs_chosen" %]
+    [% title = BLOCK %]Не са избрани [% terms.bugs %][% END %]
+    Очевидно не сте избрали никакви [% terms.bugs %] за промяна.
+
+  [% ELSIF error == "no_component_change_for_multiple_products" %]
+    [% title = "Неразрешено действие" %]
+    Не можете да смените съставната част на списък от [% terms.bugs %]
+    покриващи повече от един продукт.
+
+  [% ELSIF error == "no_components" %]
+    [% title = "Няма съставни части" %]
+    Съжалявам; трябва да има поне една съставна част за този продукт, за да
+    можете да създавате нов [% terms.bug %].
+    [% IF UserInGroup("editcomponents") %]
+      <a href="editcomponents.cgi?product=[% product FILTER url_quote %]">Създаване
+      на нова съставна част</a>.
+    [% ELSE %]
+       Моля, свържете се с [% Param("maintainer") %], давайки името на
+       продукта, в който сте опитали да създадете нов [% terms.bug %].
+    [% END %]
+
+  [% ELSIF error == "no_dupe_stats" %]
+    [% title = "Не са открити статистики на двойниците" %]
+    Няма статистика на двойниците за днес ([% today FILTER html %]) 
+    или вчера.
+
+  [% ELSIF error == "no_dupe_stats_error_today" %]
+    [% title = "Грешка при четене на файла с днешните двойници" %]
+    Възникна грешка при отварянето на файла с днешните двойници: [% error_msg FILTER html %].
+
+  [% ELSIF error == "no_dupe_stats_error_whenever" %]
+    [% title = "Грешка при четене на предишен файл с измамници" %]
+    Възникна грешка при отварянето на [% whenever FILTER html %]'s файл с
+    двойниците от преди [% changedsince FILTER html %] дни:
+    [% error_msg FILTER html %].
+
+  [% ELSIF error == "no_dupe_stats_error_yesterday" %]
+    [% title = "Грешка при четене на файла с двойниците от вчера" %]
+    Няма статистика на двойниците за днес ([% today FILTER html %]), а
+    възникна грешка при отварянето на файла от вчера:
+    [% error_msg FILTER html %].
+
+  [% ELSIF error == "no_html_in_quips" %]
+    [% title = "HTML не е позволен в остроумия" %]
+    Съжалявам, поради мерки за сигурност, поддръжката на
+    <abbr title="Hyper Text Markup Language" lang="en">HTML</abbr> тагове е
+    изключена в остроумията.
+
+  [% ELSIF error == "no_new_quips" %]
+    [% title = "Без нови остроумия" %]
+    Сайта не разрешава добавянето на нови остроумия.
+
+  [% ELSIF error == "no_page_specified" %]
+    [% title = "Не е указана страница" %]
+    Не сте указали идентификатор на страница за показване.
+
+  [% ELSIF error == "no_products" %]
+    [% title = "Няма продукти" %]
+    Или не са определени продукти, за които да въвеждате [% terms.bugs %] или не
+    ви е даден достъп до никой.
+
+  [% ELSIF error == "old_password_incorrect" %]
+    [% title = "Неправилна стара парола" %]
+    Не сте въвели старата си парола правилно.
+
+  [% ELSIF error == "old_password_required" %]
+    [% title = "Необходима е старата парола" %]
+    Трябва да въведете старата си парола, за да промените електронния си
+    пощенски адрес.
+
+  [% ELSIF error == "passwords_dont_match" %]
+    [% title = "Паролите не съвпадат" %]
+    Двете пароли които въведохте не съвпадат.
+
+  [% ELSIF error == "password_too_long" %]
+    [% title = "Твърде дълга парола" %]
+    Паролата е дълга повече от 16 символа. Не трябва да бъде по-дълга
+    от 16 символа.
+
+  [% ELSIF error == "password_too_short" %]
+    [% title = "Твърде къса парола" %]
+    Паролата е по-къса от три символа. Трябва да бъде най-малко три символа.
+
+  [% ELSIF error == "patch_too_large" %]
+    [% title = "Твърде голям файл" %]
+    Файла, който се опитвате да прикачите е с размер [% filesize FILTER html %] 
+    килобайта (КБ).
+    Кръпките не могат да бъдат с размер по-голям от [% Param('maxpatchsize') %]
+    <abbr title="Кило Байта">КБ</abbr>. Опитайте да разделите кръпката на
+    няколко части.
+
+  [% ELSIF error == "product_edit_denied" %]
+    [% title = "Отказан достъп за редактиране на продукт" %]
+    Не ви е разрешено да редактирате [% terms.bugs %] в продукта
+    [% product FILTER html %].
+
+  [% ELSIF error == "query_name_missing" %]
+    [% title = "Не е указано има не търсене" %]
+    Трябва да укажете име за вашето търсене.
+
+  [% ELSIF error == "quips_disabled" %]
+    [% title = "Изключени остроумия" %]
+    Остроумията са изключени.
+
+  [% ELSIF error == "quips_edit_denied" %]
+    [% title = "Неразрешено" %]
+    Нямате права за редактиране на остроумия.
+
+  [% ELSIF error == "reassign_to_empty" %]
+    [% title = "Незаконно преназначаване" %]
+    За да преназначите [% terms.bug %], трябва да предоставите адреса на
+    новия назначен. Ако по невниманите сте изчистили полето
+    "Преназначи [% terms.abug %] на", [% Param("browserbugmessage") %].
+
+  [% ELSIF error == "report_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Нямата необходимите права, за да видите докладите за този продукт.
+
+  [% ELSIF error == "require_component" %]
+    [% title = "Необходима е съставна част" %]
+    Трябва да изберете съставна част, за да запишете този [% terms.bug %]. Ако
+    е необходимо просто отгатнете.
+
+  [% ELSIF error == "require_new_password" %]
+    [% title = "Необходима е нова парола" %]
+    Не можете да смените паролата си, без да изберете нова.
+
+  [% ELSIF error == "require_summary" %]
+    [% title = "Необходимо е резюме" %]
+    Трябва да въведете резюме за този [% terms.bug %].
+
+  [% ELSIF error == "resolving_remaining_time" %]
+    [% title = "Опит за решаване при оставащи часове" %]
+    Не можете да решите [% terms.bug %] с оставащи часове. Задайте нула в
+    полето Оставащи часове, ако желаете да решите [% terms.bug %]а.
+
+  [% ELSIF error == "sanity_check_access_denied" %]
+    [% title = "Достъпът отказан" %]
+    Нямате необходимите права, за пускане на санитарна проверка.
+
+  [% ELSIF error == "search_content_without_matches" %]
+    [% title = "Неправилно търсене" %]
+    Полето "съдържание" може да бъде използвано само с търсене "съвпадение" и
+    търсене "съвпадение" може да бъде използвано само с полето "съдържание".
+
+  [% ELSIF error == "series_already_exists" %]
+    [% title = "Редиците вече съществуват" %]
+      Редиците именовани <em>[% series.category FILTER html %] /
+      [%+ series.subcategory FILTER html %] / 
+      [%+ series.name FILTER html %]</em>
+      вече съществуват.
+    
+  [% ELSIF error == "sidebar_supports_mozilla_only" %]
+    Съжалявам, sidebar.cgi в момента поддържа само търсачки базирани на
+    Mozilla.
+    <a href="http://www.mozilla.org">Вземете още днес</a>. :-)
+
+  [% ELSIF error == "still_unresolved_bugs" %]
+    [% IF dependency_count == 1 %]
+      [% terms.Bug %] № <a href="show_bug.cgi?id=[% dependencies.0.bug_id FILTER none %]">[% dependencies.0.bug_id FILTER none %]</a>
+      все още има [% dependencies.0.dependencies FILTER html %]
+      [% IF dependencies.0.dependencies == 1 %]
+        нерешена зависимост
+      [% ELSE %]
+        нерешени зависимости
+      [% END %]. Показване на 
+      <a href="showdependencytree.cgi?id=[% dependencies.0.bug_id FILTER none %]">Дървото на зависимостите</a>.
+    [% ELSE %]
+      Съществуват [% dependency_count FILTER none %] отворени [% terms.abug %], които
+      имат неразрешени зависимости.
+      <br>
+      [% FOREACH bug = dependencies %]
+        [% terms.Bug %] № <a href="show_bug.cgi?id=[% bug.bug_id FILTER none %]">[% bug.bug_id FILTER none %]</a>
+        има [% bug.dependencies FILTER html %]
+        [% IF bug.dependencies == 1 %]
+          отворена зависимост.
+        [% ELSE %]
+          отворени зависимости.
+        [% END %]
+        (<a href="showdependencytree.cgi?id=[% bug.bug_id FILTER none %]">Дърво на зависимостите</a>)<br>
+      [% END %]
+    [% END %]
+
+  [% ELSIF error == "too_many_votes_for_bug" %]
+    [% title = "Непозволено гласуване" %]
+    Можете да използвате най-много [% max FILTER html %] гласа за отделен
+    [%+ terms.bug %] в продукта 
+    <tt>[% prod FILTER html %]</tt>, но се опитвате да използвате
+    [% votes FILTER html %].
+
+  [% ELSIF error == "too_many_votes_for_product" %]
+    [% title = "Непозволено гласуване" %]
+    Опитвате се да използвате [% votes FILTER html %] гласа,
+    което надвишава ограничението от [% max FILTER html %] гласа за
+    [% terms.bug %] за продукта <tt>[% prod FILTER html %]</tt>.
+
+  [% ELSIF error == "token_inexistent" %]
+    [% title = "Белега не съществува" %]
+    Белега, който предадохте, не съществува, изтекъл е или е бил
+    отхвърлен.
+
+  [% ELSIF error == "too_soon_for_new_token" %]
+    [% title = "Твърде рано за нов белег" %]
+    You have requested a password token too recently to request
+    another. Моля, изчакайте малко и опитайте отново.
+
+  [% ELSIF error == "unknown_keyword" %]
+    [% title = "Непозната ключова дума" %]
+    <code>[% keyword FILTER html %]</code> не е позната ключова дума.
+    Правилните имена на ключови думи са <a href="describekeywords.cgi">описани
+    тук</a>.
+
+  [% ELSIF error == "unknown_tab" %]
+    [% title = "Неизвестен прозорец" %]
+    <code>[% current_tab_name FILTER html %]</code> не е действително име на прозорец.
+
+  [% ELSIF error == "votes_must_be_nonnegative" %]
+    [% title = "Броят на гласовете трябва да бъдат положително число" %]
+    Използвайте отрицателни числа само за гласове по вашия [% terms.bug %].
+
+  [% ELSIF error == "wrong_token_for_cancelling_email_change" %]
+    [% title = "Грешен белег" %]
+    Белега не може да бъде използван за отхвърляне на промяна на е-пощенски адрес.
+
+  [% ELSIF error == "wrong_token_for_changing_passwd" %]
+    [% title = "Грешен белег" %]
+    Белега не може да бъде използван за смяна на паролата ви.
+
+  [% ELSIF error == "wrong_token_for_confirming_email_change" %]
+    [% title = "Грешен белег" %]
+    Белега не може да бъде използван за смяна на е-пощенския ви адрес.
+
+  [% ELSIF error == "value_out_of_range" %]
+    [% title = "Стойност извън обхвата" %]
+    Стойността на полето <em>[% field_descs.$field FILTER html %]</em>
+    е извън обхвата.
+
+  [% ELSIF error == "zero_length_file" %]
+    [% title = "Файлът е празен" %]
+    Файлът, който се опитвате да прикачите е празен!
+
+  [% ELSE %]
+    [% title = "Не е открита информация за грешката" %]
+    Потребителският код за грешка <code>[% error FILTER html %]</code> не беше открит.
+    Моля, изпратете поща до [% Param("maintainer") %], описвайки
+    предприетите стъпките до получаване на това съобщение.
+  [% END %]
+[% END %]
+
+[% UNLESS header_done %]
+  [% PROCESS global/header.html.tmpl %]
+[% END %]
+
+<table cellpadding="20">
+  <tr>
+    <td bgcolor="#ff0000">
+      <font size="+2">
+        [% error_message FILTER none %]
+      </font>
+    </td>
+  </tr>
+</table>
+
+<p>
+  Моля, натиснете <b>Назад</b> и опитайте отново.
+</p>
+
+[%# If a saved search fails, people want the ability to edit or delete it. 
+  # This is the best way of getting information about that possible saved
+  # search from any error call location. %]
+  
+[% USE Bugzilla %]
+[% namedcmd = Bugzilla.cgi.param("namedcmd") %]
+[% IF namedcmd AND error != "missing_query" %]
+  <p>
+    Можете също и да    
+    <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
+                  [% namedcmd FILTER html %]">забравите</a>
+                  
+    [% FOREACH q = Bugzilla.user.queries %]
+      [% IF q.name == namedcmd %]
+        или <a href="query.cgi?[% q.query FILTER html %]">редактирате</a>
+      [% END %]
+    [% END %]
+    
+    съхраненото търсене '[% namedcmd FILTER html %]'.
+  </p>
+[% END %]            
+
+[% PROCESS global/footer.html.tmpl %]

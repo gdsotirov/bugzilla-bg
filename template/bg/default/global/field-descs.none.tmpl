@@ -1,0 +1,66 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# Remember to PROCESS rather than INCLUDE this template. %]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% field_descs = { "[Bug creation]"       => "[$terms.Bug creation]",
+                   "actual_time"          => "Действителни часове"
+                   "alias"                => "Псевдоним",
+                   "assigned_to"          => "Назначение",
+                   "blocked"              => "Блокира",
+                   "bug_file_loc"         => "URL",
+                   "bug_id"               => "$terms.Bug №",
+                   "bug_severity"         => "Суровост",
+                   "bug_status"           => "Състояние",
+                   "changeddate"          => "Променен",
+                   "cc"                   => "Точно Копие",
+                   "cclist_accessible"    => "Достъпен ТК списък?",
+                   "component_id"         => "Идентификатор на съставна част",
+                   "component"            => "Съставна част",
+                   "creation_ts"          => "Време на създаване на $terms.abug",
+                   "delta_ts"             => "Средно",
+                   "dependson"            => "Зависи от",
+                   "dup_id"               => "Повтаря",
+                   "estimated_time"       => "Първоначална оценка",
+                   "everconfirmed"        => "Някога потвърждаван?",
+                   "groupset"             => "Набор групи",
+                   "keywords"             => "Ключови думи",
+                   "newcc"                => "Точно Копие",
+                   "op_sys"               => "ОС",
+                   "opendate"             => "Отворен",
+                   "percentage_complete"  => "% завършен",
+                   "priority"             => "Приоритет",
+                   "product_id"           => "Идентификатор на продукт",
+                   "product"              => "Продукт",
+                   "qa_contact"           => "Качествен контрол",
+                   "remaining_time"       => "Оставащи часове",
+                   "rep_platform"         => "Платформа",
+                   "reporter"             => "Докладчик",
+                   "reporter_accessible"  => "Докладчика достъпен?",
+                   "resolution"           => "Решение",
+                   "short_desc"           => "Резюме",
+                   "status_whiteboard"    => "Whiteboard",
+                   "target_milestone"     => "Целево събитие",
+                   "version"              => "Версия",
+                   "votes"                => "Гласове",
+                   "work_time"            => "Отработени часове"} %]

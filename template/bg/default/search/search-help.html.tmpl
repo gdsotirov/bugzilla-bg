@@ -1,0 +1,105 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+  
+[% help_html = [ 
+{ id => "short_desc_type", 
+  html => "Типа на резюмето което желаете" },   
+{ id => "short_desc", 
+  html => "Резюмето на $terms.abug е кратко описание, което сбито и ясно
+           описва<br>за какво е $terms.abug." },   
+{ id => "product", 
+  html => "$terms.Bugsте се категоризират в Продукти и Съставни части. Продукта е
+           <br>най-високото ниво на категоризация." },   
+{ id => "component", 
+  html => "Съставните части са второ ниво на категоризация; всяка принадлежи на<br>
+           даден Продукт. Изберете продукт, за да стесните списъка." },   
+{ id => "version", 
+  html => "Полето за версия определя версията на програмното осигуряване,<br>
+           в която е открит $terms.abug ." },   
+{ id => "target_milestone", 
+  html => "Полето целево събитие се използва за определяне на това<br>
+           кога инженера, на който е назначен $terms.abug, очаква да го оправи." },   
+{ id => "long_desc", 
+  html => "$terms.Bugsте имат добавени за тях коментари от потребители на $terms.Bugzilla.<br>
+           Можете да търсите някакъв текст в тези коментари." },   
+{ id => "long_desc_type", 
+  html => "Типа на търсенето в коментарите, което желаете." },   
+{ id => "bug_file_loc", 
+  html => "$terms.Bugsте могат да имат
+           <abbr title='Uniform Resource Locator'>URL</abbr> свързан с тях -
+           например указател<br>към web страница, където проблема е забелязан." },   
+{ id => "bug_file_loc_type", 
+  html => "Типа на търсенето по <abbr title='Uniform Resource Locator'>URL</abbr>
+           което желаете." },   
+{ id => "status_whiteboard", 
+  html => "Всеки $terms.bug има поле за въвеждане на един ред свободен текст
+           за добавяне<br>на тагове и информация за състоянието." },   
+{ id => "status_whiteboard_type", 
+  html => "Типа на whiteboard търсенето което желаете." },   
+{ id => "keywords", 
+  html => "Можете да добавяте ключови думи от зададен предварително списък към $terms.bugsте,<br>
+           за да ги обозначите и групирате." },   
+{ id => "keywords_type", 
+  html => "Типа на търсенето по ключови думи което желаете." },   
+{ id => "bug_status", 
+  html => "$terms.ABug може да бъде във всяко от определен брой състояния." },   
+{ id => "resolution", 
+  html => "Ако $terms.abug е в състояние решен, тогава една от тези причини
+           ще<br>бъде дадена за неговото разрешаване." },   
+{ id => "bug_severity", 
+  html => "Колко суров е $terms.abug или дали това е подобрение." },   
+{ id => "priority", 
+  html => "Инженерите приоритизират техните $terms.bugs използвайки това поле." },   
+{ id => "rep_platform", 
+  html => "Машинната платформа на която е наблюдаван $terms.abug ." },   
+{ id => "op_sys", 
+  html => "Операционната система на която е наблюдаван $terms.abug ." },   
+{ id => "email1", 
+  html => "Всеки $terms.bug има свързани с него хора имащи различни 
+           роли.<br>Тук можете да търсите кои хора в каква роля са." },
+{ id => "email2", 
+  html => "Всеки $terms.bug има свързани с него хора имащи различни 
+           роли.<br>Тук можете да търсите кои хора в каква роля са." },
+{ id => "bug_id", 
+  html => "Можете да ограничите вашето търсене до определен набор от $terms.bugs ." },   
+{ id => "votes", 
+  html => "За някои $terms.bugs може да се гласува и можете да ограничите
+           търсенето си до $terms.bugs,<br>с повече от определен брой гласове." },   
+{ id => "chfield", 
+  html => "Можете да търсите за определен тип промяна - тук определяте<br>
+           промени в кое поле ви интересуват." },   
+{ id => "chfieldfrom", 
+  html => "Задайте началната и крайната дата или в ГГГГ-ММ-ДД формат<br>
+           (незадължително следвано от ЧЧ:ММ за 24 часов часовник) или в
+           относителни<br>дати като 1d, 2w, 3m, 4y, които съответно значат
+           един ден,<br>две седмици, три месеца и четири години преди.<br>
+           0d е от полунощ, а 0w, 0m, 0y са началото на
+           тази седмица, месец и година." },
+{ id => "chfieldto", 
+  html => "Задайте началната и крайната дата или в ГГГГ-ММ-ДД формат<br>
+           (незадължително следвано от ЧЧ:ММ за 24 часов часовник) или в
+           относителни<br>дати като 1d, 2w, 3m, 4y, които съответно значат
+           един ден,<br>две седмици, три месеца и четири години преди.<br>
+           0d е от полунощ, а 0w, 0m, 0y са началото на
+           тази седмица, месец и година." },
+{ id => "chfieldvalue", 
+  html => "Стойността на полето по-горе се е променила през това време." },   
+] %]

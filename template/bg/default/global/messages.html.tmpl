@@ -1,0 +1,170 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# This is a list of all the possible messages. Please keep them in
+  # alphabetical order by message tag, and leave a blank line between messages.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% message_tag = message %]
+
+[% message = BLOCK %]
+  [% IF    message_tag == "buglist_adding_field" %]
+    [% title = "Добавяне на поле към страницата за търсене..." %]
+    [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
+
+  [% ELSIF message_tag == "buglist_load_named_query" %]
+    [% title = BLOCK %]
+      Зареждане на търсенето ви именовано [% namedcmd FILTER html %]
+    [% END %]
+    [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
+
+  [% ELSIF message_tag == "buglist_updated_named_query" %]
+    OK, търсенето ви именовано <code>[% queryname FILTER html %]</code>, беше осъвременено.
+
+  [% ELSIF message_tag == "buglist_new_default_query" %]
+    OK, вече имате ново търсене по подразбиране. Можете също така
+    да отметнете резултата от всяко търсене.
+
+  [% ELSIF message_tag == "buglist_new_named_query" %]
+    OK, имате ново търсене именовано <code>[% queryname FILTER html %]</code>.
+
+  [% ELSIF message_tag == "buglist_query_gone" %]
+    [% title = "Търсенето е изгубено" %]
+    [% link  = "Връщане на страницата за търсене." %]
+    OK, търсенето <b>[% namedcmd FILTER html %]</b> е изгубено.
+
+  [% ELSIF message_tag == "buglist_sorted_by_relevance" %]
+    [% terms.Bugs %]те в този списък са подредени по значение, като
+    най-значимите [% terms.bugs %] са най-отгоре. Само 200-те най-значими
+    [%+ terms.bugs %] са показани.
+
+  [% ELSIF message_tag == "change_columns" %]
+    [% title = "Промяна на колони" %]
+    Препредаване на търсенето ви с нови колони...
+    Кликнете <a href="[% redirect_url FILTER html %]">тук</a>
+    ако страницата не се осъвремени автоматично.
+
+  [% ELSIF message_tag == "emailold_change_cancelled" %]
+    [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
+    Заявката за смяна на електронния пощенски адрес, за ващия потребител на
+    [%+ new_email FILTER html %], беше отхвърлена.
+
+  [% ELSIF message_tag == "email_change_cancelled" %]
+    [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
+    Заявката за смяна на електронния пощенски адрес, за
+    потребителя [%+ old_email FILTER html %] на
+    [%+ new_email FILTER html %], беше отхвърлена.
+
+  [% ELSIF message_tag == "email_change_cancelled_reinstated" %]
+    [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
+    Заявката за смяна на е-пощенски адрес за потребителя
+    [%+ old_email FILTER html %] на [%+ new_email FILTER html %] бе отхвърлена.
+    Старите ви потребителски настройки бяха възстановени.
+
+  [% ELSIF message_tag == "logged_out" %]
+    [% title = "Излязъл" %]
+    [% url = "query.cgi?GoAheadAndLogIn=1" %]
+    [% link = "Влизане отново." %]
+    <b>Вашите входни данни бяха забравени</b>.
+    Бисквитката съхраняваща данните ви, е изгубена. Ще бъдете
+    подтикнати да въведете име и парола следващият път когато са необходими.
+
+  [% ELSIF message_tag == "login_changed" %]
+    [% title = "Промяна $terms.Bugzilla потребител" %]
+    Вашия [% terms.Bugzilla %] потребител беше променен.
+
+  [% ELSIF message_tag == "password_change_cancelled" %]
+    [% title = "Отхвърлена заявка за смяна на парола" %]
+    Заявката ви беше отхвърлена.
+
+  [% ELSIF message_tag == "password_change_request" %]
+    [% title = "Заявка за смяна на парола" %]
+    A token for changing your password has been emailed to you.
+    Следвайте инструкциите в съобщението, за да смените вашата парола.
+
+  [% ELSIF message_tag == "password_changed" %]
+    [% title = "Промяна на парола" %]
+    Парола ви беше сменена.
+
+  [% ELSIF message_tag == "flag_type_created" %]
+    [% title = "Типа флаг създаден" %]
+      Типа флаг <em>[% name FILTER html %]</em> беше създаден.
+      <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
+    
+  [% ELSIF message_tag == "flag_type_changes_saved" %]
+    [% title = "Промените по типа флаг запазени" %]
+    <p>
+      Промените ви по типа флаг <em>[% name FILTER html %]</em> 
+      бяха запазени.
+      <a href="editflagtypes.cgi">бяха запазени.</a>
+    </p>
+    
+  [% ELSIF message_tag == "flag_type_deleted" %]
+    [% title = "Типа флаг изтрит" %]
+    <p>
+      Типа флаг <em>[% name FILTER html %]</em> беше изтрит.
+      <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
+    </p>
+    
+  [% ELSIF message_tag == "flag_type_deactivated" %]
+    [% title = "Типа флаг недействуващ" %]
+    <p>
+      Типа флаг <em>[% flag_type.name FILTER html %]</em> 
+      беше изваден от употреба.
+      <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
+    </p>
+    
+  [% ELSIF message_tag == "product_invalid" %]
+    [% title = "Описания на съставни части в $terms.Bugzilla" %]
+    Продукта <em>[% product FILTER html %]</em> не съществува
+    или вие нямата достъп до него. Следва списък с продукти
+    от които можете да изберете.
+
+  [% ELSIF message_tag == "series_created" %]
+    [% title = "Редицата създадена" %]
+      Редицата <em>[% series.category FILTER html %] /
+      [%+ series.subcategory FILTER html %] / 
+      [%+ series.name FILTER html %]</em>
+      беше създадена. Имайте предвид, че може да се наложи да изчаката до
+      [%+ series.frequency * 2 %] дни преди да има достатъчно данни за
+      произвежданетона графика от тази редица.
+      <br><br>
+      Връщане или 
+      <a href="query.cgi?format=create-series">създаване на още една редица</a>.
+    
+  [% ELSIF message_tag == "shutdown" %]
+    [% title = "$terms.Bugzilla е спряна" %]
+    [% Param("shutdownhtml") %]
+    
+  [% ELSE %]
+    [%# Give sensible error if error functions are used incorrectly.
+      #%]     
+    Използвате функцияиите за съобщения на [% terms.Bugzilla %] неправилно.
+    Подадохте низа '[% message_tag %]'. Правилното използване е чрез подаване
+    на таг и описването му в файла messages.html.tmpl.<br>
+    <br>
+    Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля
+    съхранете тази страница и я изпратете на [% Param('maintainer') %].
+    
+  [% END %]
+[% END %]

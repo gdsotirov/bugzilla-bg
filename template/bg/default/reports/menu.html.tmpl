@@ -1,0 +1,77 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# INTERFACE:
+  # This template has no interface. It's a list of the available report
+  # types in Bugzilla.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% PROCESS global/header.html.tmpl
+  title = "Кухнята на докладите и графиките"
+%]
+
+<p>
+  [% terms.Bugzilla %] ви позволява да преглеждате и следите състоянието на базата
+  данни с [% terms.bugs %] по всички вълнуващи начини.
+</p>
+
+<h2>Текущо състояние</h2>
+
+<ul>
+  <li>
+    <strong><a href="query.cgi">Търсене</a></strong> -
+    прави списък на множество от [% terms.bugs %].
+  </li>
+  <li>
+    <strong>
+      <a href="query.cgi?format=report-table">Табулирани доклади</a>
+    </strong> -
+    таблици изброяващи [% terms.bugs %] в 1, 2 или 3 измерения, като <abbr
+    lang="en" title="Hyper Text Markup Language">HTML</abbr> или <abbr
+    lang="en" title="Comma Separated Values">CSV</abbr>.
+  </li>
+  <li>
+    <strong>
+      <a href="query.cgi?format=report-graph">Графични доклади</a>
+    </strong> -
+    графики "линия", "лента" и "пита".
+  </li>
+</ul>
+
+<h2>Промяна във времето</h2>
+
+<ul>
+  <li>
+    <strong><a href="reports.cgi">Стари графики</a></strong> -
+    изчертава състоянието и/или решението на [% terms.bugs %] във
+    времето, за всеки продукт във вашата база данни.
+  </li>
+  [% IF UserInGroup(Param("chartgroup")) %]
+    <li>
+      <strong><a href="chart.cgi">Нови графики</a></strong> - 
+      изчертава всяко произволно търсене във времето. Много по-мощно.
+    </li>
+  [% END %]
+</ul>
+
+[% PROCESS global/footer.html.tmpl %]

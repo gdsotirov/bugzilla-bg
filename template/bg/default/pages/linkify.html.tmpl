@@ -1,0 +1,41 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Stefan Seifert <nine@detonation.org>
+  #                 Gervase Markham <gerv@gerv.net>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+[% INCLUDE global/header.html.tmpl title = "Правене на връзки в текст" %]
+
+<p>
+  Ако въведете някакъв текст тази форма ще го върне описан като стандартен
+  [% terms.Bugzilla %] коментар. Това значи, че действителни номера на
+  [% terms.bugs %], <abbr title="Uniform Resource Locator" lang="en">URL</abbr>та,
+  е-пощенски адреси и т.н. ще бъдат заменени с подобаващи
+  <abbr title="Hyper Text Markup Language" lang="en">HTML</abbr> връзки.
+</p>
+
+<form action="page.cgi" method="post">
+  <textarea cols="80" rows="20" name="text" wrap="hard"></textarea>
+  <br>
+  <input type="hidden" name="id" value="linked.html">
+  <input value="Създаване на връзки" type="submit">
+</form>
+
+[% INCLUDE global/footer.html.tmpl %]

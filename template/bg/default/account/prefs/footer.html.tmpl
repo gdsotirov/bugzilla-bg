@@ -1,0 +1,77 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# INTERFACE:
+  # mybugslink: boolean. True if the user wishes the My Bugs link to appear.
+  # queries: array of hashes. May be empty. Each hash has two members:
+  #   name:   string. The name of the search.
+  #   footer: boolean. True if the search appears in the footer.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+<table>
+  <tr>
+    <th align="right">Препратката 'Мои [% terms.bugs %]':</th>
+    <td>
+      <select name="mybugslink">
+        <option value="1">трябва да присъства на дъното на всяка страница</option>
+        <option value="0"
+          [% " selected" IF NOT mybugslink %]>не трябва да бъде показвана
+        </option>
+      </select>
+    </td>
+  </tr>
+
+  <input type="hidden" name="numqueries" value="[% queries.size %]">
+  [% IF queries.size %]
+    [% FOREACH query = queries %]
+      <tr>
+        <th align="right">Търсенето ви именовано '[% query.name FILTER html %]':</th>
+        <td>
+          <select name="query-[% loop.index %]">
+            <option value="0">трябва да присъства само на страницата за търсене</option>
+            <option value="1"
+              [% " selected" IF query.footer %]>
+              трябва да присъства на дъното на всяка страница
+            </option>
+          </select>
+        </td>
+      </tr>
+
+      <input type="hidden" name="name-[% loop.index %]"
+             value="[% query.name FILTER html %]">
+    [% END %]
+
+  [% ELSE %]
+    <tr>
+      <td colspan="4">
+        <br>
+        Ако създадете съхранени търсения използвайки <a href="query.cgi">страницата за търсене</a>,
+        можете след това да посетите тази страница и да изберете някои от тях, които да присъстват
+        на дъното на всяка страница в [% terms.Bugzilla %].
+        <br>
+        <br>
+      </td>
+    </tr>
+  [% END %]
+
+</table>

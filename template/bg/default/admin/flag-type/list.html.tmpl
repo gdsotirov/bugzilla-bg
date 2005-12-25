@@ -1,0 +1,111 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Myk Melez <myk@mozilla.org>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% PROCESS global/header.html.tmpl
+  title = 'Управление на типове флагове'
+  style = "
+    table#flag_types tr th { text-align: left; }
+    .inactive { color: #787878; }
+  "
+%]
+
+<p>
+  Флаговете са отличителни белези, които определят дали на [% terms.abug %] или
+  приставката е било дадено или отказано някакаво състояние. Флаговете се
+  показвт в потребителския интерфейс като име и символ за състояние ("+" за
+  разрешено,  "-" за забранено и "?" за състояние поискано от потребителите).
+</p>
+
+<p>
+  Например, можете да зададете състояние за "преглед", за да могат
+  потребителите да изискват преглед на техните кръпки. Когато писач на
+  кръпки изиска преглед, низа "преглед?" ще се покаже в приставката. Когато
+  потребител преглеждащ кръпки прегледа кръпката или низа "преглед+" или низа
+  "преглед-" ще се покаже за кръпката в зависимост от това дали кръпката е
+  преминала или не прегледа.
+</p>
+
+<h3>Типове флагове за [% terms.bugs %]</h3>
+
+[% PROCESS display_flag_types types=bug_types %]
+
+<p>
+  <a href="editflagtypes.cgi?action=enter&amp;target_type=bug">Създаване на тип флаг за [% terms.bugs %]</a>
+</p>
+
+<h3>Типове флагове за приставки</h3>
+
+[% PROCESS display_flag_types types=attachment_types %]
+
+<p>
+  <a href="editflagtypes.cgi?action=enter&amp;target_type=attachment">Създаване на тип флаг за приставки</a>
+</p>
+
+<script type="text/javascript" language="JavaScript">
+  <!--
+  function confirmDelete(id, name, count)
+  {
+    if (count > 0) {
+        var msg = 'Съществуват ' + count + ' флага от тип ' + name + '. ' +
+                  'Ако изтриете този тип, флаговете също ще бъдат ' +
+                  'изтрити.\n\nЗабележка: за да деактивирате типа вместо ' +
+                  'да го изтривате, редактирайте го и отметнете флага му "активен". ' +
+                  '\n\nНаистина ли желаете да изтриете този тип флаг?';
+        if (!confirm(msg)) return false;
+    }
+    location.href = "editflagtypes.cgi?action=delete&id=" + id;
+    return false; // prevent strict JavaScript warning that this function
+                  // does not always return a value
+  }
+  //-->
+</script>
+
+[% PROCESS global/footer.html.tmpl %]
+
+
+[% BLOCK display_flag_types %]
+  <table id="flag_types" cellspacing="0" cellpadding="4" border="1">
+
+    <tr>
+      <th>Редактиране на...</th>
+      <th>Описание</th>
+      <th>Действия</th>
+    </tr>
+
+    [% FOREACH type = types %]
+
+      <tr class="[% IF type.is_active %]active[% ELSE %]inactive[% END %]">
+        <td><a href="editflagtypes.cgi?action=edit&amp;id=[% type.id %]">[% type.name FILTER html %]</a></td>
+        <td>[% type.description FILTER html %]</td>
+        <td>
+          <a href="editflagtypes.cgi?action=copy&amp;id=[% type.id %]">Екземпляр</a>
+          | <a href="editflagtypes.cgi?action=confirmdelete&amp;id=[% type.id %]"
+               onclick="return confirmDelete([% type.id %], '[% type.name FILTER js FILTER html %]',
+                                             [% type.flag_count %]);">Изтриване</a>
+        </td>
+      </tr>
+
+    [% END %]
+
+  </table>
+[% END %]

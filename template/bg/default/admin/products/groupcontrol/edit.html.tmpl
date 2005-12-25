@@ -1,0 +1,286 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Joel Peshkin <bugreport@peshkin.net>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% filt_product = product FILTER html %]
+[% PROCESS global/header.html.tmpl
+  title = "Редакция на групови контроли за '$filt_product'"
+%]
+
+<form method="post" action="editproducts.cgi">
+  <input type="hidden" name="action" value="updategroupcontrols">
+  <input type="hidden" name="product" value="[% filt_product %]">
+
+  <table id="form" cellspacing="0" cellpadding="4" border="1">
+    <tr bgcolor="#6666ff">
+      <th>Група</th>
+      <th>Въвеждане</th>
+      <th>Контрол на членовете</th>
+      <th>Друг контрол</th>
+      <th>Редактиране</th>
+      <th>[% terms.Bugs %]</th>
+    </tr>
+    [% FOREACH group = groups %]
+      [% IF group.isactive == 0 AND group.bugcount > 0 %]
+        <tr bgcolor="#bbbbbb">
+          <td>
+            [% group.name FILTER html %]
+          </td>
+          <td align="center" colspan=4>
+            Невъзможно
+          </td>
+          <td>
+            [% group.bugcount %]
+          </td>
+        <tr>
+      [% ELSIF group.isactive != 0 %]
+        <tr>
+          <td>
+            [% group.name FILTER html %]
+          </td>
+          <td>
+            <input type=checkbox value=1 name=entry_[% group.id %]
+            [% " checked=\"checked\"" IF group.entry %]>
+          </td>
+          <td>
+            <select name="membercontrol_[% group.id %]">
+              <option value=[% const.CONTROLMAPNA %]
+                [% " selected=\"selected\""
+                  IF group.membercontrol == const.CONTROLMAPNA %]
+                >Неприложимо
+              </option>
+              <option value=[% const.CONTROLMAPSHOWN %]
+                [% " selected=\"selected\""
+                  IF group.membercontrol == const.CONTROLMAPSHOWN %]
+                >Показано
+              </option>
+              <option value=[% const.CONTROLMAPDEFAULT %]
+                [% " selected=\"selected\""
+                  IF group.membercontrol == const.CONTROLMAPDEFAULT %]
+                >Подразбрано
+              </option>
+              <option value=[% const.CONTROLMAPMANDATORY %]
+                [% " selected=\"selected\""
+                  IF group.membercontrol == const.CONTROLMAPMANDATORY %]
+                >Задължително
+              </option>
+            </select>
+          </td>
+          <td>
+            <select name="othercontrol_[% group.id %]">
+              <option value=[% const.CONTROLMAPNA %]
+                [% " selected=\"selected\""
+                  IF group.othercontrol == const.CONTROLMAPNA %]
+                >Неприложимо
+              </option>
+              <option value=[% const.CONTROLMAPSHOWN %]
+                [% " selected=\"selected\""
+                  IF group.othercontrol == const.CONTROLMAPSHOWN %]
+                >Показано
+              </option>
+              <option value=[% const.CONTROLMAPDEFAULT %]
+                [% " selected=\"selected\""
+                  IF group.othercontrol == const.CONTROLMAPDEFAULT %]
+                >Подразбрано
+              </option>
+              <option value=[% const.CONTROLMAPMANDATORY %]
+                [% " selected=\"selected\""
+                  IF group.othercontrol == const.CONTROLMAPMANDATORY %]
+                >Задължително
+              </option>
+            </select>
+          </td>
+          <td>
+            <input type=checkbox value=1 name=canedit_[% group.id %]
+            [% " checked=\"checked\"" IF group.canedit %]>
+          </td>
+          <td>
+            [% group.bugcount %]
+          </td>
+        </tr>
+      [% END %]
+    [% END %]
+
+  </table>
+  <br>
+  <input type=submit name="submit" value="Изпращане">
+  <br>
+</form>
+
+
+<p>
+Тези настройки управляват взаимоотношенията на групите с този
+продукт.</p>
+<p>
+Ако някоя група има избрано <b>Въвеждане</b>, тогава този продукт ще
+ограничи въвеждането на [% terms.bug %] само до тези потребители, които са
+членове на всички групи със избрано въвеждане.</p>
+<p>
+Ако някоя група има избрано <b>Редактиране</b>, тогава този продукт
+ще бъде само за четене за всички потребители, които на са членове на всички
+групи с избрано Редактиране. САМО потребители, които са членове на всички
+групи Редактиране ще имат възможността да редактират. Това е допълнително
+ограничение, което още повече ограничава какво може да бъде редактирано от
+потребителя.</p>
+<p>
+Полетата <b>Контрол на членовете</b> и <b>Друг контрл</b> указват кои
+[% terms.bugs %] ще бъдат поместени в тази група съгласно следващите
+определения.</p>
+<br>
+<table border=1>
+  <tr>
+    <th>
+      Контрол на членовете
+    </th>
+    <th>
+      Друг контрол
+    </th>
+    <th>
+      Тълкуване
+    </th>
+  </tr>
+  <tr>
+    <td>
+      Неприложимо
+    </td>
+    <td>
+      Неприложимо
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт никога не се свързват с тази група.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Показано
+    </td>
+    <td>
+      Неприложимо
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
+      тази група. Потребителите, които са член на групата ще имат
+      възможност да поставят [% terms.bugs %] бъгове в нея.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Показано
+    </td>
+    <td>
+      Показано
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт могат да бъдат поставяни в групата от
+      всеки с разрешение да редкатира [% terms.abug %] дори да не е член на
+      групата.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Показано
+    </td>
+    <td>
+      Подразбрано
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт могат да бъдат поставяни в групата от
+      всеки с разрешение да редкатира [% terms.abug %] дори и да не е член на
+      групата. Тези които не са членове поставят [% terms.bugs %] в тази група
+      по подразбиране.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Показано
+    </td>
+    <td>
+      Задължително
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
+      групата. Потребителите които са членове на групата ще имат възможността да
+      поставят [% terms.bugs %] в групата. Тези които не са членове ще бъдат
+      принудени да ограничат [% terms.bugs %] до тази група, когато
+      първоначално въвеждат [% terms.bug %] в този продукт.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Подразбрано
+    </td>
+    <td>
+      Неприложимо
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
+      групата и се поставят в нея по подразбиране. Потребителите, които са
+      членове на тази гупа ще могат да поставят [% terms.bugs %] в нея.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Подразбрано
+    </td>
+    <td>
+      Подразбрано
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
+      групата и се поставят в нея по подразбиране. Потребителите, които са
+      членове на тази група ще могат да поставят [% terms.bugs %] в нея. Тези,
+      които не са членове ще могат да ограничават [% terms.bugs %] до тази
+      група при въвеждане и ще го правят по подразбиране.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Подразбрано
+    </td>
+    <td>
+      Задължително
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
+      тази група и се поставят в нея по подразбиране. Потребителите, които са
+      членове на групата ще могат да поставят [% terms.bugs %] в нея. Тези, които
+      не са членове ще бъдат принудени да поставят [% terms.bugs %] в нея
+      при въвеждане.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Задължително
+    </td>
+    <td>
+      Задължително
+    </td>
+    <td>
+      [% terms.Bugs %] в този продукт задължително са ограничени до тази
+      група. На потребителите не се предоставя никакъв избор.
+    </td>
+  </tr>
+</table>
+
+
+[% PROCESS global/footer.html.tmpl %]
+

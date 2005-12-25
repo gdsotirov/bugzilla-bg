@@ -1,0 +1,174 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# INTERFACE:
+  # products: list of strings. The products this user can see.
+  #
+  # sortby: string. the column on which we are sorting the buglist.
+  # reverse: boolean. True if we are reversing the current sort.
+  # maxrows: integer. Max number of rows to display.
+  # changedsince: integer. The number of days ago for the changedsince column.
+  # openonly: boolean. True if we are only showing open bugs.
+  # query_products: list of strings. The set of products we check for dups.
+  #
+  # Additionally, you need to fulfill the interface to
+  # duplicates-table.html.tmpl.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% IF query_products.size %]
+  [% title = "Най-често докладвани $terms.bugs за ${query_products.join(', ')}" %]
+[% ELSE %]
+  [% title = "Най-често докладвани $terms.bugs" %]
+[% END%]
+
+[% PROCESS global/header.html.tmpl
+   style = ".resolved { background-color: #d9d9d9; color: #000000; }"
+%]
+
+<p>
+  <a href="#explanation">Какви са тези данни?</a>
+  <br>
+  <a href="#params">Промяна на параметри</a>
+</p>
+
+[% PROCESS "reports/duplicates-table.html.tmpl" %]
+
+[%# *** Parameters *** %]
+
+[% bug_ids_string = vis_bug_ids.join(',') %]
+
+<h3><a name="params">Промяна на параметри</a></h3>
+
+<form method="get" action="duplicates.cgi">
+  <input type="hidden" name="sortby" value="[% sortby FILTER html %]">
+  <input type="hidden" name="reverse" value="[% reverse %]">
+  <input type="hidden" name="bug_id" value="[% bug_ids_string %]">
+  <table>
+    <tr>
+      <td>При подреждане или ограничаване,
+          се работи с:</td>
+      <td>
+        <input type="radio" name="sortvisible" id="entirelist" value="0"
+          [% "checked" IF NOT sortvisible %]>
+        <label for="entirelist">
+          целия списък
+        </label>
+        <br>
+        <input type="radio" name="sortvisible" id="visiblelist" value="1"
+          [% "checked" IF sortvisible %]>
+        <label for="visiblelist">
+          видимия в момента списък
+        </label>
+      </td>
+      <td rowspan="4" valign="top">Ограничаване до продуктите:</td>
+      <td rowspan="4" valign="top">
+        <select name="product" size="5" multiple="multiple">
+          [% FOREACH p = products %]
+            <option name="[% p FILTER html %]"
+            [% " selected" IF lsearch(query_products, p) != -1 %]
+            >[% p FILTER html %]</option>
+          [% END %]
+        </select>
+      </td>
+     </tr>
+
+    <tr>
+      <td>Максимален брой редове:</td>
+      <td>
+        <input size="4" name="maxrows" value="[% maxrows %]">
+      </td>
+    </tr>
+
+    <tr>
+      <td>Колоната промяна е промяна в последните:</td>
+      <td>
+        <input size="4" name="changedsince" value="[% changedsince %]"> дни
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="openonly">
+          Само отворени [% terms.bugs %]:
+        </label>
+      </td>
+      <td>
+        <input type="checkbox" name="openonly" id="openonly" value="1"
+          [% "checked" IF openonly %]>
+      </td>
+    </tr>
+
+  </table>
+
+  <input type="submit" value="Промяна">
+</form>
+
+<form method="post" action="buglist.cgi">
+  <input type="hidden" name="bug_id" value="[% bug_ids_string %]">
+  <input type="hidden" name="order" value="Използване на същото подреждане както последния път">
+  Или само представяне като <input type="submit" value="[% terms.bug %] списък">.
+  (Забележка: реда може да не е същия.)
+</form>
+
+<hr>
+
+<b>
+  <a name="explanation">Какво са "Най-често докладваните [% terms.bugs %]"?</a>
+</b>
+
+<blockquote>
+  Страницата на най-често докладваните [% terms.bugs %] дава списък на познатите отворени [% terms.bugs %], които
+  са докладвани най-често. Тя се
+  създава автоматично от данните в базата на [% terms.Bugzilla %] на всеки 24 часа, като
+  се смята броя на преките и непреки двойници на [% terms.bugs %]те.
+  Информацията се предоставя, за да спомогне в намаляването
+  на количеството на [% terms.bugs %] двойници въвеждани в [% terms.Bugzilla %], което
+  спестява време на инженерите по осигуряване на качеството които трябва да подредят [% terms.bugs %]те.
+</blockquote>
+
+<b>Как да използвам този списък?</b>
+
+<ul>
+  <li>Прегледайте списъка на най-честите [% terms.bugs %].</li>
+  <li>Ако проблема ви е описан:</li>
+
+  <ul>
+    <li>Кликнете върху номера на [% terms.abug %], за да се уверите, че сте открили
+      същия [% terms.bug %] и коментирайте ако разполагате с допълнителна информация
+      или продължете с изпитването на продукта.
+    </li>
+  </ul>
+
+  <li>Ако проблема ви не е описан:</li>
+
+  <ul>
+    <li><a href="query.cgi">Опитайте да откриете подобен [% terms.bug %]</a>,
+        който вече е въведен.</li>
+    <li>Ако откриете вашия [% terms.bug %] в [% terms.Bugzilla %],
+        чувствайте се свободни да сложите в коментар всички нови или допълнителни данни, които може да имате.</li>
+    <li>Ако досега не сте могли да откриете вашия проблем документиран в [% terms.Bugzilla %],
+        <a href="enter_bug.cgi">въведете нов [% terms.bug %]</a>.</li>
+  </ul>
+</ul>
+
+[% PROCESS global/footer.html.tmpl %]

@@ -1,0 +1,155 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #%]
+
+[%# INTERFACE:
+  # added_quip: string. Defined if the CGI added a quip data before
+  #                displaying anything; if defined, its value is that quip.
+  # show_quips: boolean. True if we are showing the entire quip list.
+  # quips: list of strings. Defined iff show_quips is true. List of all quips.
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% PROCESS global/header.html.tmpl
+           title = "Система за остроумия на $terms.Bugzilla"
+           h1 = "Добавете вашето остроумно заглавие"
+ %]
+
+[% IF added_quip %]
+  <p>
+    <font color="red">
+      Вашето остроумие '<tt>[% added_quip FILTER html %]</tt>' беше добавено.
+      [% IF Param("enablequips") == "approved" AND !user.groups.admin %]
+        То ще бъде използвано веднага след като бъде одобрено.
+      [% END %]
+    </font>
+  </p>
+[% END %]
+
+[% IF deleted_quip %]
+  <p>
+    <font color="red">
+      Остроумието '<tt>[% deleted_quip FILTER html %]</tt>' беше изтрито.
+    </font>
+  </p>
+[% END %]
+
+[% IF approved or unapproved %]
+  <p>[% approved.size %] остроумия одобрени и [% unapproved.size %] остроумия неодобрени</p>
+[% END %]
+
+<p>
+  [% terms.Bugzilla %] ще избере случайно остроумие за заглавие на всеки [% terms.bug %] списък, като
+  можете да разширите списъка с остроумия. Напишете нещо умно и забавно или отегчаващо
+  (но не неприлично или противно, моля) и кликнете върху бутона.
+  [% IF Param("enablequips") == "approved" AND !user.groups.admin %]
+    Имайте в предвид, че остроумието ви първо трябва да бъде одобрено преди да се използва.
+  [% END %]
+</p>
+
+<form method="post" action="quips.cgi">
+  <input type="hidden" name="action" value="add">
+  <input size="80" name="quip">
+  <p>
+    <input type="submit" value="Добавяне на остроумието">
+  </p>
+</form>
+
+[% IF show_quips %]
+  [% IF !UserInGroup('admin') %]
+    <h2>
+      Налични остроумия:
+    </h2>
+    <ul>
+      [% FOREACH quipid = quipids %]
+        [% NEXT IF NOT quips.$quipid.approved %]
+        <li>[% quips.$quipid.quip FILTER html %]</li>
+      [% END %]
+    </ul>
+  [% ELSE %]
+    <h2>Редакция на наличните остроумия:</h2>
+    <p>
+      <strong>Бележка:</strong> Само одобрени остроумия ще бъдат показвани.
+      Ако за enablequips е зададена стойност <q>on</q>, въведените остроумия биват автоматично
+      одобрявани.
+    </p>
+    <form name="editform" method="post" action="quips.cgi">
+      <input type="hidden" name="action" value="approve">
+      <table border="1">
+        <thead><tr>
+          <th>Остроумие</th>
+          <th>Автор</th>
+          <th>Действие</th>
+          <th>Одобрено</th>
+        </tr></thead><tbody>
+        [% FOREACH quipid = quipids %]
+          <tr>
+            <td>[% quips.$quipid.quip FILTER html %]</td>
+            <td>
+              [% userid = quips.$quipid.userid  %]
+              [% users.$userid FILTER html      %]
+              [% "Unknown" IF NOT users.$userid %]
+            </td>
+            <td>
+              <a href="quips.cgi?action=delete&amp;quipid=[% quipid FILTER uri%]">
+                Изтриване
+              </a>
+            </td>
+            <td>
+              <input type="checkbox" name="quipid_[% quipid FILTER uri%]"
+                     id="quipid_[% quipid FILTER uri%]"
+                     [%- ' checked="checked"' IF quips.$quipid.approved %]>
+            </td>
+          </tr>
+        [% END %]
+        </tbody>
+      </table>
+      <script type="text/javascript" language="JavaScript"><!--
+        var numelements = document.forms.editform.elements.length;
+        function SetCheckboxes(value) {
+          var item;
+          for (var i=0 ; i<numelements ; i++) {
+            item = document.forms.editform.elements[i];
+            item.checked = value;
+          }
+        }
+        document.write(' <input type="button" name="uncheck_all" '
+                      +'value="Изчистване на всички" onclick="SetCheckboxes(false);">');
+        document.write(' <input type="button" name="check_all" '
+                      +'value="Отмятане на всички" onclick="SetCheckboxes(true);">');
+        //--></script>
+
+      <input type="submit" value="Осъвременяване">
+    </form>
+    <br>
+  [% END %]
+[% ELSE %]
+  <p>
+    Тези които харесват големите си количества остроумия могат да 
+    <a href="quips.cgi?action=show">прегледат
+    [% IF UserInGroup('admin') %]
+      и редактират
+    [% END %]
+    целия списък с остроумия</a>.
+  </p>
+[% END %]
+
+[% PROCESS global/footer.html.tmpl %]
