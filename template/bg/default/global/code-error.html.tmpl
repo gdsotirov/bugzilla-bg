@@ -82,6 +82,9 @@
     Графиките няма да работят без Chart::Lines Perl модула да бъде инсталиран.
     Пуснете checksetup.pl за инструкции по инсталацията.
 
+  [% ELSIF error == "cookies_need_value" %]
+    Всяка бисквитка трябва да има стойност.
+
   [% ELSIF error == "field_type_mismatch" %]
     Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
     и <code>[% type FILTER html %]</code> заедно.
@@ -142,10 +145,28 @@
     е прикачена към [% terms.bug %] [%+ attach_bug_id FILTER html %], 
     но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
     [% terms.bug %] [%+ my_bug_id FILTER html %].
-        
+
+  [% ELSIF error == "invalid_flag_association" %]
+    [% title = "Недействителна флаг връзка" %]
+    Някои флагове не принадлежат към
+    [% IF attach_id %]
+      приставката [% attach_id FILTER html %].
+    [% ELSE %]
+      [%+ terms.abug %] [%+ bug_id FILTER html %].
+    [% END %]
+
   [% ELSIF error == "flag_nonexistent" %]
     Не съществува флаг с идентификатор №[% id FILTER html %].
-  
+
+  [% ELSIF error == "flags_not_available" %]
+    [% title = "Редактирането на флаг не е разрешено" %]
+    Флагове не могат да бъдат задавани или променяни при
+    промяната на няколко [% terms.abug %] наведнъж.
+
+  [% ELSIF error == "flag_requestee_disabled" %]
+    [% title = "Флаг не е особенно изискуем" %]
+    Флагът <em>[% name FILTER html %]</em> не е изискуем по особен начин.
+
   [% ELSIF error == "flag_status_invalid" %]
     Състоянието на флага <em>[% status FILTER html %]</em>
     [% IF id %]
@@ -163,7 +184,12 @@
   [% ELSIF error == "flag_type_id_invalid" %]
     Идентификатора на типа на флага <em>[% id FILTER html %]</em> не е
     положително цяло число.
-
+  
+  [% ELSIF error == "flag_type_inactive" %]
+    [% title = "Пасивни типове флагове" %]
+    Някои типове флагове са пасивни и не могат да бъдат използвани за създаване на
+    нови флагове.
+  
   [% ELSIF error == "flag_type_nonexistent" %]
     Не съществува идентификатор на тип на флаг <em>[% id FILTER html %]</em>.
   
