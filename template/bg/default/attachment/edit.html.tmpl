@@ -22,8 +22,8 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [%# Define strings that will serve as the title and header of this page %]
-[% title = BLOCK %]Редакция на приставка №[% attachid %] за [% terms.Bug %] №[% bugid %][% END %]
-[% h1 = BLOCK %]Редакция на приставка №[% attachid %] за
+[% title = BLOCK %]Редактиране на приставка №[% attachid %] за [% terms.Bug %] №[% bugid %][% END %]
+[% h1 = BLOCK %]Редактиране на приставка №[% attachid %] за
   [%+ GetBugLink(bugid, "$terms.Bug $bugid") %][% END %]
 [% h2 = BLOCK %][% bugsummary FILTER html %][% END %]
 
@@ -259,7 +259,7 @@
 [% END %]
               document.write('<button type="button" id="editButton" onclick="editAsComment();">Редактиране на приставката като коментар</button>');
               document.write('<button type="button" id="undoEditButton" onclick="undoEditAsComment();" style="display: none;">Отмяна на редакцията като коментар</button>');
-              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакацията като коментар</button>');
+              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакцията като коментар</button>');
 [% IF patchviewerinstalled %]
               document.write('<button type="button" id="viewDiffButton" onclick="viewDiff();">Преглед на приставката като разлики</button>');
 [% END %]
