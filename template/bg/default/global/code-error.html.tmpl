@@ -146,15 +146,6 @@
     но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
     [% terms.bug %] [%+ my_bug_id FILTER html %].
 
-  [% ELSIF error == "invalid_flag_association" %]
-    [% title = "Недействителна флаг връзка" %]
-    Някои флагове не принадлежат към
-    [% IF attach_id %]
-      приставката [% attach_id FILTER html %].
-    [% ELSE %]
-      [%+ terms.abug %] [%+ bug_id FILTER html %].
-    [% END %]
-
   [% ELSIF error == "flag_nonexistent" %]
     Не съществува флаг с идентификатор №[% id FILTER html %].
 
