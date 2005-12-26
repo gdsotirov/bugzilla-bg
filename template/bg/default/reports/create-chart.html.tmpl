@@ -189,7 +189,7 @@ function subcatSelected() {
             <td align="center">
               [% IF user.id == series.creator OR UserInGroup("admin") %]
                <a href="chart.cgi?action=edit&series_id=
-                       [% series.series_id %]">Редакция</a> |
+                       [% series.series_id %]">Редактиране</a> |
               [% END %]
               <a href="buglist.cgi?cmdtype=dorem&amp;namedcmd=
                 [% series.category FILTER url_quote %]%20/%20

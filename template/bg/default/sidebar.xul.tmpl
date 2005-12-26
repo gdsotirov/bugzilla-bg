@@ -76,21 +76,21 @@ function normal_keypress_handler( aEvent ) {
       <separator class="thin"/>
 
 [% IF user %]
-      <text class="text-link" onclick="load_relative_url('userprefs.cgi')" value="редакция на настройки"/>
+      <text class="text-link" onclick="load_relative_url('userprefs.cgi')" value="редактиране на настройки"/>
   [%- IF user.groups.tweakparams %]
-      <text class="text-link" onclick="load_relative_url('editparams.cgi')" value="редакция на параметри"/>
+      <text class="text-link" onclick="load_relative_url('editparams.cgi')" value="редактиране на параметри"/>
   [%- END %]
   [%- IF user.groups.editusers || user.can_bless %]
-      <text class="text-link" onclick="load_relative_url('editusers.cgi')" value="редакция на потребители"/>
+      <text class="text-link" onclick="load_relative_url('editusers.cgi')" value="редактиране на потребители"/>
   [%- END %]
   [%- IF user.groups.editcomponents %]
-      <text class="text-link" onclick="load_relative_url('editcomponents.cgi')" value="редакция на компоненти"/>
+      <text class="text-link" onclick="load_relative_url('editcomponents.cgi')" value="редактиране на компоненти"/>
   [%- END %]
   [%- IF user.groups.creategroups %]
-      <text class="text-link" onclick="load_relative_url('editgroups.cgi')" value="редакция на групи"/>
+      <text class="text-link" onclick="load_relative_url('editgroups.cgi')" value="редактиране на групи"/>
   [%- END %]
   [%- IF user.groups.editkeywords %]
-      <text class="text-link" onclick="load_relative_url('editkeywords.cgi')" value="редакция на ключови думи"/>
+      <text class="text-link" onclick="load_relative_url('editkeywords.cgi')" value="редактиране на ключови думи"/>
   [%- END %]
   [%- IF user.groups.tweakparams %]
       <text class="text-link" onclick="load_relative_url('sanitycheck.cgi')" value="санитарна проверка"/>
