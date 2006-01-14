@@ -80,7 +80,7 @@
       <th>Съставна част:</th>
       <td>
         <select name="component">
-          <option value="">Който и да е</option>
+          <option value="">Която и да е</option>
           [% FOREACH item = components %]
             <option value="[% item FILTER html %]" [% "selected" IF cgi.param('component') == item %]>
               [% item FILTER html %]</option>

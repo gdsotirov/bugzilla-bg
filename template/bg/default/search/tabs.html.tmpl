@@ -26,7 +26,7 @@
   #   description: string. Description of the tab (used in tab title).
   #%]
 
-[% tabs = [ { name => 'specific', description => "Търсене на определен $terms.Bug " },
+[% tabs = [ { name => 'specific', description => "Търсене на определен $terms.bug " },
             { name => 'advanced', description => "Разширено търсене" } ] %]
 
 [% current_tab = query_format || format || "advanced" %]
