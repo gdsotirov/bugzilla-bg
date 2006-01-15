@@ -55,8 +55,10 @@
 
   [% ELSIF message_tag == "buglist_sorted_by_relevance" %]
     [% terms.Bugs %]те в този списък са подредени по значение, като
-    най-значимите [% terms.bugs %] са най-отгоре. Само 200-те най-значими
-    [%+ terms.bugs %] са показани.
+    най-значимите [% terms.bugs %] са най-отгоре.
+    [% IF bugs.size == 200 %]
+      Само 200-те най-значими [%+ terms.bugs %] са показани.
+    [% END %]
 
   [% ELSIF message_tag == "change_columns" %]
     [% title = "Промяна на колони" %]
