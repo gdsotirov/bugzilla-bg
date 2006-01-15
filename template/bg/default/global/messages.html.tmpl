@@ -157,7 +157,11 @@
   [% ELSIF message_tag == "shutdown" %]
     [% title = "$terms.Bugzilla е спряна" %]
     [% Param("shutdownhtml") %]
-    
+    [% IF userid %]
+      <p>Поради съображения за сигурност, бяхте изхвърлен автоматично.
+      Бисквитката съхраняваща данните ви за вход е изгубена.
+    [% END %]
+
   [% ELSE %]
     [%# Give sensible error if error functions are used incorrectly.
       #%]     
