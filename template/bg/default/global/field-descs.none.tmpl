@@ -34,10 +34,12 @@
                    "bug_status"           => "Състояние",
                    "changeddate"          => "Променен",
                    "cc"                   => "Точно Копие",
+                   "classification"       => "Класификация",
                    "cclist_accessible"    => "Достъпен ТК списък?",
                    "component_id"         => "Идентификатор на съставна част",
                    "component"            => "Съставна част",
                    "creation_ts"          => "Време на създаване на $terms.abug",
+                   "deadline"             => "Краен срок",
                    "delta_ts"             => "Средно",
                    "dependson"            => "Зависи от",
                    "dup_id"               => "Повтаря",
@@ -58,9 +60,32 @@
                    "reporter"             => "Докладчик",
                    "reporter_accessible"  => "Докладчика достъпен?",
                    "resolution"           => "Решение",
+                   "setting"              => "Настройка",
+                   "settings"             => "Настройки",
                    "short_desc"           => "Резюме",
                    "status_whiteboard"    => "Whiteboard",
                    "target_milestone"     => "Целево събитие",
                    "version"              => "Версия",
                    "votes"                => "Гласове",
                    "work_time"            => "Отработени часове"} %]
+
+[% status_descs = { "UNCONFIRMED" => "НЕПОТВЪРДЕН",
+                    "NEW"         => "НОВ",
+                    "ASSIGNED"    => "НАЗНАЧЕН",
+                    "REOPENED"    => "ОТВОРЕН ОТНОВО",
+                    "RESOLVED"    => "РЕШЕН",
+                    "VERIFIED"    => "ПРОВЕРЕН",
+                    "CLOSED"      => "ЗАТВОРЕН" } %]
+
+[% resolution_descs = { "FIXED"      => "ОПРАВЕН",
+                        "INVALID"    => "НЕДЕЙСТВИТЕЛЕН",
+                        "WONTFIX"    => "НЯМА ДА БЪДЕ ОПРАВЕН",
+                        "LATER"      => "ПО-КЪСНО",
+                        "REMIND"     => "НАПОМНЯНЕ",
+                        "DUPLICATE"  => "ДВОЙНИК",
+                        "WORKSFORME" => "РАБОТИ ЗА МЕН",
+                        "MOVED"      => "ПРЕМЕСТЕН",
+                        "---"        => "---",
+                        " "          => " " } %]
+
+[% Hook.process("end") %]

@@ -1,0 +1,110 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # Contributor(s): Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[%# INTERFACE:
+  # value: string; The field value being deleted.
+  # bug_count: number; The number of bugs that have this field value.
+  # value_count: number; The number of values left for this field, including
+  #              this value.
+  # field: string; The name of the field.
+  #%]
+
+[% title = BLOCK %]Изтриване на стойността '[% value FILTER html %]' за полето 
+  '[% field FILTER html %]'[% END %]
+
+[% PROCESS global/header.html.tmpl
+  title = title
+%]
+
+<table border="1" cellpadding="4" cellspacing="0">
+<tr bgcolor="#6666FF">
+  <th valign="top" align="left">Поле</th>
+  <th valign="top" align="left">Стойност</th>
+</tr>
+<tr>
+  <td valign="top">Име на поле:</td>
+  <td valign="top">[% field FILTER html %]</td>
+</tr>
+<tr>
+  <td valign="top">Стойност на поле:</td>
+  <td valign="top">[% value FILTER html %]</td>
+</tr>
+<tr>
+  <td valign="top">[% terms.Bugs %]:</td>
+  <td valign="top">
+[% IF bug_count %]
+  <a title="Списък на [% terms.bugs %], където '[% field FILTER html %]' е '
+            [% value FILTER html %]'"
+     href="buglist.cgi?[% field FILTER url_quote %]=[%- value FILTER url_quote %]">[% bug_count FILTER html %]</a>
+[% ELSE %]
+  Няма
+[% END %]
+  </td>
+</tr>
+</table>
+
+<h2>Потвърждение</h2>
+  
+[% IF bug_count %]
+
+    Съжалявам, има
+
+    [% IF bug_count > 1 %] 
+      [% bug_count FILTER html %] [%+ terms.аbug %] за които
+    [% ELSE %]
+      [% bug_count FILTER html %] [%+ terms.bug %] за който
+    [% END %]
+
+    тази стойност е все още зададена в полето. Трябва да смените стойността в полето на
+    <a title="Списък на [% terms.bugs %], където '[% field FILTER html %]' е '[% value FILTER html %]'"
+       href="buglist.cgi?[% field FILTER url_quote %]=[%- value FILTER url_quote %]">
+    [% IF bug_count > 1 %]
+       тези [% terms.bugs %] 
+    [% ELSE %]
+       този [% terms.bug %]
+    [% END %]
+    </a>
+    с друга преди да я изтриете.
+
+[% END %]
+
+[% IF value_count == 1 %]
+
+    <p>Съжалявам, но стойността '[% value FILTER html %]' е последната за
+    полето '[%- field FILTER html %]', така че не може да бъде изтрита.</p>
+
+  [% ELSE %]
+
+    [% IF bug_count == 0 %]
+
+      <p>Наистина ли желаете да изтриете тази стойност?<p>
+  
+      <form method="post" action="editvalues.cgi">
+        <input type="submit" value="Да, изтриване">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="field" value="[% field FILTER html %]">
+        <input type="hidden" name="value" value="[% value FILTER html %]">
+      </form>
+
+  [% END %]
+
+[% END %]
+
+[% PROCESS admin/fieldvalues/footer.html.tmpl
+  no_edit_link = 1
+ +%]
+
+[% PROCESS global/footer.html.tmpl %] 

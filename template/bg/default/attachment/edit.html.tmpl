@@ -22,8 +22,8 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [%# Define strings that will serve as the title and header of this page %]
-[% title = BLOCK %]Редактиране на приставка №[% attachid %] за [% terms.Bug %] №[% bugid %][% END %]
-[% h1 = BLOCK %]Редактиране на приставка №[% attachid %] за
+[% title = BLOCK %]Редакция на приставка №[% attachid %] за [% terms.Bug %] №[% bugid %][% END %]
+[% h1 = BLOCK %]Редакция на приставка №[% attachid %] за
   [%+ GetBugLink(bugid, "$terms.Bug $bugid") %][% END %]
 [% h2 = BLOCK %][% bugsummary FILTER html %][% END %]
 
@@ -40,7 +40,7 @@
   "
 %]
 
-<script type="application/x-javascript" language="JavaScript">
+<script type="text/javascript">
   <!--
   var prev_mode = 'raw';
   var current_mode = 'raw';
@@ -251,7 +251,7 @@
             <b>Не можете да видите приставката докато я редактирате, защото търсачката ви не поддържа
             вградени рамки. <a href="attachment.cgi?id=[% attachid %]">Преглед на прставката на отделна страница</a>.</b>
           </iframe>
-          <script type="application/x-javascript" language="JavaScript">
+          <script type="text/javascript">
             <!--
             if (typeof document.getElementById == "function") {
 [% IF patchviewerinstalled %]
@@ -259,7 +259,7 @@
 [% END %]
               document.write('<button type="button" id="editButton" onclick="editAsComment();">Редактиране на приставката като коментар</button>');
               document.write('<button type="button" id="undoEditButton" onclick="undoEditAsComment();" style="display: none;">Отмяна на редакцията като коментар</button>');
-              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакцията като коментар</button>');
+              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакацията като коментар</button>');
 [% IF patchviewerinstalled %]
               document.write('<button type="button" id="viewDiffButton" onclick="viewDiff();">Преглед на приставката като разлики</button>');
 [% END %]

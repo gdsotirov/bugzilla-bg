@@ -24,7 +24,7 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Пълнотекстов списък на $terms.bug"
-  style_urls = [ "css/show_multiple.css" ]
+  style_urls = [ "skins/standard/show_multiple.css" ]
 %]
 [% PROCESS bug/time.html.tmpl %]
 [% IF bugs.first %]
@@ -46,7 +46,6 @@
 [%###########################################################################%]
 
 [% BLOCK bug_display %]
-  <img alt="" src="1x1.gif" width="1" height="80" align="left">
   <div align="center">
     <b>
       <font size="+3">[% terms.Bug %] [%+ bug.bug_id %] - [% bug.short_desc FILTER html %]</font>
@@ -62,8 +61,14 @@
           ([% bug.alias FILTER html %])
         [% END %]
       </td>
-      [% PROCESS cell attr = { description => "Продукт",
-                               name => "product" } %]
+      <td>
+        <b> Продукт: </b>&nbsp;
+        [% IF Param("useclassification") %]
+          [[% bug.classification FILTER html %]]&nbsp;
+        [% END %]
+        [% bug.product FILTER html %]
+      </td>
+
       [% PROCESS cell attr = { description => "Версия",
                                name => "version" } %]
       [% PROCESS cell attr = { description => "Платформа",
@@ -84,13 +89,19 @@
     <tr>
       [% PROCESS cell attr = { description => "Решение",
                                name => "resolution" } %]
-      [% PROCESS cell attr = { description => "Назначен на",
-                               name => "assigned_to" } %]
-      [% PROCESS cell attr = { description => "Докладван от",
-                               name => "reporter" } %]
+      <td>
+        <b>Назначен на:</b>&nbsp;
+        [% bug.assigned_to.login FILTER html %]
+      </td>
+      <td>
+        <b>Докладван от:</b>&nbsp;
+        [% bug.reporter.login FILTER html %]
+      </td>
       [% IF Param('useqacontact') %]
-        [% PROCESS cell attr = { description => "Качествен контрол",
-                                 name => "qa_contact" } %]
+        <td>
+          <b>Качествен контрол:</b>&nbsp;
+          [% bug.qa_contact.login FILTER html %]
+        </td>
       [% END %]
     </tr>
 
@@ -165,6 +176,8 @@
           [% PROCESS formattimeunit
                      time_unit=bug.estimated_time - (bug.actual_time + bug.remaining_time) %]
           &nbsp;
+          <b>Краен срок:</b>&nbsp;
+          [% bug.deadline %]
         </td>
       </tr>
     [% END %]
@@ -175,15 +188,10 @@
         [% bug.creation_ts FILTER time %]
       </td>
     </tr>
-    <tr>
-      <td colspan="4">
-        <b>Описание:</b>
-      </td>
-    </tr>
   </table>
 
   [% PROCESS bug/comments.html.tmpl
-     comments = bug.comments %]
+     comments = bug.longdescs %]
 
   <hr>
 [% END %]

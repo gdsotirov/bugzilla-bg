@@ -30,17 +30,26 @@
 [% USE Bugzilla %]
 [% cgi = Bugzilla.cgi %]
 
+
+[% js_data = BLOCK %]
+var queryform = "queryform"
+[% END %]
+
 [% PROCESS global/header.html.tmpl
   title = "Търсене на $terms.bugs"
   h1 = ""
-  onload = "selectProduct(document.forms['queryform']);initHelp();"
+  onload = "doOnSelectProduct(0); initHelp();"
+  javascript = js_data
+  javascript_urls = [ "js/productform.js" ]
   style = "td.selected_tab {
              border-width: 2px 2px 0px;
              border-style: solid; 
+             border-color: black;
            }
            td.unselected_tab, td.spacer {
              border-width: 0px 0px 2px 0px;
              border-style: solid; 
+             border-color: black;
            }
            dl.bug_changes dt {
              margin-top: 15px;
@@ -64,7 +73,7 @@
       За помощ, поставете показалеца на мишката върху елементите на страницата.
       <font color="red">
       [% IF cgi.user_agent("Mozilla/5") %]
-        Имайте в предвид, че ако прозорчетата с помощ са скрити зад лентите за
+        Забележете, че ако прозорчетата с помощ са скрити зад лентите за
         придвижване на елементите на формата, това е
         б<!-- word broken up to pass test 009 -->ъг във вашия браузър,
         не в [% terms.Bugzilla %].

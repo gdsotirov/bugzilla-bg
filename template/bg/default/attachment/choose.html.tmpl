@@ -22,10 +22,11 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% PROCESS global/header.html.tmpl
-   title = "Намиране на приставка"
+   title = "Намиране на приставка",
+   onload = "document.forms['choose-id'].id.focus()"
  %]
 
-<form method="get" action="attachment.cgi">
+<form name="choose-id" method="get" action="attachment.cgi">
   <p>Доберете се до приставка чрез въвеждане на нейния номер в полето отдолу:</p>
   <p>Номер на приставка: <input name="id" size="6">
   <button name="action" value="edit">&nbsp;Промяна&nbsp;</button>

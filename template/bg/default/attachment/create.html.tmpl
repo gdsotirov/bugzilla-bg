@@ -43,6 +43,12 @@
       vertical-align: baseline;
       padding-bottom: 5px;
     }
+    
+    table#flags th, table#flags td {
+      text-align: left;
+      vertical-align: baseline;
+      font-size: small;
+    }
   "
   onload="setContentTypeDisabledState();"
 %]
@@ -53,17 +59,29 @@
 
   <table class="attachment_entry">
     <tr>
-      <th>Файл:</th>
+      <th><label for="data">Файл:</label></th>
       <td>
         <em>Въведете пътя до файла на вашия компютър.</em><br>
-        <input type="file" name="data" size="50">
+        <input type="file" id="data" name="data" size="50">
       </td>
     </tr>
+    [% IF Param("maxlocalattachment") %]
     <tr>
-      <th>Описание:</th>
+      <th>Голям файл:</th>
+      <td>
+        <input type="checkbox" id="bigfile"
+               name="bigfile" value="bigfile">
+        <label for="bigfile">
+          Голям файл - Съхраняван локално и може да бъде прочистен
+        </label>
+      </td>
+    </tr>
+    [% END %]
+    <tr>
+      <th><label for="description">Описание:</label></th>
       <td>
         <em>Опишете приставката кратко.</em><br>
-        <input type="text" name="description" size="60" maxlength="200">
+        <input type="text" id="description" name="description" size="60" maxlength="200">
       </td>
     </tr>
     <tr>
@@ -139,10 +157,18 @@
       </tr>
     [% END %]
     <tr>
-      <th>Коментар:</th>
+      <td> </td>
+      <td>
+        [% IF flag_types.size > 0 %]
+          [% PROCESS "flag/list.html.tmpl" bug_id=bugid attach_id=attachid %]<br>
+        [% END %]
+      </td>
+    </tr>
+    <tr>
+      <th><label for="comment">Коментар:</label></th>
       <td>
         <em>(незадължително) Добавете коментар за тази приставка към [% terms.abug %].</em><br>
-        <textarea wrap="soft" name="comment" rows="6" cols="80"></textarea>
+        <textarea wrap="soft" id="commment" name="comment" rows="6" cols="80"></textarea>
       </td>
     </tr>
     <tr>
@@ -153,7 +179,7 @@
 
 </form>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
   <!--
   function setContentTypeDisabledState()
   {
@@ -173,6 +199,3 @@
 </script>
 
 [% PROCESS global/footer.html.tmpl %]
-
-
-

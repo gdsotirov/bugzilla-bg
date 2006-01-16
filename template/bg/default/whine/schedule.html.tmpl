@@ -1,0 +1,421 @@
+[%# 1.0@bugzilla.org %]
+[%# -*- mode: html -*- %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Erik Stambaugh <erik@dasbistro.com>
+  #%]
+
+[%# INTERFACE:
+  # events: hash, keyed by event_id number.  Values are anonymous hashes of:
+  #     schedule: array of hashes containing schedule info:
+  #         day:    value in day column
+  #         time:   value selected in time column
+  #         mailto_type: 0=user 1=group
+  #         mailto: recipient's id (profile or group)
+  #     queries:  as with schedule, an anonymous array containing hashes of:
+  #         name:  the named query's name
+  #         title: title to be displayed on the results
+  #         sort:  integer that sets execution order on named queries
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% title = "Настройване на whining" %]
+[% PROCESS global/header.html.tmpl %]
+
+<p>
+  "Whining" е тогава, когато [% terms.Bugzilla %] изпълнява съхранено търсене
+  на определен промеждутък от време и изпраща получения списък от
+  [% terms.bugs %] по е-поща.
+</p>
+
+<p>
+  За да зададете ново whine събитие, кликнете върху "Добавяне на ново
+  събитие". Въведете тема на съобщението, което ще бъде изпращано заедно с
+  параграф текст, който ще придружава [% terms.bug %] списъка в тялото на
+  съобщението.
+</p>
+
+<p>
+  Разписанията се добавят към събитие с кликването върху "Добавяне на ново
+  разписание". Разписанието се сътои от ден, време през деня или интервал от
+  време (напр. всеки 15 минути) и целеви е-пощенски адрес, който може или не
+  може да бъде променян в зависимост от вашите права. Събитията могат да имат
+  повече от едно разписание, за да бъдат пускани по различно време или за
+  различни потребители.
+</p>
+
+<p>
+  Заявките идват от съхранените търсения, които са създадени чрез изпълняване на <a
+  href="query.cgi">търсене</a>, след което указване на [% terms.Bugzilla %] да запомни
+  търсенето под определено име. Можете да добавите запитване чрез "Добавяне на ново
+  запитване" и избирането на името на желаното съхранено търсене под "Търсене" и добавяне
+  на заглавие за [% terms.bug %] таблицата. Незадължителното число въвеждано под
+  "Подредба" ще определи реда на изпълнение (по-малко към по-голямо) ако са описани
+  няколко заявки. Ако отметнете "Едно съобщение за [% terms.bug %]," всеки [%
+  terms.bug %] който отговаря на търсенето ще бъде изпратен в отделно е-пощенско
+  съобщение.
+</p>
+
+<form method="post" action="editwhines.cgi">
+[%# This hidden submit button must be here to set default behavior when
+    the user presses return on a form input field #%]
+<input type="submit" value="Осъвременяване / Изпращане" name="commit"
+       style="visibility: hidden">
+<input type="hidden" name="update" value="1">
+
+[% FOREACH event = events %]
+
+<table cellspacing="2px" cellpadding="2px" border="0" width="100%"
+       style="border: 1px solid;">
+  <tr>
+    <th align="left" bgcolor="#FFFFFF" colspan="2">
+      Събитие: 
+    </th>
+    <td align="right">
+      <input type="submit" value="Премахване на събитието"
+             name="remove_event_[% event.key %]">
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" align="right">
+      Тема на съобщението:
+    </td>
+    <td>
+      <input type="text" name="event_[% event.key %]_subject"
+             size="60" maxlength="128" value="
+             [%- event.value.subject FILTER html %]">
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" align="right">
+      Описателен тескт изпращан заедно с whine съобщението:
+    </td>
+    <td>
+      <textarea name="event_[% event.key %]_body"
+                rows="5" cols="80">
+          [% event.value.body FILTER html %]</textarea>
+    </td>
+  </tr>
+
+  [% IF event.value.schedule.size == 0 %]
+
+    <tr>
+      <td valign="top" align="right">
+        Разписание:
+      </td>
+      <td align="left" bgcolor="#FFEEEE">
+        Не е разписано за пускане<br>
+        <input type="submit" value="Добавяне на ново разписание"
+               name="add_schedule_[% event.key %]">
+      </td>
+    </tr>
+
+  [% ELSE %]
+
+    <tr>
+      <td valign="top" align="right">
+        Разписание:
+      </td>
+      <td align="left" bgcolor="#EEFFEE">
+
+        <table>
+          <tr>
+            <th>
+              Промеждутък
+            </th>
+            [% IF mail_others %]
+              <th>
+                Поща до
+              </th>
+            [% END %]
+          </tr>
+          [% FOREACH schedule = event.value.schedule %]
+            <tr>
+              <td align="left">
+
+                [%# these hidden fields allow us to compare old values instead
+                    of reading the database to tell if a field has changed %]
+
+                <input type="hidden" value="[% schedule.day FILTER html %]"
+                       name="orig_day_[% schedule.id %]">
+                <input type="hidden" value="[% schedule.time FILTER html %]"
+                       name="orig_time_[% schedule.id %]">
+                [% PROCESS day_field val=schedule.day %]
+                [% PROCESS time_field val=schedule.time %]
+              </td>
+              <td align="left">
+                [% IF mail_others %]
+                  <input type="hidden" name="orig_mailto_type_[% schedule.id %]"
+                         value="[% schedule.mailto_type FILTER html %]">
+                  <select name="mailto_type_[% schedule.id %]">
+                    <option value="0" [% IF schedule.mailto_type == 0 %]
+                                        selected
+                                      [% END %]>User</option>
+                    <option value="1" [% IF schedule.mailto_type == 1 %]
+                                        selected
+                                      [% END %]>Group</option>
+                  </select>
+                  <input type="hidden" name="orig_mailto_[% schedule.id %]"
+                         value="[% schedule.mailto FILTER html %]">
+                  <input type="text" name="mailto_[% schedule.id %]"
+                         value="[% schedule.mailto FILTER html %]" size="30">
+                [% END %]
+              </td>
+              <td align="left">
+                <input type="submit" value="Премахване"
+                       name="remove_schedule_[% schedule.id %]">
+              </td>
+            </tr>
+          [% END %]
+
+        <tr>
+          <td>
+            <input type="submit" value="Добавяне на ново разписание"
+                   name="add_schedule_[% event.key %]">
+          </td>
+        </tr>
+
+        </table>
+
+      </td>
+
+    </tr>
+
+  [% END %]
+
+  [% IF event.value.queries.size == 0 %]
+
+    <tr>
+      <td valign="top" align="right">
+        Запитвания:
+      </td>
+      <td align="left" colspan="1">
+        Няма запитвания <br>
+        <input type="submit" value="Добавяне на ново запитване" name="add_query_[% event.key %]">
+      </td>
+      <td align="right" valign="bottom">
+        <input type="submit" value="Осъвременяване / Изпращане" name="commit">
+      </td>
+    </tr>
+
+  [% ELSE %]
+
+    <tr>
+      <td valign="top" align="right">
+        Запитвания:
+      </td>
+      <td align="left">
+
+        <table>
+          <tr>
+            <th>Подредба</th>
+            <th>Търсене</th>
+            <th>Заглавие</th>
+          </tr>
+
+          [% FOREACH query = event.value.queries %]
+
+            <tr>
+              <td align="left">
+                <input type="text" name="query_sort_[% query.id %]"
+                       size="3" value="[% query.sort %]">
+                <input type="hidden" value="[% query.sort %]"
+                       name="orig_query_sort_[% query.id %]">
+              </td>
+              <td align="left">
+                <input type="hidden" value="[% query.name FILTER html %]"
+                       name="orig_query_name_[% query.id %]">
+                [% PROCESS query_field thisquery=query.name %]
+              </td>
+              <td align="left">
+                <input type="hidden" value="[% query.title FILTER html %]"
+                       name="orig_query_title_[% query.id %]">
+                <input type="text" name="query_title_[% query.id %]"
+                       size="50" value="[% query.title FILTER html %]"
+                       maxlength="64">
+              </td>
+              <td align="left">
+                <input type="hidden" value="[% query.onemailperbug FILTER html %]"
+                       name="orig_query_onemailperbug_[% query.id %]">
+                <input type="checkbox" [% IF query.onemailperbug == 1 %]
+                       checked [% END %]name="query_onemailperbug_
+                       [% query.id %]">
+                Съобщение за всеки [% terms.bug %]
+              </td>
+              <td align="right">
+                <input type="submit" value="Премахване"
+                       name="remove_query_[% query.id %]">
+              </td>
+            </tr>
+
+          [% END %]
+
+          <tr>
+            <td colspan="3">
+              <input type="submit" value="Добавяне на ново запитване"
+                     name="add_query_[% event.key %]">
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+      <td align="right" valign="bottom">
+        <input type="submit" value="Осъвременяване / Изпращане" name="commit">
+      </td>
+    </tr>
+
+  [% END %]
+
+</table>
+
+[% END %]
+
+<p align="left">
+  <input type="submit" value="Добавяне на ново събитие" name="add_event">
+</p>
+
+</form>
+
+[% PROCESS global/footer.html.tmpl %]
+
+[% BLOCK query_field +%]
+
+  [% IF available_queries.size > 0 %]
+
+    <select name="query_name_[% query.id %]">
+      [% FOREACH q = available_queries %]
+        <option [% "selected" IF q == thisquery %] value="[% q FILTER html %]">
+            [% q FILTER html %]
+        </option>
+      [% END %]
+    </select>
+
+  [% ELSE %]
+    Моля, посетете страницата за <a href="query.cgi">търсене</a> и съхранете запитване
+  [% END %]
+
+[%+ END %]
+
+[% BLOCK day_field +%]
+  <select name="day_[% schedule.id %]">
+      [%
+        options = [
+            ['All',  'Всеки ден',               ],
+            ['MF',   'От Понеделник до Петък',  ],
+            ['Mon',  'Понеделник',              ],
+            ['Tue',  'Вторник',                 ],
+            ['Wed',  'Сряда',                   ],
+            ['Thu',  'Четвъртък',               ],
+            ['Fri',  'Петък',                   ],
+            ['Sat',  'Събота',                  ],
+            ['Sun',  'Неделя',                  ],
+            ['1',    'На 1-ви от месеца',       ],
+            ['2',    'На 2-ри от месеца',       ],
+            ['3',    'На 3-ти от месеца',       ],
+            ['4',    'На 4-ти от месеца',       ],
+            ['5',    'На 5-ти от месеца',       ],
+            ['6',    'На 6-ти от месеца',       ],
+            ['7',    'На 7-ми от месеца',       ],
+            ['8',    'На 8-ми от месеца',       ],
+            ['9',    'На 9-ми от месеца',       ],
+            ['10',   'На 10-ти от месеца',      ],
+            ['11',   'На 11-ти от месеца',      ],
+            ['12',   'На 12-ти от месеца',      ],
+            ['13',   'На 13-ти от месеца',      ],
+            ['14',   'На 14-ти от месеца',      ],
+            ['15',   'На 15-ти от месеца',      ],
+            ['16',   'На 16-ти от месеца',      ],
+            ['17',   'На 17-ти от месеца',      ],
+            ['18',   'На 18-ти от месеца',      ],
+            ['19',   'На 19-ти от месеца',      ],
+            ['20',   'На 20-ти от месеца',      ],
+            ['21',   'На 21-ви от месеца',      ],
+            ['22',   'На 22-ри от месеца',      ],
+            ['23',   'На 23-ти от месеца',      ],
+            ['24',   'На 24-ти от месеца',      ],
+            ['25',   'На 25-ти от месеца',      ],
+            ['26',   'На 26-ти от месеца',      ],
+            ['27',   'На 27-ти от месеца',      ],
+            ['28',   'На 28-ти от месеца',      ],
+            ['29',   'На 29-ти от месеца',      ],
+            ['30',   'На 30-ти от месеца',      ],
+            ['31',   'На 31-ви от месеца',      ],
+            ['last', 'Последния ден от месеца', ],
+        ]
+      %]
+
+      [% FOREACH option = options %]
+        <option value="[% option.0 %]" 
+                [%- IF val == option.0 +%] selected[% END %]>
+                [%- option.1 -%]
+        </option>
+      [% END %]
+
+  </select>
+[%+ END %]
+
+[% BLOCK time_field +%]
+<select name="time_[% schedule.id %]">
+
+  [%
+    options = [
+        [ '0',     'в полунощ',       ],
+        [ '1',     'в 01:00',         ],
+        [ '2',     'в 02:00',         ],
+        [ '3',     'в 03:00',         ],
+        [ '4',     'в 04:00',         ],
+        [ '5',     'в 05:00',         ],
+        [ '6',     'в 06:00',         ],
+        [ '7',     'в 07:00',         ],
+        [ '8',     'в 08:00',         ],
+        [ '9',     'в 09:00',         ],
+        [ '10',    'в 10:00',         ],
+        [ '11',    'в 11:00',         ],
+        [ '12',    'в 12:00',         ],
+        [ '13',    'в 13:00',         ],
+        [ '14',    'в 14:00',         ],
+        [ '15',    'в 15:00',         ],
+        [ '16',    'в 16:00',         ],
+        [ '17',    'в 17:00',         ],
+        [ '18',    'в 18:00',         ],
+        [ '19',    'в 19:00',         ],
+        [ '20',    'в 20:00',         ],
+        [ '21',    'в 21:00',         ],
+        [ '22',    'в 22:00',         ],
+        [ '23',    'в 23:00',         ],
+        [ '60min', 'всеки час',       ],
+        [ '30min', 'всеки 30 минути', ],
+        [ '15min', 'всеки 15 минути', ],
+    ]
+  %]
+
+      [% FOREACH option = options %]
+        <option value="[% option.0 %]" 
+                [%- IF val == option.0 +%] selected[% END %]>
+                [%- option.1 -%]
+        </option>
+      [% END %]
+
+</select>
+
+[%+ END %]
+

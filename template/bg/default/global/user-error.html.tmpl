@@ -17,10 +17,11 @@
   # Rights Reserved.
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [%# INTERFACE:
-  # header_done: boolean. True if the header has already been printed.
+  # header_done: boolean. True if the Bugzilla header has already been printed.
   # error: string. The tag of the error, or the error message to be displayed
   # (deprecated). May contain HTML if it's an error message.
   #%]
@@ -30,6 +31,12 @@
   #
   # Note that you must explicitly filter every single template variable
   # in this file; if you do not wish to change it, use the "none" filter.
+  # 
+  # Extension- or custom-specific error handling  can be easily added 
+  # via hooks: just place your <extension>-errors.html.tmpl into 
+  # template/en/extension/hook/global/user-error.html.tmpl/errors/
+  # Note: be aware of uniqueness of error string parameter value, since 
+  # nobody can guarantee the hook files processing order in the future
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -75,8 +82,12 @@
 
   [% ELSIF error == "alias_in_use" %]
     [% title = "Псевдонима се използва" %]
-    [% bug_link FILTER none %] вече е взел псевдонима
+    [% terms.Bug %] [%+ bug_link FILTER none %] вече е взел псевдонима
     <em>[% alias FILTER html %]</em>. Моля, изберете друг.
+
+  [% ELSIF error == "alias_not_defined" %]
+    [% title = "Псевдонима не е зададен" %]
+    Не сте предоставили псевдоним за този [% terms.bug %].
 
   [% ELSIF error == "alias_is_numeric" %]
     [% title = "Псевдонима е цифров" %]
@@ -91,18 +102,87 @@
     Моля, изберете по-къс псевдоним.
 
   [% ELSIF error == "auth_cant_create_account" %]
-    [% title = "Невъзможност за създаване на регистрации" %]
+    [% title = "Не може да се създават потребители" %]
     Този сайт използва схема на удостоверяване, която не разрешава създаването
-    на регистрации. Моля, свържете се с администратор, за да ви бъде създадена
-    такава.
+    на потребители. Моля, свържете се с администратор, за да Ви бъде създаден
+    потребител.
 
-  [% ELSIF error == "authorization_failure" %]
-    [% title = "Проверката пропадна" %]
-    Не ви е разрешено да [% action FILTER html %].
+  [% ELSIF error == "auth_failure" %]
+    [% title = "Изисква се упълномощяване" %]
+    Съжалявам,
+    [% IF group %]
+      не сте член на групата '[% group FILTER html %]',
+    [% END %]
 
-  [% ELSIF error == "attachment_access_denied" %]
-    [% title = "Достъпът отказан" %]
-    Не ви е позволен достъп до тази приставка.
+    [% IF reason %]
+      [% IF group %] and [% END %]
+      [% IF reason == "cant_bless" %]
+        нямате права да поставяте хора в или изваждате от която и да е група,
+      [% ELSIF reason == "not_visible" %]
+        има ограничения над видимостта върху определени групи,
+      [% END %]
+    [% END %]
+
+    [% IF group || reason %], така че [% END %] не сте упълномощен да
+    [% IF action == "access" %]
+      достъпвате
+    [% ELSIF action == "add" %]
+      добавяте нов
+    [% ELSIF action == "modify" %]
+      изменяте
+    [% ELSIF action == "delete" %]
+      изтривате
+    [% ELSIF action == "edit" %]
+      добавяте, изменяте или изтривате
+    [% ELSIF action == "run" %]
+      пускате
+    [% ELSIF action == "schedule" %]
+      разписвате
+    [% ELSIF action == "use" %]
+      използвате
+    [% END %]
+
+    [% IF object == "attachment" %]
+      тази приставка
+    [% ELSIF object == "charts" %]
+      възможността "Нови графики"
+    [% ELSIF object == "classifications" %]
+      класификаии
+    [% ELSIF object == "components" %]
+      съставни части
+    [% ELSIF object == "flagtypes" %]
+      типове флагове
+    [% ELSIF object == "groups" %]
+      групи
+    [% ELSIF object == "keywords" %]
+      ключови думи
+    [% ELSIF object == "milestones" %]
+      milestones
+    [% ELSIF object == "multiple_bugs" %]
+      няколко [% terms.abug %] едновременно
+    [% ELSIF object == "parameters" %]
+      параметри
+    [% ELSIF object == "products" %]
+      продукти
+    [% ELSIF object == "quips" %]
+      остроумия
+    [% ELSIF object == "reports" %]
+      whine доклади
+    [% ELSIF object == "sanity_check" %]
+      санитарна проверка
+    [% ELSIF object == "timetracking_summaries" %]
+      time-tracking обобщени доклади
+    [% ELSIF object == "user" %]
+      указания от вас потребител
+    [% ELSIF object == "users" %]
+      потребители
+    [% ELSIF object == "versions" %]
+      версии
+    [% END %].
+
+  [% ELSIF error == "attachment_removed" %]
+    [% title = "Приставката е премахната" %]
+    Приставката, която се опитвате да достъпите бешв премахната.
 
   [% ELSIF error == "bug_access_denied" %]
     [% title = "Достъпът отказан" %]
@@ -123,7 +203,8 @@
 
   [% ELSIF error == "bugs_not_changed" %]
     [% title = BLOCK %][% terms.Bugs %]те не са променени[% END %]
-    Ъ, вие очевидно не сте променили нищо по избраните [% terms.bugs %].
+    Изглежда не сте направили никакви промени по избраните [% terms.bugs %],
+    така че няма нищо за предаване.
 
   [% ELSIF error == "chart_too_large" %]
     [% title = "Графиката твърде голяма" %]
@@ -136,7 +217,105 @@
 
   [% ELSIF error == "comment_too_long" %]
     [% title = "Коментарът твърде дълъг" %]
-    Коментарите нсе могат да бъдат по-дълги от 65,535 символа.
+    Коментарите не могат да бъдат по-дълги от 65,535 символа.
+
+  [% ELSIF error == "auth_classification_not_enabled" %]
+    [% title = "Класификацията не е позволена" %]
+    Съжалявам, класофикацията не е позволена.
+
+  [% ELSIF error == "classification_not_specified" %]
+    [% title = "Трябва да предоставите име на класификацията" %]
+    Трябва да въведете име на класификация.
+
+  [% ELSIF error == "classification_already_exists" %]
+    [% title = "Класификацията вече съществува" %]
+    Класификация с име '[% name FILTER html %]' вече съществува.
+
+  [% ELSIF error == "classification_doesnt_exist" %]
+    [% title = "Класификацията не съществува" %]
+    Класификацията '[% name FILTER html %]' не съществува.
+
+  [% ELSIF error == "classification_doesnt_exist_for_product" %]
+    [% title = "Класификацията не съществува за продукт" %]
+    Класификацията '[% classification FILTER html %]' не съществува
+    за продукта '[% product FILTER html %]'.
+
+  [% ELSIF error == "classification_not_deletable" %]
+    [% title = "Подразбиращата се класификация не може да бъде изтрита" %]
+    Не можете да изтриете подразбиращата се класификация
+
+  [% ELSIF error == "classification_has_products" %]
+     Съжалявам, има продукти за тази класификация. Трябва
+     да преназначите тези продукти на друга класификация преди
+     да можете да изтриете тази.
+
+  [% ELSIF error == "cant_delete_default_classification" %]
+     Съжалявам, но не можете да изтриете подразбиращата се класификация,
+     '[% name FILTER html %]'.
+
+  [% ELSIF error == "component_already_exists" %]
+    [% title = "Съставната част вече съществува" %]
+    Съставна част с името '[% name FILTER html %]' вече съществува.
+
+  [% ELSIF error == "component_blank_description" %]
+    [% title = "Не е позволено празно описание на съставна част" %]
+    Трябва да въведете някакво описание за съставната част '[% name FILTER html %]'.
+     
+  [% ELSIF error == "component_blank_name" %]
+    [% title = "Не е позволено празно име на съставна част" %]
+    Трябва да въведете име за новата съставна част.
+
+  [% ELSIF error == "component_has_bugs" %]
+    [% title = BLOCK %]Съставната част има [% terms.bugs %][% END %]
+    Съществуват [% nb FILTER html %] [%+ terms.bug %](а) съведени за съставната част!
+    Трябва да преназначите тези [% terms.bugs %] на друга съставна част, преди да
+    можете да изтриете тази.
+
+  [% ELSIF error == "component_must_have_a_name" %]
+    [% title = "Не е позволено празно име на съставна част" %]
+    Не можете да изтриете името на съставната част '[% name FILTER html %]'.
+     
+  [% ELSIF error == "component_cant_del_description" %]
+    [% title = "Не е позволено празно описание на съставна част" %]
+    Не можете да изтриете описанието на
+    съставната част '[% name FILTER html %]'.
+
+  [% ELSIF error == "component_name_too_long" %]
+    [% title = "Името на съставната част е твърде дълго" %]
+    Името на съставна част е ограничено до 64 символа. 
+    '[% name FILTER html %]' е твърде дълго ([% name.size %] символа).
+
+  [% ELSIF error == "component_need_initialowner" %]
+    [% title = "Съставната част изисква подразбиращо се назначение" %]
+    Трябва да въведете подразбиращо се назначение за съставната част '[% name FILTER html %]'.
+
+  [% ELSIF error == "component_need_valid_initialowner" %]
+    [% title = "Съставната част изисква действително подразбиращо се назначение" %]
+    Трябва да използвате съществуващ [% terms.Bugzilla %] потребител като подразбиращо се назначение за
+    съставанта част '[% name FILTER html %]'.
+
+  [% ELSIF error == "component_need_valid_initialqacontact" %]
+    [% title = "Съставната част изисква действителен качествен контрол" %]
+    Трябва да използвате съществуващ [% terms.Bugzilla %] потребител като подразбиращ се качествен контрол за
+    съставната част '[% name FILTER html %]'.
+     
+  [% ELSIF error == "product_not_specified" %]
+    [% title = "Не е указан продукт" %]
+    Не е указан продукт при опит за редакция на съставни части, важни събития или
+    версии.
+
+  [% ELSIF error == "component_not_specified" %]
+    [% title = "Не е указана съставна част" %]
+    Не е указана съставна част при опит за редакция на съставни части.
+
+  [% ELSIF error == "component_not_valid" %]
+    [% title = "Указаната съставна част не съществува" %]
+    Съставната част '[% name FILTER html %]' не съществува
+    за продукта '[% product FILTER html %]'.
+
+  [% ELSIF error == "product_doesnt_exist" %]
+    [% title = "Указаният продукт не съществува" %]
+    Продукта '[% product FILTER html %]' не съществува.
 
   [% ELSIF error == "dependency_loop_multi" %]
     [% title = "Установено зацикляне на зависимост" %]
@@ -153,9 +332,26 @@
     [% title = "Необходимо е описание" %]
     Трябва да осигурите описание за [% terms.abug %].
 
-  [% ELSIF error == "dupe_of_self_disallowed" %]
-    [% title = "Не може да се отбелязва $terms.bug като двойник на самия себе си" %]
-    Не можете да обелязвате [% terms.abug %] като двойник на самия себе си.
+  [% ELSIF error == "dupe_entry_found" %]
+    [% title = "Вече отбелязан като двойник" %]
+    [% terms.ABug %] вече е отбелязан като двойник
+    на [% terms.bug %] [%+ dupe_of FILTER html %].
+
+  [% ELSIF error == "dupe_not_allowed" %]
+    [% title = "Невъзможност за отбелязване на $terms.bugs като двойници" %]
+    Не можете да отбелязвате [% terms.bugs %] като двойници когато
+    променяте няколко [% terms.abug %] наведнъж.
+
+  [% ELSIF error == "dupe_loop_detected" %]
+    [% title = "Установено зацикляне между двойници" %]
+    Не можете да отбележите [% terms.bug %] [%+ bug_id FILTER html %] като
+    двойник на
+    [% IF dupe_of == bug_id %]
+      себе си
+    [% ELSE %]
+      [%+ terms.bug %] [%+ dupe_of FILTER html %], защото това
+      ще създаде циклична зависимост
+    [% END %].
 
   [% ELSIF error == "email_change_in_progress" %]
     [% title = "Промяната на е-пощенски адрес се обработва" %]
@@ -165,10 +361,62 @@
     [% title = "Потвърждението на е-пощенски адрес пропадна" %]
     Потвърждението на е-пощенски адрес пропадна.
 
+  [% ELSIF error == "empty_group_description" %]
+    [% title = "Описанието на група не може да е празно" %]
+    Трябва да въведете описание за групата.
+
+  [% ELSIF error == "empty_group_name" %]
+    [% title = "Името на група на може да е празно" %]
+    Трябва да въведете име за групата.
+  
   [% ELSIF error == "entry_access_denied" %]
     [% title = "Достъпът отказан" %]
-    Съжалявам; нямате необходимите разрешения, за да въвеждате [% terms.bug %]
-    за продукта [% product FILTER html %].
+    Съжалявам, или продукта <em>[% product FILTER html %]</em>
+    не съществува или не сте упълномощен да
+    въвеждате [% terms.bug %] за него.
+
+  [% ELSIF error == "fieldname_invalid" %]
+    [% title = "Указаното поле не съществува" %]
+    Полето '[% field FILTER html %]' не съществува или 
+    не може да бъде редактирано през този интерфейс.
+
+  [% ELSIF error == "fieldname_not_specified" %]
+    [% title = "Не е указано име за полето" %]
+    Не е указано име на полето при опит за редакция на стойностите му.
+
+  [% ELSIF error == "fieldvalue_already_exists" %]
+    [% title = "Стойността вече съществува за полето" %]
+    Стойността '[% value FILTER html %]' вече съществува за полето
+    '[%- field FILTER html %]'.
+
+  [% ELSIF error == "fieldvalue_doesnt_exist" %]
+    [% title = "Указаната стойност на поле не същестува" %]
+    Стойността '[% value FILTER html %]' не съществува за
+    полето '[% field FILTER html %]'.
+
+  [% ELSIF error == "fieldvalue_name_too_long" %]
+    [% title = "Стойността на полето е твърде дълга" %]
+    Стойността на поле е ограничена до 60 символа.
+    '[% value FILTER html %]' е твърде дълга ([% value.length %] символа).
+
+  [% ELSIF error == "fieldvalue_not_specified" %]
+    [% title = "Не е указана стойност на поле" %]
+    Не е указана стойност на поле при опита за редакцията и.
+
+  [% ELSIF error == "fieldvalue_sortkey_invalid" %]
+    [% title = "Недействителен ключ за подредба за стойност на поле" %]
+    Ключа за подредба '[% sortkey FILTER html %]' за полето '[% name FILTER html %]'
+    не е действително (положително) число.
+
+  [% ELSIF error == "fieldvalue_still_has_bugs" %]
+    [% title = "Не можете да изтриете тази стоност на полето" %]
+    Не можете да изтриете стойността '[% value FILTER html %]' от полето 
+    '[% field FILTER html%]', защото все още има 
+    [% count FILTER html %] [% terms.bug %](а) използващ(ия) я.
+
+  [% ELSIF error == "fieldvalue_undefined" %]
+    [% title = "Не се позволява неопределена стойност" %]
+    Трябва да укажете стойност.
 
   [% ELSIF error == "file_not_specified" %]
     [% title = "Не е указан файл" %]
@@ -179,13 +427,13 @@
     Файлът, който се опитвате да прикачите, е с размер
     [% filesize FILTER html %] килобайта (КБ).
     Приставки, които не са кръпки, не могат да бъдат по-големи от
-    [% Param('maxattachmentsize') %] КБ.
-    Ако приставката ви е картинка опитайте да я обърнете в компресиран
-    формат като <abbr title="Joint Photographic Experts Group" lang="en">JPG</abbr>
-    или <abbr title="Portable Network Graphics" lang="en">PNG</abbr> или я
-    поставете някъде другаде по мрежата и направете връзка към нея в полето
-    <abbr title="Uniform Resource Locator" lang="en">URL</abbr> на
-    [% terms.bug %]а или в негов коментар.
+    [% Param('maxattachmentsize') %] КБ.<br>
+    Препоръчваме Ви да съхраните приставката си някъде другаде по мрежата,
+    и тогава да вмъкнете връзка към нея в коментар или в полето <abbr title="Uniform Resource Locator" lang="en">URL</abbr>
+    на този [% terms.bug %]. Вместо това ако приставката е изображение,
+    можете да я обърнете в сгъстим формат, като <abbr title="Joint Photographic Experts Group" lang="en">JPG</abbr>
+    или <abbr title="Portable Network Graphics" lang="en">PNG</abbr> и
+    опитайте отново.
 
   [% ELSIF error == "flag_requestee_unauthorized" %]
     [% title = "Изпълнителя на заявката за флаг неупълномощен" %]
@@ -228,6 +476,15 @@
     Името <em>[% name FILTER html %]</em> трябва да бъде дълго между 1 и 50
     символа и не трябва да съдържа запетайки или интервали.
 
+  [% ELSIF error == "flag_update_denied" %]
+    [% title = "Забранена промяна на флаг" %]
+    Опитахте се да [% IF status == "+" %] зададете [% ELSIF status == "-" %] отнемете
+    [% ELSIF status == "X" %] изчистите [% ELSE %] заявите [% END %]
+    <code>[% name FILTER html %]
+          [% IF status == "X" %][% old_status FILTER html %][% END %]</code>.
+
+    Само достатъчно упълномощени потребители могат да направят това.
+
   [% ELSIF error == "format_not_found" %]
     [% title = "Формата не е намерен" %]
     Заявеният формат <em>[% format FILTER html %]</em> не съществува с
@@ -237,10 +494,28 @@
     [% title = "Недействителен ключ за подреждане на тип флаг" %]
     Ключа за подреждане трябва да бъде цяло число между 0 и 32767 включително.
     Не може да бъде <em>[% sortkey FILTER html %]</em>.
-  
+
+  [% ELSIF error == "group_exists" %]
+    [% title = "Групата вече съществува" %]
+    Групата [% name FILTER html %] вече съществува.
+
+  [% ELSIF error == "group_not_specified" %]
+    [% title = "Не е указана група" %]
+    Не е указана група.
+
+  [% ELSIF error == "system_group_not_deletable" %]
+    [% title = "Системните групи са неизтриваеми" %]
+    <em>[% name FILTER html %]</em> е системна група.
+    Тя не може да бъде изтрита.
+
+  [% ELSIF error == "group_unknown" %]
+    [% title = "Непозната група" %]
+    Групата [% name FILTER html %] не съществува. Моля, задайте
+    действително име на група. Първо я създайте ако се налага!
+
   [% ELSIF error == "illegal_at_least_x_votes" %]
     [% title = "Търсенето ви няма смисъл" %]
-    Полето <em>Най-малко ___ гласа</em> трябва да бъде цяло число. 
+    Полето <em>Най-малко ___ гласа</em> трябва да бъде положително цяло число. 
     Въведохте <tt>[% value FILTER html %]</tt>, което не е.
     
   [% ELSIF error == "illegal_attachment_edit" %]
@@ -262,18 +537,25 @@
     Опитахте се да смените 
     полето <strong>[% field_descs.$field FILTER html %]</strong> 
     от <em>[% oldvalue FILTER html %]</em> на 
-    <em>[% newvalue FILTER html %]</em>, 
-    но само собственика или докладвалия [% terms.abug %] или
+    <em>[% newvalue FILTER html %]</em>, но само
+    [% IF privs < 3 %]
+      назначения по
+      [% IF privs < 2 %] или докладвалия [% END %]
+      [% terms.abug %], или
+    [% END %]
     достатъчно упълномощен потребител може да го променя.
 
   [% ELSIF error == "illegal_changed_in_last_x_days" %]
     [% title = "Търсенето ви няма смисъл" %]
-    Полето <em>Променен в последните ___ дни</em> трябва да е число. 
+    Полето <em>Променен в последните ___ дни</em> трябва да е положитлено цяло число. 
     Въведохте <tt>[% value FILTER html %]</tt>, което не е.
     
   [% ELSIF error == "illegal_date" %]
     [% title = "Неправилна дата" %]
     '<tt>[% date FILTER html %]</tt>' е правилна дата.
+    [% IF format %]
+      Моля, използвайте формата '<tt>[% format FILTER html %]</tt>'.
+    [% END %]
     
   [% ELSIF error == "illegal_email_address" %]
     [% title = "Недействителен адрес за електронна поща" %]
@@ -319,11 +601,6 @@
   [% ELSIF error == "insufficient_data_points" %]
     Нямаме достатъчно единици данни за направата на графика (все още).
         
-  [% ELSIF error == "insufficient_privs_for_multi" %]
-    [% title = "Недостатъчни права" %]
-    Съжалявам, нямате достатъчно права, за редактиране на множество 
-    [% terms.bugs %].
-    
   [% ELSIF error == "invalid_attach_id" %]
     [% title = "Недействителен идентификатор на притурка" %]
     Идентификатора на притурка [% attach_id FILTER html %] е недействителен.
@@ -368,6 +645,10 @@
     Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
     "файл" или "кръпка").
 
+  [% ELSIF error == "invalid_field_name" %]
+    [% title = "Недействително име на поле" %]
+    Полето "[% name FILTER html %]" е недействително.
+
   [% ELSIF error == "invalid_format" %]
     [% title = "Неправилен формат" %]
     Формата "[% format FILTER html %]" е неправилен (трябва да бъде един от
@@ -375,6 +656,14 @@
       "[% my_format FILTER html %]"
     [% END %]
     ).
+
+  [% ELSIF error == "invalid_group_ID" %]
+    [% title = "Недействителен идентификатор на група" %]
+    Указаната група не съществува.
+
+  [% ELSIF error == "invalid_group_name" %]
+    [% title = "Недействително име на група" %]
+    Указаната група, [% name FILTER html %], е недействителна тук.
 
   [% ELSIF error == "invalid_maxrows" %]
     [% title = "Недействителен максимален брой редове" %]
@@ -384,7 +673,11 @@
   [% ELSIF error == "invalid_product_name" %]
     [% title = "Недействително име на продукт" %]
     Името на продукт '[% product FILTER html %]' е недействително или не съществува.
-    
+
+  [% ELSIF error == "invalid_regexp" %]
+    [% title = "Неправилен регулярен израз" %]
+    Регулярният израз, който въведохте, е неправилен.
+
   [% ELSIF error == "invalid_username" %]
     [% title = "Невалидно потребителско име" %]
     Името <tt>[% name FILTER html %]</tt> е непознато потребителско име.  
@@ -394,11 +687,6 @@
   [% ELSIF error == "invalid_username_or_password" %]
     [% title = "Невалидно потребителско име или парола" %]
     Потребителското име или паролата, които въведохте са непознати.
-
-  [% ELSIF error == "keyword_access_denied" %]
-    [% title = "Достъпът отказан" %]
-    Съжалявам, не сте член групата 'editkeywords', така че
-    не ви е позволено да добавяте, редактирате или изтривате ключови думи.
 
   [% ELSIF error == "keyword_already_exists" %]
     [% title = "Ключовата дума вече съществува" %]
@@ -417,9 +705,46 @@
     Не можете да използвате запетайки или непечатими символи в името на
     ключова дума.
      
+  [% ELSIF error == "local_file_too_large" %]
+    [% title = "Твърде голям локален файл" %]
+    Локалните качвания на файл не трябва да надхвърлят 
+    [% Param('maxlocalattachment') %] <abbr title="Мега Байт">МБ</abbr> по размер.
+
   [% ELSIF error == "login_needed_for_password_change" %]
     [% title = "Необходимо е потребителско име" %]
     Трябва да въведте потребителско име, при искане за смяна на паролата ви.
+
+  [% ELSIF error == "login_required_for_pronoun" %]
+    [% title = "Необходимо е име за вход" %]
+    Трябва да въведете име за вход, когато използвате your login as a pronoun.
+
+  [% ELSIF error == "milestone_already_exists" %]
+    [% title = "Важното събитие вече съществува" %]
+    Събитието '[% name FILTER html %]' вече съществува за продукта '
+    [%- product FILTER html %]'.
+
+  [% ELSIF error == "milestone_blank_name" %]
+    [% title = "Не е позволено празно име на събитие" %]
+    Трябва да въведете име за събитието.
+
+  [% ELSIF error == "milestone_is_default" %]
+    [% title = "Подразбиращото се събитие е неизтриваемо" %]
+    Съжалявам, но [% name FILTER html %] е подразбиращото се събитие за
+    продукта '[% product FILTER html %]', така че не може да бъде изтрито.
+
+  [% ELSIF error == "milestone_name_too_long" %]
+    [% title = "Твърде дълго име на важно събитие" %]
+    Името на важно събитие е ограничено до 20 символа. 
+    '[% name FILTER html %]' е твърде дълго ([% name.length %] символа).
+
+  [% ELSIF error == "milestone_not_specified" %]
+    [% title = "Не е указано важно събитие" %]
+    Не е указано събитие при опит за редакция на важните събития.
+
+  [% ELSIF error == "milestone_not_valid" %]
+    [% title = "Указаното събитие не съществува" %]
+    Събитието '[% milestone FILTER html %]' за продукта
+    '[% product FILTER html %]' не съществува.
 
   [% ELSIF error == "milestone_required" %]
     [% title = "Необходимо е Целево събитие" %]
@@ -427,6 +752,12 @@
     [%+ bug_id FILTER html %]
     ако искате да го приемете. Част от приемането на [% terms.abug %]
     е даването на приблизителна оценка, кога той ще бъде оправен.
+
+  [% ELSIF error == "milestone_sortkey_invalid" %]
+    [% title = "Недействителен ключ за подреждане на събитие" %]
+    Ключа за подреждане '[% sortkey FILTER html %]' за събитието '
+    [% name FILTER html %]' не е в обхвата -32768 &le; ключ за подреждане
+    &le; 32767.
 
   [% ELSIF error == "misarranged_dates" %]
     [% title = "Неправилно подредени дати" %]
@@ -440,7 +771,20 @@
   [% ELSIF error == "missing_category" %]
     [% title = "Липсваща категория" %]
     Не сте указали категория за тази поредица.
-                
+
+  [% ELSIF error == "missing_component" %]
+    [% title = "Липсваща съставна част" %]
+    Съжалявам, продукта <em>[% product FILTER html %]</em>
+    трябва да има поне едина съставна част, за да можете да
+    въвеждате [% terms.bug %] в него.<p>
+    [% IF UserInGroup("editcomponents") %]
+      <a href="editcomponents.cgi?action=add&amp;product=[% product FILTER url_quote %]">Създаване
+      на нова съставна част</a>.
+    [% ELSE %]
+      Моля, свържете се с [% Param("maintainer") %] и го помолете
+      да добави съставна част към продукта.
+    [% END %]
+
   [% ELSIF error == "missing_content_type" %]
     [% title = "Липсващ тип на съдържанието" %]
      Пожелахте [% terms.Bugzilla %] да определи автоматично типа на
@@ -489,19 +833,23 @@
     [% title = "Липсваща подкатегория" %]
     Не сте указали подкатегория за тези поредици.
                 
+  [% ELSIF error == "missing_version" %]
+    [% title = "Липсваща версия" %]
+    Съжалявам, продукта <em>[% product FILTER html %]</em>
+    трябва да има поне една версия, за да можете да
+    въвеждате [% terms.bug %] в него.<p>
+    [% IF UserInGroup("editcomponents") %]
+      <a href="editversions.cgi?action=add&amp;product=[% product FILTER url_quote %]">Създаване
+      на нова версия</a>.
+    [% ELSE %]
+      Моля, свържете се с [% Param("maintainer") %] и го помолете
+      да добави версия към продукта.
+    [% END %]
+
   [% ELSIF error == "need_component" %]
-    [% title = "Необходим е компонент" %]
-    Трябва да укажете компонент, за да помогнете в определянето на новото
-    назначение не тези [% terms.bugs %].
-
-  [% ELSIF error == "need_numeric_value" %]
-    [% title = "Изисква се цифрова стойност" %]
-    Часовете изискват цифрова стойност.
-
-  [% ELSIF error == "need_positive_number" %]
-    [% title = "Изисква се положително число" %]
-    Полето <em>[% field_descs.$field FILTER html %]</em> изисква положително
-    число.
+    [% title = "Изисква се съставна част" %]
+    Трябва да укажете съставна част, за да помогнете в определянето на новото назначение на тези 
+    [% terms.bugs %].
 
   [% ELSIF error == "need_product" %]
     [% title = "Изисква се продукт" %]
@@ -529,18 +877,6 @@
     Не можете да смените съставната част на списък от [% terms.bugs %]
     покриващи повече от един продукт.
 
-  [% ELSIF error == "no_components" %]
-    [% title = "Няма съставни части" %]
-    Съжалявам; трябва да има поне една съставна част за този продукт, за да
-    можете да създавате нов [% terms.bug %].
-    [% IF UserInGroup("editcomponents") %]
-      <a href="editcomponents.cgi?product=[% product FILTER url_quote %]">Създаване
-      на нова съставна част</a>.
-    [% ELSE %]
-       Моля, свържете се с [% Param("maintainer") %], давайки името на
-       продукта, в който сте опитали да създадете нов [% terms.bug %].
-    [% END %]
-
   [% ELSIF error == "no_dupe_stats" %]
     [% title = "Не са открити статистики на двойниците" %]
     Няма статистика на двойниците за днес ([% today FILTER html %]) 
@@ -562,12 +898,6 @@
     възникна грешка при отварянето на файла от вчера:
     [% error_msg FILTER html %].
 
-  [% ELSIF error == "no_html_in_quips" %]
-    [% title = "HTML не е позволен в остроумия" %]
-    Съжалявам, поради мерки за сигурност, поддръжката на
-    <abbr title="Hyper Text Markup Language" lang="en">HTML</abbr> тагове е
-    изключена в остроумията.
-
   [% ELSIF error == "no_new_quips" %]
     [% title = "Без нови остроумия" %]
     Сайта не разрешава добавянето на нови остроумия.
@@ -579,7 +909,29 @@
   [% ELSIF error == "no_products" %]
     [% title = "Няма продукти" %]
     Или не са определени продукти, за които да въвеждате [% terms.bugs %] или не
-    ви е даден достъп до никой.
+    Ви е даден достъп до никой.
+
+  [% ELSIF error == "no_valid_action" %]
+    [% title = "Не е указано правилно действие" %]
+    Редакцията на [% field_descs.$field FILTER html %] е невзможна: не е указано правилно действие.
+
+  [% ELSIF error == "number_not_numeric" %]
+    [% title = "Необходима е числова стойност" %]
+    Стойността '[% num FILTER html %]' в полето 
+    <em>[% field_descs.$field FILTER html %]</em> 
+    не е числова стойност.
+
+  [% ELSIF error == "number_too_large" %]
+    [% title = "Числото е твърде голямо" %]
+    Стойността '[% num FILTER html %]' в полето 
+    <em>[% field_descs.$field FILTER html %]</em> 
+    е по-голяма от максималната позволена стойност '[% max_num FILTER html %]'.
+
+  [% ELSIF error == "number_too_small" %]
+    [% title = "Числото е твърде малко" %]
+    Стойността '[% num FILTER html %]' 
+    в полето <em>[% field_descs.$field FILTER html %]</em> 
+    е по-малка от минималната възможна стойност '[% min_num FILTER html %]'.
 
   [% ELSIF error == "old_password_incorrect" %]
     [% title = "Неправилна стара парола" %]
@@ -611,22 +963,29 @@
     <abbr title="Кило Байта">КБ</abbr>. Опитайте да разделите кръпката на
     няколко части.
 
+  [% ELSIF error == "product_disabled" %]
+    [% title = BLOCK %]Продукта е затворен за въвеждане на [% terms.bugs %][% END %]
+    Съжалявам, въвежданетно на [% terms.bugs %] в
+    продукта <em>[% product FILTER html %]</em> е невъзможно.
+
   [% ELSIF error == "product_edit_denied" %]
     [% title = "Отказан достъп за редактиране на продукт" %]
     Не ви е разрешено да редактирате [% terms.bugs %] в продукта 
     [% product FILTER html %].
 
+  [% ELSIF error == "product_has_bugs" %]
+    [% title = BLOCK %]Продукта има [% terms.bugs %][% END %]
+    Съществуват [% nb FILTER html %] [%+ terms.abug %] въведени за този продукт!
+    Трява да преназначите тези [% terms.bugs %] на друг продукт преди да можете
+    да изтриете този.
+
   [% ELSIF error == "query_name_missing" %]
     [% title = "Не е указано има не търсене" %]
     Трябва да укажете име за вашето търсене.
 
-  [% ELSIF error == "quips_disabled" %]
-    [% title = "Изключени остроумия" %]
-    Остроумията са изключени.
-
-  [% ELSIF error == "quips_edit_denied" %]
-    [% title = "Неразрешено" %]
-    Нямате права за редактиране на остроумия.
+  [% ELSIF error == "query_name_too_long" %]
+    [% title = "Твърде дълго име на заявка" %]
+    Името на заявката трябва да бъде по-късо от 64 символа.
 
   [% ELSIF error == "reassign_to_empty" %]
     [% title = "Незаконно преназначаване" %]
@@ -651,14 +1010,11 @@
     [% title = "Необходимо е резюме" %]
     Трябва да въведете резюме за този [% terms.bug %].
 
-  [% ELSIF error == "resolving_remaining_time" %]
-    [% title = "Опит за решаване при оставащи часове" %]
-    Не можете да решите [% terms.bug %] с оставащи часове. Задайте нула в
-    полето Оставащи часове, ако желаете да решите [% terms.bug %]а.
-
-  [% ELSIF error == "sanity_check_access_denied" %]
-    [% title = "Достъпът отказан" %]
-    Нямате необходимите права, за пускане на санитарна проверка.
+  [% ELSIF error == "saved_search_used_by_whines" %]
+    [% title = "Съхраненото търсене се използва" %]
+    Съхраненото търсене <em>[% search_name FILTER html %]</em> се използва 
+    от <a href="editwhines.cgi">Whining събития</a> със следните теми:
+    [%+ subjects FILTER html %]
 
   [% ELSIF error == "search_content_without_matches" %]
     [% title = "Неправилно търсене" %]
@@ -736,6 +1092,49 @@
     [% title = "Неизвестен прозорец" %]
     <code>[% current_tab_name FILTER html %]</code> не е действително име на прозорец.
 
+  [% ELSIF error == "version_already_exists" %]
+    [% title = "Версията вече съществува" %]
+    Версията '[% name FILTER html %]' вече съществува за продукта '
+    [%- product FILTER html %]'.
+
+  [% ELSIF error == "version_blank_name" %]
+    [% title = "Не е позволено празно име на версия" %]
+    Трябва да въведете име за версията.
+
+  [% ELSIF error == "version_has_bugs" %]
+    [% title = BLOCK %]Версията има [% terms.bugs %][% END %]
+    Съществуват [% nb FILTER html %] [%+ terms.bugs %] свързани с
+    версията! Трябва да преназначите тези [% terms.bugs %] на друга версия
+    преди да можете да изтриете тази.
+
+  [% ELSIF error == "version_name_too_long" %]
+    [% title = "Твърде дълго име на версия" %]
+    Името на версия е ограничено до 20 символа. 
+    '[% name FILTER html %]' е твърде дълго ([% name.length %] символа).
+
+  [% ELSIF error == "version_not_specified" %]
+    [% title = "Не е указана версия" %]
+    Не е указана версия при опит за редакция на версиите.
+
+  [% ELSIF error == "version_not_valid" %]
+    [% title = "Указаната версия не съществува" %]
+    Версията '[% version FILTER html %]' не съществува
+    за продукта '[% product FILTER html %]'.
+
+  [% ELSIF error == "users_deletion_disabled" %]
+    [% title = "Изтриването не действа" %]
+    Съжалявам, изтриването на потребители не е разрешено.
+
+  [% ELSIF error == "user_has_responsibility" %]
+    [% title = "Изтриването на потребителя невъзможно" %]
+    Потребителя, който искате да изтриете, е в ролите на подразбиращо се назначение
+    за [% terms.bugs %] или качествен контрол за поне една съставна част.
+    Поради това, не можете да го изтриете сега.
+
+  [% ELSIF error == "user_login_required" %]
+    [% title = "Необходимо е потребителско име" %]
+    Трябва да въведете име за вход за новия потребител.
+
   [% ELSIF error == "votes_must_be_nonnegative" %]
     [% title = "Броят на гласовете трябва да бъдат положително число" %]
     Използвайте отрицателни числа само за гласове по вашия [% terms.bug %].
@@ -762,10 +1161,18 @@
     Файлът, който се опитвате да прикачите е празен!
 
   [% ELSE %]
-    [% title = "Не е открита информация за грешката" %]
-    Потребителският код за грешка <code>[% error FILTER html %]</code> не беше открит.
-    Моля, изпратете поща до [% Param("maintainer") %], описвайки
-    предприетите стъпките до получаване на това съобщение.
+
+    [%# Try to find hooked error messages %]
+    [% error_message = Hook.process("errors") %]
+
+    [% IF not error_message %]
+      [% title = "Не е открита информация за грешката" %]
+      Потребителският код за грешка <code>[% error FILTER html %]</code> не беше открит.
+      Моля, изпратете поща до [% Param("maintainer") %], описвайки
+      предприетите стъпките до получаване на това съобщение.
+    [% ELSE %]
+      [% error_message FILTER none %]
+    [% END %]
   [% END %]
 [% END %]
 
@@ -793,8 +1200,9 @@
   
 [% USE Bugzilla %]
 [% namedcmd = Bugzilla.cgi.param("namedcmd") %]
-[% IF namedcmd AND error != "missing_query" %]
-  <p>
+[% IF namedcmd AND error != "missing_query" 
+               AND error != "saved_search_used_by_whines" %]
+  <p>  
     Можете също и да    
     <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
                   [% namedcmd FILTER html %]">забравите</a>

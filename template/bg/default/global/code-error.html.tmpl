@@ -61,6 +61,10 @@
     Идентификатора <code>[% page_id FILTER html %]</code> не е
     действителен идентификатор на страница.
 
+  [% ELSIF error == "bad_arg" %]
+    Лош аргумент <code>[% argument FILTER html %]</code> бе изпратен до
+    функцията <code>[% function FILTER html %]</code>.
+
   [% ELSIF error == "bug_error" %]
     Опитът за получаване на [% terms.bug %] [%+ bug.bug_id FILTER html %] върна 
     грешката [% bug.error FILTER html %].
@@ -107,10 +111,6 @@
     Опитах се да добавя [% terms.bug %] към неактивна група, указана от бита
     '[% bit FILTER html %]'.
 
-  [% ELSIF error == "bad_arg" %]
-    Лош аргумент <code>[% argument FILTER html %]</code> изпратен към
-    функцията <code>[% function FILTER html %]</code>.
-
   [% ELSIF error == "invalid_attach_id_to_obsolete" %]
      Номера на една от приставките които желахте да извадите от употреба,
      [% attach_id FILTER html %], е недействителен.
@@ -134,7 +134,21 @@
   [% ELSIF error == "invalid_dimensions" %]
     [% title = "Недействителни измерения" %]
     Указаната дължина или височина не е положително цяло число.
-    
+
+  [% ELSIF error == "invalid_flag_association" %]
+    [% title = "Недействително свързване на флаг" %]
+    Някои флагове не принадлежат към
+    [% IF attach_id %]
+      приставката [% attach_id FILTER html %].
+    [% ELSE %]
+      [%+ terms.bug %] [%+ bug_id FILTER html %].
+    [% END %]
+
+  [% ELSIF error == "invalid_isactive_flag" %]
+    [% title = "Недействителен isactive флаг" %]        
+    Флагът active бе зададен неправилно.  Може да има проблем
+    с [% terms.Bugzilla %] или [% terms.abug %] във вашата търсачка.
+
   [% ELSIF error == "invalid_series_id" %]
     [% title = "Недействителни колони" %]
     Идентификатора series_id [% series_id FILTER html %] е недействителен. Възможно е
@@ -151,11 +165,16 @@
 
   [% ELSIF error == "flags_not_available" %]
     [% title = "Редактирането на флаг не е разрешено" %]
-    Флагове не могат да бъдат задавани или променяни при
-    промяната на няколко [% terms.abug %] наведнъж.
+    [% IF type == "b" %]
+      Флагове не могат да бъдат задавани или променяни при
+      промяната на няколко [% terms.abug %] наведнъж.
+    [% ELSE %]
+      Обръщения към съществуваши флагове, при създаване
+      на нова приставка са недействителни.
+    [% END %] 
 
   [% ELSIF error == "flag_requestee_disabled" %]
-    [% title = "Флаг не е особенно изискуем" %]
+    [% title = "Флаг не е особено изискуем" %]
     Флагът <em>[% name FILTER html %]</em> не е изискуем по особен начин.
 
   [% ELSIF error == "flag_status_invalid" %]
@@ -189,7 +208,7 @@
   
   [% ELSIF error == "flag_type_target_type_invalid" %]
     Целевия тип не е нито <em>[% terms.bug %]</em> нито <em>приставка</em>,
-    а вместо това <em>[% variables.target_type FILTER html %]</em>.
+    а вместо това <em>[% target_type FILTER html %]</em>.
   
   [% ELSIF error == "invalid_field_name" %]
     [% field FILTER html %] не може да бъде използвано като име на поле.
@@ -197,7 +216,11 @@
   [% ELSIF error == "invalid_keyword_id" %]
     Идентификатора на ключова дума <em>[% id FILTER html %]</em> не може да
     бъде намерен.
-    
+
+  [% ELSIF error == "invalid_user_id" %]
+    [% title = "Недействителен потребител" %]
+    Няма потребител с идентификатор <em>[% userid FILTER html %]</em>.
+
   [% ELSIF error == "missing_bug_id" %]
     Не е зададен идентификатор на [% terms.bug %].
     
@@ -224,6 +247,19 @@
     [%+ ELSIF fld == "z" %]съставна таблица/изображение
     [%+ ELSE %]ос на доклада[% END %].
 
+  [% ELSIF error == "setting_info_invalid" %]
+    За да създадете нова настройка, трябва да укажете нейното име, списък от
+    стойност/индекс двойки и подразбираща се стойност.
+
+  [% ELSIF error == "setting_name_invalid" %]
+    Името на настройка <em>[% name FILTER html %]</em> не е
+    възможно. Имената на настройките трябва да започват с буква и да съдържат само
+    букви, цифри или символите '_', '-', '.' или ':'.
+
+  [% ELSIF error == "setting_value_invalid" %]
+    Стойността "<code>[% value FILTER html %]</code>" не е в списъка с
+    възможни стойности за настройката <em>[% name FILTER html %]</em>.
+
   [% ELSIF error == "token_generation_error" %]
     Нещо е наистина грешно в системата за създаване на признаци.
 
@@ -246,6 +282,25 @@
     [% ELSE %]
        Не можах да определя какво искахте да направите.
     [% END %]
+
+  [% ELSIF error == "nested_transaction" %]
+    Опит за пускане на нова транзакция, без първо да е прилючена предишната.
+
+  [% ELSIF error == "not_in_transaction" %]
+    Опит да се приклчи транзакция без да е стартирана такава.
+
+  [% ELSIF error == "already_locked" %]
+    Опит за заключване на таблица, без първо да бъде освободено предишното заключване:
+    <p>Вече заключени таблици:<br>[% current FILTER html %]
+    <p>Таблици изискващи заключване:<br>[% new FILTER html %]
+
+  [% ELSIF error == "no_matching_lock" %]
+    Опит за отключване на таблици без първо да са заключени.
+
+  [% ELSIF error == "comma_operator_deprecated" %]
+    [% title = "Вътрешна грешка на създателя на SQL заявки" %]
+    Има вътрешна грешка в кода на създателя на SQL заявки,
+    създаващ заявки без явен JOIN.
 
   [% ELSE %]
     [% title = "Вътрешна грешка" %]

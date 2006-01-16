@@ -1,0 +1,109 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@syndicomm.com>
+  #                 Joel Peshkin <bugreport@peshkin.net>
+  #                 Jacob Steenhagen <jake@bugzilla.org>
+  #                 Vlad Dascalu <jocuri@softhome.net>
+  #%]
+
+[%# INTERFACE:
+  # gid: number. The group ID.
+  # name: string. The name of the group.
+  # description: string. The description of the group.
+  # hasusers: boolean int. True if the group includes users in it.
+  # hasbugs: boolean int. True if the group includes bugs in it.
+  # hasproduct: boolean int. True if the group is binded to a product.
+  # hasflags: boolean int. True if the group is used by a flag type.
+  # buglist: string. The list of bugs included in this group.
+  #%]
+
+
+[% PROCESS global/header.html.tmpl
+  title = "Изтриване на група"
+%]
+
+<table border="1">
+  <tr>
+    <th>Идентификатор</th>
+    <th>Име</th>
+    <th>Описание</th>
+  </tr>
+  <tr>
+    <td>[% gid FILTER html %]</td>
+    <td>[% name FILTER html %]</td>
+    <td>[% description FILTER html %]</td>
+  </tr>
+</table>
+
+<form method="post" action="editgroups.cgi">
+  [% IF hasusers %]
+    <p><b>Един или повече потребители принадлежат към тази група. Не можете да я
+    изтриете докато има потребители в нея.</b>
+
+    <br><a href="editusers.cgi?action=list&groupid=[% gid FILTER html %]&grouprestrict=1">Показване
+    на потребителите</a> - <input type="checkbox" name="removeusers">Премахване на всички
+    потребители от групата.</p>
+  [% END %]
+
+  [% IF hasbugs %]
+    <p><b>Един или повече [% terms.bug %] доклада са видими само за тази група.
+    Не можете да я изтриете докато някои [% terms.bugs %] я използват.</b>
+
+    <br><a href="buglist.cgi?bug_id=[% buglist FILTER html %]">Показване на
+    [% terms.bugs %]те</a> - <input type="checkbox" name="removebugs">Премахване
+    на всички [% terms.bugs %] от това групово ограничение.</p>
+
+    <p><b>БЕЛЕЖКА:</b> Напълно е възможно да направите поверителни [% terms.bugs %]
+    публични, отмятайки това поле. <B>Горещо</B> се препоръчва
+    да прегледате [% terms.bugs %]те в тази група преди да го отметнете.</p>
+  [% END %]
+
+  [% IF hasproduct %]
+    <p><b>Тази група е вързана към продукта <U>[% name FILTER html %]</U>.
+    Не можете да я изтриете докато е вързна към продукт.</b>
+
+    <br><input type="checkbox" name="unbind">Изтриване на групата въпреки това
+    и направата на <U>[% name FILTER html %]</U> видим за всички.</p>
+  [% END %]
+  
+  [% IF hasflags %]
+    <p><b>Тази група ограничава кой може да прави промени по флагове от определни типове.
+    Не можете да я изтриете докато има използващи я флаг типове .</b>
+
+    <br><a href="editflagtypes.cgi?action=list&group=[% gid FILTER html %]">Показване
+    на типовете флагове</a> - <input type="checkbox" name="removeflags">Премахване
+    на всички типове флагове от групата.</p>
+  [% END %]
+
+  <h2>Потвърждение</h2>
+
+  <p>Наистина ли искате да изтриете групата?</p>
+  [% IF (hasusers || hasbugs || hasproduct || hasflags) %]
+    <p><b>Трябва да отметнете всички полета по-горе или да поправите
+          посочените проблеми преди да можете да продължите.</b></p>
+  [% END %]
+
+  <p><input type="submit" value="Да, изтриване">
+  <input type="hidden" name="action" value="delete">
+  <input type="hidden" name="group" value="[% gid FILTER html %]">
+</form>
+
+Обратно към <a href="editgroups.cgi">списъка с групи</a>.
+
+[% PROCESS global/footer.html.tmpl %] 

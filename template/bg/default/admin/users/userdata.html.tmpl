@@ -1,0 +1,79 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # Contributor(s): Marc Schumann <wurblzap@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  #
+  # editform:  is this an edit form? (It's a create form otherwise)
+  # editusers: is viewing user member of editusers?
+  # otheruser: Bugzilla::User object of user to edit
+  #%]
+
+<tr>
+  <th><label for="login">Потребителско име:</label></th>
+  <td>
+    [% IF editusers %]
+      <input size="64" maxlength="255" name="login" 
+             id="login" value="[% otheruser.login FILTER html %]" />
+      [% IF editform %]
+        <input type="hidden" name="loginold"
+               value="[% otheruser.login FILTER html %]" />
+      [% END %]
+    [% ELSE %]
+      [% otheruser.login FILTER html %]
+    [% END %]
+  </td>
+</tr>
+<tr>
+  <th><label for="name">Истинско име:</label></th>
+  <td>
+    [% IF editusers %]
+      <input size="64" maxlength="255" name="name"
+             id="name" value="[% otheruser.name FILTER html %]" />
+      [% IF editform %]
+        <input type="hidden" name="nameold"
+               value="[% otheruser.name FILTER html %]" />
+      [% END %]
+    [% ELSE %]
+      [% otheruser.name FILTER html %]
+    [% END %]
+  </td>
+</tr>
+[% IF editusers %]
+  <tr>
+    <th><label for="password">Парола:</label></th>
+    <td>
+      <input type="password" size="16" maxlength="16" name="password"
+             id="password" value="" />
+      [% IF editform %]<br />
+        (Въведете нова парола, за да я смените.)
+      [% END %]
+    </td>
+  </tr>
+  <tr>
+    <th><label for="disabledtext">Текст за неспособен:</label></th>
+    <td>
+      <textarea name="disabledtext" rows="10"
+                id="disabledtext"
+                cols="60">[% otheruser.disabledtext FILTER html %]</textarea><br />
+      (Ако полето не е празно потребителят ще бъде неспособен да действа и текста
+       трябва да обясни защо.)
+      [% IF editform %]
+        <input type="hidden" name="disabledtextold"
+               value="[% otheruser.disabledtext FILTER html %]" />
+      [% END %]
+    </td>
+  </tr>
+[% END %]

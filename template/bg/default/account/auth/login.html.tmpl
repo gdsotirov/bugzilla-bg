@@ -22,22 +22,21 @@
 
 [%# INTERFACE:
   # target: string. URL to go to after login.
-  # form: hash; the form values which need to be submitted to the target script
-  # mform: hash; the form values with multiple values which need to be
-  #   submitted to the target script
+  # has_db: true if DB is one of the available authentication mechanisms
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
 
 [% PROCESS global/header.html.tmpl
-  title = "Вход"
+  title = "Вход в $terms.Bugzilla",
+  onload = "document.forms['login'].Bugzilla_login.focus()"
 %]
 
 <p>
   Нуждая се от правилно име и парола, за да продължа.
 </p>
 
-<form action="[% target FILTER html %]" method="POST">
+<form name="login" action="[% target FILTER html %]" method="POST">
   <table>
     <tr>
       <td align="right">
@@ -101,23 +100,33 @@
   #%]
 
 [% IF caneditaccount %]
-  <hr>
 
   [% IF Param("createemailregexp") %]
+    <hr>
+
     <p>
       Ако нямате регистрация в [% terms.Bugzilla %], можете да
       <a href="createaccount.cgi">си създадете</a>.
     </p>
   [% END %]
 
-  <form method="get" action="token.cgi">
-    <input type="hidden" name="a" value="reqpw">
-    Ако притежавате регистрация, но сте забравили паролата си,
-    въведете потребителското си име в полето отдолу и изпратете
-    заявка за смяната и.<br>
-    <input size="35" name="loginname">
-    <input type="submit" value="Изпращане на заявка">
-  </form>
+  [%# For now, password change requests only apply to the DB
+    # verification method #%]
+
+  [% IF has_db != 0 %]
+    <hr>
+
+    <a name="forgot"></a>
+    <form method="get" action="token.cgi">
+      <input type="hidden" name="a" value="reqpw">
+      Ако притежавате регистрация, но сте забравили паролата си,
+      въведете потребителското си име в полето отдолу и изпратете
+      заявка за смяната и.<br>
+      <input size="35" name="loginname">
+      <input type="submit" value="Изпращане на заявка">
+    </form>
+
+  [% END %]
 
   <hr>
 [% END %]

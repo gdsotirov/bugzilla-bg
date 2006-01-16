@@ -24,7 +24,7 @@
 [% dontchange = "--do_not_change--" %]
 <input type="hidden" name="dontchange" value="[% dontchange FILTER html %]">
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   var numelements = document.forms.changeform.elements.length;
   function SetCheckboxes(value) {
       var item;
@@ -33,21 +33,20 @@
           item.checked = value;
       }
   }
-  document.write(' <input type="button" name="uncheck_all" value="Изчистване на всички" onclick="SetCheckboxes(false);">');
-  document.write(' <input type="button" name="check_all" value="Отмятане на всички" onclick="SetCheckboxes(true);">');
+  document.write(' <input type="button" name="uncheck_all" value="Махни всички отметки" onclick="SetCheckboxes(false);">');
+  document.write(' <input type="button" name="check_all" value="Отметни всички" onclick="SetCheckboxes(true);">');
 </script>
 
 <hr>
 
-<p><font size="-1">
-  За да промените едновременоо няколко [% terms.abug %]:
-  <ol>
-    <li>Отметнете [% terms.bugs %]те, които искате да променяте по-горе.</li>
-    <li>Направете промените в полетата на формата по-долу. Ако промяната, която
-        правите, изисква обяснение включете го в кутията за коментари.</li>
-    <li>Натиснете бутона <em>Изпращане</em>.</li>
-  </ol>
-</font></p>
+<p style="font-size:smaller">
+ За да промените едновременоо няколко [% terms.abug %]:</p>
+<ol style="font-size:smaller">
+  <li>Отметнете [% terms.bugs %]те, които искате да променяте по-горе.</li>
+  <li>Направете промените в полетата на формата по-долу. Ако промяната, която
+      правите, изисква обяснение включете го в кутията за коментари.</li>
+  <li>Кликнете върху бутона <em>Изпращане</em>.</li>
+</ol>
 
 <table id="form">
   <tr>
@@ -229,8 +228,8 @@
   </table>
 
   [% IF foundinactive %]
-    <font size="-1">(Забележка: [% terms.Bugs %] не могат да бъдат добявяни към
-    [% FILTER inactive %]неактивни групи[% END %], само премахвани.)</font><br>
+    <p style="font-size:smaller">(Забележка: [% terms.Bugs %] не могат да бъдат добавяни към
+    [% FILTER inactive %]неактивни групи[% END %], само премахвани.)</p>
   [% END %]
 
 [% END %]
@@ -245,7 +244,7 @@
   [% knum = knum + 1 %]
   <input id="knob-confirm" type="radio" name="knob" value="confirm">
   <label for="knob-confirm">
-    Потвърждаване на [% terms.bugs %]те (смяна на състоянието на <b>НОВ</b>)
+    Потвърждаване на [% terms.bugs %]те (смяна на състоянието на <b>[% status_descs.NEW FILTER html %]</b>)
   </label><br>
 [% END %]
 
@@ -255,7 +254,7 @@
   [% knum = knum + 1 %]
   <input id="knob-accept" type="radio" name="knob" value="accept">
   <label for="knob-accept">
-    Приемане на [% terms.bugs %]те (смяна на състоянието на <b>НАЗНАЧЕН</b>)
+    Приемане на [% terms.bugs %]те (смяна на състоянието на <b>[% status_descs.ASSIGNED FILTER html %]</b>)
   </label><br>
 
   [% knum = knum + 1 %]
@@ -271,7 +270,7 @@
     [% FOREACH resolution = resolutions %]
       [% NEXT IF !resolution %]
       <option value="[% resolution FILTER html %]" [% 'selected="selected"' IF resolution == "FIXED" %]>
-        [% resolution FILTER html %]
+        [% resolution_descs.$resolution FILTER html %]
       </option>
     [% END %]
   </select><br>
@@ -289,25 +288,27 @@
   [% IF bugstatuses.contains('RESOLVED') %]
     [% knum = knum + 1 %]
     <input id="knob-verify" type="radio" name="knob" value="verify">
-    <label for="knob-verify">Отбелязване на [% terms.bugs %]те като <b>ПРОВЕРЕН</b></label><br>
+    <label for="knob-verify">Отбелязване на [% terms.bugs %]те като <b>[% status_descs.VERIFIED FILTER html %]</b></label><br>
   [% END %]
 [% END %]
 
 [% IF !bugstatuses.containsany(openstates) AND !bugstatuses.contains('CLOSED') %]
   [% knum = knum + 1 %]
   <input id="knob-close" type="radio" name="knob" value="close">
-  <label for="knob-close">Отбелязване на [% terms.bugs %]те като <b>ЗАТВОРЕН</b></label><br>
+  <label for="knob-close">Отбелязване на [% terms.bugs %]те като <b>[% status_descs.CLOSED FILTER html %]</b></label><br>
 [% END %]
 
 [% knum = knum + 1 %]
 <input id="knob-reassign" type="radio" name="knob" value="reassign">
 <label for="knob-reassign"><a href="page.cgi?id=fields.html#assigned_to">
-Преназначаване на </a> [% terms.bugs %]те на
+  Преназначаване на </a> [% terms.bugs %]те на
 </label>
-<input name="assigned_to"
-       value="[% user.login FILTER html %]"
-       onchange="document.forms.changeform.knob[[% knum %]].checked = true;"
-       size="32"><br>
+[% INCLUDE global/userselect.html.tmpl
+   name => "assigned_to"
+   value => user.login
+   size => 32
+   onchange => "document.forms.changeform.knob[$knum].checked=true;"
+%]<br>
 
 [% knum = knum + 1 %]
 <input id="knob-reassignbycomponent"
@@ -323,7 +324,6 @@
 [% IF Param('move-enabled') && user.is_mover %]
   <input type="submit" name="action" value="[% Param('move-button-text') %]">
 [% END %]
-
 
 [%############################################################################%]
 [%# Select Menu Block                                                        #%]

@@ -45,6 +45,14 @@
     'votes' => "$terms.Bug $id бе потвърден с необходимия брой гласове" ,
     'created' => "$terms.Bug $id бе добавен към базата данни" ,
   }
+
+  linktext = {
+    'bug' => "Обратно към $terms.bug $id" ,
+    'dupe' => "Преглед на $terms.bug $id" ,
+    'dep' => "Преглед на $terms.bug $id" ,
+    'votes' => "Преглед на $terms.bug $id" ,
+    'created' => "Преглед на $terms.bug $id" ,
+  }
 %]
 
 <table border="1">
@@ -54,7 +62,9 @@
       [% PROCESS "bug/process/bugmail.html.tmpl" mailing_bugid = id %]
     </td>
     <td>
-      <a href="show_bug.cgi?id=[% id %]">Обратно към [% terms.bug %] №[% id %]</a>
+      <a href="show_bug.cgi?id=[% id %]">[% linktext.$type %]</a>
+      [%# Links to more information about the changed bug. %]
+      [% Hook.process("links") %]
     </td>
   </tr>
 </table>

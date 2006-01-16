@@ -38,7 +38,7 @@
   <p>
     <font color="red">
       Вашето остроумие '<tt>[% added_quip FILTER html %]</tt>' беше добавено.
-      [% IF Param("enablequips") == "approved" AND !user.groups.admin %]
+      [% IF Param("quip_list_entry_control") == "moderated" AND !user.groups.admin %]
         То ще бъде използвано веднага след като бъде одобрено.
       [% END %]
     </font>
@@ -57,22 +57,32 @@
   <p>[% approved.size %] остроумия одобрени и [% unapproved.size %] остроумия неодобрени</p>
 [% END %]
 
+
 <p>
-  [% terms.Bugzilla %] ще избере случайно остроумие за заглавие на всеки [% terms.bug %] списък, като
-  можете да разширите списъка с остроумия. Напишете нещо умно и забавно или отегчаващо
-  (но не неприлично или противно, моля) и натиснете бутона.
-  [% IF Param("enablequips") == "approved" AND !user.groups.admin %]
-    Имайте в предвид, че остроумието ви първо трябва да бъде одобрено преди да се използва.
-  [% END %]
+  [% terms.Bugzilla %] ще избере случайно остроумие за заглавие на всеки 
+  [% terms.bug %] списък
 </p>
 
-<form method="post" action="quips.cgi">
-  <input type="hidden" name="action" value="add">
-  <input size="80" name="quip">
+[% IF Param("quip_list_entry_control") != "closed" %]
   <p>
-    <input type="submit" value="Добавяне на остроумието">
+    Можете да разширите списъка с остроумия. Напишете нещо умно и забавно или отегчаващо
+    (но не неприлично или противно, моля) и натиснете бутона.
+    [% IF Param("quip_list_entry_control") == "moderated" AND !user.groups.admin %]
+      Имайте в предвид, че остроумието Ви първо трябва да бъде одобрено преди да се използва.
+    [% END %]
   </p>
-</form>
+
+  <form method="post" action="quips.cgi">
+    <input type="hidden" name="action" value="add">
+    <input size="80" name="quip">
+    <p>
+      <input type="submit" value="Добавяне на остроумието">
+    </p>
+  </form>
+[% ELSE %]
+  <p>В момента не могат да бъдат добавяни нови остоумия.
+  </p>
+[% END %]
 
 [% IF show_quips %]
   [% IF !UserInGroup('admin') %]
@@ -89,8 +99,8 @@
     <h2>Редактиране на наличните остроумия:</h2>
     <p>
       <strong>Бележка:</strong> Само одобрени остроумия ще бъдат показвани.
-      Ако за enablequips е зададена стойност <q>on</q>, въведените остроумия биват автоматично
-      одобрявани.
+      Ако параметъра 'quip_list_entry_control' е със стойност <q>open</q>, 
+      въведените остоумия биват автоматично одобрявани.
     </p>
     <form name="editform" method="post" action="quips.cgi">
       <input type="hidden" name="action" value="approve">
@@ -123,7 +133,7 @@
         [% END %]
         </tbody>
       </table>
-      <script type="text/javascript" language="JavaScript"><!--
+      <script type="text/javascript"><!--
         var numelements = document.forms.editform.elements.length;
         function SetCheckboxes(value) {
           var item;

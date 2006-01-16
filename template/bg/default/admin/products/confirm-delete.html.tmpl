@@ -1,0 +1,282 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # Contributor(s): Gavin Shelley <bugzilla@chimpychompy.org>
+  #%]
+
+[%# INTERFACE:
+  # product_name: string; The name of the product
+  #
+  # prod_description: string; Product description, may be empty
+  #
+  # (classification fields available if Param('useclassification') is enabled:)
+  #
+  # classification: string; The name of the classification the product is in
+  #
+  # class_description: string; Classification description, may be empty
+  #
+  # bug_count: number; The number of bugs belonging to the product
+  #
+  # milestoneurl: string; milestone url, if milestones are in use,
+  #                       may be empty
+  #
+  # disallownew: boolean; Are new bugs allowed for the product flag
+  #
+  # components: list of hashes, members are: name, description
+  #
+  # versions: list of version values.
+  #
+  # milestones: list of milestone values.
+  #
+  #%]
+
+[% title = BLOCK %]Изтриване на продукта '[% product_name FILTER html %]'
+[% END %]
+
+[% PROCESS global/header.html.tmpl
+  title = title
+  style_urls = ['skins/standard/admin.css']
+%]
+
+[% IF classification %]
+  [% classification_url_part = BLOCK %]&amp;classification=
+    [%- classification FILTER url_quote %]
+  [%- END %]
+[% ELSE %]
+  [% classification_url_part = "" %]
+[% END %]
+
+[% UNLESS class_description %]
+  [% class_description = '<span style="color: red">липсва</span>' %]
+[% END %]
+[% UNLESS prod_description %]
+  [% prod_description = '<span style="color: red">липсва</span>' %]
+[% END %]
+
+[% IF disallownew %]
+  [% disallownew = "closed" %]
+[% ELSE %]
+  [% disallownew = "open" %]
+[% END %]
+
+<table border="1" cellpadding="4" cellspacing="0">
+  <tr bgcolor="#6666FF">
+    <th valign="top" align="left">Поле</th>
+    <th valign="top" align="left">Стойност</th>
+  </tr>
+
+  [% IF Param('useclassification') %]
+    <tr>
+      <td>Класификация:</td>
+      <td>[% classification FILTER html %]</td>
+    </tr>
+    <tr>
+      <td>Описание на класификацията:</td>
+      [%# descriptions are intentionally not filtered to allow html content %]
+      <td>[% class_description FILTER none %]</td>
+    </tr>
+  [% END %]
+
+  <tr>
+    <td valign="top">Продукт:</td>
+    <td valign="top">
+      <a href="editproducts.cgi?product=[% product_name FILTER url_quote %]
+         [%- classification_url_part %]">
+        [% product_name FILTER html %]
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Описание:</td>
+    [%# descriptions are intentionally not filtered to allow html content %]
+    <td valign="top">[% prod_description FILTER none %]</td>
+  </tr>
+
+  [% IF Param('usetargetmilestone') %]
+    <tr>
+      <td>URL на важно събитите:</td>
+      <td>
+        [% IF milestoneurl %]
+          <a href="[% milestoneurl FILTER uri %]">
+            [%- milestoneurl FILTER html %]
+          </a>
+        [% ELSE %]
+          няма
+        [% END %]
+      </td>
+    </tr>
+  [% END %]
+
+  <tr>
+    <td>Затворен за [% terms.bugs %]:</td>
+    <td>[% disallownew FILTER html %]</td>
+  </tr>
+
+  <tr>
+    <td>
+      [% IF components.size > 0 %]
+        <a href="editcomponents.cgi?product=[% product_name FILTER url_quote %]
+           [%- classification_url_part %]"
+           title="Редактиране на съставните части на продукта '[% product_name FILTER html %]'">
+          Съставни части:
+        </a>
+      [% ELSE %]
+        Съставни части:
+      [% END %]
+    </td>
+    <td>
+      [% IF components.size > 0 %]
+        <table>
+          [% FOREACH c = components %]
+            <tr>
+              <th align="right">[% c.name FILTER html %]:</th>
+              [%# descriptions are intentionally not filtered to allow html content %]
+              <td>
+                [% IF c.description %]
+                  [% c.description FILTER none %]
+                [% ELSE %]
+                  <span style="color: red">липсва</span>
+                [% END %]
+              </td>
+            </tr>
+          [% END %]
+        </table>
+      [% ELSE %]
+        липсва
+      [% END %]
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      [% IF versions.size > 0 %]
+        <a href="editversions.cgi?product=[%- product_name FILTER url_quote %]
+           [%- classification_url_part %]">
+          Версии:
+        </a>
+      [% ELSE %]
+        Версии:
+      [% END %]
+    <td>
+      [% IF versions.size > 0 %]
+        [% FOREACH v = versions %]
+          [% v FILTER html %]<br>
+        [% END %]
+      [% ELSE %]
+        none
+      [% END %]
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top">
+      [% IF milestones.size > 0 %]
+        <a href="editmilestones.cgi?product=[%- product_name FILTER url_quote %]
+           [%- classification_url_part -%]">
+          Важни събития:
+        </a>
+      [% ELSE %]
+        Важни събития:
+      [% END %]
+    </td>
+    <td>
+      [% IF milestones.size > 0 %]
+        [% FOREACH m = milestones %]
+          [% m FILTER html %]<br>
+        [% END %]
+      [% ELSE %]
+        няма
+      [% END %]
+    </td>
+  </tr>
+
+  <tr>
+    <td>[% terms.Bugs %]:</td>
+    <td>
+      [% IF bug_count %]
+        <a href="buglist.cgi?product=[%- product_name FILTER url_quote %]
+           [%- classification_url_part %]"
+           title="Списък от [% terms.bugs %] за продукта '
+           [%- product_name FILTER html %]'">
+          [% bug_count %]
+        </a>
+      [% ELSE %]
+        няма
+      [% END %]
+    </td>
+  </tr>
+</table>
+
+<h2>Потвърждение</h2>
+
+[% IF bug_count %]
+
+  [% IF !Param("allowbugdeletion") %]
+
+    Съжалявам, има
+
+    [% IF bug_count > 1 %]
+      [% bug_count %] [%+ terms.abug %]
+    [% ELSE %]
+      1 [% terms.bug %]
+    [% END %]
+
+    оставащи за този продукт. Трябва да преназначите
+
+    [% IF bug_count > 1 %]
+       тези [% terms.bugs %]
+    [% ELSE %]
+       този [% terms.bug %]
+    [% END %]
+
+    на друг продукт преди да можете да изтриете този.
+
+  [% ELSE %]
+
+    <table border="0" cellpadding="20" width="70%" bgcolor="red">
+      <tr>
+        <td>
+          Има
+          [% IF bug_count > 1 %]
+            въведени [% bug_count %] [%+ terms.abug %]
+          [% ELSE %]
+            въведен 1 [% terms.bug %]
+          [% END %]
+          за този продукт! Изтривайки го
+          <b><blink>ВСИЧКИ</blink></b> съхранени [% terms.bugs %] и
+          тяхната история също ще бъдат изтрити.
+        </td>
+      </tr>
+    </table>
+
+  [% END %]
+
+[% END %]
+
+[% IF bug_count == 0 || Param('allowbugdeletion') %]
+
+  <p>Наистина ли желаете да изтриете този продукт?<p>
+
+  <form method="post" action="editproducts.cgi">
+    <input type="submit" value="Да, изтриване">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="product" value="[% product_name FILTER html %]">
+    <input type="hidden" name="classification"
+           value="[% classification FILTER html %]">
+  </form>
+
+[% END %]
+
+[% PROCESS admin/products/footer.html.tmpl %]
+
+[% PROCESS global/footer.html.tmpl %]

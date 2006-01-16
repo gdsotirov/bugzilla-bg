@@ -22,13 +22,15 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% filt_product = product FILTER html %]
+[% filt_classification = classification FILTER html %]
 [% PROCESS global/header.html.tmpl
-  title = "Редактиране на групови контроли за '$filt_product'"
+  title = "Редакция на групови контроли за '$filt_product'"
 %]
 
 <form method="post" action="editproducts.cgi">
   <input type="hidden" name="action" value="updategroupcontrols">
   <input type="hidden" name="product" value="[% filt_product %]">
+  <input type="hidden" name="classification" value="[% filt_classification %]">
 
   <table id="form" cellspacing="0" cellpadding="4" border="1">
     <tr bgcolor="#6666ff">
@@ -280,7 +282,11 @@
     </td>
   </tr>
 </table>
-
-
+<p>
+Моля, забележете че таблицата по-горе очертава единствените възможни комбинации
+от стойности за полетата <b>Контрол на членовете</b> и <b>Друг контрол</b>.
+Опитът да се подаде комбинация непосочена в таблицата (напр. Задължително/Неприложимо,
+Подразбрано/Показано, и т.н.) ще произведе съобщение за грешка.
+</p>
 [% PROCESS global/footer.html.tmpl %]
 

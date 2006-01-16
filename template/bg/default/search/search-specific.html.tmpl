@@ -60,10 +60,13 @@
     </td>
     <td>
       <select name="bug_status" id="bug_status">
-        [% FOREACH s = ['open', 'closed', 'all'] %]
-            <option value="__[% s %]__" 
-                  [% " selected" IF default.bug_status.0 == "__${s}__" %]>
-            [% s %]
+        [% statuses = [ { name = 'open', label = "Отворен" },
+                        { name = 'closed', label = "Затворен" },
+                        { name = 'all', label = "Всички" } ] %]
+        [% FOREACH status = statuses %]
+            <option value="__[% status.name %]__" 
+                  [% " selected" IF default.bug_status.0 == "__${status.name}__" %]>
+            [% status.label FILTER html %]
           </option>
         [% END %]
       </select>
@@ -76,10 +79,24 @@
     <td>
       <select name="product" id="product">
         <option value="">Всички</option>
-        [% FOREACH p = product %]
-          <option value="[% p.name FILTER html %]"
-            [% " selected" IF lsearch(default.product, p.name) != -1 %]>
-            [% p.name FILTER html %]</option>
+        [% IF Param('useclassification') %]
+          [% FOREACH c = classification %]
+            <optgroup label="[% c.name FILTER html %]">
+            [% FOREACH p = c.products %]
+              <option value="[% p FILTER html %]"
+                [% " selected" IF lsearch(default.product, p) != -1 %]>
+                [% p FILTER html %]
+              </option>
+            [% END %]
+            </optgroup>
+          [% END %]
+        [% ELSE %]
+          [% FOREACH p = product %]
+            <option value="[% p.name FILTER html %]"
+              [% " selected" IF lsearch(default.product, p.name) != -1 %]>
+              [% p.name FILTER html %]
+            </option>
+          [% END %]
         [% END %]
       </select>
     </td>
@@ -91,7 +108,7 @@
     <td>
       <input name="content" size="40" id="content"
              value="[% default.content.0 FILTER html %]">
-      <script language="JavaScript" type="text/javascript"> <!--
+      <script type="text/javascript"> <!--
           document.forms['queryform'].content.focus(); 
       // -->
       </script>
@@ -101,10 +118,6 @@
     <td></td>
     <td>
       <input type="submit" value="Търсене">
-      [% IF known_name %]
-        <input type="hidden" name="query_based_on" 
-               value="[% known_name FILTER html %]">
-      [% END %]
     </td>
   </tr>
 </table>

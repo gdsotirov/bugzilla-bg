@@ -30,36 +30,41 @@
   <div id="links-actions">
     <div class="label">Действия:</div>
     <div class="links">
-        <a href="[% Param('urlbase') %]">Начало</a> | 
+        <a href="./">Начало</a> | 
         <a href="enter_bug.cgi">Нов</a> | 
         <a href="query.cgi">Търсене</a> |
         
-        <input class="btn" type="submit" value="Търсене">&nbsp;на&nbsp;[% terms.bug %]&nbsp;№&nbsp;
-        <input class="txt" name="id" size="6"> | 
+        [% terms.bug %] № <input class="txt" name="id" size="6">
+        <input class="btn" type="submit" value="Търсене"> | 
         
         <a href="report.cgi">Доклади</a> 
         
-        [% IF user %]
+        [% IF user.id %]
           [% email = user.login FILTER url_quote %]
-          | <a href="request.cgi?requester=[% email %]&amp;requestee=[% email %]&amp;do_union=1&amp;group=type">Мои&nbsp;заявки</a>
+          | <a href="request.cgi?requester=[% email %]&amp;requestee=[% email %]&amp;do_union=1&amp;group=type">Мои
+          заявки</a>
         [% ELSE %]
           | <a href="request.cgi">Заявки</a>
         [% END %]
         
-        [% IF user && Param('usevotes') %]
+        [% IF user.id && Param('usevotes') %]
           | <a href="votes.cgi?action=show_user">Мои&nbsp;гласове</a>
         [% END %]      
         
         [% IF user.login %] 
             [% ' | <a href="sanitycheck.cgi">Санитарна&nbsp;проверка</a>' 
                                                   IF user.groups.tweakparams %]
-            | <a href="relogin.cgi">Изход</a>&nbsp;
-              [% user.login FILTER html %]
+            [% IF user.get_flag('can_logout') %]
+              | <a href="relogin.cgi">Изход</a>&nbsp;
+            [% ELSE %]
+              | Влезли&nbsp;сте&nbsp;като&nbsp
+            [% END %]
+            [% user.login FILTER html %]
         [% ELSE %]
             [% IF Param('createemailregexp') %]
               | <a href="createaccount.cgi">Нова&nbsp;регистрация</a>
             [% END %]
-            | <a href="query.cgi?GoAheadAndLogIn=1">Вход</a>
+            | <a href="index.cgi?GoAheadAndLogIn=1">Вход</a>
         [% END %]
     </div>
   </div>
@@ -70,18 +75,26 @@
     <div class="links">
 
         <a href="userprefs.cgi">Предпочитания</a>
-        [% ' | <a href="editparams.cgi">Параметри</a>' 
+        [% ' | <a href="editparams.cgi">Параметри</a> ' _
+           ' | <a href="editsettings.cgi">Потребителски настройки</a>' 
                                                   IF user.groups.tweakparams %]
         [% ' | <a href="editusers.cgi">Потребители</a>'     IF user.groups.editusers 
                                                   || user.can_bless %]
+        [% IF Param('useclassification') && user.groups.editclassifications %]
+            [% ' | <a href="editclassifications.cgi">Класификации</a>' %]
+        [% END %] 
         [% ' | <a href="editproducts.cgi">Продукти</a>' 
                                                IF user.groups.editcomponents %]
         [% ' | <a href="editflagtypes.cgi">Флагове</a>'
+                                               IF user.groups.editcomponents %]
+        [% ' | <a href="editvalues.cgi">Стойности на полета</a>'
                                                IF user.groups.editcomponents %]
         [% ' | <a href="editgroups.cgi">Групи</a>' 
                                                  IF user.groups.creategroups %]
         [% ' | <a href="editkeywords.cgi">Ключови думи</a>' 
                                                  IF user.groups.editkeywords %]
+        [% ' | <a href="editwhines.cgi">Whining</a>' 
+                                              IF user.groups.bz_canusewhines %]
     </div>
   </div>
     [% END %]
@@ -105,11 +118,14 @@
         [% FOREACH q = user.queries %]
           [% IF q.linkinfooter %]
             [% " | " IF print_pipe %]
-            <a href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% q.name FILTER url_quote %]"><nobr>[% q.name FILTER html %]</nobr></a>
+            <a href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% q.name FILTER url_quote %]">[% q.name FILTER html FILTER no_break %]</a>
             [% print_pipe = 1 %]
           [% END %]
         [% END %]
     </div>
   </div>
+
+  [%# Sections of links to more things users can do on this installation. %]
+  [% Hook.process("end") %]
 </div>
 </form>

@@ -19,6 +19,7 @@
   #
   # Contributor(s): Terry Weissman <terry@mozilla.org>
   #                 Jacob Steenhagen <jake@bugzilla.org>
+  #                 Vitaly Harisov  <vitaly@rathedg.com>
   #%]
 
 [%# INTERFACE:
@@ -30,10 +31,11 @@
 [% title = BLOCK %]
 [% terms.Bugzilla %] Главна страница
 [% END %]
+[% style_urls = [ "skins/standard/index.css" ] %]
 [% PROCESS global/header.html.tmpl %]
 
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
 function addSidebar() {
   if ((typeof window.sidebar == "object") && (typeof window.sidebar.addPanel == "function"))
@@ -47,50 +49,56 @@ function addSidebar() {
   {
     var rv = window.confirm ("Вашият браузър не поддържа разширението sidebar.  " + "Желаете ли да го осъвремените сега?");
     if (rv)
-      document.location.href = "http://www.mozilla.org/binaries.html";
+      document.location.href = "http://www.mozilla.org/";
   }
 }
 //-->
 </script>
 
 
-<table width="100%"><tr>
- <td>
+<div id="page-index">
+  <div class="intro"></div>
+
   <p>Тук поставяме много елегантни думи обясняващи всичко за [% terms.Bugzilla %].</p>
 
-  Но всичко това се свежда до избор от:
-  <p>
-  <a href="query.cgi">Търсене на съществуващи [% terms.bug %] доклади</a><br>
-  <a href="enter_bug.cgi">Въвеждане на нов [% terms.bug %] доклад</a><br>
-  <a href="report.cgi">Обобщени доклади и графики</a><br>
-  </p><p>
+  <p>Но всичко това се свежда до избор от:</p>
+  <ul>
+    <li id="query"><a href="query.cgi">Търсене на съществуващи [% terms.bug %] доклади</a></li>
+    <li id="enter-bug"><a href="enter_bug.cgi">Въвеждане на нов [% terms.bug %] доклад</a></li>
+    <li id="report"><a href="report.cgi">Обобщени доклади и графики</a></li>
 [% IF user.id %]
-  <a href="userprefs.cgi">Смяна на парола или предпочитания на потребител</a><br>
-  <a href="relogin.cgi">Изход [% user.login FILTER html %]</a><br>
+    <li id="userprefs"><a href="userprefs.cgi">Смяна на парола или предпочитания на потребител</a></li>
+  [% IF user.get_flag('can_logout') %]
+    <li id="logout"><a href="relogin.cgi">Изход [% user.login FILTER html %]</a></li>
+  [% END %]
 [% ELSE %]
-  <a href="query.cgi?GoAheadAndLogIn=1">Вход за съществуващ потребител</a><br>
+    [% PROCESS "account/auth/login-small.html.tmpl" %]
   [% IF Param('createemailregexp') %]
-    <a href="createaccount.cgi">Създаване на нова [% terms.Bugzilla %] регистрация</a><br>
+    <li id="account"><a href="createaccount.cgi">Създаване на нова [% terms.Bugzilla %] регистрация</a></li>
   [% END %]
 [% END %]
-  </p><p>
-  <a href="javascript:addSidebar()">Добавяне към Sidebar</a> (Изисква Mozilla или Netscape 6)<br>
-  </p>
-  <form name="f" action="show_bug.cgi" method="get"
-      onsubmit="QuickSearch(f.id.value); return false;">
-  <p>
-  Въведете номер на [% terms.abug %] или термини за търсене:<br>
-  <input type="text" name="id">
-  <input type="submit" value="Показване">
-  <a href="quicksearch.html">[Помощ]</a>
-  </p>
-  </form>
- </td>
- <td align="right"><img src="ant.jpg" width="329" height="220" border="2" alt="ant.jpg [8.5k]"></td>
-</tr></table>
+    <li id="sidebar"><a href="javascript:addSidebar()">Добавяне към Sidebar</a> (изисква Mozilla търсачка като Mozilla Firefox)</li>
 
-<script type="text/javascript" language="JavaScript" src="localconfig.js"></script>
-<script type="text/javascript" language="JavaScript" src="quicksearch.js"></script>
+    [%# List items of links to more things users can do on this installation. %]
+    [% Hook.process("links") %]
+
+  </ul>
+
+  <form id="show-bug" name="f" action="show_bug.cgi" method="get"
+      onsubmit="QuickSearch(f.id.value); return false;">
+  <div>
+    <p>Въведете номер на [% terms.abug %] или термини за търсене:</p>
+    <input id="text" type="text" name="id">
+    <input id="show" type="submit" value="Показване">
+    <a href="quicksearch.html">[Помощ]</a>
+  </div>
+  </form>
+
+  <div class="outro"></div>
+</div>
+
+<script type="text/javascript" src="localconfig.js"></script>
+<script type="text/javascript" src="quicksearch.js"></script>
 <script type="text/javascript">
 <!--
 document.forms['f'].id.focus();

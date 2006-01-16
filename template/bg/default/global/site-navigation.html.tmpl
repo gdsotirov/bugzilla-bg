@@ -31,24 +31,29 @@
 [% cgi = Bugzilla.cgi %]
 
 [% IF NOT (cgi.user_agent("MSIE [1-6]") OR cgi.user_agent("Mozilla/4")) %]
-  <link rel="Top" title="Начало" href="[% Param('urlbase') %]">
+  <link rel="Top" href="[% Param('urlbase') %]">
 
   [%# *** Bug List Navigation *** %]
   [% IF bug && bug_list && bug_list.size > 0 %]
-    <link rel="Up" title="Нагоре" href="buglist.cgi?regetlastlist=1">
+    <link rel="Up" href="buglist.cgi?regetlastlist=1">
+
+    <link rel="First" href="show_bug.cgi?id=[% bug_list.first %]">
+    <link rel="Last" href="show_bug.cgi?id=[% bug_list.last %]">
 
     [% current_bug_idx = lsearch(bug_list, bug.bug_id) %]
 
-    [% IF current_bug_idx > 0 %]
-      <link rel="First" title="Първи" href="show_bug.cgi?id=[% bug_list.first %]">
-    [% prev_bug = current_bug_idx - 1 %]
-      <link rel="Prev" title="Предходен" href="show_bug.cgi?id=[% bug_list.$prev_bug %]">
-    [% END %]
+    [% IF current_bug_idx != -1 %]
 
-    [% IF current_bug_idx + 1 < bug_list.size %]
-      [% next_bug = current_bug_idx + 1 %]
-      <link rel="Next" title="Следващ" href="show_bug.cgi?id=[% bug_list.$next_bug %]">
-      <link rel="Last" title="Последен" href="show_bug.cgi?id=[% bug_list.last %]">
+      [% IF current_bug_idx > 0 %]
+      [% prev_bug = current_bug_idx - 1 %]
+        <link rel="Prev" href="show_bug.cgi?id=[% bug_list.$prev_bug %]">
+      [% END %]
+
+      [% IF current_bug_idx + 1 < bug_list.size %]
+        [% next_bug = current_bug_idx + 1 %]
+        <link rel="Next" href="show_bug.cgi?id=[% bug_list.$next_bug %]">
+      [% END %]
+
     [% END %]
   [% END %]
 
@@ -68,7 +73,7 @@
       <link rel="Покажи" title="Дейност по [% terms.Bug %]"
             href="show_activity.cgi?id=[% bug.bug_id %]">
       <link rel="Покажи" title="Подходяща за печат версия"
-            href="long_list.cgi?buglist=[% bug.bug_id %]">
+            href="show_bug.cgi?format=multiple&amp;id=[% bug.bug_id %]">
   [% END %]
 
 
@@ -99,6 +104,8 @@
               href="editgroups.cgi">' IF user.groups.creategroups %]
     [% '<link rel="Администрация" title="Ключови думи"      
               href="editkeywords.cgi">' IF user.groups.editkeywords %]
+    [% '<link rel="Администрация" title="Хленчене"       
+              href="editwhines.cgi">' IF user.groups.bz_canusewhines %]
     [% '<link rel="Администрация" title="Санитарна проверка"  
               href="sanitycheck.cgi">' IF user.groups.tweakparams %]
   [% END %]  

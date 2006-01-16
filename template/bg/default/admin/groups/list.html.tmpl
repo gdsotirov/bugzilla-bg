@@ -1,0 +1,119 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@syndicomm.com>
+  #                 Joel Peshkin <bugreport@peshkin.net>
+  #                 Jacob Steenhagen <jake@bugzilla.org>
+  #                 Vlad Dascalu <jocuri@softhome.net>
+  #%]
+
+[%# INTERFACE:
+  # groups: array with group objects having the properties:
+  #   - id: number. The ID of the group.
+  #   - name: string. The name of the group.
+  #   - description: string. The description of the group.
+  #   - regexp: string. The user regexp for the given group.
+  #   - isactive: boolean int. Specifies if the group is active or not.
+  #   - isbuggroup: boolean int. Specifies if it can be used for bugs.
+  #%]
+
+[% PROCESS global/header.html.tmpl
+  title = "Редактиране на групи"
+  h2 = "Тази страница ви позволява да редактирате групите налични за добавяне на потребители в тях."
+%]
+
+
+<table border="1">
+  <tr>
+    <th>Име</th>
+    <th>Описание</th>
+    <th>Потребителски регулярен израз</th>
+    <th>Използване за [% terms.bugs %]</th>
+    <th>Тип</th>
+    <th>Действие</th>
+  </tr>
+
+  [% FOREACH group = groups %]
+    <tr>
+      <td>[% group.name FILTER html %]</td>
+      <td>[% group.description FILTER html %]</td>
+      <td>[% group.regexp FILTER html %]&nbsp</td>
+
+      <td align="center">
+        [% IF (group.isactive != 0) && (group.isbuggroup) %]
+          X
+        [% ELSE %]
+          &nbsp
+        [% END %]
+      </td>
+
+      <td align="center">
+        [% (group.isbuggroup) ? "user" : "system" %]
+      </td>
+
+      <td align="center" valign="middle">
+        <a href="editgroups.cgi?action=changeform&amp;group=[% group.id FILTER html %]">Редактиране</a>
+        [% IF (group.isbuggroup) %]
+          | <a href="editgroups.cgi?action=del&amp;group=[% group.id FILTER html %]">Изтриване</a>
+        [% END %]
+      </td>
+    </tr>
+  [% END %]
+
+  <tr>
+    <td colspan="5"></td>
+    <td><a href="editgroups.cgi?action=add">Добавяне на група</a></td>
+  </tr>
+</table>
+
+<p>
+  <b>Името</b> е това което се използва с функцията UserInGroup() във всеки
+допълнително обработен cgi файл, който пишете и който трябва да използва дадена
+група. Също така може да бъде използвано от хора предаващи [% terms.bugs %] по
+е-поща, за да ограничи [% terms.abug %] до известен набор от групи.
+</p>
+
+<p>
+  <b>Описанието</b> е това което ще бъде показано в [% terms.bug %] докладите
+на членовете на групата, където те могат да изберат дали 
+[% terms.abug %] да бъде ограничен за другите в същата група.
+</p>
+
+<p>
+  <b>Потребителския регулярен израз</b> е незадължително поле и ако бъде
+попълнено, автоматически ще позволи членство в тази група на всеки чийто
+електроннен пощенски адрес съвпада с този регулярен израз. Не забравяйте
+символа '$' накрая. Пример '@mycompany\.com$'
+</p>
+
+<p>
+  Флагът <b>Използвай за [% terms.bugs %]</b> определя дали е приемливо
+групата да бъде използвана за [% terms.bugs %]. Ако изчистите това поле, то
+повече няма да бъде възможно за потребителите да добавят [% terms.bugs %] към
+тази група, въпреки че [% terms.bugs %] които вече са в групата ще си останат
+в нея. Това е много по-малко драстичен начин да спрете растежа не една групата
+отколкото ще бъде изтриването и, както и начин за поддръжка на списъци с
+потребители без претрупване на на списъците с групите използвани за ограничения
+на [% terms.bug %].
+</p>
+
+<p>
+  Полето <b>Тип</b> определя системните групи.
+</p>
+
+[% PROCESS global/footer.html.tmpl %]

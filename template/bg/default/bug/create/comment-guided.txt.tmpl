@@ -19,32 +19,37 @@
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #%]
 [%# INTERFACE:
-  # form: hash. This is the $::FORM variable from a bug submission (i.e. the
-  #   fields on a template from enter_bug.cgi.) It can be used to pull out 
-  #   various custom fields and format an initial Description entry from them. 
+  # This template has no interface.
+  #
+  # Form variables from a bug submission (i.e. the fields on a template from
+  # enter_bug.cgi) can be access via Bugzilla.cgi.param. It can be used to
+  # pull out various custom fields and format an initial Description entry
+  # from them.
   #%]  
 [% USE Bugzilla %]
-Потребителски агент:       [%+ Bugzilla.cgi.user_agent() %]
-Идентификатор на изграждане: [%+ form.buildid %]
+[% cgi = Bugzilla.cgi %]
+Потребителски агент:       [%+ cgi.user_agent() %]
+Идентификатор на изграждане: [%+ cgi.param("buildid") %]
 
-[%+ form.comment IF form.comment %]
+[%+ cgi.param("comment") IF cgi.param("comment") %]
 
-[%+ IF form.reproducible != "Choose one..." -%]
-Възпроизводим: [%+ form.reproducible %]
-[% END -%]
+[%+ IF cgi.param("reproducible") != "Choose one..." -%]
+Възпроизводим: [%+ cgi.param("reproducible") %]
+[% END %]
 
-[%# I can't make TT check for "1.\n2.\n3." so this is not conditional. -%]
+[% IF !(cgi.param("reproduce_steps").match('^1\.\s+2\.\s+3\.\s+$') || cgi.param("reproduce_steps").match('^\s+$')) %]
 Стъпки за възпроизвеждане:
-[%+ form.reproduce_steps %]
-
-[% IF form.actual_results -%]
-Действителни резултати:
-[%+ form.actual_results %]
+[%+ cgi.param("reproduce_steps") %]
 [% END %]
 
-[% IF form.expected_results %]
-Очаквани резултати:
-[%+ form.expected_results %]
+[% IF cgi.param("actual_results") -%]
+Действителни резултати:  
+[%+ cgi.param("actual_results") %]
 [% END %]
 
-[%+ form.additional_info %]
+[% IF cgi.param("expected_results") %]
+Очаквани резултати:  
+[%+ cgi.param("expected_results") %]
+[% END %]
+
+[%+ cgi.param("additional_info") %]

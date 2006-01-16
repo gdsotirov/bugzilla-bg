@@ -17,6 +17,7 @@
   # Rights Reserved.
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# This is a list of all the possible messages. Please keep them in
@@ -25,10 +26,81 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
+[% PROCESS "global/field-descs.none.tmpl" %]
+
 [% message_tag = message %]
 
 [% message = BLOCK %]
-  [% IF    message_tag == "buglist_adding_field" %]
+  [% IF    message_tag == "account_created" %]
+    [% title = "Потребителя $otheruser.login е създаден" %]
+    Новата регистрация [% otheruser.login FILTER html %] беше създадена
+    успешно.
+    [% IF groups.size %]
+      Ако желаете можете да редактирате груповите настройки сега, използвайки формата отдолу.
+    [% END %]
+
+  [% ELSIF message_tag == "account_updated" %]
+    [% IF changed_fields.size
+          + groups_added_to.size + groups_removed_from.size
+          + groups_granted_rights_to_bless.size + groups_denied_rights_to_bless.size %]
+      [% title = "Регистрацията $loginold бе осъвременена" %]
+      Следните промени бяха направени върху регистрацията
+      [%+ loginold FILTER html %]:
+      <ul>
+        [% FOREACH field = changed_fields %]
+          <li>
+            [% IF    field == 'login_name' %]
+              Името за вход вече е [% otheruser.login FILTER html %].
+            [% ELSIF field == 'realname' %]
+              Истинското име беше осъвременено.
+            [% ELSIF field == 'cryptpassword' %]
+              Беше зададена нова парола.
+            [% ELSIF field == 'disabledtext' %]
+              Текста за неспособен беше променен.
+            [% END %]
+          </li>
+        [% END %]
+        [% IF groups_added_to.size %]
+          <li>
+            Потребителя беше добавен към 
+            груп[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %] 
+            [%+ groups_added_to.join(', ') FILTER html %].
+          </li>
+        [% END %]
+        [% IF groups_removed_from.size %]
+          <li>
+            Потребителя беше премахнат от 
+            груп[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %] 
+            [%+ groups_removed_from.join(', ') FILTER html %].
+          </li>
+        [% END %]
+        [% IF groups_granted_rights_to_bless.size %]
+          <li>
+            На потребителя бяха дадени правата да добавя потребители към 
+            груп[% 'ата' IF groups_granted_rights_to_bless.size == 1 %][% 'ите' IF groups_granted_rights_to_bless.size > 1 %] 
+            [%+ groups_granted_rights_to_bless.join(', ') FILTER html %].
+          </li>
+        [% END %]
+        [% IF groups_denied_rights_to_bless.size %]
+          <li>
+            На потребителя бяха отнети правата да добавя потребители към 
+            груп[% 'ата' IF groups_denied_rights_to_bless.size == 1 %][% 'ите' IF groups_denied_rights_to_bless.size > 1 %] 
+            [%+ groups_denied_rights_to_bless.join(', ') FILTER html %].
+          </li>
+        [% END %]
+      </ul>
+    [% ELSE %]
+      [% title = "Потребителя $otheruser.login не е променян" %]
+      Не сте заявили никаква промяна за потребителя 
+      [%+ otheruser.login FILTER html %].
+    [% END %]
+
+  [% ELSIF message_tag == "account_deleted" %]
+    [% title = "Потребителя $otheruser.login е изтрит" %]
+    The user account [% otheruser.login FILTER html %] has been deleted
+    successfully.
+
+  [% ELSIF message_tag == "buglist_adding_field" %]
     [% title = "Добавяне на поле към страницата за търсене..." %]
     [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
 
@@ -39,7 +111,7 @@
     [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
 
   [% ELSIF message_tag == "buglist_updated_named_query" %]
-    OK, търсенето ви именовано <code>[% queryname FILTER html %]</code>, беше осъвременено.
+    Търсенето ви, именовано <code>[% queryname FILTER html %]</code>, беше осъвременено.
 
   [% ELSIF message_tag == "buglist_new_default_query" %]
     OK, вече имате ново търсене по подразбиране. Можете също така
@@ -56,8 +128,9 @@
   [% ELSIF message_tag == "buglist_sorted_by_relevance" %]
     [% terms.Bugs %]те в този списък са подредени по значение, като
     най-значимите [% terms.bugs %] са най-отгоре.
-    [% IF bugs.size == 200 %]
-      Само 200-те най-значими [%+ terms.bugs %] са показани.
+    [% IF bugs.size == constants.FULLTEXT_BUGLIST_LIMIT %]
+      Показани са само [% constants.FULLTEXT_BUGLIST_LIMIT FILTER html %]
+      най-значими [% terms.bugs %].
     [% END %]
 
   [% ELSIF message_tag == "change_columns" %]
@@ -85,7 +158,7 @@
 
   [% ELSIF message_tag == "logged_out" %]
     [% title = "Излязъл" %]
-    [% url = "query.cgi?GoAheadAndLogIn=1" %]
+    [% url = "index.cgi?GoAheadAndLogIn=1" %]
     [% link = "Влизане отново." %]
     <b>Вашите входни данни бяха забравени</b>.
     Бисквитката съхраняваща данните ви, е изгубена. Ще бъдете
@@ -142,6 +215,11 @@
     или вие нямате достъп до него. Следва списък с продукти
     от които можете да изберете.
 
+  [% ELSIF message_tag == "remaining_time_zeroed" %]
+    Полето [% field_descs.remaining_time FILTER html %] беше
+    зададено на нула автоматично като част от отбелязването на този [% terms.bug %]
+    като [% status_descs.RESOLVED FILTER html %] или [% status_descs.CLOSED FILTER html %].
+
   [% ELSIF message_tag == "series_created" %]
     [% title = "Редицата създадена" %]
       Редицата <em>[% series.category FILTER html %] /
@@ -162,6 +240,16 @@
       Бисквитката съхраняваща данните ви за вход е изгубена.
     [% END %]
 
+  [% ELSIF message_tag == "user_match_failed" %]
+    Въведохте потребителско име, което не съвпадна с никой познат 
+    на [% terms.Bugzilla %] потребител, затова нарочно оставихме
+    полето [% match_field FILTER html %] празно.
+
+  [% ELSIF message_tag == "user_match_multiple" %]
+    Въведохте потребителско име което съвпадна с повече от един
+    потребител, затова нарочно оставихме полето [% match_field FILTER html %]
+    празно.
+    
   [% ELSE %]
     [%# Give sensible error if error functions are used incorrectly.
       #%]     

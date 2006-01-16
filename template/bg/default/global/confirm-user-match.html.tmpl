@@ -21,8 +21,6 @@
   #%]
 
 [%# INTERFACE:
-  # form: hash; the form values submitted to the script
-  # mform: hash; the form multi-values submitted to the script
   # fields: hash/record; the fields being matched, each of which has:
   #     type: single|multi: whether or not the user can select multiple matches
   #     flag_type: for flag requestee fields, the type of flag being requested
@@ -51,18 +49,18 @@
   >
 
   <p>
-    Едно или повече от имената/е-пощенските адреси, които въведохте в полетата
-    на предходната страница произведоха резултат нуждаещ се от потвърждение.
-    Моля, прегледайте внимателно съвпаденията отдолу избирайки потребители от
-    списъка ако е необходимо или се върнете на предходната страница, за да
-    проверите имената, които сте въвели.
+    [% terms.Bugzilla %] не можа да направи убедително съвпадение за едно или повече от
+    имената и/или е-пощенските адреси, които въведохте на предходната страница.<br>
+    Моля, прегледайте внимателно списъка с възможните съвпадения по-долу и изберете
+    този който желаете или се върнете на предходната страница, за да проверите имената
+    които сте въвели.
   </p>
 [% ELSE %]
   [% PROCESS global/header.html.tmpl title="Съвпадението пропадна" %]
   <p>
-    Ендо или повече от имената/е-пощенските адреси, които въведохте в полетата
-    на предходната страница не успяха да направят съвпадение. Върнете се на
-    предходната страница и опитайте с други имена/е-пощенски адреси.
+    [% terms.Bugzilla %] не можа да намери никакво съвпадение като цяло за едно или повече от
+    имената и/или е-пощенските адреси, които въведохте на предходната страница.<br>
+    Моля, върнете се и опитайте други имена, е-пощенски адреси.
   </p>
 [% END %]
 
@@ -92,16 +90,6 @@
                     </font>
                     Моля, върнете се и опитайте отново с по-конкретно
                     име/е-пощенски адрес.
-                  [% ELSIF fields.${field.key}.type == 'single' %]
-                    съвпадна с:<br>
-                    <select name="[% field.key FILTER html %]"
-                     id="[% field.key FILTER html %]">
-                      [% FOREACH match = query.value.users %]
-                        <option value="[% match.login FILTER html %]">
-                         [%- match.identity FILTER html -%]
-                        </option>
-                      [% END %]
-                    </select>
                   [% ELSE %]
                     [% IF query.value.status == 'trunc' %]
                       съвпадна с повече от максимума
@@ -111,10 +99,12 @@
                     [% END %]
                     <select name="[% field.key FILTER html %]"
                      id="[% field.key FILTER html %]"
-                      [% IF query.value.users.size > 5 %]
-                       multiple="multiple" size="5">
-                      [% ELSE %]
-                       multiple="multiple" size="[% query.value.users.size %]">
+                      [% IF fields.${field.key}.type == 'multi' %]
+                        [% IF query.value.users.size > 5 %]
+                         multiple="multiple" size="5">
+                        [% ELSE %]
+                         multiple="multiple" size="[% query.value.users.size %]">
+                        [% END %]
                       [% END %]
                       [% FOREACH match = query.value.users %]
                         <option value="[% match.login FILTER html %]">

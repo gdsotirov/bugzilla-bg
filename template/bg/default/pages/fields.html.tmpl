@@ -21,6 +21,7 @@
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
+[% PROCESS "global/field-descs.none.tmpl" %]
 [% INCLUDE global/header.html.tmpl title = "Жизнен цикъл на $terms.abug" %]
 
 <p>
@@ -47,53 +48,53 @@
     [% terms.abug %]. Само определени промени на състоянието са разрешени.</td>
 
     <td>Полето <b>решение</b> показва какво е станало с този
-    [% terms.bug %].</td>
+    [%+ terms.bug %].</td>
   </tr>
 
   <tr valign="top">
     <td>
       <dl>
         <dt>
-          <b>НЕПОТВЪРДЕН</b>
+          <b>[% status_descs.UNCONFIRMED FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към базата данни. 
           Никой не е потвърдил, че този [% terms.bug %] е истински. Потребителите
           имащи зададено "canconfirm" позволение могат да потвърдят
-          този [% terms.bug %], променяйки неговото състояние на <b>НОВ</b>.
-          Или той може да бъде направо разрешен и отбелязан като <b>РЕШЕН</b>.
+          този [% terms.bug %], променяйки неговото състояние на <b>[% status_descs.NEW FILTER html %]</b>. Или той може
+          да бъде направо разрешен и отбелязан като <b>[% status_descs.RESOLVED FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>НОВ</b>
+          <b>[% status_descs.NEW FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към списъка с [% terms.bugs %]
           на назначения и трябва да бъде обработен. [% terms.Bugs %] в
-          това състояние могат да бъдат приети и да станат <b>НАЗНАЧЕНИ</b>,
-          предадени на някой друг и да останат <b>НОВ</b> или разрешени и
-          отбелязани <b>РЕШЕН</b>.
+          това състояние могат да бъдат приети и да станат <b>[% status_descs.ASSIGNED FILTER html %]</b>,
+          предадени на някой друг и да останат <b>[% status_descs.NEW FILTER html %]</b> или разрешени и
+          отбелязани <b>[% status_descs.RESOLVED FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>НАЗНАЧЕН</b>
+          <b>[% status_descs.ASSIGNED FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] все още не е разрешен, но е назначен на
           правилния човек. От тук [% terms.bugs %] могат да бъдат дадени на
-          някое друго лице и да станат <b>НОВ</b> или разрешени ставайки
-          <b>РЕШЕН</b>.
+          някое друго лице и да станат <b>[% status_descs.NEW FILTER html %]</b> или разрешени ставайки
+          <b>[% status_descs.RESOLVED FILTER html  %]</b>.
         </dd>
 
         <dt>
-          <b>ОТВОРЕН ОТНОВО</b>
+          <b>[% status_descs.REOPENED FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е бил разрешен, но решението е било сметнато
-          за неправилно. Например [% terms.bug %] със състояние <b>РАБОТИЗАМЕН</b> е
-          <b>ПОДНОВЕН</b>, когато излезе повече информация и [% terms.abug %] е
+          за неправилно. Например [% terms.bug %] със състояние <b>[% status_descs.WORKSFORME FILTER html %]</b> е
+          <b>[% status_descs.REOPENED FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
           вече възпроизводим. От тук [% terms.bugs %] са отбелязвани или
-          <b>НАЗНАЧЕН</b> или <b>РЕШЕН</b>.
+          <b>[% status_descs.ASSIGNED FILTER html %]</b> или <b>[% status_descs.RESOLVED FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -114,33 +115,33 @@
     <td>
       <dl>
         <dt>
-          <b>РЕШЕН</b>
+          <b>[% status_descs.RESOLVED FILTER html %]</b>
         </dt>
         <dd>
           Взето е решение и то чака проверка от качествения контрол.
           От тук [% terms.bugs %] са или отваряни наново и стават
-          <b>ПОДНОВЕН</b> или <b>ПРОВЕРЕН</b> или биват затворени за
-          добро и отбелязвани <b>ЗАТВОРЕН</b>.
+          <b>[% status_descs.REOPENED FILTER html %]</b> или <b>[% status_descs.VERIFIED FILTER html %]</b> или биват затворени за
+          добро и отбелязвани <b>[% status_descs.CLOSED FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>ОТВОРЕН ОТНОВО</b>
+          <b>[% status_descs.VERIFIED FILTER html %]</b>
         </dt>
         <dd>
           Качествения контрол е прегледал [% terms.abug %] и решението и 
-          е съгласен, че е взето правилното решение. [% terms.Bugs %] остават 
+          е съгласен, че е взето правилното решение. [% terms.Bugs %] остават
           в това състояние докато продукта, за който са докладвани,
-          в действителност бъде пуснат (на пазра, в Интернет) в който момент те стават
-          <b>ЗАТВОРЕН</b>.
+          в действителност бъде пуснат (на пазара, в Интернет), в който момент те стават 
+          <b>[% status_descs.CLOSED FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>ЗАТВОРЕН</b>
+          <b>[% status_descs.CLOSED FILTER html %]</b>
         </dt>
         <dd>
           [% terms.Abug %] се смята за мъртъв, решението е правилно. 
           Някои зомби [% terms.bugs %] които изберат да се разхождат по земята
-          отново, трябва да го направят като станат <b>ОТВОРЕН ОТНОВО</b>.
+          отново, трябва да го направят като станат <b>[% status_descs.REOPENED FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -148,7 +149,7 @@
     <td>
       <dl>
         <dt>
-          <b>ПОПРАВЕН</b>
+          <b>[% resolution_descs.FIXED FILTER html %]</b>
         </dt>
         <dd>
           Поправка за този [% terms.bug %] е влязла в дървото и е
@@ -156,14 +157,14 @@
         </dd>
 
         <dt>
-          <b>НЕДЕЙСТВИТЕЛЕН</b>
+          <b>[% resolution_descs.INVALID FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем не е [% terms.bug %].
         </dd>
 
         <dt>
-          <b>НЯМАДАБЪДЕОПРАВЕН</b>
+          <b>[% resolution_descs.WONTFIX FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем е [% terms.bug %], който никога няма да бъде 
@@ -171,7 +172,7 @@
         </dd>
 
         <dt>
-         <b>ДВОЙНИК</b>
+         <b>[% resolution_descs.DUPLICATE FILTER html %]</b>
         </dt>
         <dd>
           Проблема е двойник на съществуващ [% terms.bug %].
@@ -181,7 +182,7 @@
         </dd>
 
         <dt>
-          <b>РАБОТИЗАМЕН</b>
+          <b>[% resolution_descs.WORKSFORME FILTER html %]</b>
         </dt>
         <dd>
           Всички опити за възпроизвеждане на този [% terms.bug %] са безуспешни
@@ -191,7 +192,7 @@
         </dd>
 
         <dt>
-          <b>ПРЕМЕСТЕН</b>
+          <b>[% resolution_descs.MOVED FILTER html %]</b>
         </dt>
         <dd>
           Проблема е характерен за свързан продукт чиито [% terms.bugs %] се следят
@@ -295,12 +296,12 @@
 
 <p>
 Това е лицето натоварено с разрешаването на [% terms.bug %]а. Всеки път когато
-това поле се променя, състоянието се променя на <b>НОВ</b>, за да бъдат
+това поле се променя, състоянието се променя на <b>[% status_descs.NEW FILTER html %]</b>, за да бъдат
 новите [% terms.bugs %] лесно забележими в списъка на лицето.</p>
 
 <p>
-Подразбиращото се състояние за заявки е зададено като НОВ, НАЗНАЧЕН и ОТВОРЕН 
-ОТНОВО. Когато търсите за [% terms.bugs %], които са били разрешени или
+Подразбиращото се състояние за заявки е зададено като [% status_descs.NEW FILTER html %], [% status_descs.ASSIGNED FILTER html %] и 
+[% status_descs.REOPENED FILTER html %]. Когато търсите за [% terms.bugs %], които са били разрешени или
 проверени не забравяйте да зададете полето за състояние подходящо.
 </p>
 
