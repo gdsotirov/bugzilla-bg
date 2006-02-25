@@ -17,6 +17,7 @@
   # Rights Reserved.
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
+  #                 Mark Bickford <markhb@maine.rr.com>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -215,9 +216,9 @@
       <th></th>
       <td>
         <input type="submit" value="        
-          [% IF (last_action == "enter" || last_action == "copy") %]Създаване 
-          [% ELSE %]Запазване на промените 
-          [% END %]">
+          [%- IF (last_action == "enter" || last_action == "copy") %]Създаване 
+          [%- ELSE %]Запазване на промените 
+          [%- END %]">
       </td>
     </tr>
 

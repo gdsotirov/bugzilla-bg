@@ -77,7 +77,7 @@
         
   [% ELSIF error == "chart_dir_nonexistent" %]
     Една от директориите <tt>[% dir FILTER html %]</tt> и 
-    <tt>[% graphdir FILTER html %]</tt> не съществуват.
+    <tt>[% graph_dir FILTER html %]</tt> не съществуват.
   
   [% ELSIF error == "chart_file_open_fail" %]
     Не може да бъде отворен файла с данни за графиката <tt>[% filename FILTER html %]</tt>.
@@ -143,11 +143,6 @@
     [% ELSE %]
       [%+ terms.bug %] [%+ bug_id FILTER html %].
     [% END %]
-
-  [% ELSIF error == "invalid_isactive_flag" %]
-    [% title = "Недействителен isactive флаг" %]        
-    Флагът active бе зададен неправилно.  Може да има проблем
-    с [% terms.Bugzilla %] или [% terms.abug %] във вашата търсачка.
 
   [% ELSIF error == "invalid_series_id" %]
     [% title = "Недействителни колони" %]
@@ -217,9 +212,15 @@
     Идентификатора на ключова дума <em>[% id FILTER html %]</em> не може да
     бъде намерен.
 
-  [% ELSIF error == "invalid_user_id" %]
+  [% ELSIF error == "invalid_user" %]
     [% title = "Недействителен потребител" %]
-    Няма потребител с идентификатор <em>[% userid FILTER html %]</em>.
+    [% IF user_id %]
+       Няма потребителска регистрация с номер <em>[% user_id FILTER html %]</em>.
+    [% ELSIF user_login %]
+       Няма потребителска регистрация с потребителско име <em>[% user_login FILTER html %]</em>.
+    [% ELSE %]
+      Не е зададена потребителска регистрация.
+    [% END %]
 
   [% ELSIF error == "missing_bug_id" %]
     Не е зададен идентификатор на [% terms.bug %].
@@ -229,10 +230,6 @@
     нея. Колони: [% series.category FILTER html %] / 
     [%+ series.subcategory FILTER html %] / 
     [%+ series.name FILTER html %].
-    
-  [% ELSIF error == "no_y_axis_defined" %]
-    Не е зададена Y ос при създаването на доклада. X остта е незадължителна,
-    но Y оста е.
     
   [% ELSIF error == "need_quipid" %]
     Необходим е дествителен идентификатор на остроумие.

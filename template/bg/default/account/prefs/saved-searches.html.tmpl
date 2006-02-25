@@ -74,7 +74,7 @@
             Премахване първо от <a href="editwhines.cgi">напомнянията</a>
           [% ELSE %]
             <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-                     [% q.name FILTER html %]">Забравяне</a>
+                     [% q.name FILTER url_quote %]">Забравяне</a>
           [% END %]
         </td>
         <td align="center">

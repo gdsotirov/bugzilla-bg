@@ -77,7 +77,7 @@
               [% change.field %]
             </td>
             <td>
-              [% IF change.removed %]
+              [% IF change.removed.defined %]
                 [% IF change.fieldname == 'estimated_time' ||
                       change.fieldname == 'remaining_time' ||
                       change.fieldname == 'work_time' %]
@@ -94,7 +94,7 @@
               [% END %]
             </td>
             <td>
-              [% IF change.added %]
+              [% IF change.added.defined %]
                 [% IF change.fieldname == 'estimated_time' ||
                       change.fieldname == 'remaining_time' ||
                       change.fieldname == 'work_time' %]

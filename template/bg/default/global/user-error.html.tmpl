@@ -275,11 +275,6 @@
     [% title = "Не е позволено празно име на съставна част" %]
     Не можете да изтриете името на съставната част '[% name FILTER html %]'.
      
-  [% ELSIF error == "component_cant_del_description" %]
-    [% title = "Не е позволено празно описание на съставна част" %]
-    Не можете да изтриете описанието на
-    съставната част '[% name FILTER html %]'.
-
   [% ELSIF error == "component_name_too_long" %]
     [% title = "Името на съставната част е твърде дълго" %]
     Името на съставна част е ограничено до 64 символа. 
@@ -535,9 +530,14 @@
   [% ELSIF error == "illegal_change" %]
     [% title = "Непозволено" %]
     Опитахте се да смените 
-    полето <strong>[% field_descs.$field FILTER html %]</strong> 
-    от <em>[% oldvalue FILTER html %]</em> на 
-    <em>[% newvalue FILTER html %]</em>, но само
+    полето <strong>[% field_descs.$field FILTER html %]</strong>
+    [% IF oldvalue %]
+      от <em>[% oldvalue FILTER html %]</em>
+    [% END %]
+    [% IF newvalue %]
+      на <em>[% newvalue FILTER html %]</em>
+    [% END %] 
+    , но само
     [% IF privs < 3 %]
       назначения по
       [% IF privs < 2 %] или докладвалия [% END %]
@@ -559,11 +559,15 @@
     
   [% ELSIF error == "illegal_email_address" %]
     [% title = "Недействителен адрес за електронна поща" %]
-    Адреса за електронна поща, който въведохте, 
-    (<b>[% addr FILTER html %]</b>) 
-    не премина нашата синтактична проверка за действителен адрес за електронна
-    поща [%+ Param('emailregexpdesc') %].
-    Също така той не трябва да съдържа някой от следващите символи:
+    Адреса за електронна поща, който въведохте (<b>[% addr FILTER html %]</b>) 
+    не премина нашата синтактична проверка за действителен е-пощенски адрес.
+    [% IF default %]
+      Правилен адрес трябва да съдържа точно една '@',
+      и поне една '.' след @-та.
+    [% ELSE %]
+      [%+ Param('emailregexpdesc') %]
+    [% END %]
+    Също така той не трябва да съдържа някой от следните символи:
     <tt>\ ( ) &amp; &lt; &gt; , ; : &quot; [ ]</tt> или някакви непечатими символи.
     
   [% ELSIF error == "illegal_frequency" %]
@@ -592,11 +596,6 @@
   [% ELSIF error == "illegal_series_edit" %]
     Не сте упълномощен да редактирате тези редици. За да направите това
     трябва да сте или техния създател или администратор.
-        
-  [% ELSIF error == "insufficient_data" %]
-    [% title = "Недостатъчно данни" %]
-    Нито една от редиците, които сте избрали, нямат данни свързанис тях,
-    така че графика не може да бъде изчертана.
         
   [% ELSIF error == "insufficient_data_points" %]
     Нямаме достатъчно единици данни за направата на графика (все още).
@@ -644,10 +643,6 @@
     [% title = "Неправилен контекст" %]
     Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
     "файл" или "кръпка").
-
-  [% ELSIF error == "invalid_field_name" %]
-    [% title = "Недействително име на поле" %]
-    Полето "[% name FILTER html %]" е недействително.
 
   [% ELSIF error == "invalid_format" %]
     [% title = "Неправилен формат" %]
@@ -942,6 +937,10 @@
     Трябва да въведете старата си парола, за да промените електронния си
     пощенски адрес.
 
+  [% ELSIF error == "password_change_requests_not_allowed" %]
+    [% title = "Заявките за смяна на парола не са резрешени" %]
+    Системата не е конфигурирана да позволява заявки за смяна на парола.
+
   [% ELSIF error == "passwords_dont_match" %]
     [% title = "Паролите не съвпадат" %]
     Двете пароли които въведохте не съвпадат.
@@ -992,10 +991,6 @@
     За да преназначите [% terms.bug %], трябва да предоставите адреса на
     новия назначен. Ако по невниманите сте изчистили полето
     "Преназначи [% terms.abug %] на", [% Param("browserbugmessage") %].
-
-  [% ELSIF error == "report_access_denied" %]
-    [% title = "Достъпът отказан" %]
-    Нямата необходимите права, за да видите докладите за този продукт.
 
   [% ELSIF error == "require_component" %]
     [% title = "Необходима е съставна част" %]
@@ -1107,11 +1102,6 @@
     версията! Трябва да преназначите тези [% terms.bugs %] на друга версия
     преди да можете да изтриете тази.
 
-  [% ELSIF error == "version_name_too_long" %]
-    [% title = "Твърде дълго име на версия" %]
-    Името на версия е ограничено до 20 символа. 
-    '[% name FILTER html %]' е твърде дълго ([% name.length %] символа).
-
   [% ELSIF error == "version_not_specified" %]
     [% title = "Не е указана версия" %]
     Не е указана версия при опит за редакция на версиите.
@@ -1147,14 +1137,13 @@
     [% title = "Грешен белег" %]
     Белега не може да бъде използван за смяна на паролата ви.
 
+  [% ELSIF error == "extern_id_conflict" %]
+    [% title = "Конфликт с външен номер" %]
+    Някой с различен външен номер има този адрес.
+
   [% ELSIF error == "wrong_token_for_confirming_email_change" %]
     [% title = "Грешен белег" %]
     Белега не може да бъде използван за смяна на е-пощенския ви адрес.
-
-  [% ELSIF error == "value_out_of_range" %]
-    [% title = "Стойност извън обхвата" %]
-    Стойността на полето <em>[% field_descs.$field FILTER html %]</em>
-    е извън обхвата.
 
   [% ELSIF error == "zero_length_file" %]
     [% title = "Файлът е празен" %]
@@ -1205,7 +1194,7 @@
   <p>  
     Можете също и да    
     <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-                  [% namedcmd FILTER html %]">забравите</a>
+                  [% namedcmd FILTER url_quote %]">забравите</a>
                   
     [% FOREACH q = Bugzilla.user.queries %]
       [% IF q.name == namedcmd %]

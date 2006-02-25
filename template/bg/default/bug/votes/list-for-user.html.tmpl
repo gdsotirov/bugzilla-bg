@@ -90,18 +90,17 @@
         [% END %]
         <tr>
           <th>[% product.name FILTER html %]</th>
-          <td></td>
-          [% IF product.maxperbug < product.maxvotes AND
-                product.maxperbug > 1 %]
-            <td>
+          <td colspan="3">
+            [% IF product.maxperbug < product.maxvotes AND
+                  product.maxperbug > 1 %]
               <font size="-1">
                 (Забележка: само [% product.maxperbug %] глас
                 [% "а" IF product.maxperbug != 1 %] за [% terms.bug %]
                 [% IF product.maxperbug != 1 %]са[% ELSE %]е[% END %]
-                разрешен[% "и" IF product.maxperbug != 1 %] в този продукт.)
+                 разрешен[% "и" IF product.maxperbug != 1 %] в този продукт.)
               </font>
-            </td>
-          [% END %]
+            [% END %]
+          </td>
         </tr>
 
         [% FOREACH bug = product.bugs %]
@@ -122,7 +121,7 @@
                 [% bug.count %]
               [% END %]
             </a></td>
-            <td align="right">
+            <td align="center">
               [% isclosed = !bug.opened %]
                 <a href="show_bug.cgi?id=[% bug.id %]">
                   [% bug.id FILTER closed(isclosed) %]</a>

@@ -20,7 +20,7 @@
   #                 Gervase Markham <gerv@gerv.net>
   #%]
 
-[% PROCESS global/variables.none.tmpl %]
+[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% PROCESS global/header.html.tmpl
   title = "Пълнотекстов списък на $terms.bug"
@@ -78,8 +78,10 @@
     <tr>
       [% PROCESS cell attr = { description => "ОС/Версия",
                                name => "op_sys" } %]
-      [% PROCESS cell attr = { description => "Състояние",
-                               name => "bug_status" } %]
+      <td>
+        <b>Състояние:</b>&nbsp;
+        [% status_descs.${bug.bug_status} FILTER html %]
+      </td>                        name => "bug_status" } %]
       [% PROCESS cell attr = { description => "Суровост",
                                name => "bug_severity" } %]
       [% PROCESS cell attr = { description => "Приоритет",
@@ -87,8 +89,10 @@
     </tr>
 
     <tr>
-      [% PROCESS cell attr = { description => "Решение",
-                               name => "resolution" } %]
+      <td>
+        <b>Решение:</b>&nbsp;
+        [% resolution_descs.${bug.resolution} FILTER html %]
+      </td>                      name => "resolution" } %]
       <td>
         <b>Назначен на:</b>&nbsp;
         [% bug.assigned_to.login FILTER html %]

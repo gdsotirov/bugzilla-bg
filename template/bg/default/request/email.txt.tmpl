@@ -18,6 +18,7 @@
   #
   # Contributor(s):     Myk Melez <myk@mozilla.org>
   #                     Jeff Hedlund <jeff.hedlund@matrixsi.com>
+  #                     Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -25,22 +26,19 @@
 [% bugidsummary = flag.target.bug.id _ ': ' _ flag.target.bug.summary %]
 [% attidsummary = flag.target.attachment.id _ ': ' _
                   flag.target.attachment.summary %]
-[% statuses = { '+' => "granted" , '-' => 'denied' , 'X' => "cancelled" ,
-                '?' => "asked" } %]
+[% statuses = { '+' => "разрешен" , '-' => 'отказан' , 'X' => "отхвърлен" ,
+                '?' => "заявен" } %]
 [% IF flag.status == '?' %]
-   [% to_email = flag.requestee.email 
-                 IF flag.requestee.wants_mail([constants.EVT_FLAG_REQUESTED]) %]
-   [% to_identity = flag.requestee.identity %]
-   [% subject_status = "Поискан" %]
+  [% to_identity = flag.addressee.identity _ " за" %]
+  [% subject_status = "requested" %]
 [% ELSE %]
-   [% to_email = flag.setter.email 
-                    IF flag.setter.wants_mail([constants.EVT_REQUESTED_FLAG]) %]
-   [% to_identity = "Заявка на " _ flag.setter.identity %]
-   [% subject_status = statuses.${flag.status} %]
+  [% IF flag.addressee %]
+    [% "заявката на " _ to_identity = flag.addressee.identity _ " за" %]
+  [% END %]
+  [% subject_status = statuses.${flag.status} %]
 [% END %]
 From: bugzilla-request-daemon
-To: [% to_email %]
-CC: [% flag.type.cc_list %]
+To: [% to %]
 Subject: [% flag.type.name %] [%+ subject_status %]: [[% terms.Bug %] [%+ flag.target.bug.id %]] [% flag.target.bug.summary %]
 [%- IF flag.target.attachment.exists %] :
   [Приставка [% flag.target.attachment.id %]] [% flag.target.attachment.summary %][% END %]

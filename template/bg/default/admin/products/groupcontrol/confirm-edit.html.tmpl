@@ -36,7 +36,7 @@
 групата '[% group.name FILTER html %]' влияе на [% group.count %]&nbsp;
 [% terms.bugs %], за които тя не е приложима вече и ще бъде
 премахната.[% END %]
-<form method="post" >
+<form action="editproducts.cgi" method="post" >
 
   [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
 

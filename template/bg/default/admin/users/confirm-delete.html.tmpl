@@ -131,251 +131,289 @@
 
   <h2>Потвърждение</h2>
 
-  [% IF reporter || assignee_or_qa || bug_activity || cc || flags.requestee ||
-        flags.setter || longdescs || namedqueries || profiles_activity || series ||
-        votes || watch.watched || watch.watcher || whine_events || whine_schedules %]
-    <ul class="warningmessages">
-      [% IF reporter %]
-        <li>
-          [% otheruser.login FILTER html %]
-          <a href="buglist.cgi?emailreporter1=1&amp;emailtype1=exact&amp;email1=[% otheruser.login FILTER url_quote %]">е докладвал
-          [% IF reporter == 1 %]
-            един [% terms.bug %]
-          [% ELSE %]
-            [%+ reporter %] [%+ terms.abug %]
-          [% END %]</a>.
-          Ако изтриете потребителя таблицата с [% terms.bugs %] в
-          базата данни ще бъде несъгласувана, което ще доведе то това
-          [% IF reporter == 1 %]
-            този [% terms.bug %] да не се показва
-          [% ELSE %]
-            тези [% terms.bugs %] да не се показват
-          [% END %]
-          повече в [% terms.bug %] списъците.
-        </li>
-      [% END %]
-      [% IF assignee_or_qa %]
-        <li>
-          [% otheruser.login FILTER html %]
-          <a href="buglist.cgi?emailassigned_to1=1&amp;emailqa_contact1=1&amp;emailtype1=exact&amp;email1=[% otheruser.login FILTER url_quote %]">има
-          назначение или е качествен контрол по
-          [% IF assignee_or_qa == 1 %]
-            един [% terms.bug %]
-          [% ELSE %]
-            [%+ assignee_or_qa %] [%+ terms.abug %]
-          [% END %]</a>.
-          Ако изтриете потребителя, ролите му ще бъдат прехвърлени на
-          подразбиращото се назначение или подразбиращия се качествен контрол.
-        </li>
-      [% END %]
-      [% IF bugs_activity %]
-        <li>
-          [% otheruser.login FILTER html %] е направил
-          [% IF bugs_activity == 1 %]
-            промяна на [% terms.bug %]
-          [% ELSE %]
-            промени по [% terms.bugs %]
-          [% END %].
-          Ако изтриете потребителя, таблицата с дейността по [% terms.bugs %]те в
-          базата данни ще бъде несъгласувана, което ще доведе до това
-          [% IF bugs_activity == 1 %]
-            тази промяна
-          [% ELSE %]
-            тези промени
-          [% END %]
-          да не се показват повече в журналите с активността по [% terms.bug %].
-        </li>
-      [% END %]
-      [% IF cc %]
-        <li>
-          [% otheruser.login FILTER html %]
-          <a href="buglist.cgi?emailcc1=1&amp;emailtype1=exact&amp;email1=[% otheruser.login FILTER url_quote %]">е
-          в списъка Точно Копие на 
-          [% IF cc == 1 %]
-            един [%+ terms.bug %]
-          [% ELSE %]
-            [%+ cc %] [%+ terms.abug %]
-          [% END %]</a>.
-          Ако изтриете потребителя той ще бъде премахнат от тези списъци.
-        </li>
-      [% END %]
-      [% IF flags.requestee %]
-        <li>
-          [% otheruser.login FILTER html %] has been
-          <a href="buglist.cgi?field0-0-0=requestees.login_name&amp;type0-0-0=equals&amp;value0-0-0=[% otheruser.login FILTER url_quote %]">е поискал
-          задаването на
-          [% IF flags.requestee == 1 %]
+  [% display_warning = 0 %]
+
+  [% IF reporter || bug_activity || flags.setter || longdescs || profiles_activity %]
+    <div class="criticalmessages">
+      <p>Следващите изтривания са <b>силно непрепоръчителни</b> и
+      ще създадат непълноти в цялоста на връзките!</p>
+
+      <ul>
+        [% IF reporter %]
+          <li>
+            [% otheruser.login FILTER html %]
+            <a href="buglist.cgi?emailreporter1=1&amp;emailtype1=exact&amp;email1=
+               [%- otheruser.login FILTER url_quote %]">е докладвал
+            [% IF reporter == 1 %]
+              един [% terms.bug %]
+            [% ELSE %]
+              [%+ reporter %] [%+ terms.abug %]
+            [% END %]</a>.
+            Ако изтриете потребителя таблицата с [% terms.bugs %] в
+            базата данни ще бъде несъгласувана, което ще доведе то това
+            [% IF reporter == 1 %]
+              този [% terms.bug %] да не се показва
+            [% ELSE %]
+              тези [% terms.bugs %] да не се показват
+            [% END %]
+            повече в [% terms.bug %] списъците.
+          </li>
+        [% END %]
+        [% IF bugs_activity %]
+          <li>
+            [% otheruser.login FILTER html %] е направил
+            [% IF bugs_activity == 1 %]
+              промяна на [% terms.bug %]
+            [% ELSE %]
+              промени по [% terms.bugs %]
+            [% END %].
+            Ако изтриете потребителя, таблицата с дейността по [% terms.bugs %]те в
+            базата данни ще бъде несъгласувана, което ще доведе до това
+            [% IF bugs_activity == 1 %]
+              тази промяна да не се показва
+            [% ELSE %]
+              тези промени да не се показват
+            [% END %]
+            повече в журналите с активността по [% terms.bug %].
+          </li>
+        [% END %]
+        [% IF flags.setter %]
+          <li>
+            [% otheruser.login FILTER html %] има
+            <a href="buglist.cgi?field0-0-0=setters.login_name&amp;type0-0-0=equals&amp;value0-0-0=
+               [%- otheruser.login FILTER url_quote %]">е задал
+            или е поискал задаването на
+            [% IF flags.setter == 1 %]
             флаг
-          [% ELSE %]
-            [% flags.requestee %] флага
-          [% END %]</a>.
-          Ако изтриете потребителя,
-          [% IF flags.requestee == 1 %]
-            този флаг
-          [% ELSE %]
-            тези флагове
-          [% END %]
-          ще станат с неопределен заявител.
-        </li>
-      [% END %]
-      [% IF flags.setter %]
-        <li>
-          [% otheruser.login FILTER html %] has
-          <a href="buglist.cgi?field0-0-0=setters.login_name&amp;type0-0-0=equals&amp;value0-0-0=[% otheruser.login FILTER url_quote %]">е задал
-          или поискал задаването на
-          [% IF flags.setter == 1 %]
-            флаг
-          [% ELSE %]
-            [%+ flags.setter %] флага
-          [% END %]</a>.
-          Ако изтриете потребителя таблицата с флагове в базата данни
-          ще бъде несъгласувана, което ще доведе до това
-          [% IF flags.setter == 1 %]
-            този флаг
-          [% ELSE %]
-            тези флагове
-          [% END %]
-          повече да не се показват правилно.
-        </li>
-      [% END %]
-      [% IF longdescs %]
-        <li>
-          [% otheruser.login FILTER html %] has
-          <a href="buglist.cgi?emaillongdesc1=1&amp;emailtype1=exact&amp;email1=[% otheruser.login FILTER url_quote %]">е коментирал
-          [% IF longdescs == 1 %]
-            веднъж по [% terms.bug %]
-          [% ELSE %]
-            [%+ longdescs %] пъти по [% terms.bugs %]
-          [% END %]</a>.
-          Ако изтриете потребителя таблицата с коментари в базата данни
-          ще бъде несъгласувана, което ще доведе до това
-          [% IF longdescs == 1 %]
-            този коментар
-          [% ELSE %]
-            тези коментари
-          [% END %]
-          да не са виждат повече.
-        </li>
-      [% END %]
-      [% IF namedqueries %]
-        <li>
-          [% otheruser.login FILTER html %]
-          има
-          [% IF namedqueries == 1 %]
-            именована заявка
-          [% ELSE %]
-            [%+ namedqueries %] именовани заявки
-          [% END %].
-          [% IF namedqueries == 1 %]
-            Тази именована заявка
-          [% ELSE %]
-            Тези именовани заявки
-          [% END %]
-          ще бъдат изтрити заедно с потребителя.
-        </li>
-      [% END %]
-      [% IF profiles_activity %]
-        <li>
-          [% otheruser.login FILTER html %] е направил
-          [% IF bugs_activity == 1 %]
-            промяна по профила на друг потребител
-          [% ELSE %]
-            промени по профила на други потребители
-          [% END %].
-          Ако изтриете потребителя таблицата с дейността по профилите на потребителите в
-          базата данни ще бъде несъгласувана.
-        </li>
-      [% END %]
-      [% IF series %]
-        <li>
-          [% otheruser.login FILTER html %] е създал
-          [% IF series == 1 %]
-            редица
-          [% ELSE %]
-            [%+ series %] редици
-          [% END %].
-          [% IF series == 1 %]
-            Тази редица
-          [% ELSE %]
-            Тези редици
-          [% END %]
-          ще бъдат изтрити заедно с потребителя.
-        </li>
-      [% END %]
-      [% IF votes %]
-        <li>
-          [% otheruser.login FILTER html %] е гласувал по
-          [% IF votes == 1 %]
-            [%+ terms.bug %]
-          [% ELSE %]
-            [%+ votes %] [%+ terms.abugs %]
-          [% END %].
-          Ако изтриете потребителя,
-          [% IF votes == 1 %]
-            този глас
-          [% ELSE %]
-            тези гласове
-          [% END %]
-          ще бъдат изтрити заедно с него.
-        </li>
-      [% END %]
-      [% IF watch.watched || watch.watcher %]
-        <li>
-          [% otheruser.login FILTER html %]
-          [% IF watch.watched %]
-            е наблюдаван от
-            [% IF watch.watched == 1 %]
-              друг потребител
             [% ELSE %]
-              [%+ watch.watched %] потребители
-            [% END %]
-          [% END %]
-          [% IF watch.watcher %]
-            [%+ 'и' IF watch.watched %]
-            наблюдава
-            [% IF watch.watcher == 1 %]
-              друг потребител
+              [%+ flags.setter %] флага
+            [% END %]</a>.
+            Ако изтриете потребителя таблицата с флагове в базата данни
+            ще бъде несъгласувана, което ще доведе до това
+            [% IF flags.setter == 1 %]
+              този флаг
             [% ELSE %]
-              [%+ watch.watcher %] потребителя
+              тези флагове
             [% END %]
-          [% END %].
-          [% IF watch.watched + watch.watcher == 1 %]
-            Това наблюдение ще бъде прекратено
-          [% ELSE %]
-            тези наблюдения ще бъдат прекратени
-          [% END %]
-          заедно с изтриването на потребителя.
-        </li>
-      [% END %]
-      [% IF whine_events || whine_schedules %]
-        <li>
-          [% otheruser.login FILTER html %]
-          [% IF whine_events %]
-            е насрочил
-            [% IF whine_events == 1 %]
-              известяване
+            повече да не се показват правилно.
+          </li>
+        [% END %]
+        [% IF longdescs %]
+          <li>
+            [% otheruser.login FILTER html %] има
+            <a href="buglist.cgi?emaillongdesc1=1&amp;emailtype1=exact&amp;email1=
+               [%- otheruser.login FILTER url_quote %]">е коментирал
+            [% IF longdescs == 1 %]
+              веднъж по [% terms.bug %]
             [% ELSE %]
-              [%+ whine_events %] известявания
-            [% END %]
-          [% END %]
-          [% IF whine_schedules %]
-            [%+ 'and' IF whine_events %]
-            е получател на
-            [% IF whine_schedules == 1 %]
-              известие
+              [%+ longdescs %] пъти по [% terms.bugs %]
+            [% END %]</a>.
+            Ако изтриете потребителя таблицата с коментари в базата данни
+            ще бъде несъгласувана, което ще доведе до това
+            [% IF longdescs == 1 %]
+              този коментар да не се вижда
             [% ELSE %]
-              [%+ whine_schedules %] известия
+              тези коментари да не се виждат
             [% END %]
-          [% END %].
-          [% IF whine_events + whine_schedules == 1 %]
-            Това известие
-          [% ELSE %]
-            Тези известия
-          [% END %]
-          ще бъдат изтрити заедно с потребителя.
-        </li>
-      [% END %]
-    </ul>
+            повече.
+          </li>
+        [% END %]
+        [% IF profiles_activity %]
+          <li>
+            [% otheruser.login FILTER html %] е направил
+            [% IF bugs_activity == 1 %]
+              промяна по профила на друг потребител
+            [% ELSE %]
+              промени по профила на други потребители
+            [% END %].
+            Ако изтриете потребителя таблицата с дейността по профилите на потребителите в
+            базата данни ще бъде несъгласувана.
+          </li>
+        [% END %]
+      </ul>
+    </div>
+    [% display_warning = 1 %]
+  [% END %]
+
+  [% IF assignee_or_qa || cc || email_setting || flags.requestee ||
+        namedqueries || profile_setting || series || votes || watch.watched ||
+        watch.watcher || whine_events || whine_schedules %]
+    <div class="warningmessages">
+      <p>Следващите изтривания са <b>безопасни</b> и няма да създадат
+      непълноти в цялоста на връзките.</p>
+
+      <ul>
+        [% IF assignee_or_qa %]
+          <li>
+            [% otheruser.login FILTER html %]
+            <a href="buglist.cgi?emailassigned_to1=1&amp;emailqa_contact1=1&amp;emailtype1=exact&amp;email1=
+               [%- otheruser.login FILTER url_quote %]">има
+            назначен или е качествен контрол по
+            [% IF assignee_or_qa == 1 %]
+              един [% terms.bug %]
+            [% ELSE %]
+              [%+ assignee_or_qa %] [%+ terms.abug %]
+            [% END %]</a>.
+            Ако изтриете потребителя, ролите му ще бъдат прехвърлени на
+            подразбиращия се назначен или подразбиращия се качествен контрол.
+          </li>
+        [% END %]
+        [% IF cc %]
+          <li>
+            [% otheruser.login FILTER html %]
+            <a href="buglist.cgi?emailcc1=1&amp;emailtype1=exact&amp;email1=
+               [%- otheruser.login FILTER url_quote %]">е
+            в списъка Точно Копие на 
+            [% IF cc == 1 %]
+              [%+ terms.bug %]
+            [% ELSE %]
+              [%+ cc %] [%+ terms.abug %]
+            [% END %]</a>.
+            Ако изтриете потребителя той ще бъде премахнат от тези списъци.
+          </li>
+        [% END %]
+        [% IF email_setting %]
+          <li>
+            Настройките за поща на потребителя ще бъдат изтрити заедно с него.
+          </li>
+        [% END %]
+        [% IF flags.requestee %]
+          <li>
+            [% otheruser.login FILTER html %] has been
+            <a href="buglist.cgi?field0-0-0=requestees.login_name&amp;type0-0-0=equals&amp;value0-0-0=
+               [% otheruser.login FILTER url_quote %]">е поискал
+            задаването на
+            [% IF flags.requestee == 1 %]
+              флаг
+            [% ELSE %]
+              [% flags.requestee %] флага
+            [% END %]</a>.
+            Ако изтриете потребителя,
+            [% IF flags.requestee == 1 %]
+              този флаг ще стане
+            [% ELSE %]
+              тези флагове ще станат
+            [% END %]
+            с неопределен заявител.
+          </li>
+        [% END %]
+        [% IF namedqueries %]
+          <li>
+            [% otheruser.login FILTER html %] има
+            [% IF namedqueries == 1 %]
+              именована заявка
+            [% ELSE %]
+              [%+ namedqueries %] именовани заявки
+            [% END %].
+            [% IF namedqueries == 1 %]
+              Тази именована заявка ще бъде изтрита
+            [% ELSE %]
+              Тези именовани заявки ще бъдат изтрити
+            [% END %]
+            заедно с него.
+          </li>
+        [% END %]
+        [% IF profile_setting %]
+          <li>
+            Потребителските предпочитания ще бъдат изтрити заедно с регистацията
+            на потребителя.
+          </li>
+        [% END %]
+        [% IF series %]
+          <li>
+            [% otheruser.login FILTER html %] е създал
+            [% IF series == 1 %]
+              редица
+            [% ELSE %]
+              [%+ series %] редици
+            [% END %].
+            [% IF series == 1 %]
+              Тази редица ще бъде изтрита
+            [% ELSE %]
+              Тези редици ще бъдат изтрити
+            [% END %]
+            заедно с него.
+          </li>
+        [% END %]
+        [% IF votes %]
+          <li>
+            [% otheruser.login FILTER html %] е гласувал по
+            [% IF votes == 1 %]
+              [%+ terms.bug %]
+            [% ELSE %]
+              [%+ votes %] [%+ terms.abugs %]
+            [% END %].
+            Ако изтриете потребителя,
+            [% IF votes == 1 %]
+              този глас ще бъде изтрит
+            [% ELSE %]
+              тези гласове ще бъдат изтрити
+            [% END %]
+            заедно с него.
+          </li>
+        [% END %]
+        [% IF watch.watched || watch.watcher %]
+          <li>
+            [% otheruser.login FILTER html %]
+            [% IF watch.watched %]
+              е наблюдаван от
+              [% IF watch.watched == 1 %]
+                друг потребител
+              [% ELSE %]
+                [%+ watch.watched %] потребители
+              [% END %]
+            [% END %]
+            [% IF watch.watcher %]
+              [%+ 'и' IF watch.watched %]
+              наблюдава
+              [% IF watch.watcher == 1 %]
+                друг потребител
+              [% ELSE %]
+                [%+ watch.watcher %] потребителя
+              [% END %]
+            [% END %].
+            [% IF watch.watched + watch.watcher == 1 %]
+              Наблюдението ще бъде прекратено
+            [% ELSE %]
+              Наблюденията ще бъдат прекратени
+            [% END %]
+            заедно с изтриването му.
+          </li>
+        [% END %]
+        [% IF whine_events || whine_schedules %]
+          <li>
+            [% otheruser.login FILTER html %]
+            [% IF whine_events %]
+              е насрочил
+              [% IF whine_events == 1 %]
+                известяване
+              [% ELSE %]
+                [%+ whine_events %] известявания
+              [% END %]
+            [% END %]
+            [% IF whine_schedules %]
+              [%+ 'и' IF whine_events %]
+              е получател на
+              [% IF whine_schedules == 1 %]
+                известие
+              [% ELSE %]
+                [%+ whine_schedules %] известия
+              [% END %]
+            [% END %].
+            [% IF whine_events + whine_schedules == 1 %]
+              Това известие ще бъде изтрито
+            [% ELSE %]
+              Тези известия ще бъдат изтрити
+            [% END %]
+            заедно с него.
+          </li>
+        [% END %]
+      </ul>
+    </div>
+    [% display_warning = 1 %]
+  [% END %]
+
+  [% IF display_warning %]
     <p class="areyoureallyreallysure">
       Моля, имайте в предвид последиците преди да продължите.
     </p>
