@@ -133,7 +133,6 @@
 ],
 
 'reports/report-table.csv.tmpl' => [
-  'num_bugs',
   'data.$tbl.$col.$row',
   'colsepchar',
 ],
@@ -310,6 +309,7 @@
 'bug/comments.html.tmpl' => [
   'comment.isprivate', 
   'comment.when', 
+  'bug.bug_id',
 ],
 
 'bug/dependency-graph.html.tmpl' => [

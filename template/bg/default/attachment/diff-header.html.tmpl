@@ -243,12 +243,12 @@ tbody.file pre:empty {
   [% IF headers %]
     <a href="[% PROCESS viewurl id=attachid %]">Преглед</a>
     | <a href="[% PROCESS editurl id=attachid %]">Редактиране</a>
-    | <a href="[% PROCESS diffurl id=attachid %]&amp;context=[% context FILTER html %]&amp;collapsed=[% collapsed FILTER html %]&amp;headers=[% headers FILTER html %]&amp;format=raw">Сравняване</a>
+    | <a href="[% PROCESS diffurl id=attachid %]&amp;context=[% context FILTER url_quote %]&amp;collapsed=[% collapsed FILTER url_quote %]&amp;headers=[% headers FILTER url_quote %]&amp;format=raw">Сравняване</a>
   [% END %]
   [% IF other_patches.size > 0 %]
     [% IF headers %] |[%END%]
     Разлики между
-    <form style="display: inline" action="">
+    <form style="display: inline" action="attachment.cgi">
       <select name="oldid">
       [% FOREACH patch = other_patches %]
         <option value="[% patch.id %]"
@@ -287,12 +287,12 @@ tbody.file pre:empty {
   [% IF context == "patch" %]
     (<strong>Кръпка</strong> / 
   [% ELSE %]
-    (<a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER html %]">Кръпка</a> / 
+    (<a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER url_quote %]">Кръпка</a> / 
   [% END %]
   [% IF context == "file" %]
     <strong>Файл</strong> /
   [% ELSE %]
-    <a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER html %]&amp;context=file">Файл</a> / 
+    <a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER url_quote %]&amp;context=file">Файл</a> / 
   [% END %]
 
   [% IF context == "patch" || context == "file" %]
@@ -319,7 +319,7 @@ tbody.file pre:empty {
 [% END %]
  
 [%# Restore Stuff %]
-<form name="checkboxform" action="">
+<form name="checkboxform" action="attachment.cgi">
 <input type="checkbox" name="restore_indicator" style="display: none">
 
 

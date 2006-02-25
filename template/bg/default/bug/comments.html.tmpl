@@ -77,10 +77,13 @@
         <table>
           <tr>
             <td align="left">
-              <b><a name="c0" href="#c0">Описание</a>:</b>&nbsp;&nbsp;<script 
-                type="text/javascript"><!-- 
-                  addReplyLink(0);
-                //--></script>
+              <b><a name="c0" href="show_bug.cgi?id=[% bug.bug_id %]#c0">
+                 Описание</a>:</b>&nbsp;&nbsp;
+                [% IF mode == "edit" %]
+                  [%%]<script type="text/javascript"><!-- 
+                    addReplyLink(0);
+                  //--></script>
+                [% END %]
             </td>
             <td align="left" width="30%">
               <b>Отворен:</b> [% bug.creation_ts FILTER time %]
@@ -90,8 +93,9 @@
       [% ELSE %]
         <br>
         <span class="bz_comment">
-          ------- <i>Допълнителен коментар
-          <a name="c[% count %]" href="#c[% count %]">№[% count %]</a> от 
+          ------- <i>Коментар
+          <a name="c[% count %]" href="show_bug.cgi?id=[% bug.bug_id %]#c[% count %]">
+             №[% count %]</a> От 
           <a href="mailto:[% comment.email FILTER html %]">
             [% comment.name FILTER html %]</a>
           [%+ comment.time FILTER time %] 
@@ -130,7 +134,7 @@
     [% wrapped_comment = comment.body FILTER wrap_comment %]
 [% END %]
 <pre[% ' id="comment_text_' _ count _ '"' IF mode == "edit" %]>
-  [%- wrapped_comment FILTER quoteUrls -%]
+  [%- wrapped_comment FILTER quoteUrls(bug.bug_id) -%]
 </pre>
     </div>
   [% END %]

@@ -57,14 +57,14 @@
 <p>
   Добавен(и) коментар(и):
   <blockquote>
-    [% PROCESS "bug/comments.html.tmpl" %]
+    [% PROCESS "bug/comments.html.tmpl" bug = { 'bug_id' => bug_id } %]
   </blockquote>
 </p>
 [% END %]
 
 <p>
   Вашия коментар беше:<br>
-  <blockquote><pre>[% cgi.param("comment") FILTER html %]</pre></blockquote>
+  <blockquote><pre>[% cgi.param("comment") FILTER wrap_comment FILTER html %]</pre></blockquote>
 </p>
 
 <p>
