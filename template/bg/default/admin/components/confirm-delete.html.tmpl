@@ -95,7 +95,7 @@
 </tr>
 <tr>
   <TD VALIGN="top">Затворена за [% terms.bugs %]:</TD>
-  <TD VALIGN="top">[% IF $disallownew %]Yes[% ELSE %]No[% END %]</td>
+  <TD VALIGN="top">[% IF $disallownew %]Да[% ELSE %]Не[% END %]</td>
 </tr>
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
@@ -140,7 +140,7 @@
     <table border="0" cellpadding="20" width="70%" bgcolor="red"><tr><td>
 
       Има [% IF bug_count > 1 %] 
-        въведени [% bug_count %] [%+ terms.аbug %]
+        въведени [% bug_count %] [%+ terms.abug %]
       [% ELSE %]
         въведен [% terms.bug %]
       [% END %]

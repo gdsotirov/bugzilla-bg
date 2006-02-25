@@ -33,7 +33,7 @@
   [% subject_status = "requested" %]
 [% ELSE %]
   [% IF flag.addressee %]
-    [% "заявката на " _ to_identity = flag.addressee.identity _ " за" %]
+    [% to_identity = "заявката на " _ flag.addressee.identity _ " за" %]
   [% END %]
   [% subject_status = statuses.${flag.status} %]
 [% END %]
