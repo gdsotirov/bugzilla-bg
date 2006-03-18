@@ -17,6 +17,7 @@
   # Rights Reserved.
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [%# INTERFACE:
@@ -32,63 +33,41 @@
   # changes_saved: boolean/string. True if the CGI processed form data before 
   #                displaying anything, and can contain an optional custom
   #                message if required (which Perl still evaluates as True).
+  # dont_show_button: boolean. Prevent the display of the "Submit Changes" button.
   #%]
 
 [% filtered_login = user.login FILTER html %]
 [% PROCESS global/header.html.tmpl
    title = "Потребителски настройки"
    h2 = filtered_login
-   style = "td.selected_tab {
-              border-width: 2px 2px 0px;
-              border-style: solid; 
-              border-color: black;
-            }
-            td.unselected_tab, td.spacer {
-              border-width: 0px 0px 2px 0px;
-              border-style: solid; 
-              border-color: black;
-            }"
+   style_urls = ['skins/standard/admin.css']
  %]
 
-[% tabs = [ { name => "account", description => "Регистрационни настройки", 
-              saveable => "1" },
-            { name => "settings", description => "Общи настройки", 
-              saveable => "1" }, 
-            { name => "email", description => "Е-пощенски настройки", 
-              saveable => "1" },
-            { name => "saved-searches", description => "Съхранени търсения", 
-              saveable => "1" },
-            { name => "permissions", description => "Позволения", 
-              saveable => "0" } ] %]
+[% tabs = [ { name => "account", label => "Регистрационни настройки", 
+              link => "userprefs.cgi?tab=account", saveable => "1" },
+            { name => "settings", label => "Общи настройки", 
+              link => "userprefs.cgi?tab=settings", saveable => "1" },
+            { name => "email", label => "Е-пощенски настройки", 
+              link => "userprefs.cgi?tab=email", saveable => "1" },
+            { name => "saved-searches", label => "Съхранени търсения", 
+              link => "userprefs.cgi?tab=saved-searches", saveable => "1" },
+            { name => "permissions", label => "Позволения", 
+              link => "userprefs.cgi?tab=permissions", saveable => "0" } ] %]
 
-<center>
-  <table cellspacing="0" cellpadding="10" border="0" width="100%">
-    <tr>
-      <td class="spacer">&nbsp;</td>
- 
-      [% FOREACH tab = tabs %]
-        [% IF tab.name == current_tab_name %]
-          [% current_tab = tab %]
-          <td align="center" bgcolor="lightblue" class="selected_tab">
-            [% tab.description %]
-          </td>
-        [% ELSE %]
-          <td align="center" bgcolor="#BBBBEE" class="unselected_tab">
-            <a href="userprefs.cgi?tab=[% tab.name %]">[% tab.description %]</a>
-          </td>
-        [% END %]
-       [% END %]
- 
-       <td class="spacer">&nbsp;</td>
-     </tr>
-   </table>
-</center>
+[% FOREACH tab IN tabs %]
+  [% IF tab.name == current_tab_name %]
+    [% current_tab = tab %]
+    [% LAST %]
+  [% END %]
+[% END %]
+
+[% PROCESS global/tabs.html.tmpl %]
 
 [% IF changes_saved %]
   <p>
     <font color="red">
       Промените по 
-      [% current_tab.description FILTER lower %] бяха съхранени.
+      [% current_tab.label FILTER lower %] бяха съхранени.
     </font>
   </p>
   [% IF email_changes_saved %]
@@ -99,30 +78,30 @@
   [% END %]
 [% END %]
 
-<h3>[% current_tab.description %]</h3>
+<h3>[% current_tab.label %]</h3>
 
-<form name="userprefsform" method="post" action="userprefs.cgi">
-  <input type="hidden" name="tab" value="[% current_tab.name %]">
+[% IF current_tab.saveable %]
+  <form name="userprefsform" method="post" action="userprefs.cgi">
+    <input type="hidden" name="tab" value="[% current_tab.name %]">
+[% END %]
 
-  [% PROCESS "account/prefs/${current_tab.name}.html.tmpl" 
-                                                 IF current_tab.name.defined %]
+[% PROCESS "account/prefs/${current_tab.name}.html.tmpl" 
+                                     IF current_tab.name.defined %]
 
-  [% IF current_tab.saveable %]
+[% IF current_tab.saveable %]
     <input type="hidden" name="dosave" value="1">
 
-    <table>
-      <tr>
-        <td width="150"></td>
-        <td>
-          <input type="submit" value="Изпращане на промените">
-         </td>
-      </tr>
-    </table>
-  [% END %]
-  
-</form>
+    [% UNLESS dont_show_button %]
+      <table>
+        <tr>
+          <td width="150">&nbsp;</td>
+          <td>
+            <input type="submit" value="Изпращане на промените">
+          </td>
+        </tr>
+      </table>
+    [% END %]
+  </form>
+[% END %]
 
 [% PROCESS global/footer.html.tmpl %]
-
-    
-    

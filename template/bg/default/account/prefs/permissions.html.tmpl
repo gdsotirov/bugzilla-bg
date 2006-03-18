@@ -70,6 +70,12 @@
           </table>
         </p>
       [% END %]
+      
+      [% IF user.groups.bz_sudoers %]
+        <br>
+        Член сте на групата <b>bz_sudoers</b>, така че можете да
+        <a href="relogin.cgi?action=prepare-sudo">се представите за някой друг</a>.
+      [% END %]
     </td>
   </tr>
 </table>
