@@ -50,18 +50,28 @@
        name => "sortkey"
        heading => "Ключ за подреждане"
      },
-   ]
+     {
+       name => "action"
+       heading => "Действие"
+       content => "Изтриване"
+       contentlink => delete_contentlink
+     } ]
 %]
 
-[% columns.push({
-     heading => "Действие"
-     content => "Изтриване"
-     contentlink => delete_contentlink
-   }) %]
+[% overrides.action = [ {
+     match_value => "$default"
+     match_field => 'name'
+     override_content => 1
+     content => "(Стойност по подразбиране)"
+     override_contentlink => 1
+     contentlink => undef
+   } ]
+%] 
 
 [% PROCESS admin/table.html.tmpl
      columns = columns
      data = values
+     overrides = overrides
 %]
 
 <p>

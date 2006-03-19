@@ -21,9 +21,11 @@
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
+[% title = BLOCK %]
+  Потвърждаване на промяна на групов контрол за продукта '[%- product.name FILTER html %]'
+[% END %]
 
-[% PROCESS global/header.html.tmpl title="Потвърждение на промяна на групов контрол за продукт \'$product\'" %]
-
+[% PROCESS global/header.html.tmpl title = title %]
 [% FOREACH group = mandatory_groups %]
 <P>
 групата '[% group.name FILTER html %]' влияе на [% group.count %] 
@@ -41,12 +43,12 @@
   [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
 
   <br>
-     Натиснете "Продължение", за да продължите с промените включвайки
+     Натиснете "Продължаване", за да продължите с промените включвайки
      посочените горе. Ако не желаете тези промени използвайте "Назад", за да
      се върнете на предходната страница.
   <p>
     <input type="hidden" name="confirmed" value="confirmed">
-    <input type="submit" value="Продължение">
+    <input type="submit" value="Продължаване">
   </p>
 
 </form>

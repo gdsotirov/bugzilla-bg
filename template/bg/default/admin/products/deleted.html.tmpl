@@ -15,11 +15,16 @@
   #
   #%]
 
+[%# INTERFACE:
+  # product: Bugzilla::Product object; The product
+  #
+  #%]
+
 [% PROCESS global/header.html.tmpl
   title = 'Изтриване на продукт'
 %]
 
-[% IF nb_bugs %]
+[% IF product.bug_count %]
   Всички обръщения към изтритите [% terms.bugs %] бяха премахнати.
 [% END %]
 
@@ -35,7 +40,7 @@
 </p>
 
 <p>
-  Продукта [% product FILTER html %] бе изтрит.
+  Продукта [% product.name FILTER html %] бе изтрит.
 </p>
 
 [% PROCESS admin/products/footer.html.tmpl

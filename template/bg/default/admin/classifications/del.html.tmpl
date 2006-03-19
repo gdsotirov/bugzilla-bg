@@ -30,13 +30,13 @@
 
 </tr><tr>
   <td valign="top">Класификация:</td>
-  <td valign="top">[% classification FILTER html %]</td>
+  <td valign="top">[% classification.name FILTER html %]</td>
 
 </tr><tr>
   <td valign="top">Описание:</td>
   <td valign="top">
-    [% IF description %]
-      [% description %]
+    [% IF classification.description %]
+      [% classification.description FILTER none %]
     [% ELSE %]
       <font color="red">липсва описание</font>
     [% END %]
@@ -51,7 +51,7 @@
 <form method=post action="editclassifications.cgi">
   <input type=submit value="Да, изтриване">
   <input type=hidden name="action" value="delete">
-  <input type=hidden name="classification" value="[% classification FILTER html %]">
+  <input type=hidden name="classification" value="[% classification.name FILTER html %]">
 </form>
 
 <p>Обратно към <a href="./">главната страница с [% terms.bugs %]</a>

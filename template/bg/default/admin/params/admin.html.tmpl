@@ -1,0 +1,46 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+[%
+   title = "Административни политики"
+   desc = "Настройка на регистрационна политика"
+%]
+
+[% param_descs = {
+  allowbugdeletion => "Страниците за редакция на продукти, съставни части и версии могат да изтриват " _
+                      "всички свързани $terms.bugs, когато се изтрива продукт (или съставна част или " _
+                      "версия). Тъй като това е доста страшна идея, трябва да включите тази " _
+                      "възможност преди каквито и да било такива изтривания да се случат някога.",
+
+  allowemailchange => "Потребителите могат да променят собствения си е-пощенски адрес през предпочитанията. " _
+                      "Имайте в предвид, че промянта се потвърждава чрез изпращане на електронна поща до двата адреса, така че " _
+                      "включването на тази възможност няма да позволи на потребителите да използват недействителен адрес.",
+
+  allowuserdeletion => "Страниците за редакция на хора Ви давт възможността да изтривате потребителски регистрации. " _
+                       "$terms.Bugzilla ще покаже предупреждение в случай, че ще влезете в несъгласуваности " _
+                       "преди да направите това, но такива изтривания остават някак страшни. " _
+                       "Така че трябва да включите тази възможност преди каквито и да било такива изтривания " _
+                       "да се случат някога.",
+
+  supportwatchers => "Поддръжка на наблюдаването от един потребител (напр. получавне на екземпляри на цялата свръзана " _
+                     "електронна поща) на ${terms.bugs}те на друг. Полезно за хора излизащи в " _
+                     "отпуска и хора от качествения контрол наблюдаващи определени ${terms.bugs} на разработчик." }
+%]

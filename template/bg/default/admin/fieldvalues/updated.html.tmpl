@@ -24,9 +24,11 @@
   # value & updated_value: the name of the field value
   # sortkey & updated_sortkey: the field value sortkey
   # field: string; the field that the value belongs to
+  # default_value_updated: boolean; whether the default value for
+  #                        this field has been updated
   #%]
   
-[% title = BLOCK %]Осъвременяване на стойността '[% value FILTER html %]' за полето
+[% title = BLOCK %]Осъвременяване на стойността '[% value FILTER html %]' на полето
                    '[% field FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -34,6 +36,10 @@
 
 [% IF updated_value %]
   <p>Стойността на полето бе осъвременена на: '[% value FILTER html %]'.</p>
+  [% IF default_value_updated %]
+    <p>Имайте в предвид, че тази стойност е стойността по подразбиране за полето.
+    Всички обръщения към стойността по подразбиране вече ще сочат към тази нова стойност.</p>
+  [% END %]
 [% END %]
 
 [% IF updated_sortkey %]

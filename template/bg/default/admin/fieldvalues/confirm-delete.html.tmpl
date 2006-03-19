@@ -20,6 +20,8 @@
   # value_count: number; The number of values left for this field, including
   #              this value.
   # field: string; The name of the field.
+  # param_name: string; The name of the parameter (defaultxxx) associated
+  #             with the field.
   #%]
 
 [% title = BLOCK %]Изтриване на стойността '[% value FILTER html %]' за полето 
@@ -27,6 +29,7 @@
 
 [% PROCESS global/header.html.tmpl
   title = title
+  style_urls = ['skins/standard/admin.css']
 %]
 
 <table border="1" cellpadding="4" cellspacing="0">
@@ -57,49 +60,58 @@
 </table>
 
 <h2>Потвърждение</h2>
-  
-[% IF bug_count %]
 
-    Съжалявам, има
+[% IF (Param(param_name) == value) || bug_count || (value_count == 1) %]
 
-    [% IF bug_count > 1 %] 
-      [% bug_count FILTER html %] [%+ terms.abug %] за които
-    [% ELSE %]
-      [% bug_count FILTER html %] [%+ terms.bug %] за който
+  <p>Съжалявам, но стойността '[% value FILTER html %]' не може да бъде изтрита
+  от полето '[% field FILTER html %]' поради следната(ите) причина(и):</p>
+
+  <ul class="warningmessages">
+    [% IF Param(param_name) == value %]
+      <li>'[% value FILTER html %]' is the default value for
+          the '[% field FILTER html %]' field.
+          [% IF user.groups.tweakparams %]
+            You first have to <a href="editparams.cgi?section=bugfields#
+            [%- param_name FILTER url_quote %]">change the default value</a> for
+            this field before you can delete this value.
+          [% END %]
     [% END %]
 
-    тази стойност е все още зададена в полето. Трябва да смените стойността в полето на
-    <a title="Списък на [% terms.bugs %], където '[% field FILTER html %]' е '[% value FILTER html %]'"
-       href="buglist.cgi?[% field FILTER url_quote %]=[%- value FILTER url_quote %]">
-    [% IF bug_count > 1 %]
-       тези [% terms.bugs %] 
-    [% ELSE %]
-       този [% terms.bug %]
+    [% IF bug_count %]
+      <li>Има
+          [% IF bug_count > 1 %] 
+             [% bug_count FILTER html %] [%+ terms.abug %] 
+          [% ELSE %]
+             1 [% terms.bug %] 
+          [% END %]
+          с тази стойност в полето. Трябва да смените стойността в полето на
+          <a title="Списък на [% terms.bugs %], където '[% field FILTER html %]' е '[% value FILTER html %]'"
+             href="buglist.cgi?[% field FILTER url_quote %]=[% value FILTER url_quote %]">
+            [% IF bug_count > 1 %]
+              тези [% terms.bugs %] 
+            [% ELSE %]
+              този [% terms.bug %]
+            [% END %]
+          </a>
+          с друга преди да можете да я изтриете.
     [% END %]
-    </a>
-    с друга преди да я изтриете.
 
-[% END %]
+    [% IF value_count == 1 %]
+      <li>'[% value FILTER html %]' е последната стойност за
+          '[%- field FILTER html %]', така че не може да бъде изтрита.
+    [% END %]
+  </ul>
 
-[% IF value_count == 1 %]
+[% ELSE %]
 
-    <p>Съжалявам, но стойността '[% value FILTER html %]' е последната за
-    полето '[%- field FILTER html %]', така че не може да бъде изтрита.</p>
+  <p>Наистина ли желаете да изтриете тази стойност?<p>
 
-  [% ELSE %]
-
-    [% IF bug_count == 0 %]
-
-      <p>Наистина ли желаете да изтриете тази стойност?<p>
-  
-      <form method="post" action="editvalues.cgi">
-        <input type="submit" value="Да, изтриване">
-        <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="field" value="[% field FILTER html %]">
-        <input type="hidden" name="value" value="[% value FILTER html %]">
-      </form>
-
-  [% END %]
+  <form method="post" action="editvalues.cgi">
+    <input type="submit" value="Да, изтриване">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="field" value="[% field FILTER html %]">
+    <input type="hidden" name="value" value="[% value FILTER html %]">
+  </form>
 
 [% END %]
 

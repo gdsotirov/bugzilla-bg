@@ -1,0 +1,46 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+[%
+   title = "<abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr>"
+   desc = "Тази секция трябва да бъде оформена преди избора на <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr>, като метод за удостоверяване"
+%]
+
+[% param_descs = {
+  LDAPserver => "Името (и незадължително порта) на вашия <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър " _
+                "(напр. ldap.company.com или ldap.company.com:<номер на порт>).",
+
+  LDAPbinddn => "Ако вашия <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър изисква да използвате потребителско име (binddn) и парола " _
+                "вместо да позволява анонимно свързване, въведете ги тук " _
+                "(напр. cn=default,cn=<потребител>:<парола>). " _
+                "Оставете празно за нормалния случай на анонимно свързване.",
+
+  LDAPBaseDN => "BaseDN срещу който да се удостоверяват потребителите " _
+                "(напр. ou=People,o=Company).",
+
+  LDAPuidattribute => "Името на атрибута съдържащ името за вход на потребителя.",
+
+  LDAPmailattribute => "Името на атрибута на потребител във вашата директория, съдържащ " _
+                       "електронния му пощенски адрес.",
+
+  LDAPfilter => "<abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> филтър, който заедно с <tt>LDAPuidattribute</tt> служи за " _
+                "прецеждане на списъка от действителни потребители." }
+%]

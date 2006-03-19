@@ -1,0 +1,50 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+[%
+   title = "Приставки"
+   desc = "Настройка на възможностите за приставки"
+%]
+
+[% param_descs = {
+  allow_attach_url => "Ако тази възможност е включена ще бъде възможно да " _
+                      "се укаже <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> при създаването на приставка и " _
+                      "разглеждането на този <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> сякаш е приставка.",
+  maxpatchsize => "Максималния размер (в килобайти) на кръпките. $terms.Bugzilla няма да " _
+                  "приема кръпки по-големи по размер от този брой килобайти. " _
+                  "За да примате кръпки с произволен размер (възможни са ограничения от страна " _
+                  "на вашия сървър), задайте тази стойност на 0.",
+
+  maxattachmentsize => "Максималния размер (в килобайти) на приставки, които не са кръпки. " _
+                       "$terms.Bugzilla няма да приема приставки по-големи по размер от този брой " _
+                       "килобайти. За да приемате приставки с произволен размер " _
+                       "(възможни са ограничения от страна на вашия сървър), задайте тази " _
+                       "стойност на 0.",
+
+  maxlocalattachment => "Максималния размер (в мегабайти) за приставки отбелязани " _
+                        "от потребителя като 'Големи файлове', които да бъдат запазени локално на web сървъра. " _
+                        "Ако е зададена нула, приставки никога няма да бъдат пазени върху локалната " _
+                        "файлова система.",
+
+  convert_uncompressed_images => "Ако тази възможност е включена приставки с тип на съдържанието image/bmp " _
+                                 "ще бъдат превърнати в image/png и ще бъдат компресирани преди качването им " _
+                                 "в базата данни за икономия на дисково пространство." }
+%]
