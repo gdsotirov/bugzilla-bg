@@ -25,52 +25,52 @@
 %]
 
 [% param_descs = {
-  letsubmitterchoosepriority => "If this is on, then people submitting $terms.bugs can " _
-                                "choose an initial priority for that ${terms.bug}. " _
-                                "If off, then all $terms.bugs initially have the default " _
-                                "priority selected below.",
+  letsubmitterchoosepriority => "Ако това е включено, тогава хората предаващи $terms.bugs могат " _
+                                "да избират начален приоритет за тях. " _
+                                "Ако е изключено, тогава всички $terms.bugs първоначано имат подразбрания" _
+                                "приоритет избран по-долу.",
 
-  letsubmitterchoosemilestone => "If this is on, then people submitting $terms.bugs can " _
-                                 "choose the Target Milestone for that ${terms.bug}. " _
-                                 "If off, then all $terms.bugs initially have the default " _
-                                 "milestone for the product being filed in.",
+  letsubmitterchoosemilestone => "Ако това е включено, тогава хорат предаващи $terms.bugs могат " _
+                                 "да избират Целевото Събитие за тях. " _
+                                 "Ако е изключено, тогава всички $terms.bugs първоначано имат подразбраното " _
+                                 "събитие за продукта, за който са въвеждани.",
 
-  musthavemilestoneonaccept => "If you are using Target Milestone, do you want to require that " _
-                               "the milestone be set in order for a user to ACCEPT a ${terms.bug}?",
+  musthavemilestoneonaccept => "Ако използвате Целево Събитите, желаете ли да изисквате " _
+                               "задаването на събитие, когато потребител иска да ПРИЕМЕ ${terms.bug}?",
 
-  commentoncreate => "If this option is on, the user needs to enter a description " _
-                     "when entering a new ${terms.bug}.",
+  commentoncreate => "Ако тази възможност е включена, потребителя трябва да въведе описание " _
+                     "при въвеждането на нов ${terms.bug}.",
 
-  commentonaccept => "If this option is on, the user needs to enter a short comment if " _
-                     "he accepts the ${terms.bug}.",
+  commentonaccept => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                     "приема ${terms.abug}.",
 
-  commentonclearresolution => "If this option is on, the user needs to enter a short comment if " _
-                              "the ${terms.bug}'s resolution is cleared.",
+  commentonclearresolution => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                              "решението на ${terms.abug} е изчистено.",
 
-  commentonconfirm => "If this option is on, the user needs to enter a short comment " _
-                      "when confirming a ${terms.bug}.",
+  commentonconfirm => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар " _
+                      "при потвърждаването на ${terms.bug}.",
 
-  commentonresolve => "If this option is on, the user needs to enter a short comment if " _
-                      "the $terms.bug is resolved.",
+  commentonresolve => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                      "$terms.abug е разрешен.",
 
-  commentonreassign => "If this option is on, the user needs to enter a short comment if " _
-                       "the $terms.bug is reassigned.",
+  commentonreassign => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                       "$terms.abug е преназначено.",
 
-  commentonreassignbycomponent => "If this option is on, the user needs to enter a short comment if " _
-                                  "the $terms.bug is reassigned by component.",
+  commentonreassignbycomponent => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                                  "$terms.abug е преназначен на друга съставна част.",
 
-  commentonreopen => "If this option is on, the user needs to enter a short comment if " _
-                     "the $terms.bug is reopened.",
+  commentonreopen => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                     "$terms.abug е отворен отново.",
 
-  commentonverify => "If this option is on, the user needs to enter a short comment if " _
-                     "the $terms.bug is verified.",
+  commentonverify => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                     "$terms.abug е проверен.",
 
-  commentonclose => "If this option is on, the user needs to enter a short comment if " _
-                    "the $terms.bug is closed.",
+  commentonclose => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                    "$terms.abug е затворен.",
 
-  commentonduplicate => "If this option is on, the user needs to enter a short comment " _
-                        "if the $terms.bug is marked as duplicate.",
+  commentonduplicate => "Ако тази възможност е включена, потребителя трябва да въведе кратък коментар ако " _
+                        "$terms.abug е отбелязан като двойник.",
 
-  noresolveonopenblockers => "Don\'t allow $terms.bugs to be resolved as fixed " _
-                             "if they have unresolved dependencies." }
+  noresolveonopenblockers => "Да не се позволява разрешаването на $terms.bugs като оправени " _
+                             "ако имат неразрешени зависимости." }
 %]
