@@ -25,13 +25,13 @@
 %]
 
 [% param_descs = {
-  webdotbase => "It is possible to show graphs of dependent ${terms.bugs}. You may set
-                 this parameter to any of the following:
+  webdotbase => "Възможно е показването на графики на зависими ${terms.bugs}. Можете да зададете
+                 този параметър на едно от следните:
                  <ul>
                    <li>
-                     A complete file path to 'dot' (part of
-                     <a href=\"http://www.graphviz.org\">GraphViz</a>) will
-                     generate the graphs locally.
+                     Пълен файлов път до 'dot' (част от
+                     <a href=\"http://www.graphviz.org\">GraphViz</a>) ще
+                     създава графиките локално.
                    </li>
                    <li>
                      A URL prefix pointing to an installation of the
@@ -39,12 +39,12 @@
                      package</a> will generate the graphs remotely.
                    </li>
                    <li>
-                     A blank value will disable dependency graphing.
+                     Ако полето е празно графиките на зависимостите ще бъдат недостъпни.
                    </li>
                  </ul>
-                 The default value is a publicly-accessible webdot server. If you change
-                 this value, make certain that the webdot server can read files from your
-                 webdot directory. On Apache you do this by editing the .htaccess file,
-                 for other systems the needed measures may vary. You can run checksetup.pl
-                 to recreate the .htaccess file if it has been lost."}
+                 Стойността по подразбиране е публично достъпен webdot сървър. Ако я промените
+                 убедете се, че този webdot сървър може да чете файлове от вашата
+                 webdot папка. На Apache правите това като редактирате .htaccess файла,
+                 за други системи необходимите мерки може да са различни. Можете да пуснете checksetup.pl,
+                 за да създадете наново .htaccess ако е бил загубен."}
 %]

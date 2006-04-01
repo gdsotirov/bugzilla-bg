@@ -26,43 +26,43 @@
 %]
 
 [% param_descs = {
-  maintainer => "The email address of the person who maintains this installation " _
-                "of ${terms.Bugzilla}.",
+  maintainer => "Електронния пощенски адрес на лицето, което поддържа тази инсталация " _
+                "на ${terms.Bugzilla}.",
 
-  urlbase => "The URL that is the common initial leading part of all $terms.Bugzilla " _
-             "URLs.",
+  urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички $terms.Bugzilla " _
+             "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
-  sslbase => "The URL that is the common initial leading part of all HTTPS " _
-             "(SSL) $terms.Bugzilla URLs.",
+  sslbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abr> " _
+             "(<abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>) $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
-  ssl => "Controls when $terms.Bugzilla should enforce sessions to use HTTPS by " _
-         "using <tt>sslbase</tt>.",
+  ssl => "Управлява, кога $terms.Bugzilla трябва да налага използването на <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abr> в сесиите " _
+         "чрез използването на <tt>sslbase</tt>.",
 
-  cookiedomain => "The domain for $terms.Bugzilla cookies. Normally blank. " _
-                  "If your website is at 'www.foo.com', setting this to " _
-                  "'.foo.com' will also allow 'bar.foo.com' to access " _
-                  "$terms.Bugzilla cookies. This is useful if you have more than " _
-                  "one hostname pointing at the same web server, and you " _
-                  "want them to share the $terms.Bugzilla cookie.",
+  cookiedomain => "Областта за бисквитките на $terms.Bugzilla. Нормално празно. " _
+                  "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като " _
+                  "'.foo.com' ще позволи достъп също и на 'bar.foo.com' до " _
+                  "бисквитките на $terms.Bugzilla. Това е ползено ако имате повече от " _
+                  "едно име на хост сочещо към един и същи web сървър и желаете те " _
+                  "да споделят бисквитките на $terms.Bugzilla.",
 
-  cookiepath => "Path, relative to your web document root, to which to restrict " _
-                "$terms.Bugzilla cookies. Normally this is the URI portion of your URL " _
-                "base. Begin with a / (single slash mark). For instance, if " _
-                "$terms.Bugzilla serves from 'http://www.somedomain.com/bugzilla/', set " _
-                "this parameter to /bugzilla/. Setting it to / will allow " _
-                "all sites served by this web server or virtual host to read " _
-                "$terms.Bugzilla cookies.",
+  cookiepath => "Път, относителен спрямо корена на web документите, до който да бъдат ограничени " _
+                "бисквитките на $terms.Bugzilla. Нормано това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
+                "Започва с / (единична наклонена на дясно черта). Например, ако " _
+                "$terms.Bugzilla обслужва от 'http://www.somedomain.com/bugzilla/', задайте " _
+                "този параметър като /bugzilla/. Задаването му като / ще позволи " _
+                "на всички сайтове от този сървър или виртуален хост да четат " _
+                "бисквитките на $terms.Bugzilla.",
 
-  timezone => "The timezone that your database server lives in. If set to '', " _
-              "then the timezone will not be displayed with the timestamps.",
+  timezone => "Времевата зона в която сървъра Ви за бази данни живее. Ако е празени низ, " _
+              "тогава времевата зона няма да бъде показвана с времевите отпечатки.",
 
-  utf8 => "Use UTF-8 (Unicode) encoding for all text in ${terms.Bugzilla}. New " _
-          "installations should set this to true to avoid character encoding " _
-          "problems. Existing databases should set this to true only after " _
-          "the data has been converted from existing legacy character " _
-          "encodings to UTF-8.",
+  utf8 => "Използване на UTF-8 (Уникод) кодиране за всичкия текст в ${terms.Bugzilla}. Новите " _
+          "инсталации трябва да разрешат този параметър, за да предотвратят проблеми с кодирането на " _
+          "знаците. Съществуващите бази данни трябва да разрешат параметъра само след като" _
+          "даните бъдат обърнати от съществуващи наследствени кодирания " _
+          "към UTF-8.",
 
-  shutdownhtml => "If this field is non-empty, then $terms.Bugzilla will be completely " _
-                  "disabled and this text will be displayed instead of all the " _
-                  "$terms.Bugzilla pages." }
+  shutdownhtml => "Ако това поле не е празно, тогава $terms.Bugzilla ще бъде напълно " _
+                  "забранена и този текст ще бъде показван вместо всички " _
+                  "страници на $terms.Bugzilla." }
 %]

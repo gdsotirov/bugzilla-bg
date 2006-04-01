@@ -25,85 +25,85 @@
 %]
 
 [% param_descs = {
-  mail_delivery_method => "Defines how email is sent, or if it is sent at all.<br>
+  mail_delivery_method => "Определя как се изпраща поща или дали се изпраща изобщо.<br>
                            <ul>
                              <li>
-                               'sendmail', 'smtp' and 'qmail' are all MTAs.
-                               You need to install a third-party sendmail replacement if
-                               you want to use sendmail on Windows.
+                               'sendmail', 'smtp' и 'qmail' са всички Агенти Предаващи Поща (<abbr lang=\"en\" title=\"Mail Transfer Agent\">MTA</abbr>).
+                               Ще трябва да инсталирате заместител на sendmail от трета страна ако
+                               желаете да използвате sendmail на Windows.
                              </li>
                              <li>
-                               'testfile' is useful for debugging: all email is stored
-                               in 'data/mailer.testfile' instead of being sent. For more
-                               information, see the Mail::Mailer manual.
+                               'testfile' е полезно за отрстраняване на проблеми: цялата поща се съхранява
+                               в 'data/mailer.testfile' вместо да бъде пращана. За повече
+                               информация вижте упътването на Mail::Mailer модула.
                              </li>
                              <li>
-                               'none' will completely disable email. $terms.Bugzilla continues
-                               to act as though it is sending mail, but nothing is sent or
-                               stored.
+                               'none' ще забрани напълно пощата. $terms.Bugzilla продължава
+                               да действа сякаш изпраща поща, но нищо не се изпраща или
+                               съхранява.
                              </li>
                            </ul>",
 
-  sendmailnow => "Sites using anything older than version 8.12 of 'sendmail' " _
-                 "can achieve a significant performance increase in the " _
-                 "UI -- at the cost of delaying the sending of mail -- by " _
-                 "disabling this parameter. Sites using 'sendmail' 8.12 or " _
-                 "higher should leave this on, as they will see no benefit from " _
-                 "turning it off. Sites using an MTA other than 'sendmail' " _
-                 "<b>must</b> leave it on, or no $terms.bug mail will be sent.",
+  sendmailnow => "Сайтовете използващи нещо по-старо от версия 8.12 на 'sendmail' " _
+                 "могат да постигнат значително увеличение на производителността в " _
+                 "потребителския интерфейс -- на цената на забавянето на изпращането на пощата -- с " _
+                 "забраняването на този параметър. Сайтове използващи 'sendmail' 8.12 или " _
+                 "по-висока трябва да оставят параметъра включен, тъй като няма да бъдат облагодетелствани " _
+                 "от изключването му. Сайтове използващи агент различен от 'sendmail' " _
+                 "<b>трябва</b> да го оставят включен или $terms.bug поща няма да бъде изпращана.",
 
-  smtpserver => "The SMTP server address (if using SMTP for mail delivery).",
+  smtpserver => "Адреса на сървъра за изпращане на поща (Ако се използва такъв за доставяне на поща).",
 
-  passwordmail => "The email that gets sent to people to tell them their password. " _
-                  "Within this text, %mailaddress% gets replaced by the person's " _
-                  "email address, %login% gets replaced by the person's login " _
-                  "(usually the same thing), and %password% gets replaced by their " _
-                  "password. %<i>anythingelse</i>% gets replaced by the " _
-                  "definition of that parameter (as defined on this page).",
+  passwordmail => "Електронната поща, която се изпраща до хората, за да съобщи паромата им. " _
+                  "В този текст %mailaddress% се заменя с електронния адрес " _
+                  "на човека, %login% се заменя с потребителското име на човека " _
+                  "(обикновенно същото), и %password% се заменя с неговата " _
+                  "парола. %<i>всичко друго</i>% се заменя с " _
+                  "дефиницията на този параметър (както е указано на тази страница).",
 
-  newchangedmail => "The email that gets sent to people when a $terms.bug changes. Within " _
-                    "this text, %to% gets replaced with the e-mail address of the " _
-                    "person receiving the mail. %bugid% gets replaced by the $terms.bug " _
-                    "number. %diffs% gets replaced with what has changed. " _
-                    "%neworchanged% is 'New:' if this mail is reporting a new $terms.bug or " _
-                    "empty if changes were made to an existing one. %summary% gets " _
-                    "replaced by the summary of this ${terms.bug}. %reasonsheader% is " _
-                    "replaced by an abbreviated list of reasons why the user is " _
-                    "getting the email, suitable for use in an email header (such " _
-                    "as X-Bugzilla-Reason). %reasonsbody% is replaced by text that " _
-                    "explains why the user is getting the email in more user " _
-                    "friendly text than %reasonsheader%. " _
-                    "%threadingmarker% will become either a Message-ID line (for " _
-                    "new-${terms.bug} messages) or a In-Reply-To line (for ${terms.bug}-change " _
-                    "messages). " _
-                    "%<i>anythingelse</i>% gets " _
-                    "replaced by the definition of that parameter (as defined on " _
-                    "this page).",
+  newchangedmail => "Електронната поща, която се изпраща до хората когато даден $terms.bug се променя. В " _
+                    "този текст %to% се заменя с електронния адрес на човека " _
+                    "получаващ пощата. %bugid% се заменя с номера на $terms.abug " _
+                    "%diffs% се заменя с това което се е променило. " _
+                    "%neworchanged% е 'Ново:' ако тази поща докладва за нов $terms.bug или " _
+                    "празно ако промените са направени за съществуващ. %summary% се " _
+                    "заменя с резюмето на ${terms.abug}. %reasonsheader% е " _
+                    "заменяно от съкратен списък с причните защо потребителя " _
+                    "получава пощата, подходящ за използване като заглавка на писмото (например " _
+                    "като X-Bugzilla-Reason). %reasonsbody% е заменяно от текст, който " _
+                    "обяснява защо потребителя получава пощата в по-потребителски " _
+                    "вариант отколкото %reasonsheader%. " _
+                    "%threadingmarker% ще стане или Message-ID линия (в " _
+                    "съобщения за нови ${terms.bugs}) или In-Reply-To линич (в съобщения за " _
+                    "порменени ${terms.bugs}). " _
+                    "%<i>всичко друго</i>% се " _
+                    "заменя от дефиницията на този параметър (както е указано на " _
+                    "тази страница).",
 
-  whinedays => "The number of days that we'll let a $terms.bug sit untouched in a NEW " _
-               "state before our cronjob will whine at the owner.<br> " _
-               "Set to 0 to disable whining.",
+  whinedays => "Броя дни за които е позволено на даден $terms.bug да стои спокойно в състояние НОВ " _
+               "преди насрочена задача да се разхленчи на собственика.<br> " _
+               "Задайте като 0, за да забраните хленча.",
 
-  whinemail => "The email that gets sent to anyone who has a NEW or REOPENED " _
-               "$terms.bug that hasn't been touched for more than <b>whinedays</b>. " _
-               "Within this text, %email% gets replaced by the offender's " _
-               "email address. %userid% gets replaced by the offender's " _
-               "$terms.Bugzilla login (which, in most installations, is the same as " _
-               "the email address.) %<i>anythingelse</i>% gets replaced by the " _
-               "definition of that parameter (as defined on this page).<p> " _
-               "It is a good idea to make sure this message has a valid From: " _
-               "address, so that if the mail bounces, a real person can know " _
-               "that there are $terms.bugs assigned to an invalid address.",
+  whinemail => "Електронната поща, която се изпраща до всеки който има НОВ или ОТВОРЕН ОТНОВО " _
+               "$terms.bug недокосван повече от <b>whinedays</b>. " _
+               "В този текст %email% се заменя с електронния адрес на " _
+               "виновника. %userid% се заменя с потребителското име на " _
+               "виновника (което в повечето инсталации е едно и също с " _
+               "електронния адрес.) %<i>всичко друго</i>% се заменя с " _
+               "дефиницията на този параметър (както е указно на тази страница).<p> " _
+               "Добра идея е да се уверите, че това съобщение има правилен адрес в заглавката From:, " _
+               "така че ако пощата биде върната истински човек да разбере, че " _
+               "има $terms.bugs назначени на недействителен адрес.",
 
-  voteremovedmail => "This is a mail message to send to anyone who gets a vote removed " _
-                     "from $terms.abug for any reason. %to% gets replaced by the person who " _
-                     "used to be voting for this ${terms.bug}. %bugid% gets replaced by the " _
-                     "$terms.bug number. %reason% gets replaced by a short reason describing " _
-                     "why the vote(s) were removed. %votesremoved%, %votesold% and " _
-                     "%votesnew% is the number of votes removed, before and after " _
-                     "respectively. %votesremovedtext%, %votesoldtext% and " _
-                     "%votesnewtext% are these as sentences, e.g. 'You had 2 votes on " _
-                     "this ${terms.bug}.' %count% is also supported for backwards " _
-                     "compatibility. %<i>anythingelse</i>% gets replaced by the " _
-                     "definition of that parameter (as defined on this page)." }
+  voteremovedmail => "Електронната поща изпращана до всеки, чийто глас бива премахван " _
+                     "от $terms.bug поради някаква причина. %to% се заменя с адрес на човека " _
+                     "гласувал за този ${terms.bug}. %bugid% се заменя с " _
+                     "номера на ${terms.abug}. %reason% се заменя от кракто описание на причината, " _
+                     "поради която гласа(гласовете) се премахват. %votesremoved%, %votesold% и " _
+                     "%votesnew% е броя на гласовете премахвани, преди и след " _
+                     "съответно. %votesremovedtext%, %votesoldtext% и " _
+                     "%votesnewtext% са същото като изречения, напр. 'Имате 2 гласа за " _
+                     "този ${terms.bug}.' %count% се поддържа също за обратна " _
+                     "съвместимост. %<i>всичко друго</i>% се заменя с " _
+                     "дефиницията на този параметър (както е указано на тази страница)." }
 %]

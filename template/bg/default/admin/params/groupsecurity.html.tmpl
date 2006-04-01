@@ -25,36 +25,36 @@
 %]
 
 [% param_descs = {
-  makeproductgroups => "If this is on, $terms.Bugzilla will associate a $terms.bug group " _
-                       "with each product in the database, and use it for querying ${terms.bugs}.",
+  makeproductgroups => "Ако това е включено, $terms.Bugzilla ще свръже $terms.bug група " _
+                       "с всеки продукт в базата данни и ще го използва за търсене на ${terms.bugs}.",
 
-  useentrygroupdefault => "If this is on, $terms.Bugzilla will use product $terms.bug groups " _
-                          "by default to restrict who can enter ${terms.bugs}. If this is on, " _
-                          "users can see any product to which they have entry access in search menus. " _
-                          "If this is off, users can see any product to which they have not " _
-                          "been excluded by a mandatory restriction.",
+  useentrygroupdefault => "Ако това е включено, $terms.Bugzilla ще използва продуктовите $terms.bug групи " _
+                          "по подразбиране за да ограничи тези които могат да въвеждат ${terms.bugs}. Ако това е включено, " _
+                          "потребителите могат да виждат всеки продукт, до който имат достъп за въвеждане, в менютата за търсене. " _
+                          "Ако е изключено, потребителите могат да виждат всеки продукт, за който не " _
+                          "попадат в изришно ограничение.",
 
-  chartgroup => "The name of the group of users who can use the 'New Charts' " _
-                "feature. Administrators should ensure that the public categories " _
-                "and series definitions do not divulge confidential information " _
-                "before enabling this for an untrusted population. If left blank, " _
-                "no users will be able to use New Charts.",
+  chartgroup => "Името на групата от потребители, които могат да използват възможността 'Нови графики' " _
+                "Администраторите трябва да подсигурят системата, така че дефинициите на " _
+                "публичните категории и редове да не разкрият поверителна информация, " _
+                "преди да резрешат това за несигурна публика. Ако е оставено празно, " _
+                "потребителите няма да могат да изпозлват Нови графики.",
 
-  insidergroup => "The name of the group of users who can see/change private " _
-                  "comments and attachments.",
+  insidergroup => "Името на групата от потребители, които могат да виждат/променят частните " _
+                  "коментари и приставки.",
 
-  timetrackinggroup => "The name of the group of users who can see/change time tracking " _
-                       "information.",
+  timetrackinggroup => "Името на групата от потребители, които могат да виждат/променят информацията " _
+                       "за следене на изразходваното времето.",
 
-  usevisibilitygroups => "Do you wish to restrict visibility of users to members of " _
-                         "specific groups?",
+  usevisibilitygroups => "Желаете ли да ограничите видимоста на потребителите до членовете на " _
+                         "определени групи?",
   
-  strict_isolation => "Don't allow users to be assigned to, " _
-                      "be qa-contacts on, " _
-                      "be added to CC list, " _
-                      "or make or remove dependencies " _
-                      "involving any bug that is in a product on which that " _
-                      "user is forbidden to edit.", 
+  strict_isolation => "Да не се разрешава на потребителите да бъдат назначавани, " _
+                      "да стават качествен контрол на, " _
+                      "да бъдат добавянеи в <abbr title=\"Точно копие\">ТК</abbr> списъка, " _
+                      "или да правят или премахват зависимости " _
+                      "включващи всеки бъг, който е в продукт, върху който " _
+                      "на потребителя е забранено да редактира.", 
 
  }
 %]
