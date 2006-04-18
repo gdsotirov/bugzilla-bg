@@ -27,7 +27,7 @@
   # groups_controls: a hash of group controls related to the product.
   #%]
 
-[% title = BLOCK %]Edit Product[% END %]
+[% title = BLOCK %]Редактиране на продукт[% END %]
 
 [% PROCESS global/header.html.tmpl
   title = title
@@ -42,7 +42,7 @@
     <tr>
       <th align="right" valign="top">
         <a href="editcomponents.cgi?product=[% product.name FILTER url_quote %]">
-        Edit components:
+        Редактиране на съставни части:
         </a>
       </th>
       <td>
@@ -52,19 +52,19 @@
             [% IF component.description %]
               [% component.description FILTER none %]
             [% ELSE %]
-              <font color="red">description missing</font>
+              <font color="red">липсва описание</font>
             [% END %]
             <br>
           [% END %]
         [% ELSE %]
-          <font color="red">missing</font>
+          <font color="red">липсват</font>
         [% END %]
       </td>
     </tr>
     <tr>
       <th align="right" valign="top">
-        <a href="editversions.cgi?product=[% product.name FILTER url_quote %]">Edit
-versions:</a>
+        <a href="editversions.cgi?product=[% product.name FILTER url_quote %]">Редактиране на
+версии:</a>
       </th>
       <td>
         [%- IF product.versions.size -%]
@@ -73,7 +73,7 @@ versions:</a>
             <br>
           [% END %]
         [% ELSE %]
-          <font color="red">missing</font>
+          <font color="red">липсват</font>
         [% END %]
       </td>
     </tr>
@@ -81,7 +81,7 @@ versions:</a>
       <tr>
         <th align="right" valign="top">
           <a href="editmilestones.cgi?product=[% product.name FILTER url_quote %]">
-          Edit milestones:</a>
+          Редактиране на целеви събития:</a>
         </th>
         <td>
           [%- IF product.milestones.size -%]
@@ -90,7 +90,7 @@ versions:</a>
             <br>
             [% END %]
           [% ELSE %]
-            <font color="red">missing</font>
+            <font color="red">липсват</font>
           [% END %]
         </td>
       </tr>
@@ -100,7 +100,7 @@ versions:</a>
         <a href="editproducts.cgi?action=editgroupcontrols&product=
           [%- product.name FILTER url_quote %]&classification=
           [%- classification.name FILTER url_quote %]">
-          Edit Group Access Controls:
+          Редактиране на групови контроли за достъп:
         </a>
       </th>
       <td>
@@ -113,12 +113,12 @@ versions:</a>
               [% IF g.entry %], ENTRY[% END %]
               [% IF g.canedit %], CANEDIT[% END %]
             [% ELSE %]
-              DISABLED
+              НЕВЪЗМОЖНО
             [% END %]
             <br>
           [% END %]
         [% ELSE %]
-          no groups
+          няма групи
         [% END %]
       </td>
     </tr>
@@ -134,7 +134,7 @@ versions:</a>
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="classification"
          value="[% classification.name FILTER html %]">
-  <input type="submit" name="submit" value="Update">
+  <input type="submit" name="submit" value="Осъвременяване">
 </form>
   
 [% PROCESS "admin/products/footer.html.tmpl"

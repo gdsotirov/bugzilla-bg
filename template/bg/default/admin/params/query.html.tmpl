@@ -25,34 +25,34 @@
 %]
 
 [% param_descs = {
-  quip_list_entry_control => "Controls how easily users can add entries to the quip list.
+  quip_list_entry_control => "Определя колко лесно потребителите могат да добвят нов остроумия към списъка.
                               <ul>
                                 <li>
-                                  open - Users may freely add to the quip list, and
-                                  their entries will immediately be available for viewing.
+                                  отворен - Потребителите могат свободно да добавят в списъка с остроумия и
+                                  техните проникновения ще бъдат незабавно достъпни за показване.
                                 </li>
                                 <li>
-                                  moderated - quips can be entered, but need to be approved
-                                  by an admin before they will be shown.
+                                  проверяван - Остроумия могат да бъдат добавяни, но трябва д бъдат одобрени
+                                  от администратор преди да бъдат показани.
                                 </li>
                                 <li>
-                                  closed - no new additions to the quips list are allowed.
+                                  затворен - Не се позволяват добавяния в списъка с остроумия.
                                 </li>
                               </ul>",
 
-  mostfreqthreshold => "The minimum number of duplicates $terms.abug needs to show up on the " _
-                       "<a href=\"duplicates.cgi\">most frequently reported $terms.bugs page</a>. " _
-                       "If you have a large database and this page takes a long time to " _
-                       "load, try increasing this number.",
+  mostfreqthreshold => "Минималният брой от двойници, необходим на един $terms.bug, за да се покаже той на" _
+                       "<a href=\"duplicates.cgi\">страницата с най-често докладвани $terms.bugs</a>. " _
+                       "Ако имате голяма база дани и тази страница отнема доста време, за да " _
+                       "се зареди опитайте с увеличаване на този брой.",
 
-  mybugstemplate => "This is the URL to use to bring up a simple 'all of my $terms.bugs' " _
-                    "list for a user. %userid% will get replaced with the login name of a user.",
+  mybugstemplate => "Това е <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то което да се използва за извеждане на прост 'всички мои $terms.bugs' " _
+                    "списък за потребител. %userid% ще бъде заменено с името за вход на потребител.",
 
-  defaultquery => "This is the default query that initially comes up when you " _
-                  "access the advanced query page. It's in URL parameter " _
-                  "format, which makes it hard to read. Sorry!",
+  defaultquery => "Това е подразбиращото се запитване което първоначално се показва при " _
+                  "при достъп до странцата за разширено търсене. То е във формат на <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> " _
+                  "което го прави трудно за четене. Съжаляваме!",
 
-  quicksearch_comment_cutoff => "The maximum number of search terms for a QuickSearch " _
-                                "to search comments. If the QuickSearch query contains " _
-                                "more terms than this value, QuickSearch will not search comments." }
+  quicksearch_comment_cutoff => "Максималния брой от думи за търсене в коментарите " _
+                                "при QuickSearch. Ако QuickSearch заявката съдържа " _
+                                "повече думи от тази стойност, QuickSearch няма да търси в коментарите." }
 %]

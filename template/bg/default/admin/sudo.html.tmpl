@@ -1,0 +1,102 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 2005 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): A. Karl Kornel <karl@kornel.name>
+  #%]
+  
+[% PROCESS global/variables.none.tmpl %]
+
+[% PROCESS global/header.html.tmpl
+   title = "Започване на sudo сесия"
+   style_urls = ['skins/standard/admin.css']
+ %]
+ 
+[% DEFAULT target_login = "" %]
+
+<p>
+  Възможноста <b>sudo</b> на [% terms.Bugzilla %] Ви позволява да се представите за 
+  някой друг за известно време. Докато сте в sudo сесия, всяко извършено от вас действие 
+  ще става от името на потребителя, за който
+  се представяте.
+</p>
+
+<p class="areyoureallyreallysure">
+  Това е много мощна възможност; трябва да бъдете много внимателни при използването и.  
+  Вашите действия може да бъдат записвани много по-внимателно от обикновенно.
+</p>
+
+<form action="relogin.cgi" method="POST">
+  <p>
+    За да започнете, 
+    [% IF Param('usemenuforusers') %]
+      изберете 
+    [% ELSE %]
+      въведете името на 
+    [% END %]
+    <u>п</u>потребителя, за който искате да се представите:
+    [% INCLUDE global/userselect.html.tmpl
+       name => "target_login"
+       value => "$target_login_default"
+       accesskey => "п"
+       size => 30
+       multiple => 5
+    %]
+  </p>
+  
+  [% IF !Param('usemenuforusers') %]
+    <p>
+      Името трябва да бъде въведено точно.  Няма да бъде извършвано съвпадение.
+    </p>
+  [% END %]
+  
+  <p>
+    След това, моля отделете време да обясните защо правите това:<br>
+    <input type="text" name="reason" size="80" maxlength="200" value="
+    [%- reason_default FILTER html %]">
+  </p>
+  
+  <p>
+    Съобщението, което въведете тук, ще бъде до потребителя, за който се представяте по е-поща.
+    Ако желаете можете да оставите празно, но те все пак ще знаят, че вие
+    се представяте за тях.
+  </p>
+  
+  [% IF user.get_flag("can_logout") %]
+    <p>
+      Накрая, въведете вашата [% terms.Bugzilla %] парола: 
+      <input type="hidden" name="Bugzilla_login" value="
+      [%- user.login FILTER html %]">
+      <input type="password" name="Bugzilla_password" maxlength="20" size="20">
+      <br>
+      Това се прави поради две причини.  Първо, за да намали 
+      шанса някой да нанесе големи щети използвайки регистрацията, 
+      с която вече сте влезли.  Второ, за да ви принуди да обмислите 
+       отново дали наистина имате нужда от използването на тази възможност.
+    </p>
+  [% END %]
+  
+  <p>
+    Click the button to begin the session:
+    <input type="submit" value="Започване на сесия">
+    <input type="hidden" name="action" value="begin-sudo">
+    <input type="hidden" name="token" value="[% token FILTER html %]">
+  </p>
+
+</form>
+
+[% PROCESS global/footer.html.tmpl %]

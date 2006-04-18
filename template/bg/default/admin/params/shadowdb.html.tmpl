@@ -25,26 +25,26 @@
 %]
 
 [% param_descs = {
-  shadowdbhost => "The host the shadow database is on.",
+  shadowdbhost => "Хоста на който е базата данни в сянка.",
 
-  shadowdbport => "The port the shadow database is on. Ignored if " _
-                  "<tt>shadowdbhost</tt> is blank. Note: if the host is the local " _
-                  "machine, then MySQL will ignore this setting, and you must " _
-                  "specify a socket below.",
+  shadowdbport => "Порта, на който е базата данни в сянка. Не се взима под внимание ако " _
+                  "<tt>shadowdbhost</tt> е празно. Забележка: ако хоста е местна " _
+                  "машина, тогава MySQL ще пренбрегне тази настройка и трябва да " _
+                  "укажете гнездо по-долу.",
 
-  shadowdbsock => "The socket used to connect to the shadow database, if the host " _
-                  "is the local machine. This setting is required because MySQL " _
-                  "ignores the port specified by the client and connects using " _
-                  "its compiled-in socket path (on unix machines) when connecting " _
-                  "from a client to a local server. If you leave this blank, and " _
-                  "have the database on localhost, then the <tt>shadowdbport</tt> " _
-                  "will be ignored.",
+  shadowdbsock => "Гнездото използвано за връзка с базата данни в сянка, ако хоста " _
+                  "е местна машина. Тази настройка е необходима, защото MySQL " _
+                  "пренбрегва порта указан от клиента и се свързва използвайки " _
+                  "компилирания път до гнездото (на unix машини) при връзка " _
+                  "от клиент към локален сървър. Ако оставите празно и " _
+                  "имате база на локалната машина, тогва <tt>shadowdbport</tt> " _
+                  "ще бъде пренебрегнат.",
 
-  shadowdb => "If non-empty, then this is the name of another database in " _
-              "which $terms.Bugzilla will use as a read-only copy of everything. " _
-              "This is done so that long slow read-only operations can be used " _
-              "against this db, and not lock up things for everyone else. This " _
-              "database is on the <tt>shadowdbhost</tt>, and must exist. " _
-              "$terms.Bugzilla does not update it, if you use this parameter, then " _
-              "you need to set up replication for your database." }
+  shadowdb => "Ако не е празно, тогава това е името на друга база дани, " _
+              "която $terms.Bugzilla ще използва като копие само за четене на всичко. " _
+              "Това се прави, така че бавните четящи операции да бъдат извършвани " _
+              "в тази база данни, като по този начин не заключват всички други. Тази " _
+              "база данни е на <tt>shadowdbhost</tt> и трябва да съществува. " _
+              "$terms.Bugzilla не я осъвременява, така че ако използвате този параметър, трябва " _
+              "да настроите точно копиране (репликиране) на вашата база данни." }
 %]

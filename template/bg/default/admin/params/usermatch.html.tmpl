@@ -25,22 +25,22 @@
 %]
 
 [% param_descs = {
-  usemenuforusers => "If this option is set, $terms.Bugzilla will offer you a list " _
-                     "to select from (instead of a text entry field) where a user " _
-                     "needs to be selected. This option should not be enabled on " _
-                     "sites where there are a large number of users.",
+  usemenuforusers => "Ако тази възможност е позволена, $terms.Bugzilla ще предлага списък " _
+                     "за избор (вместо текстово поле), където е необходимо " _
+                     "избирането на потребител. Тази възможност не трябва да бъде разрешавана на " _
+                     "сайтове, където има голям брой потребители.",
 
-  usermatchmode => "Allow match strings to be entered for user names when entering " _
-                   "and editing ${terms.bugs}.<p> " _
-                   "'off' disables matching,<br> " _
-                   "'wildcard' allows only wildcards,<br> " _
-                   "and 'search' allows both wildcards and substring (freetext) matches.",
+  usermatchmode => "Разрешаване на низове за съвпадение да бъдат въвеждание за потребителски имена при въвеждането " _
+                   "и редактирането на ${terms.bugs}.<p> " _
+                   "'изключено' изключва съвпаденията,<br> " _
+                   "'символи за съвпадение' разрешава само символите с различно значение,<br> " _
+                   "и 'търсене' позволява използването на символите с различно значение и подниз (свободен текст) съвпадения.",
 
-  maxusermatches => "Search for no more than this many matches.<br> " _
-                    "If set to '1', no users will be displayed on ambiguous matches. " _
-                    "This is useful for user privacy purposes.<br> " _
-                    "A value of zero means no limit.",
+  maxusermatches => "Търсене на не повече от този брой съвпадения.<br> " _
+                    "Ако е зададено '1', няма да бъдат показвани потребители при двусмислени съвпадения. " _
+                    "Полезно с цел на поверителност на потребителя.<br> " _
+                    "Стойност нула означава без ограничение.",
 
-  confirmuniqueusermatch => "Whether a confirmation screen should be displayed when only " _
-                            "one user matches a search entry." }
+  confirmuniqueusermatch => "Дали да се показва екран за потвърждение, когато само " _
+                            "един потребител съвпадне с търсената стойност." }
 %]

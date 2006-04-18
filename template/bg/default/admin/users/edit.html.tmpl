@@ -140,7 +140,7 @@
     [% IF listselectionvalues %],
     [% END %]
   [% END %]
-  [% IF listselectionvalues %]
+  [% IF listselectionvalues.matchtype != 'exact' %]
     връщане
     <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">обратно
     към списъка с потребители</a>,
