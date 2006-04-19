@@ -27,7 +27,6 @@
 [% product_name = product FILTER html %]
 [% PROCESS global/header.html.tmpl
   title = "Въвеждане на $terms.bug: $product_name"
-  h2 = "Тази страница ви позволява да въведете нов $terms.bug в ${terms.Bugzilla}."
   onload="set_assign_to();"
 %]
 [% USE Bugzilla %]
@@ -279,6 +278,15 @@ function set_assign_to() {
   <tr>
     <td>&nbsp;</td>
     <td colspan="3"></td>
+  </tr>
+[% END %]
+
+[% IF Param("usebugaliases") %]
+  <tr>
+    <td align="right"><strong>Псевдоним:</strong></td>
+    <td colspan="3">
+      <input name="alias" size="20">
+    </td>
   </tr>
 [% END %]
 

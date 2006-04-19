@@ -17,6 +17,12 @@
   # Rights Reserved.
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Marc Schumann <wurblzap@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  # url: URL to a pre-filled bug entry form.
+  # short_desc: Bug summary as entered in the form.
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -28,8 +34,12 @@
 
 <p>
   Можете да отметнете тази връзка:
-  &ldquo;<a href="enter_bug.cgi?[% url FILTER html %]">Шаблон за въвеждане
-  на [% terms.bug %]</a>&rdquo;.
+  &ldquo;<a href="enter_bug.cgi?[% url FILTER html %]">
+  [% IF short_desc %]
+    [% short_desc FILTER html %]
+  [% ELSE %]
+    шаблон за въвеждане на [% terms.Bug %]
+  [% END %]</a>&rdquo;.
   Тази отметка ще извика страницата <em>Въвеждане на [% terms.bug %]</em> с
   начални стойностти в полетата както поискахте.
 </p>

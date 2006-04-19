@@ -117,6 +117,14 @@
 
 [% END %]
 
+  function updateCommentTagControl(checkbox, form) {
+      if (checkbox.checked) {
+          form.comment.className='bz_private';
+      } else {
+          form.comment.className='';
+      }
+  }
+
   //-->
   </script>
 
@@ -133,27 +141,32 @@
     <tr>
       <td valign="top">
         <table cellspacing="1" cellpadding="1">
-  
           <tr>
             <td align="right">
-              [% IF Param('useclassification') %]
-                [% IF bug.classification_id != "1" %]
-                  <b>[[% bug.classification FILTER html %]]</b>
-                [% END %]
+              [% IF Param('useclassification') && bug.classification_id != 1 %]
+                <b>[[% bug.classification FILTER html %]]</b>
               [% END %]
               <b>[% terms.Bug %] №:</b>
             </td>
             <td>
               <a href="[% Param('urlbase') %]show_bug.cgi?id=[% bug.bug_id %]">
                 [% bug.bug_id %]</a>
-                [% IF Param("usebugaliases") %]
-                  <label for="alias" title="име за [% terms.abug %], което може да бъде използвано вместо неговия номер, например когато бива добавян в списък на зависимостите">
-                    <b>псевдоним:</b>
-                    <input id="alias" name="alias" value="[% bug.alias FILTER html %]" size="20" maxlength="20">
-                  </label>
-                [% END %]
             </td>
           </tr>
+
+          [% IF Param("usebugaliases") %]
+            <tr>
+              <td align="right">
+                <b>Псевдоним:</b>
+              </td>
+              <td>
+                <label for="alias" title="име за [% terms.abug %], което може да бъде използвано вместо неговия номер, например когато бива добавян в списък на зависимостите">
+                  <input id="alias" name="alias" value="[% bug.alias FILTER html %]"
+                         size="20" maxlength="20">
+                </label>
+              </td>
+            </tr>
+          [% END %]
 
           <tr>
             <td align="right">
@@ -255,7 +268,7 @@
                   [% IF bug.milestoneurl %]
                     <a href="[% bug.milestoneurl FILTER html %]">
                   [% END %]
-                    Целево събититие[% "</a>" IF bug.milestoneurl %]:
+                  Целево събититие[% "</a>" IF bug.milestoneurl %]:
                 </b>
               </td>
               [% PROCESS select selname = "target_milestone" %]
@@ -375,7 +388,7 @@
                 <b><u>W</u>hiteboard състояние:</b>
               </td>
               <td colspan="5">
-                <input name="status_whiteboard" accesskey="W"
+                <input name="status_whiteboard" accesskey="w"
                        value="[% bug.status_whiteboard FILTER html %]" size="60">
               </td>
             </tr>
@@ -540,7 +553,8 @@
   <b>Допълнителни Ко<u>м</u>ентари:</b>
   [% IF Param("insidergroup") && UserInGroup(Param("insidergroup")) %]
     <input type="checkbox" name="commentprivacy" value="1"
-           id="newcommentprivacy"> Частен
+           id="newcommentprivacy"
+           onClick="updateCommentTagControl(this, form)"> Частен
   [% END %]
   <br>
   <a name="add_comment"></a>
@@ -600,7 +614,7 @@
         <small>
           (Назначеният 
           [% IF (Param('useqacontact')) %]
-          и Качествения контрол 
+             и Качествения контрол 
           [% END %]
           могат винаги да виждат [% terms.abug %] и този участък не носи последствия освен
           ако [% terms.abug %] не е ограничен до най-малко една група.)
@@ -663,5 +677,4 @@
       </select>
     </label>
   </td>
-  <td>&nbsp;</td>
 [% END %]

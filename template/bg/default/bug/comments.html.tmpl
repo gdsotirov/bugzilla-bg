@@ -23,6 +23,20 @@
 
 [% PROCESS bug/time.html.tmpl %]
 
+  <script type="text/javascript">
+  <!--
+  function updateCommentPrivacy(checkbox, id) {
+    var text_elem = document.getElementById('comment_text_'+id);
+    if (checkbox.checked) {
+        text_elem.parentNode.className='bz_private';
+    } else {
+        text_elem.parentNode.className='';
+    }
+  }
+  //-->
+  </script>
+
+
 [% DEFAULT start_at = 0 mode = "show" %]
 [% isinsider = Param("insidergroup") && UserInGroup(Param("insidergroup")) %]
 [% sort_order = user.settings.comment_sort_order.value %]
@@ -78,7 +92,7 @@
           <tr>
             <td align="left">
               <b><a name="c0" href="show_bug.cgi?id=[% bug.bug_id %]#c0">
-                 Описание</a>:</b>&nbsp;&nbsp;
+                Описание</a>:</b>&nbsp;&nbsp;
                 [% IF mode == "edit" %]
                   [%%]<script type="text/javascript"><!-- 
                     addReplyLink(0);
@@ -95,7 +109,7 @@
         <span class="bz_comment">
           ------- <i>Коментар
           <a name="c[% count %]" href="show_bug.cgi?id=[% bug.bug_id %]#c[% count %]">
-             №[% count %]</a> От 
+            №[% count %]</a> От 
           <a href="mailto:[% comment.email FILTER html %]">
             [% comment.name FILTER html %]</a>
           [%+ comment.time FILTER time %] 
@@ -112,8 +126,9 @@
         <i>
           <input type="hidden" name="oisprivate-[% count %]" 
                  value="[% comment.isprivate %]">
-          <input type="hidden" name="when-[% count %]" value="[% comment.when %]">
+          <input type="hidden" name="when-[% count %]" value="[% comment.time %]">
           <input type="checkbox" name="isprivate-[% count %]" value="1"
+                 onClick="updateCommentPrivacy(this, [% count %])"
                  id="isprivate-[% count %]"
           [% " checked=\"checked\"" IF comment.isprivate %]> Частен
         </i>

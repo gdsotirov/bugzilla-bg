@@ -23,9 +23,11 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
+[% filtered_desc = blocked_tree.$bugid.summary FILTER html %]
 [% PROCESS global/header.html.tmpl
    title = "Дърво на зависимостите за $terms.bug $bugid"
    h1    = "Дърво на зависимостите за <a href=\"show_bug.cgi?id=$bugid\">$terms.bug $bugid</a>"
+   h2    = filtered_desc
 %]
 
 [% PROCESS depthControlToolbar %]
@@ -132,7 +134,7 @@ function listToggle(event)
 {
     var node = event.target;
     if (!node)
-        node = event.srcElement;
+       node = event.srcElement;
     if (node.nodeType == Node.TEXT_NODE)
         node = node.parentNode;
     var toggle = node.nextSibling;

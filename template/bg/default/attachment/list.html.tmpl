@@ -24,6 +24,7 @@
   <tr>
     <th bgcolor="#cccccc" align="left">Приставка</th>
     <th bgcolor="#cccccc" align="left">Тип</th>
+    <th bgcolor="#cccccc" align="left">Създател</th>
     <th bgcolor="#cccccc" align="left">Създадена</th>
     <th bgcolor="#cccccc" align="left">Размер</th>
     [% IF show_attachment_flags %]
@@ -36,18 +37,25 @@
     [% IF !attachment.isprivate || canseeprivate %]
       <tr [% "class=\"bz_private\"" IF attachment.isprivate %]>
         <td valign="top">
-          <a href="attachment.cgi?id=[% attachment.attachid %]">[% attachment.description FILTER html FILTER obsolete(attachment.isobsolete) %]</a>
+          <a href="attachment.cgi?id=[% attachment.id %]">[% attachment.description FILTER html FILTER obsolete(attachment.isobsolete) %]</a>
         </td>
 
         <td valign="top">
           [% IF attachment.ispatch %]
             <i>кръпка</i>
+          [% ELSIF attachment.isurl %]
+            <i>url</i>
           [% ELSE %]
             [% attachment.contenttype FILTER html %]
           [% END %]
         </td>
 
-        <td valign="top">[% attachment.date FILTER time %]</td>
+        <td valign="top">
+          <a href="mailto:[% attachment.attacher.email FILTER html %]">
+          [% attachment.attacher.name || attachment.attacher.login FILTER html %]
+          </a>
+        </td>
+        <td valign="top">[% attachment.attached FILTER time %]</td>
         <td valign="top">[% attachment.datasize FILTER unitconvert %]</td>
 
         [% IF show_attachment_flags %]
@@ -69,9 +77,9 @@
         [% END %]
 
         <td valign="top">
-          <a href="attachment.cgi?id=[% attachment.attachid %]&amp;action=edit">Редактиране</a>
+          <a href="attachment.cgi?id=[% attachment.id %]&amp;action=edit">Редактиране</a>
           [% IF attachment.ispatch && patchviewerinstalled %]
-            | <a href="attachment.cgi?id=[% attachment.attachid %]&amp;action=diff">Сравняване</a>
+            | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=diff">Сравняване</a>
           [% END %]
           [% Hook.process("action") %]
         </td>
@@ -80,7 +88,7 @@
   [% END %]
 
   <tr>
-    <td colspan="[% show_attachment_flags ? 5 : 4 %]">
+    <td colspan="[% show_attachment_flags ? 6 : 5 %]">
       <a href="attachment.cgi?bugid=[% bugid %]&amp;action=enter">Създаване на нова приставка</a> (предлагана кръпка, изпитна постановка и др.)
     </td>
     [% IF attachments.size %]
