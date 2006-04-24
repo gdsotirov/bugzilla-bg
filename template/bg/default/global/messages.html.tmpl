@@ -165,8 +165,24 @@
     подтикнати да въведете име и парола следващият път когато са необходими.
 
   [% ELSIF message_tag == "login_changed" %]
-    [% title = "Промяна $terms.Bugzilla потребител" %]
+    [% title = "Промяна на $terms.Bugzilla регистрация" %]
     Вашия [% terms.Bugzilla %] потребител беше променен.
+
+  [% ELSIF message_tag == "parameters_updated" %]
+    [% title = "Параметрите осъвременени" %]
+    [% IF param_changed.size > 0 %]
+      [% FOREACH param = param_changed %]
+        <em>[% param FILTER html %]</em> променен<br>
+      [% END %]
+    [% ELSE %]
+      Не са нправени промени.
+    [% END %]
+
+    [% IF shutdown_is_active == 1 %]
+      <hr>
+      [% terms.Bugzilla %] е изключена. За да направите системата,
+      изчистете полето <em>shutdownhtml</em>.
+    [% END%]
 
   [% ELSIF message_tag == "password_change_cancelled" %]
     [% title = "Отхвърлена заявка за смяна на парола" %]
@@ -219,6 +235,17 @@
     Полето [% field_descs.remaining_time FILTER html %] беше
     зададено на нула автоматично като част от отбелязването на този [% terms.bug %]
     като [% status_descs.RESOLVED FILTER html %] или [% status_descs.CLOSED FILTER html %].
+
+  [% ELSIF message_tag == "sudo_started" %]
+    [% title = "Започната е Sudo сесия" %]
+      Sudo сесията е започната.  За следващите 6 часа или докато не 
+      прекратите сесията, всичко което правите го правите като човека за
+      когото се представяте ([% target FILTER html %]).
+  
+  [% ELSIF message_tag == "sudo_ended" %]
+    [% title = "Sudo session complete" %]
+      Sudo сесията е приключена.  От тук нататък всичко което
+      правите го правите като себе си.
 
   [% ELSIF message_tag == "series_created" %]
     [% title = "Редицата създадена" %]

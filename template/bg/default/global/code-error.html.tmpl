@@ -70,8 +70,18 @@
     грешката [% bug.error FILTER html %].
     
   [% ELSIF error == "chart_data_not_generated" %]
-    Инструмента, който събира статистика за [% terms.bug %] все още не е пускан.
-        
+    [% IF product %]
+      Графиките за продукта <em>[% product FILTER html %]</em> не са
+      достъпни все оше, защото не са събирани данни за него откакто
+      е създаден.
+    [% ELSE %]
+      Все още не са събирани данни за графики.
+    [% END %]
+    Моля, изчакайте един ден и опитайте отново.
+    Ако виждате това съобщение след ден, тогава трябва да се свържете с
+    <a href="mailto:[% Param('maintainer') %]">[% Param('maintainer') %]</a>
+    указвайки тази грешка.
+
   [% ELSIF error == "chart_datafile_corrupt" %]
     Файла с данни за графиката [% file FILTER html %] е повреден.
         
@@ -144,6 +154,11 @@
       [%+ terms.bug %] [%+ bug_id FILTER html %].
     [% END %]
 
+  [% ELSIF error == "invalid_numeric_argument" %]
+    [% title = "Неправилен числов аргумент" %]
+    Аргумента <code>[% argument FILTER html %] = [% value FILTER html %]</code>
+    на <code>[% function FILTER html %]</code> не е естествено число.
+
   [% ELSIF error == "invalid_series_id" %]
     [% title = "Недействителни колони" %]
     Идентификатора series_id [% series_id FILTER html %] е недействителен. Възможно е
@@ -169,8 +184,9 @@
     [% END %] 
 
   [% ELSIF error == "flag_requestee_disabled" %]
-    [% title = "Флаг не е особено изискуем" %]
-    Флагът <em>[% name FILTER html %]</em> не е изискуем по особен начин.
+    [% title = "Флага не е изискуем от определен човек" %]
+    Не можете да искате <em>[% type.name FILTER html %]</em>
+    от определен човек.
 
   [% ELSIF error == "flag_status_invalid" %]
     Състоянието на флага <em>[% status FILTER html %]</em>
@@ -234,6 +250,14 @@
   [% ELSIF error == "need_quipid" %]
     Необходим е дествителен идентификатор на остроумие.
 
+  [% ELSIF error == "param_must_be_numeric" %]
+    [% title = "Неправилен параметър" %]
+    Подаден е неправилен параметър на [% function FILTER html %].
+    Необходимо е да бъде числов.
+
+  [% ELSIF error == "unknown_comparison_type" %]
+    Указаният тип за сравнение не се поддържа.
+
   [% ELSIF error == "request_queue_group_invalid" %]
     Полето за група <em>[% group FILTER html %]</em> е недействително.
 
@@ -267,7 +291,7 @@
      Не мога да получа вашата стара парола от базата данни.
 
   [% ELSIF error == "undefined_field" %]
-    Полето [% field FILTER html %] на формата не е зададено; [% Param('browserbugmessage') %]
+    Полето [% field FILTER html %] на формата не е зададено;
     [%# Useful message if browser did not select show_bug radio button %]
     [% IF field == "knob" %]
       Проверете дали "Остви като..." радио бутона е избран.
@@ -279,6 +303,10 @@
     [% ELSE %]
        Не можах да определя какво искахте да направите.
     [% END %]
+
+  [% ELSIF error == "must_be_patch" %]
+    [% title = "Приставката трябва да бъде кръпка" %]
+    Приставка #[% attach_id FILTER html %] трябва да е кръпка.
 
   [% ELSIF error == "nested_transaction" %]
     Опит за пускане на нова транзакция, без първо да е прилючена предишната.
@@ -298,6 +326,9 @@
     [% title = "Вътрешна грешка на създателя на SQL заявки" %]
     Има вътрешна грешка в кода на създателя на SQL заявки,
     създаващ заявки без явен JOIN.
+
+  [% ELSIF error == "invalid_post_bug_submit_action" %]
+    Неправилна настройка за post_bug_submit_action
 
   [% ELSE %]
     [% title = "Вътрешна грешка" %]

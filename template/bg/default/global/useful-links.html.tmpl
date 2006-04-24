@@ -25,7 +25,6 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-<form method="get" action="show_bug.cgi">
 <div id="useful-links">
   <div id="links-actions">
     <div class="label">Действия:</div>
@@ -34,15 +33,19 @@
         <a href="enter_bug.cgi">Нов</a> | 
         <a href="query.cgi">Търсене</a> |
         
-        [% terms.bug %] № <input class="txt" name="id" size="6">
-        <input class="btn" type="submit" value="Търсене"> | 
+        <form action="buglist.cgi" method="get"
+              onsubmit="if (this.quicksearch.value == '')
+                        { alert('Моля, въведете един или повече термина за търсене първо.');
+                          return false; } return true;">
+            <input class="txt" type="text" name="quicksearch">        
+        <input class="btn" type="submit" value="Търсене">
+        </form> |
         
         <a href="report.cgi">Доклади</a> 
         
         [% IF user.id %]
           [% email = user.login FILTER url_quote %]
-          | <a href="request.cgi?requester=[% email %]&amp;requestee=[% email %]&amp;do_union=1&amp;group=type">Мои
-          заявки</a>
+          | <a href="request.cgi?requester=[% email %]&amp;requestee=[% email %]&amp;do_union=1&amp;group=type">Мои заявки</a>
         [% ELSE %]
           | <a href="request.cgi">Заявки</a>
         [% END %]
@@ -59,7 +62,13 @@
             [% ELSE %]
               | Влезли&nbsp;сте&nbsp;като&nbsp
             [% END %]
-            [% user.login FILTER html %]
+            [% IF sudoer %]
+              [% sudoer.login FILTER html %] (<b>представящ се за
+              [% user.login FILTER html %]</b> 
+              <a href="relogin.cgi?action=end-sudo">прекратяване на сесията</a>)
+            [% ELSE %]
+              [% user.login FILTER html %]
+            [% END %]
         [% ELSE %]
             [% IF Param('createemailregexp') %]
               | <a href="createaccount.cgi">Нова&nbsp;регистрация</a>
@@ -125,7 +134,10 @@
     </div>
   </div>
 
+  [%# Individual bugs addition %]
+
+  [% PROCESS "global/per-bug-queries.html.tmpl" %]
+
   [%# Sections of links to more things users can do on this installation. %]
   [% Hook.process("end") %]
 </div>
-</form>
