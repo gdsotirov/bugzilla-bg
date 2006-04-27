@@ -54,13 +54,34 @@
     <th><label for="product">Продукт:</label></th>
     <td>
       [% PROCESS selectmenu menuname = "product"
-                            menuitems = products %]
+                            menuitems = products
+                            property = "name" %]
     </td>
 
     <th><label for="version">Версия:</label></th>
     <td>
       [% PROCESS selectmenu menuname = "version"
-                            menuitems = versions %]
+                            menuitems = versions
+                            property = "" %]
+    </td>
+
+  </tr>
+  <tr>
+
+    <th><label for="component">Съставна част:</label></th>
+    <td>
+      [% PROCESS selectmenu menuname = "component"
+                            menuitems = components %]
+    </td>
+
+    <th>
+      <label for="priority">
+        <a href="page.cgi?id=fields.html#priority">Приоритет</a>:
+      </label>
+    </th>
+    <td>
+      [% PROCESS selectmenu menuname = "priority"
+                            menuitems = priorities %]
     </td>
 
   </tr>
@@ -77,25 +98,6 @@
     </td>
 
     <th>
-      <label for="priority">
-        <a href="page.cgi?id=fields.html#priority">Приоритет</a>:
-      </label>
-    </th>
-    <td>
-      [% PROCESS selectmenu menuname = "priority"
-                            menuitems = priorities %]
-    </td>
-
-  </tr>
-  <tr>
-
-    <th><label for="component">Коментар:</label></th>
-    <td>
-      [% PROCESS selectmenu menuname = "component"
-                            menuitems = components %]
-    </td>
-
-    <th>
       <label for="bug_severity">
         <a href="page.cgi?id=fields.html#bug_severity">Суровост</a>:
       </label>
@@ -107,15 +109,25 @@
 
   </tr>
 
-  [% IF Param("usetargetmilestone") %]
-    <tr>
+  <tr>
+    <th>
+      <label for="op_sys">
+        <a href="page.cgi?id=fields.html#op_sys"><abbr title="Операциона Система">ОС</abbr></a>:
+      </label>
+    </th>
+    <td [% " colspan=\"3\"" IF !Param("usetargetmilestone") %]>
+      [% PROCESS selectmenu menuname = "op_sys"
+                            menuitems = op_sys %]
+    </td>
+
+    [% IF Param("usetargetmilestone") %]
       <th><label for="target_milestone">Целево събитие:</label></th>
-      <td colspan="3">
+      <td>
         [% PROCESS selectmenu menuname = "target_milestone"
                               menuitems = targetmilestones %]
       </td>
-    </tr>
-  [% END %]
+    [% END %]
+  </tr>
 
   [% IF UserInGroup(Param("timetrackinggroup")) %]
     <tr>
@@ -181,10 +193,22 @@
     </tr>
   [% END %]
 
+  [% IF Param('usestatuswhiteboard') %]
+    <tr>
+      <td align="right">
+        <b>Whiteboard състояние:</b>
+      </td>
+      <td colspan="7">
+        <input name="status_whiteboard" 
+               value="[% dontchange FILTER html %]" size="60">
+      </td>
+    </tr>
+  [% END %]
+
 </table>
 
-<label for="comment"><b>Допълнителни коментари:</b></label><br>
-<textarea id="comment" name="comment" rows="5" cols="80" wrap="hard"></textarea><br>
+<b><label for="comment">Допълнителни коментари:</label></b><br>
+<textarea id="comment" name="comment" rows="5" cols="80"></textarea><br>
 
 [% IF groups.size > 0 %]
 
@@ -228,8 +252,8 @@
   </table>
 
   [% IF foundinactive %]
-    <p style="font-size:smaller">(Забележка: [% terms.Bugs %] не могат да бъдат добавяни към
-    [% FILTER inactive %]неактивни групи[% END %], само премахвани.)</p>
+    <p style="font-size:smaller">(Забележка: [% terms.Bugs %] не могат да бъдат добавяни към  [% FILTER inactive %]неактивни
+    групи[% END %], само премахвани.)</p>
   [% END %]
 
 [% END %]
@@ -335,6 +359,7 @@
       [% dontchange FILTER html %]
     </option>
     [% FOREACH menuitem = menuitems %]
+      [% IF property %][% menuitem = menuitem.$property %][% END %]
       <option value="[% menuitem FILTER html %]">[% menuitem FILTER html %]</option>
     [% END %]
   </select>

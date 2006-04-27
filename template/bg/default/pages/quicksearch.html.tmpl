@@ -1,0 +1,190 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # Contributor(s): N.N.
+  #                 Marc Schumann <wurblzap@gmail.com>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+
+[% INCLUDE global/header.html.tmpl
+   title  = "$terms.Bugzilla БързоТърсене",
+   style  = 'ul {margin-bottom: 2ex}
+             ul li {margin-top: 2ex}
+             ul li ul li {margin-top: 0}'
+   onload = 'document.forms[\'f\'].quicksearch.focus()'
+ %]
+
+<p style="font-size: 80%">
+  Ако сте вече запознат с първоначалната
+  <a href="query.cgi">[% terms.Bugzilla %] Форма за Търсене</a>,
+  може да предпочетете <a href="page.cgi?id=quicksearchhack.html">тази</a>.
+</p>
+
+<p>
+  Въведете една или повече думи (или части от думи) за търсене:
+</p>
+
+<form name="f" action="buglist.cgi" method="get"
+      onsubmit="if (this.quicksearch.value == '')
+                { alert('Моля, първо въведете едни или повече термини за търсене.');
+                  return false; } return true;">
+  <input type="text" size="40" name="quicksearch">
+  <input type="submit" value="Търсене">
+</form>
+
+<h2>Да започнем</h2>
+
+<ul>
+  <li>
+    Това е <strong>нечуствително към регистъра</strong> търсене:<br />
+    <ul>
+      <li><tt>таблица</tt>, <tt>Таблица</tt> и <tt>ТАБЛИЦА</tt> са едно и също.</li>
+    </ul>
+  </li>
+  <li>
+    Това е търсене, в което <strong>всички думи са поднизове</strong>
+    <br />
+    Затова трябва да <strong>използвате основи на думи</strong> за по-добри резултати:
+    <ul>
+      <li>
+        Използвайте <tt>локал</tt> вместо <tt>лакализиране</tt> или
+        <tt>локализация</tt>.
+      </li>
+     <li>
+       Използвайте <tt>отметка</tt> вместо <tt>отметки</tt> или
+       <tt>отмятане</tt>.
+     </li>
+   </ul>
+  </li>
+</ul>
+
+<h2><a name="features">Особености</a></h2>
+
+<ul>
+  <li>
+    Двоични операции: &ldquo;<tt>-foo</tt>&rdquo;&nbsp;(NOT),
+    &ldquo;<tt>foo&nbsp;bar</tt>&rdquo;&nbsp;(AND),
+    &ldquo;<tt>foo|bar</tt>&rdquo;&nbsp;(OR).
+    <ul>
+      <li>
+        <strong>NOT</strong>:<br />
+        Използвайте <tt><b>-</b><i>foo</i></tt> за да изключите [% terms.bugs %]
+        съдържащи <tt><i>foo</i></tt> в резюмето си.
+      </li>
+      <li>
+        <strong>AND</strong>:<br />
+        Разделени с интервал думи се обработват като съюз.
+      </li>
+      <li>
+        <strong>OR</strong>:<br />
+        В дума, разделени с "|" части означават алтернатива.
+      </li>
+      <li>
+        Освен с "|", може да се използва запетайка за отделяне на алтернативи.
+      </li>
+      <li>
+        OR име по-висок приоритет от AND; AND е операцията с най-висок приоритет.
+      </li>
+    </ul>
+    <i>Например:</i>
+    <tt>url,location bar,field -focus</tt> значи
+    (<tt>url</tt> OR <tt>location</tt>) AND (<tt>bar</tt> OR <tt>field</tt>)
+    AND (NOT <tt>focus</tt>)
+  </li>
+  <li>
+    Използвайте <tt>+foo</tt>, за да търсите за [% terms.bugs %], където
+    <strong>резюмето</strong> съдържа <tt>foo</tt> като
+    <strong>подниз</strong>.<br/>
+    Използвайте <tt>#foo</tt>, за да търсите за [% terms.bugs %], където
+    <strong>резюмето</strong> съдържа <strong>думата</strong> <tt>foo</tt>.
+    <ul>
+      <li>
+        <tt>+brow</tt> не намира всички [% terms.bugs %] в
+        продукта <tt>Browser</tt>.
+      </li>
+      <li>
+        <tt>#title</tt> не намира [% terms.bugs %] в <tt>titlebar</tt>
+        или <tt>titled</tt>.
+      </li>
+    </ul>
+    Изрази със специални символи (space, comma, +, -, #, &hellip;) могат да
+    <strong>бъдат поставяни в кавички</strong>:
+    <ul>
+      <li>
+        <tt>"lock icon"</tt>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Отворени срещу Разрешени [% terms.Bugs %]</strong>:<br />
+    По подразбиране, се показват само отворени (т.е. неразрешени) [% terms.bugs %].
+    Използвайте <tt>+DUP</tt> като първа дума в търсенето си, за да включите
+    [%+ terms.bugs %] двойници,
+    <tt>FIXED</tt>, за да търсите само за оправени [%+ terms.bugs %],
+    или <tt>ALL</tt>, за да търсите всички [% terms.bugs %],
+    без значение на състояние или решение.
+    Търсенето за двойници се препоръчва ако не можете да намерите отворен
+    [%+ terms.bug %] направо.
+    <ul>
+      <li>
+        <tt>+DUP,FIXED таблица кант</tt>
+      </li>
+      <li>
+        <tt>ALL мишка колелце</tt>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Насочване на търсенето в продукти &amp;
+    съставни части</strong>:<br />
+    За да търсите за [% terms.bugs %] само в продукта "Foo Bar", добавете
+    <tt>:foo</tt> или <tt>:bar</tt> или и двете към вашето търсене.
+    Можете да направите това с всеки  подниз от
+    <a href="describecomponents.cgi">продукт или компонент</a> за да концентрирате
+    търсенето.
+  </li>
+</ul>
+
+<h2>Още съвети</h2>
+
+<ul>
+  <li>
+    Можете също така да използвате инструмента за <strong>откриване</strong> на [% terms.bug %] по
+    неговия номер:<br />
+    <ul>
+      <li><tt>12345</tt></li>
+    </ul>
+  </li>
+  <li>
+    Разделен със запетайки списък от номера на [% terms.bug %] ви дава списък от тях
+    :<br />
+    <ul>
+      <li><tt>12345,23456,34567</tt></li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  По подразбиране, се търси в следните полета: Резюме, Ключови думи, Продукт,
+  Съставна част, Whiteboard състояние. Ако дума изглежда като част от URL, това поле
+  също се включва в търсенето.
+</p>
+<hr>
+
+<p>
+  Използвайте мощната <a href="query.cgi">[% terms.Bugzilla %] Форма за Търсене</a>
+  за разширени запитвания.
+</p>
+
+[% PROCESS global/footer.html.tmpl %]

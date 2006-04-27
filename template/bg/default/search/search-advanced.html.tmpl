@@ -41,17 +41,7 @@ var queryform = "queryform"
   onload = "doOnSelectProduct(0); initHelp();"
   javascript = js_data
   javascript_urls = [ "js/productform.js" ]
-  style = "td.selected_tab {
-             border-width: 2px 2px 0px;
-             border-style: solid; 
-             border-color: black;
-           }
-           td.unselected_tab, td.spacer {
-             border-width: 0px 0px 2px 0px;
-             border-style: solid; 
-             border-color: black;
-           }
-           dl.bug_changes dt {
+  style = "dl.bug_changes dt {
              margin-top: 15px;
            }"
 %]
@@ -61,7 +51,7 @@ var queryform = "queryform"
 [% button_name = "Търсене" %]
 
 [%# The decent help requires Javascript %]
-[% IF NOT help %]
+[% IF NOT cgi.param("help") %]
   [% IF cgi.user_agent("Mozilla/5") %]
     <script type="text/javascript"> <!--
       document.write("<p><a href='query.cgi?help=1&amp;format=advanced'>Помощ</a> (презарежда страницата.)</p>");
@@ -73,9 +63,8 @@ var queryform = "queryform"
       За помощ, поставете показалеца на мишката върху елементите на страницата.
       <font color="red">
       [% IF cgi.user_agent("Mozilla/5") %]
-        Забележете, че ако прозорчетата с помощ са скрити зад лентите за
-        придвижване на елементите на формата, това е
-        б<!-- word broken up to pass test 009 -->ъг във вашия браузър,
+        Забележете, че ако прозорчетата с помощ са скрити зад лентите за придвижване на елементите на формата,
+        това е б<!-- word broken up to pass test 009 -->ъг във вашия браузър,
         не в [% terms.Bugzilla %].
       [% END %]
     </font>
@@ -93,6 +82,6 @@ var queryform = "queryform"
 
 </form>
 
-[% PROCESS "search/search-help.html.tmpl" IF help %]
+[% PROCESS "search/search-help.html.tmpl" IF cgi.param("help") %]
 
 [% PROCESS global/footer.html.tmpl %]

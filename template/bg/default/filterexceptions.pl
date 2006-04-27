@@ -90,11 +90,6 @@
   'status.name',
 ],
 
-'search/tabs.html.tmpl' => [
-  'tab.name',
-  'tab.description',
-],
-
 'request/queue.html.tmpl' => [
   'column_headers.$group_field', 
   'column_headers.$column', 
@@ -109,10 +104,6 @@
 ],
 
 'reports/duplicates-table.html.tmpl' => [
-  '"&amp;maxrows=$maxrows" IF maxrows',
-  '"&amp;changedsince=$changedsince" IF changedsince',
-  '"&amp;bug_id=$bug_ids_string&amp;sortvisible=1" 
-                                                            IF sortvisible',
   'column.name', 
   'column.description',
   'bug.id', 
@@ -248,7 +239,7 @@
 ],
 
 'global/choose-classification.html.tmpl' => [
-  'classdesc.$p', 
+  'class.description', 
 ],
 
 'global/choose-product.html.tmpl' => [
@@ -308,7 +299,7 @@
 
 'bug/comments.html.tmpl' => [
   'comment.isprivate', 
-  'comment.when', 
+  'comment.time', 
   'bug.bug_id',
 ],
 
@@ -366,9 +357,13 @@
   'bug.deadline',
 ],
 
+'bug/show.html.tmpl' => [
+  'bug.bug_id',
+],
+
 'bug/show.xml.tmpl' => [
   'VERSION', 
-  'a.attachid', 
+  'a.id', 
   'field', 
 ],
 
@@ -388,7 +383,7 @@
 ],
 
 'bug/votes/list-for-bug.html.tmpl' => [
-  'voter.count', 
+  'voter.vote_count', 
   'total', 
 ],
 
@@ -407,10 +402,6 @@
 
 'bug/process/midair.html.tmpl' => [
   'bug_id', 
-],
-
-'bug/process/next.html.tmpl' => [
-  'bug.bug_id', 
 ],
 
 'bug/process/results.html.tmpl' => [
@@ -456,13 +447,13 @@
 ],
 
 'attachment/edit.html.tmpl' => [
-  'attachid', 
-  'bugid', 
+  'attachment.id', 
+  'attachment.bug_id', 
   'a', 
 ],
 
 'attachment/list.html.tmpl' => [
-  'attachment.attachid', 
+  'attachment.id', 
   'flag.status',
   'bugid',
 ],
@@ -498,20 +489,7 @@
 ],
 
 'admin/table.html.tmpl' => [
-  'link_uri',
-  'c.content'
-],
-
-'admin/classifications/del.html.tmpl' => [
-  'description', 
-],
-
-'admin/classifications/edit.html.tmpl' => [
-  'description', 
-],
-
-'admin/classifications/reclassify.html.tmpl' => [
-  'description', 
+  'link_uri'
 ],
 
 'admin/classifications/select.html.tmpl' => [
@@ -523,8 +501,6 @@
 ],
 
 'admin/products/groupcontrol/edit.html.tmpl' => [
-  'filt_classification', 
-  'filt_product', 
   'group.bugcount', 
   'group.id', 
   'const.CONTROLMAPNA', 
@@ -539,7 +515,6 @@
 
 'admin/products/confirm-delete.html.tmpl' => [
   'classification_url_part', 
-  'bug_count', 
 ],
 
 'admin/products/footer.html.tmpl' => [
@@ -569,6 +544,7 @@
   'type.sortkey || 1',
   'typeLabelLowerPlural',
   'typeLabelLowerSingular',
+  'selname',
 ],
 
 'admin/flag-type/list.html.tmpl' => [
@@ -578,7 +554,7 @@
 
 
 'admin/components/confirm-delete.html.tmpl' => [
-  'bug_count'
+  'comp.bug_count'
 ],
 
 'admin/components/deleted.html.tmpl' => [
@@ -612,15 +588,7 @@
 ],
 
 'admin/components/edit.html.tmpl' => [
-  'bug_count'
-],
-
-'admin/components/list.html.tmpl' => [
-  'cgi.query_string'
-],
-
-'admin/components/select-product.html.tmpl' => [
-  'cgi.query_string'
+  'comp.bug_count'
 ],
 
 'admin/milestones/confirm-delete.html.tmpl' => [
@@ -656,10 +624,8 @@
 ],
 
 'account/prefs/prefs.html.tmpl' => [
-  'tab.name', 
-  'tab.description', 
-  'current_tab.name', 
-  'current_tab.description', 
+  'current_tab.label',
+  'current_tab.name',
 ],
 
 'account/prefs/settings.html.tmpl' => [

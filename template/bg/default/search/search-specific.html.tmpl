@@ -24,14 +24,6 @@
 [% PROCESS global/header.html.tmpl 
   title = "Търсене на определен $terms.bug"
   h1 = ""
-  style = "td.selected_tab {
-             border-width: 2px 2px 0px;
-             border-style: solid; 
-           }
-           td.unselected_tab, td.spacer {
-             border-width: 0px 0px 2px 0px;
-             border-style: solid; 
-           }"
 %]
 
 [% PROCESS search/tabs.html.tmpl %]
@@ -44,9 +36,8 @@
 </p>
 
 <p>
-Например, ако [% terms.abug %], който търсите предизвиква срив на търсачка, когато
-посетите сигурна Интернет страница със закрепена Flash анимация, то можете да
-търсите за "срив сигурен SSL flash".
+Например, ако [% terms.abug %], който търсите предизвиква срив на търсачка, когато посетите сигурна Интернет страница със закрепена Flash анимация, то можете да търсите
+за "срив сигурен SSL flash".
 </p>
 
 <form name="queryform" method="get" action="buglist.cgi">
@@ -83,10 +74,12 @@
           [% FOREACH c = classification %]
             <optgroup label="[% c.name FILTER html %]">
             [% FOREACH p = c.products %]
-              <option value="[% p FILTER html %]"
-                [% " selected" IF lsearch(default.product, p) != -1 %]>
-                [% p FILTER html %]
-              </option>
+              [% IF user.can_see_product(p.name) %]
+                <option value="[% p.name FILTER html %]"
+                  [% " selected" IF lsearch(default.product, p.name) != -1 %]>
+                  [% p.name FILTER html %]
+                </option>
+              [% END %]
             [% END %]
             </optgroup>
           [% END %]
