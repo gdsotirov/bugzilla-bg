@@ -144,6 +144,11 @@
       [%+ terms.bug %] [%+ bug_id FILTER html %].
     [% END %]
 
+  [% ELSIF error == "invalid_numeric_argument" %]
+    [% title = "Неправилен числов аргумент" %]
+    Аргумента <code>[% argument FILTER html %] = [% value FILTER html %]</code>
+    на <code>[% function FILTER html %]</code> не е естествено число.
+
   [% ELSIF error == "invalid_series_id" %]
     [% title = "Недействителни колони" %]
     Идентификатора series_id [% series_id FILTER html %] е недействителен. Възможно е

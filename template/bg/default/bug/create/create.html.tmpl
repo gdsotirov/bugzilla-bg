@@ -299,7 +299,7 @@ function set_assign_to() {
 
   <tr><td align="right" valign="top"><strong>Описание:</strong></td>
     <td colspan="3">
-      <textarea name="comment" rows="10" cols="80">
+      <textarea name="comment" rows="10" cols="[% constants.COMMENT_COLS FILTER none %]">
         [% IF cloned_bug_id %]
 +++ [% terms.ABug %] беше създаден нарочно като клонинг на [% terms.bug %] №[% cloned_bug_id %] +++
 
