@@ -22,7 +22,7 @@
 
 [% 
    title = "Задължителни настройки"
-   desc = "Задължителни настройки за правилна работа на $terms.Bugzilla" 
+   desc = "Задължителни настройки за правилна работа на ${terms.Bugzilla}" 
 %]
 
 [% param_descs = {
@@ -38,20 +38,20 @@
   ssl => "Управлява, кога $terms.Bugzilla трябва да налага използването на <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abr> в сесиите " _
          "чрез използването на <tt>sslbase</tt>.",
 
-  cookiedomain => "Областта за бисквитките на $terms.Bugzilla. Нормално празно. " _
+  cookiedomain => "Областта за бисквитките на ${terms.Bugzilla}. Нормално празно. " _
                   "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като " _
                   "'.foo.com' ще позволи достъп също и на 'bar.foo.com' до " _
-                  "бисквитките на $terms.Bugzilla. Това е ползено ако имате повече от " _
+                  "бисквитките на ${terms.Bugzilla}. Това е ползено ако имате повече от " _
                   "едно име на хост сочещо към един и същи web сървър и желаете те " _
-                  "да споделят бисквитките на $terms.Bugzilla.",
+                  "да споделят бисквитките на ${terms.Bugzilla}.",
 
   cookiepath => "Път, относителен спрямо корена на web документите, до който да бъдат ограничени " _
-                "бисквитките на $terms.Bugzilla. Нормано това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
+                "бисквитките на ${terms.Bugzilla}. Нормано това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
                 "Започва с / (единична наклонена на дясно черта). Например, ако " _
                 "$terms.Bugzilla обслужва от 'http://www.somedomain.com/bugzilla/', задайте " _
                 "този параметър като /bugzilla/. Задаването му като / ще позволи " _
                 "на всички сайтове от този сървър или виртуален хост да четат " _
-                "бисквитките на $terms.Bugzilla.",
+                "бисквитките на ${terms.Bugzilla}.",
 
   timezone => "Времевата зона в която сървъра Ви за бази данни живее. Ако е празени низ, " _
               "тогава времевата зона няма да бъде показвана с времевите отпечатки.",
@@ -64,5 +64,5 @@
 
   shutdownhtml => "Ако това поле не е празно, тогава $terms.Bugzilla ще бъде напълно " _
                   "забранена и този текст ще бъде показван вместо всички " _
-                  "страници на $terms.Bugzilla." }
+                  "страници на ${terms.Bugzilla}." }
 %]
