@@ -208,7 +208,7 @@
 </table>
 
 <b><label for="comment">Допълнителни коментари:</label></b><br>
-<textarea id="comment" name="comment" rows="5" cols="80"></textarea><br>
+<textarea id="comment" name="comment" rows="5" cols="[% constants.COMMENT_COLS FILTER none %]"></textarea><br>
 
 [% IF groups.size > 0 %]
 

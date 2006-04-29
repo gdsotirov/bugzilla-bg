@@ -117,7 +117,7 @@
     [% IF reason %]
       [% IF group %] and [% END %]
       [% IF reason == "cant_bless" %]
-        нямате права да поставяте хора в или изваждате от която и да е група,
+        нямате права да добавяте или премахвате хора от група,
       [% ELSIF reason == "not_visible" %]
         има ограничения над видимостта върху определени групи,
       [% END %]
@@ -178,6 +178,8 @@
       whine доклади
     [% ELSIF object == "sanity_check" %]
       санитарна проверка
+    [% ELSIF object == "settings" %]
+      настройки
     [% ELSIF object == "sudo_session" %]
       sudo сесия
     [% ELSIF object == "timetracking_summaries" %]
@@ -287,8 +289,8 @@
 
   [% ELSIF error == "component_not_valid" %]
     [% title = "Указаната съставна част не съществува" %]
-    Съставната част '[% name FILTER html %]' не съществува
-    за продукта '[% product FILTER html %]'.
+    Продукта '[% product FILTER html %]' няма съставна част
+    на име '[% name FILTER html %]'.
 
   [% ELSIF error == "product_doesnt_exist" %]
     [% title = "Указаният продукт не съществува" %]
@@ -303,7 +305,7 @@
 
   [% ELSIF error == "dependency_loop_single" %]
     [% title = "Установено зацикляне на зависимост" %]
-    Не можете да направите [% terms.bug %] блокиран или зависим от самия себе си.
+    Не можете да направите [% terms.abug %] да блокира себе си или да зависи от самия себе си.
 
   [% ELSIF error == "description_required" %]
     [% title = "Необходимо е описание" %]
@@ -413,7 +415,7 @@
     Файлът, който се опитвате да прикачите, е с размер
     [% filesize FILTER html %] килобайта (КБ).
     Приставки, които не са кръпки, не могат да бъдат по-големи от
-    [% Param('maxattachmentsize') %] КБ.<br>
+    [%+ Param('maxattachmentsize') %] КБ.<br>
     Препоръчваме Ви да съхраните приставката си някъде другаде по мрежата,
     и тогава да вмъкнете връзка към нея в коментар или в полето <abbr title="Uniform Resource Locator" lang="en">URL</abbr>
     на този [% terms.bug %]. Вместо това ако приставката е изображение,
@@ -430,7 +432,7 @@
 
     Пискахте от [% requestee.identity FILTER html %]
     задаване на флага <code>[% flag_type.name FILTER html %]</code> върху [% terms.bug %] 
-    [% bug_id FILTER html -%]
+    [%+ bug_id FILTER html -%]
     [% IF attachment %], приставката [% attachment.id FILTER html %][% END %], 
     но този [% terms.bug %] е ограничен до потребители в определни групи, а
     потребителия, от който сте пискали не е във всички групи до които
@@ -733,7 +735,8 @@
 
   [% ELSIF error == "login_required_for_pronoun" %]
     [% title = "Необходимо е име за вход" %]
-    Трябва да въведете име за вход, когато използвате your login as a pronoun.
+    Не можете да използвате %user% без да сте влезли, защото %user% отговаря
+    на името ви за вход, което не е известно.
 
   [% ELSIF error == "milestone_already_exists" %]
     [% title = "Важното събитие вече съществува" %]
@@ -767,8 +770,8 @@
     [% title = "Необходимо е Целево събитие" %]
     Трябва да определите целево събитие за [% terms.bug %] 
     [%+ bug_id FILTER html %]
-    ако искате да го приемете. Част от приемането на [% terms.abug %]
-    е даването на приблизителна оценка, кога той ще бъде оправен.
+    ако искате да го приемете. Част от приемането на
+    [%+ terms.abug %] е даването на приблизителна оценка, кога той ще бъде оправен.
 
   [% ELSIF error == "milestone_sortkey_invalid" %]
     [% title = "Недействителен ключ за подреждане на събитие" %]
@@ -1044,7 +1047,7 @@
   [% ELSIF error == "product_edit_denied" %]
     [% title = "Отказан достъп за редактиране на продукт" %]
     Не ви е разрешено да редактирате [% terms.bugs %] в продукта 
-    [% product FILTER html %].
+    [%+ product FILTER html %].
 
   [% ELSIF error == "product_has_bugs" %]
     [% title = BLOCK %]Продукта има [% terms.bugs %][% END %]
@@ -1150,7 +1153,7 @@
     Вашата [% terms.Bugzilla %] парола е нобходима за започване на sudo 
     сесия. Моля, <a href="relogin.cgi?action=prepare-sudo&target_login=
     [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">върнете се</a> и въведете паролата си</a>.
+    [%- reason FILTER html %]">върнете се</a> и въведете паролата си.
 
   [% ELSIF error == "sudo_preparation_required" %]
     [% title = "Необходима е подготовка" %]

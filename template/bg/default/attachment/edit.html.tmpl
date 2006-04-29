@@ -24,10 +24,10 @@
 
 [%# Define strings that will serve as the title and header of this page %]
 [% title = BLOCK %]
-  Редакция на приставка [% attachment.id %] за [% terms.Bug %] [%+ attachment.bug_id %]
+  Подробности за приставка [% attachment.id %] към [% terms.Bug %] [%+ attachment.bug_id %]
 [% END %]
 [% h1 = BLOCK %]
-  Редакция на приставка [% attachment.id %] за
+  Подробности за приставка [% attachment.id %] към
   [%+ GetBugLink(attachment.bug_id, "$terms.Bug ${attachment.bug_id}") %]
 [% END %]
 [% h2 = BLOCK %][% bugsummary FILTER html %][% END %]
@@ -267,7 +267,7 @@
           <textarea id="editFrame" name="comment" wrap="soft" cols="80"
                     style="height: 400px; width: 100%; display: none;"></textarea>
           <iframe id="viewFrame" src="attachment.cgi?id=[% attachment.id %]" style="height: 400px; width: 100%;">
-            <b>Не можете да видите приставката докато я редактирате, защото търсачката ви не поддържа вградени рамки.
+            <b>Не можете да видите приставката докато преглеждате подробностите и́, защото търсачката ви не поддържа вградени рамки.
             <a href="attachment.cgi?id=[% attachment.id %]">Преглед на прставката на отделна страница</a>.</b>
           </iframe>
           <script type="text/javascript">

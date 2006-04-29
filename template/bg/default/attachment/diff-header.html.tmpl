@@ -242,7 +242,7 @@ tbody.file pre:empty {
   [%# HEADER %]
   [% IF headers %]
     <a href="[% PROCESS viewurl id=attachid %]">Преглед</a>
-    | <a href="[% PROCESS editurl id=attachid %]">Редактиране</a>
+    | <a href="[% PROCESS editurl id=attachid %]">Подробности</a>
     | <a href="[% PROCESS diffurl id=attachid %]&amp;context=[% context FILTER url_quote %]&amp;collapsed=[% collapsed FILTER url_quote %]&amp;headers=[% headers FILTER url_quote %]&amp;format=raw">Сравняване</a>
   [% END %]
   [% IF other_patches.size > 0 %]

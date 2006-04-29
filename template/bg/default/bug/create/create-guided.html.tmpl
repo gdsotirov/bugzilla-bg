@@ -331,7 +331,7 @@ function PutDescription() {
       <b>Подробности</b>
     </td>
     <td valign="top">
-      <textarea rows="6" cols="80" name="comment"></textarea>
+      <textarea rows="6" cols="[% constants.COMMENT_COLS FILTER none %]" name="comment"></textarea>
       <p>
         Разширение на резюмето. Моля, бъдете
         възможно най-конкретни относно това което е неправилно.
@@ -379,7 +379,7 @@ function PutDescription() {
       <b>Стъпки за възпроизвеждане</b>
     </td>
     <td valign="top">
-<textarea rows="4" cols="80" name="reproduce_steps">
+<textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="reproduce_steps">
 1.
 2.
 3.
@@ -396,7 +396,7 @@ function PutDescription() {
       <b>Действителни резултати</b>
     </td>
     <td valign="top">
-      <textarea rows="4" cols="80" name="actual_results"></textarea>
+      <textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="actual_results"></textarea>
       <p>
         Какво се случи след като сте изпълнили стъпките по-горе?
       </p>
@@ -408,7 +408,7 @@ function PutDescription() {
       <b>Очаквани резултати</b>
     </td>
     <td valign="top">
-      <textarea rows="4" cols="80" name="expected_results"></textarea>
+      <textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="expected_results"></textarea>
       <p>
         Какво е трябвало да направи програмата вместо това?
       </p>
@@ -420,7 +420,7 @@ function PutDescription() {
       <b>Допълнителна информация</b>
     </td>
     <td valign="top">
-      <textarea rows="8" cols="80" name="additional_info"></textarea>
+      <textarea rows="8" cols="[% constants.COMMENT_COLS FILTER none %]" name="additional_info"></textarea>
       <p>
         Добавете всяка допълнителна инофмация, която смятате че е от
         значение за този [% terms.bug %], като използваната <b>тема</b>

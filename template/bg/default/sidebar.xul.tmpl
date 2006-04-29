@@ -69,22 +69,31 @@ function normal_keypress_handler( aEvent ) {
       <text class="text-link" onclick="load_relative_url('enter_bug.cgi')" value="нов [% terms.bug %]"/>
       <separator class="thin"/>
 
-[% IF user %]
+[% IF user.id %]
       <text class="text-link" onclick="load_relative_url('userprefs.cgi')" value="редактиране на настройки"/>
   [%- IF user.groups.tweakparams %]
       <text class="text-link" onclick="load_relative_url('editparams.cgi')" value="редактиране на параметри"/>
+      <text class="text-link" onclick="load_relative_url('editsettings.cgi')" value="редактиране на потребителски настройки"/>
   [%- END %]
   [%- IF user.groups.editusers || user.can_bless %]
       <text class="text-link" onclick="load_relative_url('editusers.cgi')" value="редактиране на потребители"/>
   [%- END %]
+  [%- IF Param('useclassification') && user.groups.editclassifications %]
+      <text class="text-link" onclick="load_relative_url('editclassifications.cgi')" value="редактиране на класификации"/>
+  [%- END %]
   [%- IF user.groups.editcomponents %]
       <text class="text-link" onclick="load_relative_url('editcomponents.cgi')" value="редактиране на компоненти"/>
+      <text class="text-link" onclick="load_relative_url('editflagtypes.cgi')" value="редактиране на флагове"/>
+      <text class="text-link" onclick="load_relative_url('editvalues.cgi')" value="редактиране на стойности на полета"/>
   [%- END %]
   [%- IF user.groups.creategroups %]
       <text class="text-link" onclick="load_relative_url('editgroups.cgi')" value="редактиране на групи"/>
   [%- END %]
   [%- IF user.groups.editkeywords %]
       <text class="text-link" onclick="load_relative_url('editkeywords.cgi')" value="редактиране на ключови думи"/>
+  [%- END %]
+  [%- IF user.groups.bz_canusewhines %]
+      <text class="text-link" onclick="load_relative_url('editwhines.cgi')" value="редактиране на whining"/>
   [%- END %]
   [%- IF user.groups.tweakparams %]
       <text class="text-link" onclick="load_relative_url('sanitycheck.cgi')" value="санитарна проверка"/>
