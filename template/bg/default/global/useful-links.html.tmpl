@@ -60,10 +60,10 @@
             [% IF user.get_flag('can_logout') %]
               | <a href="relogin.cgi">Изход</a>&nbsp;
             [% ELSE %]
-              | Влезли&nbsp;сте&nbsp;като&nbsp
+              | Влезли&nbsp;сте&nbsp;като&nbsp;
             [% END %]
             [% IF sudoer %]
-              [% sudoer.login FILTER html %] (<b>представящ се за
+              [% sudoer.login FILTER html %] (<b>представящ се за 
               [% user.login FILTER html %]</b> 
               <a href="relogin.cgi?action=end-sudo">прекратяване на сесията</a>)
             [% ELSE %]

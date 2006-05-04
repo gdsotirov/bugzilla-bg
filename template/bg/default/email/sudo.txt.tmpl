@@ -24,8 +24,7 @@
 Content-Type: text/plain
 From: [% Param("maintainer") %]
 To: [% user.email %]
-Subject: [[% terms.Bugzilla %]] Вашата регистрация [% user.login -%]
- се използва от друг
+Subject: [[% terms.Bugzilla %]] Вашата регистрация [% user.login %] се използва от друг
 
     [%+ sudoer.identity %] използва възможноста 'sudo' за достъп
 до [%+ terms.Bugzilla %] използвайки регистрацията Ви.
@@ -40,4 +39,4 @@ Subject: [[% terms.Bugzilla %]] Вашата регистрация [% user.logi
 
     Ако смятате, че дова действие е неуместно, моля свържете се с
 [%+ Param("maintainer") %].  За повече информация отностно тази възможност, 
-посетет <[% Param("urlbase") %]page.cgi?id=sudo.html>.
+посетете <[% Param("urlbase") %]page.cgi?id=sudo.html>.
