@@ -43,7 +43,7 @@
     [% IF changed_fields.size
           + groups_added_to.size + groups_removed_from.size
           + groups_granted_rights_to_bless.size + groups_denied_rights_to_bless.size %]
-      [% title = "Регистрацията $loginold бе осъвременена" %]
+      [% title = "Регистрацията $loginold бе обновена" %]
       Следните промени бяха направени върху регистрацията
       [%+ loginold FILTER html %]:
       <ul>
@@ -52,7 +52,7 @@
             [% IF    field == 'login_name' %]
               Името за вход вече е [% otheruser.login FILTER html %].
             [% ELSIF field == 'realname' %]
-              Истинското име беше осъвременено.
+              Истинското име беше обновено.
             [% ELSIF field == 'cryptpassword' %]
               Беше зададена нова парола.
             [% ELSIF field == 'disabledtext' %]
@@ -102,16 +102,16 @@
 
   [% ELSIF message_tag == "buglist_adding_field" %]
     [% title = "Добавяне на поле към страницата за търсене..." %]
-    [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
+    [% link  = "Щракнете тук ако страницата не се презареди автоматично." %]
 
   [% ELSIF message_tag == "buglist_load_named_query" %]
     [% title = BLOCK %]
       Зареждане на търсенето ви именовано [% namedcmd FILTER html %]
     [% END %]
-    [% link  = "Кликнете тук ако страницата не се презареди автоматично." %]
+    [% link  = "Щракнете тук ако страницата не се презареди автоматично." %]
 
   [% ELSIF message_tag == "buglist_updated_named_query" %]
-    Търсенето ви, именовано <code>[% queryname FILTER html %]</code>, беше осъвременено.
+    Търсенето ви, именовано <code>[% queryname FILTER html %]</code>, беше обновено.
 
   [% ELSIF message_tag == "buglist_new_default_query" %]
     OK, вече имате ново търсене по подразбиране. Можете също така
@@ -136,8 +136,8 @@
   [% ELSIF message_tag == "change_columns" %]
     [% title = "Промяна на колони" %]
     Препредаване на търсенето ви с нови колони...
-    Кликнете <a href="[% redirect_url FILTER html %]">тук</a>
-    ако страницата не се осъвремени автоматично.
+    Щракнете <a href="[% redirect_url FILTER html %]">тук</a>
+    ако страницата не се обнови автоматично.
 
   [% ELSIF message_tag == "emailold_change_cancelled" %]
     [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
@@ -169,7 +169,7 @@
     Вашия [% terms.Bugzilla %] потребител беше променен.
 
   [% ELSIF message_tag == "parameters_updated" %]
-    [% title = "Параметрите осъвременени" %]
+    [% title = "Параметрите обновени" %]
     [% IF param_changed.size > 0 %]
       [% FOREACH param = param_changed %]
         <em>[% param FILTER html %]</em> променен<br>

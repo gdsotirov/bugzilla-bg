@@ -28,14 +28,14 @@
   # product: string; the name of the product the version belongs to
   #%]
   
-[% title = BLOCK %]Осъвременяване на версията '[% name FILTER html %]' на продукта
+[% title = BLOCK %]Обновяване на версията '[% name FILTER html %]' на продукта
                    '[% product FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
 [% IF updated_name %]
-  <p>Името на версията бе осъвременено на: '[% name FILTER html %]'.</p>
+  <p>Името на версията бе обновено на: '[% name FILTER html %]'.</p>
 [% END %]
 
 [% UNLESS updated_name %]

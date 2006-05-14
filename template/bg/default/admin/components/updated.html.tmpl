@@ -37,7 +37,7 @@
   # product: string; the name of the product the component belongs to
   #%]
   
-[% title = BLOCK %]Осъвременяване на '[% name FILTER html %]' за продукта
+[% title = BLOCK %]Обновяване на '[% name FILTER html %]' за продукта
                    '[% product FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -47,20 +47,20 @@
   <p>
   <table>
     <tr>
-      <td>Описанието бе осъвременено на:</td>
+      <td>Описанието бе обновено на:</td>
       <td>'[% description FILTER html %]'</td>
     </tr>
   </table>
 [% END %]
 
 [% IF updated_initialowner %]
-  <p>Подразбиращия се назначен бе осъвременен на: '[% initialowner FILTER html %]'.</p>
+  <p>Подразбиращия се назначен бе обновен на: '[% initialowner FILTER html %]'.</p>
 [% END %]
 
 [% IF updated_initialqacontact %]
   <p>
   [% IF initialqacontact %]
-    Подразбиращия се качествен контрол бе осъвременен на '[% initialqacontact FILTER html %]'.
+    Подразбиращия се качествен контрол бе обновен на '[% initialqacontact FILTER html %]'.
   [% ELSE %]
     Подразбиращия се качествен контрол бе премахнат.
   [% END %]
@@ -68,7 +68,7 @@
 [% END %]
 
 [% IF updated_name %]
-  <p>Името на съставната част бе осъвременено на: '[% name FILTER html %]'.</p>
+  <p>Името на съставната част бе обновено на: '[% name FILTER html %]'.</p>
 [% END %]
 
 [% UNLESS updated_description || updated_initialowner || 

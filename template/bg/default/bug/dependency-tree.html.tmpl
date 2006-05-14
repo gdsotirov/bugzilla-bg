@@ -35,11 +35,11 @@
 [%# Display the tree of bugs that this bug depends on. %]
 <h3>
   [% IF hide_resolved %]
-    Отваряне на [% terms.bugs %]те
+    Отваряне на [% terms.bugs %]те, 
   [% ELSE %]
-    [% terms.Bugs %]
-  [% END %] 
-  , от които <a href="show_bug.cgi?id=[% bugid %]">[% terms.bug %] [%+ bugid %]</a> 
+    [% terms.bugs %], 
+  [% END %]
+  от които <a href="show_bug.cgi?id=[% bugid %]">[% terms.bug %] [%+ bugid %]</a> 
   зависи</h3>
 [% IF dependson_ids.size > 0 %]
   (

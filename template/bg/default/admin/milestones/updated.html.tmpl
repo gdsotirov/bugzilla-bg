@@ -34,17 +34,17 @@
   #%]
   
 [% title = BLOCK %]Събитието '[% name FILTER html %]' на продукта
-                   '[% product FILTER html %]' бе осъвременено[% END %]
+                   '[% product FILTER html %]' бе обновено[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
 [% IF updated_name %]
-  <p>Името на събитието бе осъвременено на: '[% name FILTER html %]'.</p>
+  <p>Името на събитието бе обновено на: '[% name FILTER html %]'.</p>
 [% END %]
 
 [% IF updated_sortkey %]
-  <p>Ключа за подредба на събитието бе осъвременен на: '[% sortkey FILTER html %]'.</p>
+  <p>Ключа за подредба на събитието бе обновен на: '[% sortkey FILTER html %]'.</p>
 [% END %]
 
 [% UNLESS updated_sortkey || updated_name %]

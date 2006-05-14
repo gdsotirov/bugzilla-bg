@@ -28,14 +28,14 @@
   #                        this field has been updated
   #%]
   
-[% title = BLOCK %]Осъвременяване на стойността '[% value FILTER html %]' на полето
+[% title = BLOCK %]Обновяване на стойността '[% value FILTER html %]' на полето
                    '[% field FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
 [% IF updated_value %]
-  <p>Стойността на полето бе осъвременена на: '[% value FILTER html %]'.</p>
+  <p>Стойността на полето бе обновена на: '[% value FILTER html %]'.</p>
   [% IF default_value_updated %]
     <p>Имайте в предвид, че тази стойност е стойността по подразбиране за полето.
     Всички обръщения към стойността по подразбиране вече ще сочат към тази нова стойност.</p>
@@ -43,7 +43,7 @@
 [% END %]
 
 [% IF updated_sortkey %]
-  <p>Ключа за подреждане бе осъвременен на: '[% sortkey FILTER html %]'.</p>
+  <p>Ключа за подреждане бе обновен на: '[% sortkey FILTER html %]'.</p>
 [% END %]
 
 [% UNLESS (updated_sortkey || updated_value) %]

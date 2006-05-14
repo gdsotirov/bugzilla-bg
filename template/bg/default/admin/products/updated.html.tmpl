@@ -53,7 +53,7 @@
   [% END %]
 [% END %]
 
-[% title = BLOCK %]Осъвременяване на продукта '[% product.name FILTER html %]' 
+[% title = BLOCK %]Обновяване на продукта '[% product.name FILTER html %]' 
                    [% classification_text FILTER none %][% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -63,7 +63,7 @@
 
 [% IF product.name != old_product.name %]
   <p>
-  Осъвременетно името на продукта от '[% old_product.name FILTER html %]' на 
+  Името на продукта е обновено от '[% old_product.name FILTER html %]' на 
   <a href="editproducts.cgi?action=edit&amp;product=
   [%- product.name FILTER url_quote %]
   [%- classification_url_part FILTER none %]">[% product.name FILTER html %]</a>.
@@ -73,7 +73,7 @@
 
 [% IF product.description != old_product.description %]
   <p>
-    Осъвременено описанието на:</p>
+    Описанието бе обновено на:</p>
   </p>
   <p style="margin: 1em 3em 1em 3em">[% product.description FILTER html %]</p>
   [% updated = 1 %]
@@ -93,7 +93,7 @@
 
 [% IF product.milestone_url != old_product.milestone_url %]
   <p>
-  Осъвременен URL на важно събитие
+  URL на важно събитие е обновен
   [% IF old_product.milestone_url != '' %]
     от<br> <a href="[%- old_product.milestone_url FILTER html %]">'
     [%- old_product.milestone_url FILTER html %]'</a>
@@ -111,7 +111,7 @@
 
 [% IF product.default_milestone != old_product.default_milestone %]
   <p>
-  Осъвременено е подразбиращото се събитие '[% old_product.default_milestone FILTER html %]' на
+  Подразбиращото се събитие '[% old_product.default_milestone FILTER html %]' бе обновено на
   '[% product.default_milestone FILTER html %]'.
   </p>
   [% updated = 1 %]
@@ -119,7 +119,7 @@
   
 [% IF product.votes_per_user != old_product.votes_per_user %]
   <p>
-  Осъвремен е броя на гласовете за потребител от
+  Броя на гласовете за потребител е обновен от
   [%+ old_product.votes_per_user FILTER html %] на 
   [%+ product.votes_per_user FILTER html %].
   [% updated = 1 %]
@@ -127,7 +127,7 @@
 
 [% IF product.max_votes_per_bug != old_product.max_votes_per_bug %]
   <p>
-  Осъвременен е броя на максималните гласове за [% terms.bug %] от 
+  Броя на максималните гласове за [% terms.bug %] е обновен от 
   [%+ old_product.max_votes_per_bug FILTER html %] на 
   [%+ product.max_votes_per_bug FILTER html %].
   [% updated = 1 %]
@@ -135,7 +135,7 @@
 
 [% IF product.votes_to_confirm != old_product.votes_to_confirm %]
   <p>
-  Осъвременен е брой на гласове необходими за потвърждаване на [% terms.bug %] от
+  Броя на гласовете необходими за потвърждаване на [% terms.bug %] е обновен от
   [%+ old_product.votes_to_confirm FILTER html %] на 
   [%+ product.votes_to_confirm FILTER html %].
   [% updated = 1 %]
