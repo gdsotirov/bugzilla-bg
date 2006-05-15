@@ -81,7 +81,7 @@
       <td>
         <b>Състояние:</b>&nbsp;
         [% status_descs.${bug.bug_status} FILTER html %]
-      </td>                        name => "bug_status" } %]
+      </td>
       [% PROCESS cell attr = { description => "Суровост",
                                name => "bug_severity" } %]
       [% PROCESS cell attr = { description => "Приоритет",
