@@ -30,7 +30,7 @@
     [%- classification.name FILTER url_quote %]
   [%- END %]
   [% classification_title = BLOCK %] 
-    в класификацията '[% classification.name FILTER html %]'
+    класификацията '[% classification.name FILTER html %]'
   [% END %]
 [% END %]
   
@@ -125,7 +125,7 @@
 [% IF !showbugcounts %]
 
   <p><a href="editproducts.cgi?showbugcounts=1[% classification_url_part %]">
-      Показване на таблицата отново с брой на [% terms.bug %] (бавно)</a></p>
+      Показване на таблицата отново с брой на [% terms.bugs %]те (бавно)</a></p>
 
 [% END %]
 
