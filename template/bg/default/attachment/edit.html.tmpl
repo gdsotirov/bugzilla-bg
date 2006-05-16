@@ -267,7 +267,7 @@
           <textarea id="editFrame" name="comment" wrap="soft" cols="80"
                     style="height: 400px; width: 100%; display: none;"></textarea>
           <iframe id="viewFrame" src="attachment.cgi?id=[% attachment.id %]" style="height: 400px; width: 100%;">
-            <b>Не можете да видите приставката докато преглеждате подробностите и́, защото търсачката ви не поддържа вградени рамки.
+            <b>Не можете да видите приставката докато преглеждате подробностите и́, защото браузъра ви не поддържа вградени рамки.
             <a href="attachment.cgi?id=[% attachment.id %]">Преглед на прставката на отделна страница</a>.</b>
           </iframe>
           <script type="text/javascript">
@@ -302,7 +302,7 @@
       [% ELSE %]
         <td id="noview" width="50%">
           <p><b>
-            Приставката не е видима във вашата търсачка, защото нейния
+            Приставката не е видима във вашия браузър, защото нейния
             <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr>
              тип ([% attachment.contenttype FILTER html %]) не е един от тези, които тя
             може да покаже.

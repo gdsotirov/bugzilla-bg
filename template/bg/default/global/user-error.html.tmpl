@@ -554,7 +554,7 @@
 
   [% ELSIF error == "illegal_date" %]
     [% title = "Неправилна дата" %]
-    '<tt>[% date FILTER html %]</tt>' е правилна дата.
+    '<tt>[% date FILTER html %]</tt>' е neправилна дата.
     [% IF format %]
       Моля, използвайте формата '<tt>[% format FILTER html %]</tt>'.
     [% END %]
@@ -626,7 +626,7 @@
     [% END %]
     <noscript>
       Ако се опитвате да ползвате Бързо Търсене, ще трябва да
-      разрешите JavaScript във вашата търсачка.
+      разрешите JavaScript във вашия браузър.
     </noscript>
 
   [% ELSIF error == "invalid_changedsince" %]
@@ -1113,7 +1113,7 @@
       вече съществуват.
 
   [% ELSIF error == "sidebar_supports_mozilla_only" %]
-    Съжалявам, sidebar.cgi в момента поддържа само търсачки базирани на
+    Съжалявам, sidebar.cgi в момента поддържа само браузъри базирани на
     Mozilla.
     <a href="http://www.mozilla.org">Вземете още днес</a>. :-)
 
