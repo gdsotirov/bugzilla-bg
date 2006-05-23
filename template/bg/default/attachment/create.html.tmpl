@@ -116,7 +116,7 @@
       <th><label for="data">Файл:</label></th>
       <td>
         <em>Въведете пътя до файла на вашия компютър.</em><br>
-        <input type="file" id="data" name="data" size="50">
+        <input type="file" id="data" name="data" size="50"
           [% IF Param("allow_attach_url") %]
             onchange="DataFieldHandler()" 
           [% END %]
