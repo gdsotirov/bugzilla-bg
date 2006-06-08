@@ -27,15 +27,15 @@
 [% param_descs = {
   cvsroot => "<a href=\"http://www.cvshome.org\">CVS</a> корена, който повечето " _
              "потребители на вашата система ще използват за 'cvs diff'. Използван в " _
-             "Преглед на кръпки (възможността 'Сравняване' на кръпките) за да се установи къде е " _
-             "корена на кръпките дори потребителите да са изпълнили 'cvs diff' от " _
-             "различни места в йерархията на папките (ЗАБЕЛЕЖКА: ако " _
-             "<abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилището Ви е отдалечено и изисква парола, трябва да " _
-             "направите така, че $terms.Bugzilla потребителя да е направил 'cvs login' или " _
-             "да укажете парола " _
-             "<a href=\"http://www.cvshome.org/docs/manual/cvs_2.html#SEC26\">като " _
-             "част от този <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> пътя.</a>). Оставете празно ако нямата " _
-             "<abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилище.",
+             "Преглед на кръпки (възможността 'Сравняване' на кръпките), за да се " _
+             "установи къде е корена на кръпките дори потребителите да са изпълнили " _
+             "'cvs diff' от различни места в йерархията на папките (ЗАБЕЛЕЖКА: ако " _
+             "<abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> " _
+             "хранилището Ви е отдалечено и изисква парола, трябва да направите така, " _
+             "че $terms.Bugzilla потребителя да е направил 'cvs login' или да укажете " _
+             парола <a href=\"http://www.cvshome.org/docs/manual/cvs_2.html#SEC26\">като " _
+             "част от този <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> път.</a>)." _
+             "Оставете празно ако нямате <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилище.",
 
   cvsroot_get => "<abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> корена, който $terms.Bugzilla ще използва за извличане на кръпки. " _
                  "Някои инсталации може да искат да ползват огледални копия на CVS хранилища " _
@@ -44,20 +44,27 @@
                  "по-бързо). Направете еднакво с cvsroot ако не " _
                  "разбирате какво е това (ако cvsroot е празен, оставете празно и тук).",
 
-  bonsai_url => "URL-то на <a href=\"http://www.mozilla.org/bonsai.html\">Bonsai</a> " _
-                "сървъра съдържащ информация за <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилището Ви. " _
-                "Прегледа на кръпки ще използва тази информация за да създаде връзки до " _
+  bonsai_url => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то " _
+                "на <a href=\"http://www.mozilla.org/bonsai.html\">Bonsai</a> сървъра " _
+                "съдържащ информация за <abbr lang=\"en\" title=\"Concurrent Versions " _
+                "System\">CVS</abbr> хранилището Ви. " _
+                "Прегледа на кръпки ще използва тази информация, за да създаде връзки до " _
                 "bonsai критики за всеки отрязък от кръпката (ще добави " _
                 "'/cvsblame.cgi?...' до този адрес). Оставете празно ако " _
                 "не разбирате какво е това.",
 
-  lxr_url => "URL-то на <a href=\"http://sourceforge.net/projects/lxr\">LXR</a> сървъра, " _
-             "който индексира <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилището Ви. Прегледа на кръпки ще използва тази " _
+  lxr_url => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то " _
+             "на <a href=\"http://sourceforge.net/projects/lxr\"><abbr " _
+             "lang=\"en\" title=\"Linux Cross-Reference\">LXR</abbr></a> сървъра, " _
+             "който индексира <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> " _
+             "хранилището Ви. Прегледа на кръпки ще използва тази " _
              "информация за създаването на връзки до LXR за всеки файл в кръпката. " _
              "Оставете празно ако не разбирате какво е това.",
 
-  lxr_root => "Някои LXR инсталации не индексират CVS хранилището от корена му -- " _
-              "<a href=\"http://lxr.mozilla.org/mozilla\">Mozilla</a> " _
+  lxr_root => "Някои <abbr lang=\"en\" title=\"Linux Cross-Reference\">LXR</abbr> " _
+              "инсталации не индексират <abbr lang=\"en\" title=\"Concurrent " _
+              "Versions System\">CVS</abbr> хранилището от корена му -- <a " _
+              "href=\"http://lxr.mozilla.org/mozilla\">Mozilla</a> " _
               "например индексира под <code>mozilla/</code>. Това " _
               "значи, че адресите са относителни към този допълнителен път след корена. " _
               "Попълнете този параметър ако сте в подобна ситуация. Оставете празно " _

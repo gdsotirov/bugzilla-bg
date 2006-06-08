@@ -20,9 +20,9 @@
   #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
-[% 
+[%
    title = "Задължителни настройки"
-   desc = "Задължителни настройки за правилна работа на ${terms.Bugzilla}" 
+   desc = "Задължителни настройки за правилна работа на ${terms.Bugzilla}"
 %]
 
 [% param_descs = {
@@ -32,10 +32,10 @@
   urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички $terms.Bugzilla " _
              "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
-  sslbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abr> " _
+  sslbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abbr> " _
              "(<abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>) $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
-  ssl => "Управлява, кога $terms.Bugzilla трябва да налага използването на <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abr> в сесиите " _
+  ssl => "Управлява, кога $terms.Bugzilla трябва да налага използването на <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abbr> в сесиите " _
          "чрез използването на <tt>sslbase</tt>.",
 
   cookiedomain => "Областта за бисквитките на ${terms.Bugzilla}. Нормално празно. " _
