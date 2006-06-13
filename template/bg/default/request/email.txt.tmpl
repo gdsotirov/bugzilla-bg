@@ -26,8 +26,8 @@
 [% bugidsummary = flag.target.bug.id _ ': ' _ flag.target.bug.summary %]
 [% attidsummary = flag.target.attachment.id _ ': ' _
                   flag.target.attachment.summary %]
-[% statuses = { '+' => "разрешен" , '-' => 'отказан' , 'X' => "отхвърлен" ,
-                '?' => "заявен" } %]
+[% statuses = { '+' => "разреши" , '-' => 'отказа' , 'X' => "отхвърли" ,
+                '?' => "заяви" } %]
 [% IF flag.status == '?' %]
   [% to_identity = flag.addressee.identity _ " за" %]
   [% subject_status = "requested" %]
@@ -46,7 +46,7 @@ Subject: [% flag.type.name %] [%+ subject_status %]: [[% terms.Bug %] [%+ flag.t
 [%+ USE wrap -%]
 [%- FILTER bullet = wrap(80) -%]
 
-[% user.identity %] има [% statuses.${flag.status} %] [%+ to_identity %] за [% flag.type.name %]:
+[% user.identity %] [% statuses.${flag.status} %] [%+ to_identity %] [% flag.type.name %]:
 
 [% terms.Bug %] [%+ bugidsummary %]
 [% END %]
