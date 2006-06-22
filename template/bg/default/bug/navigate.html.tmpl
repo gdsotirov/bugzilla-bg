@@ -25,7 +25,7 @@
   [% this_bug_idx = lsearch(bug_list, bug.bug_id) %]
   <b>[% terms.Bug %] списък:</b>
   [% IF this_bug_idx != -1 %]
-    ([% this_bug_idx + 1 %] of [% bug_list.size %])
+    ([% this_bug_idx + 1 %] от [% bug_list.size %])
   [% END %]
 
 [% IF this_bug_idx != -1 %]

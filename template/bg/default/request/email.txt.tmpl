@@ -27,26 +27,27 @@
 [% attidsummary = flag.target.attachment.id _ ': ' _
                   flag.target.attachment.summary %]
 [% statuses = { '+' => "разреши" , '-' => 'отказа' , 'X' => "отхвърли" ,
-                '?' => "заяви" } %]
+                '?' => "заяви на" } %]
+[% statuses_sbj = { '+' => "разрешен" , '-' => 'отказан' , 'X' => "отхвърлен" } %]
 [% IF flag.status == '?' %]
   [% to_identity = flag.addressee.identity _ " за" %]
-  [% subject_status = "requested" %]
+  [% subject_status = "заявен" %]
 [% ELSE %]
   [% IF flag.addressee %]
     [% to_identity = "заявката на " _ flag.addressee.identity _ " за" %]
   [% END %]
-  [% subject_status = statuses.${flag.status} %]
+  [% subject_status = statuses_sbj.${flag.status} %]
 [% END %]
 From: bugzilla-request-daemon
 To: [% to %]
-Subject: [% flag.type.name %] [%+ subject_status %]: [[% terms.Bug %] [%+ flag.target.bug.id %]] [% flag.target.bug.summary %]
+Subject: [%+ subject_status %] [%+ flag.type.name %]: [[% terms.Bug %] [%+ flag.target.bug.id %]] [% flag.target.bug.summary %]
 [%- IF flag.target.attachment.exists %] :
   [Приставка [% flag.target.attachment.id %]] [% flag.target.attachment.summary %][% END %]
 
 [%+ USE wrap -%]
 [%- FILTER bullet = wrap(80) -%]
 
-[% user.identity %] [% statuses.${flag.status} %] [%+ to_identity %] [% flag.type.name %]:
+[% user.identity %] [%+ statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
 
 [% terms.Bug %] [%+ bugidsummary %]
 [% END %]
