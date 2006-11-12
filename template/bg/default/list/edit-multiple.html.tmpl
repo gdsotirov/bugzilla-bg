@@ -44,8 +44,8 @@
 <ol style="font-size:smaller">
   <li>Отметнете [% terms.bugs %]те, които искате да променяте по-горе.</li>
   <li>Направете промените в полетата на формата по-долу. Ако промяната, която
-      правите, изисква обяснение включете го в кутията за коментари.</li>
-  <li>Кликнете върху бутона <em>Изпращане</em>.</li>
+      правите, изисква обяснение включете го в полето за коментари.</li>
+  <li>Щракнете върху бутона <em>Изпращане</em>.</li>
 </ol>
 
 <table id="form">
@@ -215,11 +215,8 @@
       [% END %]
 
       <td>
-        [% IF group.isactive %]
-          [% group.description %]
-        [% ELSE %]
-          [% group.description FILTER inactive %]
-        [% END %]
+        [% SET inactive = !group.isactive %]
+        [% group.description FILTER html_light FILTER inactive(inactive) %]
       </td>
 
     </tr>

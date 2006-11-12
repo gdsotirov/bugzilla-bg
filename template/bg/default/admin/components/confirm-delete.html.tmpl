@@ -60,7 +60,7 @@
 </tr>
 <tr>
   <td valign="top">Описание на съставната част:</td>
-  <td valign="top">[% description FILTER html %]</td>
+  <td valign="top">[% description FILTER html_light %]</td>
 </tr>
 <tr>
   <td valign="top">Подразбиращо се назначение:</td>
@@ -82,7 +82,7 @@
 </tr>
 <tr>
   <td valign="top">Описание на продукта:</td>
-  <td valign="top">[% product_description FILTER html %]</td>
+  <td valign="top">[% product_description FILTER html_light %]</td>
 [% END %]
 
 [% IF Param('usetargetmilestone') %]

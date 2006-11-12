@@ -41,9 +41,10 @@
   #                   be aware of the group being edited and its members.
   #%]
 
+[% title = BLOCK %]Промяна на група: [% name FILTER html %][% END %]
 
 [% PROCESS global/header.html.tmpl
-  title = "Промяна на група: $name"
+  title = title
   style = "tr.odd_row {
                background: #e9e9e9; 
            }
@@ -165,7 +166,7 @@
             [% group.grpnam FILTER html %]
           </a>
         </td>
-        <td align="left" class="groupdesc">[% group.grpdesc FILTER html %]</td>
+        <td align="left" class="groupdesc">[% group.grpdesc FILTER html_light %]</td>
       </tr>
     [% END %]
   </table>

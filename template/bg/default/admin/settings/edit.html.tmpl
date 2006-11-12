@@ -63,7 +63,7 @@
               [% setting_descs.$name OR name FILTER html %]
             </td>
             <td>
-              <select name="[% name %]" id="[% name %]">
+              <select name="[% name FILTER html %]" id="[% name FILTER html %]">
                 [% FOREACH x = settings.${name}.legal_values %]
                     <option value="[% x FILTER html %]"
                       [% " selected=\"selected\"" IF x == settings.${name}.default_value %]>
@@ -74,8 +74,8 @@
             </td>
             <td align="center">
               <input type="checkbox"
-                name="[% checkbox_name %]"
-                id="[% checkbox_name %]"
+                name="[% checkbox_name FILTER html %]"
+                id="[% checkbox_name FILTER html %]"
                 [% " checked=\"checked\"" IF settings.${name}.is_enabled %]>
               <br>
             </td>

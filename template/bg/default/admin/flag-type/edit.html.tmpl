@@ -45,9 +45,9 @@
 [% END %]
 
 [% IF last_action == "copy" %]
-  [% title = "Създаване на тип флаг въз основа на $type.name" %]
+  [% title = BLOCK %]Създаване на тип флаг въз основа на [% type.name FILTER html %][% END %]
 [% ELSIF last_action == "edit" %]
-  [% title = "Редактиране на тип флаг $type.name" %]
+  [% title = BLOCK %]Редактиране на тип флаг [% type.name FILTER html %][% END %]
 [% END %]
 
 [% PROCESS global/header.html.tmpl
