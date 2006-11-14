@@ -1,0 +1,97 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Frédéric Buclin.
+  #
+  # Contributor(s): Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  # abuser: identity of the user who created the (invalid?) token.
+  # token_action: the action the token was supposed to serve.
+  # expected_action: the action the user was going to do.
+  # script_name: the script generating this warning.
+  #%]
+
+[% PROCESS "global/field-descs.none.tmpl" %]
+
+[% PROCESS global/header.html.tmpl title = "Съмнително действие"
+                                   style_urls = ['skins/standard/global.css'] %]
+
+[% IF abuser %]
+  <div class="throw_error">
+    <p>Когато преглеждате административен формуляр в [% terms.Bugzilla %], на случаен принцип
+    се създава и съхранява низ със термини както в базата данни така и в заредения формуляр,
+    за да е сигурно, че заявените промени са направени в резултат на изпращането на
+    формуляр предоставен от [% terms.Bugzilla %]. За съжаление, низа от термини използван в
+    момента е неправилен, което значи, че изглежда не сте дошли от правилната страница.
+    Беше използван следния низ:</p>
+
+    <table border="0" cellpadding="5" cellspacing="0">
+      [% IF token_action != expected_action %]
+        <tr>
+          <th>Записано&nbsp;действие:</th>
+          <td>[% token_action FILTER html %]</td>
+        </tr>
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            Това действие не съвпадна с очакваното ([% expected_action FILTER html %]).
+          </td>
+        </tr>
+      [% END %]
+
+      [% IF abuser != user.identity %]
+        <tr>
+          <th>Създаден&nbsp;от:</th>
+          <td>[% abuser FILTER html %]</td>
+        </tr>
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            Този низ не е създаден за вас. Възможно е някой да се
+            опитва да ви изиграе!
+          </td>
+        </tr>
+      [% END %]
+    </table>
+
+    <p>Моля, докладвайте този проблем на [%+ Param("maintainer") FILTER html %].</p>
+  </div>
+[% ELSE %]
+  <div class="throw_error">
+    Изглежда не сте дошли от правилната страница (нямате правилен низ от термини за
+    действие <em>[% expected_action FILTER html %]</em> при обработката на
+    скрипта '[% script_name FILTER html %]'). Причината може да е една от следните:<br>
+    <ul>
+      <li>Щракнали сте върху бутона "Назад" на уеб браузър ви след като успешно сте
+      изпратили промените, което като цяло не е добра идея (и е безобидна).</li>
+      <li>Въвели сте <abbr title="Uniform Resource Locator">URL</abbr>-то в адресната
+      лента на уеб браузъра ви направо, което трябва да е безопасно.</li>
+      <li>Цракнали сте върху препратка, която ви е пренасочила тук <b>без вашето съгласие</b>,
+      като в този случай това е доста по критично действие.</li>
+    </ul>
+    Сигурни ли сте, че искате да изпратите промените все пак? Това може да доведе до
+    неочаквани и нежелани последици.
+  </div>
+
+  <form name="check" id="check" method="post" action="[% script_name FILTER html %]">
+    [% PROCESS "global/hidden-fields.html.tmpl"
+               exclude="^(Bugzilla_login|Bugzilla_password)$" %]
+    <input type="submit" id="confirm" value="Потвърждаване на промените">
+  </form>
+  <p>Или отхвърляне на промените и връщане към <a href="[% script_name FILTER html %]">
+    [%- script_name FILTER html %]</a>.</p>
+[% END %]
+
+[% PROCESS global/footer.html.tmpl %]

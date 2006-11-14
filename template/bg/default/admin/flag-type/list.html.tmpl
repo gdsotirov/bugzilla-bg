@@ -61,25 +61,6 @@
   <a href="editflagtypes.cgi?action=enter&amp;target_type=attachment">Създаване на тип флаг за приставки</a>
 </p>
 
-<script type="text/javascript">
-  <!--
-  function confirmDelete(id, name, count)
-  {
-    if (count > 0) {
-        var msg = 'Съществуват ' + count + ' флага от тип ' + name + '. ' +
-                  'Ако изтриете този тип, флаговете също ще бъдат ' +
-                  'изтрити.\n\nЗабележка: за да деактивирате типа вместо ' +
-                  'да го изтривате, редактирайте го и отметнете флага му "активен". ' +
-                  '\n\nНаистина ли желаете да изтриете този тип флаг?';
-        if (!confirm(msg)) return false;
-    }
-    location.href = "editflagtypes.cgi?action=delete&id=" + id;
-    return false; // prevent strict JavaScript warning that this function
-                  // does not always return a value
-  }
-  //-->
-</script>
-
 [% PROCESS global/footer.html.tmpl %]
 
 
@@ -99,9 +80,7 @@
         <td>[% type.description FILTER html %]</td>
         <td>
           <a href="editflagtypes.cgi?action=copy&amp;id=[% type.id %]">Екземпляр</a>
-          | <a href="editflagtypes.cgi?action=confirmdelete&amp;id=[% type.id %]"
-               onclick="return confirmDelete([% type.id %], '[% type.name FILTER js FILTER html %]',
-                                             [% type.flag_count %]);">Изтриване</a>
+          | <a href="editflagtypes.cgi?action=confirmdelete&amp;id=[% type.id %]">Изтриване</a>
         </td>
       </tr>
 

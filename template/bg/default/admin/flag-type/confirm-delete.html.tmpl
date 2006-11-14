@@ -21,18 +21,16 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[%# Filter off the name here to be used multiple times below %]
-[% name = BLOCK %][% flag_type.name FILTER html %][% END %]
+[% title = BLOCk %]Потвърждаване на изтриването на тип флаг '[% flag_type.name FILTER html %]'[% END %]
 
-[% PROCESS global/header.html.tmpl
-  title = "Потвърждаване на изтриването на тип флаг '$name'"
-%]
+[% PROCESS global/header.html.tmpl title = title %]
 
 <p>
-   Съществуват [% flag_count %] флага от тип [% name FILTER html %].
+   Съществуват [% flag_count %] флага от тип [% flag_type.name FILTER html %].
    Ако изтриете този тип, флаговете също ще бъдат изтрити. Забележете, че
    вместо да изтривате типа можете да го 
-   <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]">деактивирате</a>,
+   <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]&amp;token=
+           [%- token FILTER html %]">деактивирате</a>,
    като в този случай типа и неговите флагове ще останат в базата данни,
    но няма да се появяват в потребителския интерфейс на [% terms.Bugzilla %].
 </p>
@@ -45,8 +43,8 @@
    </tr>
    <tr>
       <td>
-         <a href="editflagtypes.cgi?action=delete&amp;id=[% flag_type.id %]">
-            Да, изтриване
+         <a href="editflagtypes.cgi?action=delete&amp;id=[% flag_type.id %]&amp;token=
+                 [%- token FILTER html %]">Да, изтриване
          </a>
       </td>
       <td align="right">

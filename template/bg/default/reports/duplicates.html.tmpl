@@ -36,12 +36,15 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% IF query_products.size %]
-  [% title = "Най-често докладвани $terms.bugs за ${query_products.join(', ')}" %]
+  [% title = BLOCK %]
+    Най-често докладвани [% terms.bugs %] за [% query_products.join(', ') FILTER html %]
+  [% END %]
 [% ELSE %]
   [% title = "Най-често докладвани $terms.bugs" %]
 [% END%]
 
 [% PROCESS global/header.html.tmpl
+   title = title
    style = ".resolved { background-color: #d9d9d9; color: #000000; }"
 %]
 

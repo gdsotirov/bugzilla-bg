@@ -39,7 +39,7 @@
   #
   # confirmedbugs: list of bug ids, which were confirmed by votes
   #
-  # changer: string; user id of the user making the changes, used for mailing
+  # changer: string; login of the user making the changes, used for mailing
   #          bug changes if necessary
   #
   #%]
@@ -75,7 +75,7 @@
   <p>
     Описанието бе обновено на:</p>
   </p>
-  <p style="margin: 1em 3em 1em 3em">[% product.description FILTER html %]</p>
+  <p style="margin: 1em 3em 1em 3em">[% product.description FILTER html_light %]</p>
   [% updated = 1 %]
 [% END %]
 

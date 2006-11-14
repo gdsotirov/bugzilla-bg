@@ -108,14 +108,14 @@
     потребител.
 
   [% ELSIF error == "auth_failure" %]
-    [% title = "Изисква се упълномощяване" %]
+    [% title = "Изисква се упълномощаване" %]
     Съжалявам,
     [% IF group %]
       не сте член на групата '[% group FILTER html %]',
     [% END %]
 
     [% IF reason %]
-      [% IF group %] and [% END %]
+      [% IF group %] и [% END %]
       [% IF reason == "cant_bless" %]
         нямате права да добавяте или премахвате хора от група,
       [% ELSIF reason == "not_visible" %]
@@ -156,6 +156,8 @@
       класификации
     [% ELSIF object == "components" %]
       съставни части
+    [% ELSIF object == "field_values" %]
+      стойности на полета
     [% ELSIF object == "flagtypes" %]
       типове флагове
     [% ELSIF object == "group_access" %]
@@ -181,9 +183,9 @@
     [% ELSIF object == "settings" %]
       настройки
     [% ELSIF object == "sudo_session" %]
-      sudo сесия
+      сесия като друг потребител
     [% ELSIF object == "timetracking_summaries" %]
-      time-tracking обобщени доклади
+      обобщени доклади за следене на времетраенето
     [% ELSIF object == "user" %]
       указания от вас потребител
     [% ELSIF object == "users" %]
@@ -194,7 +196,7 @@
 
   [% ELSIF error == "attachment_removed" %]
     [% title = "Приставката е премахната" %]
-    Приставката, която се опитвате да достъпите бешв премахната.
+    Приставката, която се опитвате да достъпите беше премахната.
 
   [% ELSIF error == "bug_access_denied" %]
     [% title = "Достъпът отказан" %]
@@ -274,7 +276,7 @@
 
   [% ELSIF error == "component_has_bugs" %]
     [% title = BLOCK %]Съставната част има [% terms.bugs %][% END %]
-    Съществуват [% nb FILTER html %] [%+ terms.bug %](а) съведени за съставната част!
+    Съществуват [% nb FILTER html %] [%+ terms.bug %](а) въведени за съставната част!
     Трябва да преназначите тези [% terms.bugs %] на друга съставна част, преди да
     можете да изтриете тази.
 
@@ -300,7 +302,7 @@
     [% title = "Установено зацикляне на зависимост" %]
     Следващия(те) [% terms.bug %](ове) ще се появят и на "зависи от"
     и на "блокира" частите на дървото на зависимостите ако тези промени
-    бъдат прeдадени: [% both FILTER none %]. Това би създало зациклена
+    бъдат предадени: [% both FILTER none %]. Това би създало циклична
     зависимост, което не е позволено.
 
   [% ELSIF error == "dependency_loop_single" %]
@@ -369,12 +371,12 @@
     '[%- field FILTER html %]'.
 
   [% ELSIF error == "fieldvalue_doesnt_exist" %]
-    [% title = "Указаната стойност на поле не същестува" %]
+    [% title = "Указаната стойност на поле не съществува" %]
     Стойността '[% value FILTER html %]' не съществува за
     полето '[% field FILTER html %]'.
 
   [% ELSIF error == "fieldvalue_is_default" %]
-    [% title = "Указанта стойност е пордразбираща се" %]
+    [% title = "Указаната стойност е подразбираща се" %]
     '[% value FILTER html %]' е стойност по подразбиране за
     полето '[% field FILTER html %]' и не може да бъде изтрита.
     [% IF user.groups.tweakparams %]
@@ -397,10 +399,10 @@
     не е действително (положително) число.
 
   [% ELSIF error == "fieldvalue_still_has_bugs" %]
-    [% title = "Не можете да изтриете тази стоност на полето" %]
+    [% title = "Не можете да изтриете тази стойност на полето" %]
     Не можете да изтриете стойността '[% value FILTER html %]' от полето 
-    '[% field FILTER html%]', защото все още има 
-    [% count FILTER html %] [% terms.bug %](а) използващ(ия) я.
+    '[% field FILTER html%]', защото все още има
+    [%+ count FILTER html %] [% terms.bug %](а) използващ(ия) я.
 
   [% ELSIF error == "fieldvalue_undefined" %]
     [% title = "Не се позволява неопределена стойност" %]
@@ -435,7 +437,7 @@
     [%+ bug_id FILTER html -%]
     [% IF attachment %], приставката [% attachment.id FILTER html %][% END %], 
     но този [% terms.bug %] е ограничен до потребители в определни групи, а
-    потребителия, от който сте пискали не е във всички групи до които
+    потребителя, от който сте пискали не е във всички групи до които
     [% terms.abug %] е ограничен.
     Моля, изберете някой друг от когото да поискате или направете [% terms.abug %]
     достъпен за потребителите в неговия
@@ -485,9 +487,32 @@
     Ключа за подреждане трябва да бъде цяло число между 0 и 32767 включително.
     Не може да бъде <em>[% sortkey FILTER html %]</em>.
 
+  [% ELSIF error == "group_cannot_delete" %]
+    [% title = "Изтриването на група е невъзможно" %]
+    Групата <em>[% name FILTER html %]</em> не може да бъде изтрита, защото
+    съществуват
+    <a href="editgroups.cgi?action=del&amp;group=[% gid FILTER url_quote %]">записи</a>
+    в базата данни обръщащи се към нея. Всички обръщения към групата трябва
+    да бъдат премахнати преди изтриването и.
+
   [% ELSIF error == "group_exists" %]
     [% title = "Групата вече съществува" %]
     Групата [% name FILTER html %] вече съществува.
+
+
+  [% ELSIF error == "group_has_special_role" %]
+    [% title = "Групата е неизтриваема" %]
+    [% IF groups.size == 1 %]
+      [% attr = "сочи" %]
+      [% param = "параметър" %]
+    [% ELSE %]
+      [% attr = "сочат" %]
+      [% param = "параметрите" %]
+    [% END %]
+    Групата '[% name FILTER html %]' е използвана от
+    [% param FILTER html %] '[% groups.join("' и '") FILTER html %]'.
+    За да изтриете тази група, трябва първо да промените
+    [%+ param FILTER html %], така че да [% attr FILTER html %] към друга група.
 
   [% ELSIF error == "group_not_specified" %]
     [% title = "Не е указана група" %]
@@ -549,12 +574,12 @@
 
   [% ELSIF error == "illegal_changed_in_last_x_days" %]
     [% title = "Търсенето ви няма смисъл" %]
-    Полето <em>Променен в последните ___ дни</em> трябва да е положитлено цяло число. 
+    Полето <em>Променен в последните ___ дни</em> трябва да е положително цяло число. 
     Въведохте <tt>[% value FILTER html %]</tt>, което не е.
 
   [% ELSIF error == "illegal_date" %]
     [% title = "Неправилна дата" %]
-    '<tt>[% date FILTER html %]</tt>' е нeправилна дата.
+    '<tt>[% date FILTER html %]</tt>' е неправилна дата.
     [% IF format %]
       Моля, използвайте формата '<tt>[% format FILTER html %]</tt>'.
     [% END %]
@@ -646,6 +671,11 @@
     Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
     "файл" или "кръпка").
 
+  [% ELSIF error == "invalid_datasets" %]
+    [% title = "Недействителни набори данни" %]
+    Недействителни набори данни <em>[% datasets FILTER html %]</em>. Позволени са,
+    само числа, букви и двоеточие.
+
   [% ELSIF error == "invalid_format" %]
     [% title = "Неправилен формат" %]
     Формата "[% format FILTER html %]" е неправилен (трябва да бъде един от
@@ -731,7 +761,7 @@
 
   [% ELSIF error == "login_needed_for_password_change" %]
     [% title = "Необходимо е потребителско име" %]
-    Трябва да въведте потребителско име, при искане за смяна на паролата ви.
+    Трябва да въведете потребителско име, при искане за смяна на паролата ви.
 
   [% ELSIF error == "login_required_for_pronoun" %]
     [% title = "Необходимо е име за вход" %]
@@ -795,7 +825,7 @@
   [% ELSIF error == "missing_component" %]
     [% title = "Липсваща съставна част" %]
     Съжалявам, продукта <em>[% product FILTER html %]</em>
-    трябва да има поне едина съставна част, за да можете да
+    трябва да има поне една съставна част, за да можете да
     въвеждате [% terms.bug %] в него.<p>
     [% IF UserInGroup("editcomponents") %]
       <a href="editcomponents.cgi?action=add&amp;product=[% product FILTER url_quote %]">Създаване
@@ -928,7 +958,7 @@
 
   [% ELSIF error == "no_valid_action" %]
     [% title = "Не е указано правилно действие" %]
-    Редакцията на [% field_descs.$field FILTER html %] е невзможна: не е указано правилно действие.
+    Редакцията на [% field_descs.$field FILTER html %] е невъзможна: не е указано правилно действие.
 
   [% ELSIF error == "number_not_numeric" %]
     [% title = "Необходима е числова стойност" %]
@@ -958,7 +988,7 @@
     пощенски адрес.
 
   [% ELSIF error == "password_change_requests_not_allowed" %]
-    [% title = "Заявките за смяна на парола не са резрешени" %]
+    [% title = "Заявките за смяна на парола не са разрешени" %]
     Системата не е конфигурирана да позволява заявки за смяна на парола.
 
   [% ELSIF error == "passwords_dont_match" %]
@@ -983,22 +1013,22 @@
     няколко части.
 
  [% ELSIF error == "prod_votes_per_bug_must_be_nonnegative" %]
-    [% title = "Максимум гласове трябва да е неотрицателно" %]
+    [% title = "Максимум гласове трябва да е положително" %]
     '[% maxvotesperbug FILTER html %]' е неправилна стойност за 
     полето <em>'Максимум гласове за [% terms.bug %]'</em>, което трябва
     да съдържа положителна стойност.
 
   [% ELSIF error == "prod_votes_per_user_must_be_nonnegative" %]
-    [% title = "Гласове за потребител трябва да е неотрицателно" %]
+    [% title = "Гласове за потребител трябва да са положителни" %]
     '[% votesperuser FILTER html %]' е неправилна стойност за 
     полето <em>'Гласове за потребител'</em>, което трябва да съдържа
     положително число.
 
   [% ELSIF error == "prod_votes_to_confirm_must_be_nonnegative" %]
-    [% title = "Гласове за потвърждаване трябва да е неотрицателно" %]
+    [% title = "Гласове за потвърждаване трябва да са положителни" %]
     '[% votestoconfirm FILTER html %]' е неправилна стойност за 
     полето <em>'Гласове за потвърждаване'</em>, което трябва да съдържа
-    неотрицателно число.
+    положително число.
 
   [% ELSIF error == "prod_cant_delete_description" %]
     [% title = "Описание на продукт не може да бъде изтрито" %]
@@ -1036,8 +1066,8 @@
     Не ви е позволено да редактирате свойствата на продукта '[% product FILTER html %]'.
 
   [% ELSIF error == "product_blank_name" %]
-    [% title = "Blank Product Name Not Allowed" %]
-    You must enter a name for the new product
+    [% title = "Не е позволено празно име на продукт" %]
+    Трябва да въведете име за новия продукт
 
   [% ELSIF error == "product_disabled" %]
     [% title = BLOCK %]Продукта е затворен за въвеждане на [% terms.bugs %][% END %]
@@ -1052,7 +1082,7 @@
   [% ELSIF error == "product_has_bugs" %]
     [% title = BLOCK %]Продукта има [% terms.bugs %][% END %]
     Съществуват [% nb FILTER html %] [%+ terms.abug %] въведени за този продукт!
-    Трява да преназначите тези [% terms.bugs %] на друг продукт преди да можете
+    Трябва да преназначите тези [% terms.bugs %] на друг продукт преди да можете
     да изтриете този.
 
   [% ELSIF error == "product_must_have_description" %]
@@ -1144,27 +1174,27 @@
     [% END %]
 
   [% ELSIF error == "sudo_in_progress" %]
-    [% title = "Сесия в действие" %]
-    Sudo сесия (impersonating [% target FILTER html %]) е в ход. 
-    Прекратете сисята (използвайки връзката в дънто) преди да започнете нова.
+    [% title = "Сесия като друг потребител в действие" %]
+    В ход е сесия като друг потребител (представляван е [% target FILTER html %]). 
+    Прекратете сесията (използвайки връзката в дъното) преди да започнете нова.
 
   [% ELSIF error == "sudo_password_required" %]
     [% title = "Изисква се парола" %]
-    Вашата [% terms.Bugzilla %] парола е нобходима за започване на sudo 
-    сесия. Моля, <a href="relogin.cgi?action=prepare-sudo&target_login=
+    Вашата [% terms.Bugzilla %] парола е необходима за започване на сесия 
+    като друг. Моля, <a href="relogin.cgi?action=prepare-sudo&target_login=
     [%- target_login FILTER html %]&reason=
     [%- reason FILTER html %]">върнете се</a> и въведете паролата си.
 
   [% ELSIF error == "sudo_preparation_required" %]
     [% title = "Необходима е подготовка" %]
-    Не можете да започнете sudo сесия направо.  Моля
+    Не можете да започнете сесия като друг направо.  Моля
     <a href="relogin.cgi?action=prepare-sudo&target_login=
     [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">започнете сисията си нормално</a>.
+    [%- reason FILTER html %]">започнете сесията си нормално</a>.
 
   [% ELSIF error == "sudo_protected" %]
     [% title = "Защитен потребител" %]
-    Потребителя [% login FILTER html %] не може да бъде представян от някой друг.
+    Потребителя [% login FILTER html %] не може да бъде представляван от някой друг.
 
   [% ELSIF error == "too_many_votes_for_bug" %]
     [% title = "Непозволено гласуване" %]
@@ -1186,8 +1216,8 @@
 
   [% ELSIF error == "too_soon_for_new_token" %]
     [% title = "Твърде рано за нов белег" %]
-    You have requested a password token too recently to request
-    another. Моля, изчакайте малко и опитайте отново.
+    Заявихте белег за парола твърде скоро, за да заявите
+    друг. Моля, изчакайте малко и опитайте отново.
 
   [% ELSIF error == "unknown_keyword" %]
     [% title = "Непозната ключова дума" %]
@@ -1229,8 +1259,12 @@
 
   [% ELSIF error == "user_has_responsibility" %]
     [% title = "Изтриването на потребителя невъзможно" %]
-    Потребителя, който искате да изтриете, е в ролите на подразбиращо се назначение
-    за [% terms.bugs %] или качествен контрол за поне една съставна част.
+    Потребителя, който искате да изтриете, е зададен като подразбиращо се назначение
+    за [% terms.bugs %]
+    [% IF Param('useqacontact') %]
+      или качествен контрол
+    [% END %]
+    за поне една съставна част.
     Поради това, не можете да го изтриете сега.
 
   [% ELSIF error == "user_login_required" %]
@@ -1238,7 +1272,7 @@
     Трябва да въведете име за вход за новия потребител.
 
   [% ELSIF error == "user_match_failed" %]
-    [% title = "Съвпаденито пропадна" %]
+    [% title = "Сравнението пропадна" %]
     <tt>[% name FILTER html %]</tt> не съществува или не ви е позволено 
     да виждате потребителя.
 

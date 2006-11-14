@@ -25,8 +25,10 @@
   #                      canbless) for viewed user.
   #%]
 
+[% title = BLOCK %]Редактиране на потребителя [% otheruser.login FILTER html %][% END %]
+
 [% PROCESS global/header.html.tmpl
-  title = "Редактиране на потребителя $login"
+  title = title
   message = message
   style_urls = ['skins/standard/editusers.css']
 %]
@@ -89,7 +91,7 @@
               <td class="groupname">
                 <label for="group_[% group.id %]">
                   <strong>[% group.name FILTER html %]:</strong>
-                  [%+ group.description FILTER html %]
+                  [%+ group.description FILTER html_light %]
                 </label>
               </td>
             </tr>
@@ -104,6 +106,7 @@
   <input type="submit" value="Обновяване" />
   <input type="hidden" name="userid" value="[% otheruser.id %]" />
   <input type="hidden" name="action" value="update" />
+  <input type="hidden" name="token" value="[% token FILTER html %]">
   [% INCLUDE listselectionhiddenfields %]
 </p>
 </form>

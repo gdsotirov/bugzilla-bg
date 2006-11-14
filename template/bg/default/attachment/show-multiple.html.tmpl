@@ -41,7 +41,7 @@
   <table class="attachment_info" cellspacing="0" cellpadding="4" border="1" width="75%">
     <tr>
       <td valign="top" bgcolor="#cccccc" colspan="6">
-        <big><b>Приставка №[% a.attachid %]</b></big>
+        <big><b>Приставка №[% a.id %]</b></big>
       </td>
     </tr>
     <tr>
@@ -57,7 +57,7 @@
         [% END %]
       </td>
 
-      <td valign="top">[% a.date FILTER time %]</td>
+      <td valign="top">[% a.attached FILTER time %]</td>
       <td valign="top">[% a.datasize FILTER unitconvert %]</td>
 
       <td valign="top">
@@ -78,22 +78,22 @@
       </td>
 
       <td valign="top">
-        <a href="attachment.cgi?id=[% a.attachid %]&amp;action=edit">Подробности</a>
+        <a href="attachment.cgi?id=[% a.id %]&amp;action=edit">Подробности</a>
       </td>
     </tr>
   </table>
 
   [% IF a.isviewable %]
-    <iframe src="attachment.cgi?id=[% a.attachid %]&amp;action=view" width="75%" height="350">
+    <iframe src="attachment.cgi?id=[% a.id %]&amp;action=view" width="75%" height="350">
       <b>Не можете да видите приставката докато я редактирате, защото браузъра ви не поддържа
-      вградени рамки. <a href="attachment.cgi?id=[% a.attachid %]&amp;action=view">Преглед на прставката
+      вградени рамки. <a href="attachment.cgi?id=[% a.id %]&amp;action=view">Преглед на прставката
       на отделна страница</a>.</b>
     </iframe>
   [% ELSE %]
     <p><b>
       Приставката не може да бъде видяна, защото нейния
       <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип не е
-      text/*, image/*, или application/vnd.mozilla.*. <a href="attachment.cgi?id=[% a.attachid %]&amp;action=view">Изтегляне на приставката, вместо това</a>.
+      text/*, image/*, или application/vnd.mozilla.*. <a href="attachment.cgi?id=[% a.id %]&amp;action=view">Изтегляне на приставката, вместо това</a>.
     </b></p>
   [% END %]
   </div>

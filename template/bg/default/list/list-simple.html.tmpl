@@ -30,7 +30,6 @@
 [%############################################################################%]
 
 [% DEFAULT title = "$terms.Bug списък" %]
-[% title = title FILTER html %]
 
 
 [%############################################################################%]
@@ -40,7 +39,7 @@
 <html>
 
   <head>
-    <title>[% title %]</title>
+    <title>[% title FILTER html %]</title>
     <base href="[% Param("urlbase") %]">
     <link href="skins/standard/buglist.css" rel="stylesheet" type="text/css">
   </head>

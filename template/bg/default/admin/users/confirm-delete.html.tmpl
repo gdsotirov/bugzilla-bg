@@ -24,7 +24,7 @@
   # reporter:                 number of bugs reported by the user
   # assignee_or_qa:           number of bugs the user is either the assignee
   #                           or the QA contact
-  # bug_activity:             number of bugs the viewed user has activity
+  # bugs_activity:            number of bugs the viewed user has activity
   #                           entries on
   # cc                        number of bugs the viewed user is cc list member
   #                           of
@@ -43,8 +43,9 @@
   #                           created
   #%]
 
+[% title = BLOCK %]Потвърждение за изтриването на потребителя [% otheruser.login FILTER html %][% END %]
 [% PROCESS global/header.html.tmpl
-  title = "Потвърждение за изтриването на потребителя $otheruser.login"
+  title = title
   style_urls = ['skins/standard/admin.css',
                 'skins/standard/editusers.css']
 %]
@@ -133,7 +134,7 @@
 
   [% display_warning = 0 %]
 
-  [% IF reporter || bug_activity || flags.setter || longdescs || profiles_activity %]
+  [% IF reporter || bugs_activity || flags.setter || longdescs || profiles_activity %]
     <div class="criticalmessages">
       <p>Следващите изтривания са <b>силно непрепоръчителни</b> и
       ще създадат непълноти в цялостта на връзките!</p>
@@ -149,8 +150,8 @@
             [% ELSE %]
               [%+ reporter %] [%+ terms.abug %]
             [% END %]</a>.
-            Ако изтриете потребителя таблицата с [% terms.bugs %] в
-            базата данни ще бъде несъгласувана, което ще доведе то това
+            Ако изтриете потребителя, записите в базата данни ще бъдат
+            несъгласувани, което ще доведе то това
             [% IF reporter == 1 %]
               този [% terms.bug %] да не се показва
             [% ELSE %]
@@ -426,6 +427,7 @@
       <input type="submit" value="Да, изтриване" />
       <input type="hidden" name="action" value="delete" />
       <input type="hidden" name="userid" value="[% otheruser.id %]" />
+      <input type="hidden" name="token" value="[% token FILTER html %]">
       [% INCLUDE listselectionhiddenfields %]
     </p>
   </form>

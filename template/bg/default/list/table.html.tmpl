@@ -63,8 +63,6 @@
   }
 %]
 
-[% qorder = order FILTER url_quote IF order %]
-
 [% PROCESS bug/time.html.tmpl %]
 
 [%############################################################################%]
@@ -94,7 +92,7 @@
           <a href="buglist.cgi?
                     [% urlquerypart FILTER html %]&amp;order=bugs.bug_id
                     [%-#%]&amp;query_based_on=
-                    [% defaultsavename OR searchname FILTER html %]">ID</a>
+                    [% defaultsavename OR searchname FILTER url_quote %]">ID</a>
         [% END %]
       </th>
 
@@ -139,8 +137,8 @@
         [% column.sortalias = column.name %]
       [% END %]
       <a href="buglist.cgi?[% urlquerypart FILTER html %]&amp;order=
-        [% column.sortalias FILTER url_quote FILTER html %]
-        [% ",$qorder" FILTER html IF order %]
+        [% column.sortalias FILTER url_quote %]
+        [% ",$qorder" FILTER url_quote IF order %]
         [%-#%]&amp;query_based_on=
         [% defaultsavename OR searchname FILTER html %]">
           [%- abbrev.$id.title || field_descs.$id || column.title -%]</a>

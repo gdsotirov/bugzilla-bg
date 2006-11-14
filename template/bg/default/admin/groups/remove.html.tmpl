@@ -33,14 +33,16 @@
 
 
 [% IF remove_all %]
-  [% title = "Премахване на всички изрични членства на групата '"
-      _ name _ "'" %]
+  [% title = BLOCK %]
+    Премахване на всички изрични членства на групата '[% name FILTER html %]'
+  [% END %]
 [% ELSE %]
-  [% title = "Премахване на всички изрични членства съвпадащи с "
-      _ "регулярния израз на групата '" _ name _ "'" %]
+  [% title = BLOCK %]
+    Премахване на всички изрични членства съвпадащи с регулярния израз на групата '[% name FILTER html %]'
+  [% END %]
 [% END %]
 
-[% PROCESS global/header.html.tmpl %]
+[% PROCESS global/header.html.tmpl title = title %]
 
 [% IF remove_all %]
   <p><b>Премахване на изричните членства</b></p>

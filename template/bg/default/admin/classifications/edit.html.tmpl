@@ -33,7 +33,7 @@
     <tr>
       <th align="right">Описание:</th>
       <td><textarea rows=4 cols=64 name="description">
-            [% classification.description FILTER none %]</textarea>
+            [% classification.description FILTER html %]</textarea>
       </td>
     </tr>
     <tr valign=top>
@@ -49,7 +49,7 @@
                 <th align=right valign=top>[% product.name FILTER html %]</th>
                 <td valign=top>
                   [% IF product.description %]
-                    [% product.description FILTER none %]
+                    [% product.description FILTER html_light %]
                   [% ELSE %]
                     <font color="red">липсва описание</font>
                   [% END %]
@@ -67,6 +67,7 @@
   <input type=hidden name="classificationold" 
          value="[% classification.name FILTER html %]">
   <input type=hidden name="action" value="update">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type=submit value="Обновяване">
 </form>
 

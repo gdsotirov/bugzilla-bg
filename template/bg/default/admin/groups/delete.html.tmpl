@@ -47,7 +47,7 @@
   <tr>
     <td>[% gid FILTER html %]</td>
     <td>[% name FILTER html %]</td>
-    <td>[% description FILTER html %]</td>
+    <td>[% description FILTER html_light %]</td>
   </tr>
 </table>
 
@@ -102,6 +102,7 @@
   <p><input type="submit" value="Да, изтриване">
   <input type="hidden" name="action" value="delete">
   <input type="hidden" name="group" value="[% gid FILTER html %]">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 
 Обратно към <a href="editgroups.cgi">списъка с групи</a>.

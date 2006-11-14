@@ -23,9 +23,7 @@
   #%]
 
 [%# INTERFACE:
-  # gid: number. The group ID.
   # name: string. The name of the group.
-  # cantdelete: boolean int. Is 1 if the group couldn't have been deleted.
   #%]
 
 
@@ -33,21 +31,7 @@
   title = "Изтриване на група"
 %]
 
-[% IF cantdelete %]
-  <p>
-    Тази група не може да бъде изтрита, защото има записи
-    в базата данни които се обръщат към нея. Всички такива записи
-    трябва да бъдат премахнати или променени така, че да се премахне
-    обръщението към групата, преди тя да бъде изтрита.
-  </p>
-
-  <p>
-    <a href="editgroups.cgi?action=del&amp;group=[% gid FILTER url_quote %]">Преглед</a>
-    на списъка със записите, които са засегнати.
-  </p>
-[% ELSE %]
-  <p><b>Групата [% name FILTER html %] беше изтрита.</b></p>
-[% END %]
+<p>Групата [% name FILTER html %] беше изтрита.</p>
 
 <p>Обратно към <a href="editgroups.cgi">списъка с групи</a>.
 

@@ -45,9 +45,9 @@
 [% END %]
 
 [% IF last_action == "copy" %]
-  [% title = "Създаване на тип флаг въз основа на $type.name" %]
+  [% title = BLOCK %]Създаване на тип флаг въз основа на [% type.name FILTER html %][% END %]
 [% ELSIF last_action == "edit" %]
-  [% title = "Редактиране на тип флаг $type.name" %]
+  [% title = BLOCK %]Редактиране на тип флаг [% type.name FILTER html %][% END %]
 [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -63,6 +63,7 @@
 <form method="post" action="editflagtypes.cgi">
   <input type="hidden" name="action" value="[% action %]">
   <input type="hidden" name="id" value="[% type.id %]">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type="hidden" name="target_type" value="[% type.target_type %]">
   [% FOREACH category = type.inclusions %]
     <input type="hidden" name="inclusions" value="[% category.value FILTER html %]">
@@ -70,6 +71,10 @@
   [% FOREACH category = type.exclusions %]
     <input type="hidden" name="exclusions" value="[% category.value FILTER html %]">
   [% END %]
+
+  [%# Add a hidden button at the top of the form so that the user pressing "return"
+    # really submit the form, as expected. %]
+  <input type="submit" id="commit" value="Изпращане" style="display: none;">
 
   <table id="form" cellspacing="0" cellpadding="4" border="0">
     <tr>

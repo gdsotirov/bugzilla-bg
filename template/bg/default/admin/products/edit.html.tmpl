@@ -50,7 +50,7 @@
           [% FOREACH component = product.components %]
             <b>[% component.name FILTER html %]:</b>&nbsp;
             [% IF component.description %]
-              [% component.description FILTER none %]
+              [% component.description FILTER html_light %]
             [% ELSE %]
               <font color="red">липсва описание</font>
             [% END %]
@@ -132,6 +132,7 @@
   <input type="hidden" name="product_old_name" 
         value="[% product.name FILTER html %]">
   <input type="hidden" name="action" value="update">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type="hidden" name="classification"
          value="[% classification.name FILTER html %]">
   <input type="submit" name="submit" value="Обновяване">

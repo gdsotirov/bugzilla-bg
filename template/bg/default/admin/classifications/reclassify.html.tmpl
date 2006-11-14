@@ -33,7 +33,7 @@
       <td valign="top">Описание:</td>
       <td valign="top" colspan=3>
         [% IF classification.description %]
-          [% classification.description FILTER none %]
+          [% classification.description FILTER html_light %]
         [% ELSE %]
           <font color="red">липсва описание</font>
         [% END %]
@@ -78,6 +78,7 @@
 
   <input type=hidden name="action" value="reclassify">
   <input type=hidden name="classification" value="[% classification.name FILTER html %]">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 
 <p>Обратно към <a href="./">главната страница с [% terms.bugs %]</a>

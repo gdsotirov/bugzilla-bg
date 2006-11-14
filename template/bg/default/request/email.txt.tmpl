@@ -62,7 +62,7 @@ Subject: [%+ subject_status %] [%+ flag.type.name %]: [[% terms.Bug %] [%+ flag.
 [%- FILTER bullet = wrap(80) %]
 
 [% USE Bugzilla %]
-[% IF Bugzilla.cgi.param("comment").length > 0 %]
+[% IF Bugzilla.cgi.param("comment") && Bugzilla.cgi.param("comment").length > 0 %]
 ------- Допълнителни коментари от [% user.identity %]
 [%+ Bugzilla.cgi.param("comment") %]
 [% END %]
