@@ -87,32 +87,6 @@
         match_field    => 'login_name'
         class          => "bz_inactive"
         override_class => 1 })
-    %]  [% IF !thisuser.realname %]
-    [%# We cannot pass one class now and one class later. %]
-    [% SET classes = (thisuser.disabledtext ? "bz_inactive missing" : "missing") %]
-    [% overrides.realname.push({
-        match_value      => "$thisuser.login_name"
-        match_field      => 'login_name'
-        content          => "липсва"
-        override_content => 1
-        class            => "$classes"
-        override_class   => 1 })
-    %]
-  [% END %]
-
-  [% IF thisuser.disabledtext %]
-    [% overrides.login_name.push({
-        match_value    => "$thisuser.login_name"
-        match_field    => 'login_name'
-        class          => "bz_inactive"
-        override_class => 1 })
-    %]
-
-    [% overrides.realname.push({
-        match_value    => "$thisuser.login_name"
-        match_field    => 'login_name'
-        class          => "bz_inactive"
-        override_class => 1 })
     %]
   [% END %]
 [% END %]
