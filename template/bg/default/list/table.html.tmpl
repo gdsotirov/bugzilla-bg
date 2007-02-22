@@ -138,9 +138,9 @@
       [% END %]
       <a href="buglist.cgi?[% urlquerypart FILTER html %]&amp;order=
         [% column.sortalias FILTER url_quote %]
-        [% ",$qorder" FILTER url_quote IF order %]
+        [% ",$order" FILTER url_quote IF order %]
         [%-#%]&amp;query_based_on=
-        [% defaultsavename OR searchname FILTER html %]">
+        [% defaultsavename OR searchname FILTER url_quote %]">
           [%- abbrev.$id.title || field_descs.$id || column.title -%]</a>
     [% END %]
   </th>

@@ -649,10 +649,6 @@
       [% END %]
       Трябва да въведете действителен номер на [% terms.bug %]!
     [% END %]
-    <noscript>
-      Ако се опитвате да ползвате Бързо Търсене, ще трябва да
-      разрешите JavaScript във вашия браузър.
-    </noscript>
 
   [% ELSIF error == "invalid_changedsince" %]
     [% title = "Невалидно поле 'променен от'" %]
@@ -1200,14 +1196,14 @@
     [% title = "Непозволено гласуване" %]
     Можете да използвате най-много [% max FILTER html %] гласа за отделен
     [%+ terms.bug %] в продукта 
-    <tt>[% prod FILTER html %]</tt>, но се опитвате да използвате
+    <tt>[% product FILTER html %]</tt>, но се опитвате да използвате
     [% votes FILTER html %].
 
   [% ELSIF error == "too_many_votes_for_product" %]
     [% title = "Непозволено гласуване" %]
-    Опитвате се да използвате [% votes FILTER html %] гласа,
-    което надвишава ограничението от [% max FILTER html %] гласа за
-    [% terms.bug %] за продукта <tt>[% prod FILTER html %]</tt>.
+    Опитвате се да използвате [% votes FILTER html %] гласа в
+    продукта <tt>[% product FILTER html %]</tt>, което надвишава максимума
+    от [% max FILTER html %] гласа за него.
 
   [% ELSIF error == "token_inexistent" %]
     [% title = "Белега не съществува" %]

@@ -56,7 +56,7 @@
         
         [% IF user.login %] 
             [% ' | <a href="sanitycheck.cgi">Санитарна&nbsp;проверка</a>' 
-                                                  IF user.groups.tweakparams %]
+                                                  IF user.groups.editcomponents %]
             [% IF user.get_flag('can_logout') %]
               | <a href="relogin.cgi">Изход</a>&nbsp;
             [% ELSE %]
