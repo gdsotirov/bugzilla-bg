@@ -33,7 +33,7 @@
 
 [% title = "$terms.Bug списък" %]
 [% IF searchname || defaultsavename %]
-  [% title = title _ ": " _ (searchname OR defaultsavename) %]
+  [% title = title _ ": " _ (searchname OR defaultsavename) FILTER html %]
 [% END %]
 
 [% style_urls = [ "skins/standard/buglist.css" ] %]

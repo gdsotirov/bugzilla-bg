@@ -184,7 +184,7 @@
       <td colspan="3">
         <input id="keywords" name="keywords" size="32">
         <select name="keywordaction">
-          <option value="add">Добавяне на ключовите думите</option>
+          <option value="add">Добавяне на ключовите думи</option>
           <option value="delete">Премахване на ключовите думи</option>
           <option value="makeexact">Списъка с ключовите думи да бъде еднакъв за всички</option>
         </select>
@@ -196,7 +196,7 @@
   [% IF Param('usestatuswhiteboard') %]
     <tr>
       <td align="right">
-        <b>Whiteboard състояние:</b>
+        <b>Бяла дъска:</b>
       </td>
       <td colspan="7">
         <input name="status_whiteboard" 
@@ -340,7 +340,7 @@
   Преназначаване на [% terms.bugs %]те на собственика за избраната съставна част
 </label><br>
 
-<input type="submit" value="Commit">
+<input type="submit" value="Предаване">
 
 [% IF Param('move-enabled') && user.is_mover %]
   <input type="submit" name="action" value="[% Param('move-button-text') %]">

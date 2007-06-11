@@ -34,7 +34,7 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Редактиране на групи"
-  h2 = "Тази страница ви позволява да редактирате групите налични за добавяне на потребители в тях."
+  h2 = "Тази страница ви позволява да редактирате наличните за добавяне на потребители групи."
 %]
 
 [% edit_contentlink = "editgroups.cgi?action=changeform&amp;group=%%id%%" %]
@@ -88,25 +88,25 @@
      match_value => Param("chartgroup")
      match_field => 'name'
      override_content => 1
-     content => "(used as the 'chartgroup')"
+     content => "(използвана като 'chartgroup')"
    },
    {
      match_value => Param("insidergroup")
      match_field => 'name'
      override_content => 1
-     content => "(used as the 'insidergroup')"
+     content => "(използвана като 'insidergroup')"
    },
    {
      match_value => Param("timetrackinggroup")
      match_field => 'name'
      override_content => 1
-     content => "(used as the 'timetrackinggroup')"
+     content => "(използвана като 'timetrackinggroup')"
    },
    {
      match_value => "1"
      match_field => 'isbuggroup'
      override_content => 1
-     content => "Delete"
+     content => "Изтриване"
      override_contentlink => 1
      contentlink => del_contentlink
    }]
@@ -114,13 +114,13 @@
      match_value => "0"
      match_field => 'isbuggroup'
      override_content => 1
-     content => "system"
+     content => "системна"
    },
    {
      match_value => "1"
      match_field => 'isbuggroup'
      override_content => 1
-     content => "user"
+     content => "потребителска"
    }]
 %]
 
