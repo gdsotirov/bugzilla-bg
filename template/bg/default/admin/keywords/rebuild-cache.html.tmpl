@@ -18,11 +18,12 @@
   #
   # Contributor(s): Terry Weissman <terry@mozilla.org>
   #                 Vlad Dascalu <jocuri@softhome.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# INTERFACE:
   # action: string; the current action (either "update" or "delete").
-  # name: string; the name of the current keyword.
+  # keyword: A Bugzilla::Keyword object
   #%]
   
 [% IF action == "update" %]
@@ -35,7 +36,7 @@
 
 [% PROCESS global/header.html.tmpl %]
 
-Ключовата дума [% name FILTER html %] [%+status FILTER html %].
+Ключовата дума [% keyword.name FILTER html %] [%+ status FILTER html %].
 
 <p>
   <b>След като свършите с изтриването или редактирането на ключови думи
@@ -46,10 +47,10 @@
 </p>
 
 <p>
-  <b><a href="sanitycheck.cgi?rebuildkeywordcache=1">Изграждане наново на
-  наличността с ключови думи</a></b>
+  <b><a href="sanitycheck.cgi?rebuildkeywordcache=1">Изграждане
+  наново на наличността с ключови думи</a></b>
 </p>
 
-<p><a href="editkeywords.cgi">Редактиране на ключови думи</a>.</p>
+<p><a href="editkeywords.cgi">Редактиране на други ключови думи</a>.</p>
 
 [% PROCESS global/footer.html.tmpl %] 

@@ -20,28 +20,27 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the deleted component.
-  #
-  # product: string; the name of the product the component belonged to
-  #
-  # deleted_bug_count: number; the number of bugs which were deleted
-  #                            (if bug deletion is allowed)
+  # comp: object; Bugzilla::Component object representing the component the
+  #               user deleted.
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the component belongs.
   #%]
   
 [% title = BLOCK %]Изтрита съставна част '[% name FILTER html %]' от продукта
-                   '[% product FILTER html %]'[% END %]
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
 <p>
-[% IF deleted_bug_count %]
-  [% deleted_bug_count %]
-  [%- IF deleted_bug_count > 1 %] 
-    [% terms.abug %] изтрити
+[% IF comp.bug_count %]
+  [% comp.bug_count FILTER none %]
+  [%- IF comp.bug_count > 1 %] 
+    [%+ terms.bugs %] изтрити
   [% ELSE %]
-    [% terms.bug %] изтрит
+    [%+ terms.bug %] изтрит
   [% END %]
+
   </p><p>
   Всички обръщения към изтритите [% terms.bugs %] са премахнати.
 [% ELSE %]
@@ -51,7 +50,7 @@
 
 <p>Включенията и изключенията на флагове са изтрити.</p>
 
-<p>Съставната част '[% name FILTER html %]' бе изтрита.</p>
+<p>Съставната част '[% comp.name FILTER html %]' бе изтрита.</p>
 
 [% PROCESS admin/components/footer.html.tmpl
   no_edit_component_link = 1

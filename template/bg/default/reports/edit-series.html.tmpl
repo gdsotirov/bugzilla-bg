@@ -20,7 +20,7 @@
   #%]
 
 [% title = "Редактиране на редици" %]
-[% h2 = BLOCK %]
+[% subheader = BLOCK %]
   [% default.category FILTER html %] / 
   [%+ default.subcategory FILTER html %] /
   [%+ default.name FILTER html %]
@@ -57,7 +57,9 @@
   [% END %]
 </p>
 
-<p>Забележка: За сега не е възможно да се редактира търсенето свързано с този набор от данни.</p>
+<p>Забележка: За сега не е възможно да се редактира търсенето свързано с този набор
+от данни.
+</p>
 
 <p>
   <a href="query.cgi?[% default.query FILTER html %]">Преглед

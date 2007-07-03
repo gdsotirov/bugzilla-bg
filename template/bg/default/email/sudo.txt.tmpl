@@ -22,19 +22,21 @@
 [% PROCESS global/variables.none.tmpl %]
 
 Content-Type: text/plain
-From: [% Param("maintainer") %]
+From: [% Param('mailfrom') %]
 To: [% user.email %]
-Subject: [[% terms.Bugzilla %]] Вашата регистрация [% user.login %] се използва от друг
+Subject: [[% terms.Bugzilla %]] Вашата сметка [% user.login -%]
+ се използва от друг
+X-Bugzilla-Type: admin
 
     [%+ sudoer.identity %] използва възможноста 'sudo' за достъп
-до [%+ terms.Bugzilla %] използвайки регистрацията Ви.
+до [%+ terms.Bugzilla %] използвайки сметкат ви.
 
 [% IF reason %]
-    [%+ sudoer.identity %] даде следната причина, за да направи това:
+    [%+ sudoer.identity %] даде следната причина за това:
 
 [% reason FILTER wrap_comment %]
 [% ELSE %]
-    [%+ sudoer.identity %] не даде причина, за да направи това.
+    [%+ sudoer.identity %] не даде причина за това.
 [% END %]
 
     Ако смятате, че това действие е неуместно, моля свържете се с

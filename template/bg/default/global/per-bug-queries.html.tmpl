@@ -15,29 +15,87 @@
   #%]
 
 [% IF user.id && user.settings.per_bug_queries.value == "on" %]
-  <div id="links-special">
-    <div class="label">&nbsp;</div>
-    <div class="links">
-      <form action="buglist.cgi" method="get">
+  <li id="links-special">
+    <script type="text/javascript">
+      <!--
+      function update_text() {
+        // 'lob' means list_of_bugs.
+        var lob_action = document.getElementById('lob_action');
+        var action = lob_action.options[lob_action.selectedIndex].value;
+        var text = document.getElementById('lob_direction');
+        var new_query_text = document.getElementById('lob_new_query_text');
+
+        if (action == "add") {
+          text.innerHTML = "до";
+          new_query_text.style.display = 'inline';
+        }
+        else {
+          text.innerHTML = "от";
+          new_query_text.style.display = 'none';
+        }
+      }
+
+      function manage_old_lists() {
+        var old_lists = document.getElementById('lob_oldqueryname');
+        // If there is no saved searches available, returns.
+        if (!old_lists) return;
+
+        var new_query = document.getElementById('lob_newqueryname').value;
+
+        if (new_query != "") {
+          old_lists.disabled = true;
+        }
+        else {
+          old_lists.disabled = false;
+        }
+      }
+      //-->
+    </script>
+
+    [%# Get existing lists of bugs for this user %]
+    [% lists_of_bugs = [] %]
+    [% FOREACH q = user.queries %]
+      [% NEXT UNLESS q.bug_ids_only %]
+      [% lists_of_bugs.push(q.name) %]
+    [% END %]
+    <div class="label"></div>
+    <ul class="links"><li class="form">
+      <form id="list_of_bugs" action="buglist.cgi" method="get">
         <input type="hidden" name="cmdtype" value="doit">
         <input type="hidden" name="remtype" value="asnamed">
-        <input type="hidden" name="add_bugids" value="1">
-        <input type="submit" value="Добавяне"> на [% terms.bugs %]
-        <input type="text" name="bug_ids" size="8" maxlength="80"> към
-        [% foundq = 0 %]
-        [% FOREACH q = user.queries %]
-          [% NEXT UNLESS q.query_type == constants.LIST_OF_BUGS %]
-          [% IF !foundq %]
-            [% foundq = 1 %]
-            <select name="oldqueryname">
+        <input type="hidden" name="list_of_bugs" value="1">
+        <select id="lob_action" name="action" onchange="update_text();">
+          <option value="add">Добавяне</option>
+          [% IF lists_of_bugs.size %]
+            <option value="remove">Премахване</option>
           [% END %]
-          <option value="[% q.name FILTER html %]">
-            [% q.name FILTER html %]</option>
+        </select>
+
+        [% IF Param('docs_urlbase') %]
+          <a href="[% Param('docs_urlbase') %]query.html#individual-buglists">на именования етикет</a>
+        [% ELSE %]
+          именования етикет
         [% END %]
-        [% "</select> или към " IF foundq %]
-        новото съхранено търсене:
-        <input type="text" name="newqueryname" size="20" maxlength="64">
+
+        [% IF lists_of_bugs.size %]
+          <select id="lob_oldqueryname" name="oldqueryname">
+            [% FOREACH query = lists_of_bugs %]
+              <option value="[% query FILTER html %]">[% query FILTER html %]</option>
+            [% END %]
+          </select>
+        [% END %]
+        <span id="lob_new_query_text">
+          [% " или създаване и добавяне на етикета" IF lists_of_bugs.size %]
+          <input class="txt" type="text" id="lob_newqueryname"
+                 size="20" maxlength="64" name="newqueryname"
+                 onkeyup="manage_old_lists();">
+        </span>
+        <span id="lob_direction">към</span>
+        [%+ terms.bugs %]
+        <input type="text" name="bug_ids" size="12" maxlength="80"
+         [%- " value=\"$bugids\"" IF bugids %]>
+        <input type="submit" value="Предаване" id="commit_list_of_bugs">
       </form>
-    </div>
-  </div>
+    </li></ul>
+  </li>
 [% END %]

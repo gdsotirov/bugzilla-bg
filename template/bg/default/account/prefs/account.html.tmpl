@@ -28,44 +28,44 @@
 <table>
   <tr>
     <td colspan="3">
-      Моля, въведете съществуващата си парола, за да потвърдите промените по
-      регистрацията.
+      Моля, въведете съществуващата си парола, за да потвърдите промените по сметката.
     </td>
   </tr>
   <tr>
     <th align="right">Парола:</th>
     <td>
-      <input type="hidden" name="Bugzilla_login" 
+      <input type="hidden" name="Bugzilla_login"
              value="[% user.login FILTER html %]">
       <input type="password" name="Bugzilla_password">
     </td>
-  </tr>              
+  </tr>
   <tr>
     <td colspan="2"><hr></td>
   </tr>
+  [% IF user.authorizer.can_change_password %]
+    <tr>
+      <th align="right">Нова парола:</th>
+      <td>
+        <input type="password" name="new_password1">
+      </td>
+    </tr>
+
+    <tr>
+      <th align="right">Нова парола отново:</th>
+      <td>
+        <input type="password" name="new_password2">
+      </td>
+    </tr>
+  [% END %]
 
   <tr>
-    <th align="right">Нова парола:</th>
-    <td>
-      <input type="password" name="new_password1">
-    </td>
-  </tr>              
-
-  <tr>
-    <th align="right">Нова парола отново:</th>
-    <td>
-      <input type="password" name="new_password2">
-    </td>
-  </tr>              
-
-  <tr>
-    <th align="right">Вашето истинско име (незадължително, но се насърчава):</th>
+    <th align="right">Истинското ви име (незадължително, но се насърчава):</th>
     <td>
       <input size="35" name="realname" value="[% realname FILTER html %]">
     </td>
-  </tr>  
+  </tr>
 
-  [% IF Param('allowemailchange') %]
+  [% IF user.authorizer.can_change_email && Param('allowemailchange') %]
     [% IF login_change_date %]
       [% IF new_login_name %]
         <tr>
@@ -82,7 +82,7 @@
           <td>[% user.login FILTER html %]</td>
         </tr>
         <tr>
-          <th align="right">Дата на изпълнение:</th>
+          <th align="right">Дата на изпълнение</th>
           <td>[% login_change_date FILTER time %]</td>
         </tr>
       [% END %]
@@ -95,5 +95,5 @@
       </tr>
     [% END %]
   [% END %]
-  
+
 </table>

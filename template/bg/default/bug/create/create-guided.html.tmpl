@@ -32,17 +32,18 @@
 [% PROCESS global/header.html.tmpl
    title = "Въвеждане на $terms.bug"
    onload = "PutDescription()"
-   style = "body, html { height: 100% }"
+   style = "#somebugs { width: 100%; height: 500px }"
  %]
 
 <p>
   <font color="red">
     Този шаблон е използван от mozilla.org - той, заедно с
-    comment-guided.txt.tmpl шаблона, са включени като демо на това какво е
-    възможно да се направи със собственоръчно направени шаблони като цяло и
-    собственоръчно направени шаблони за въвеждане на [% terms.bug %] в
-    частност. Ще трябва да промените текста на този шаблон ако желаете да го
-    използвате във вашата [% terms.Bugzilla %] инсталация.
+    comment-guided.txt.tmpl шаблона, който форматира данните подадени чрез
+    формуляра в този шаблон, са включени като демонстрация на това какво е
+    възможно да се направи със собственоръчно направени шаблони като цяло и собственоръчно направени [% terms.bug %]
+    шаблони в частност. Тъй като голяма част от текста няма да е приложим,
+    ще трябва да фо промените
+    ако желаете да го използвате във вашата [% terms.Bugzilla %] инсталация.
   </font>
 </p>
 
@@ -51,7 +52,7 @@
 [%# This script displays the descriptions for selected components. %]
 <script type="text/javascript">
 var descriptions = [
-[% FOREACH c = component_ %]
+[% FOREACH c = product.components %]
   '[% c.description FILTER js %]',
 [% END %]
 ];
@@ -76,18 +77,19 @@ function PutDescription() {
               padding: 2px">
     <font color="#990000">
       <b>
-        Използвате [% matches.0 %].
+        Използвате Netscape [% matches.0 %].
         Докладвайте [% terms.bugs %] с този браузър на
         <a href="http://home.netscape.com/browsers/[% matches.0 %]/feedback/index.html">
          Центъра за обратна връзка на Netscape [% matches.0 %].</a>
       </b>
     </font>
-    Тази форма е само за докладване на [% terms.bugs %] в Mozilla web браузъра
+    Този формуляр е само за докладване на [% terms.bugs %] в Mozilla web браузъра
     и други продукти от mozilla.org. За да докладвате [% terms.bug %] открит
-    в Netscape [% matches.0 %] с тази форма, трябва първо да го пресъздадете в
+    в Netscape [% matches.0 %] с тази форма, трябва първо да го възпроизведете в
     скорошна версия на
     <a href="http://ftp.mozilla.org/pub/mozilla.org/mozilla/nightly/latest/">Mozilla</a>,
-    <a href="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-trunk/">Firefox</a> или
+    <a href="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-trunk/">Firefox</a>,
+<a href="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/nightly/latest-trunk/">Thunderbird</a> или
     <a href="http://ftp.mozilla.org/pub/mozilla.org/camino/nightly/latest/">Camino</a>,
     за да сте сигурни, че проблема не е оправен вече.
   </div>
@@ -95,42 +97,42 @@ function PutDescription() {
 
 [% IF cgi.user_agent('Gecko/') %]
   [% matches = cgi.user_agent().match('Gecko/(\d+)') %]
-
+  
 [% END %]
 
 <!-- @@@ Need UA checking here -->
 
 <a name="step1"></a>
-<h3>Стъпка 1 от 3 - дали вашия [% terms.bug %] вече е докладван?</h3>
+<h3>Стъпка 1 от 3 - докладван ли е вашия [% terms.bug %]?</h3>
 
 <p>
   <font color="red">Моля, не пропускайте тази стъпка - половината от всички
   подадени [% terms.bugs %] са
   вече докладвани.</font>
-    Проверете двате списъка от често докладвани [% terms.bugs %]:
+    Проверете двата списъка от често докладвани [% terms.bugs %]:
 </p>
 
 [%# Include other products if sensible %]
-[% IF product == "Firefox" %]
+[% IF product.name == "Firefox" %]
   [% productstring = "product=Mozilla%20Application%20Suite&amp;product=Firefox" %]
-[% ELSIF product == "Thunderbird" %]
+[% ELSIF product.name == "Thunderbird" %]
   [% productstring = "product=Mozilla%20Application%20Suite&amp;product=Thunderbird" %]
 [% ELSE %]
-  [% productstring = BLOCK %]product=[% product FILTER url_quote %][% END %]
+  [% productstring = BLOCK %]product=[% product.name FILTER url_quote %][% END %]
 [% END %]
 
 <p>
     <a href="duplicates.cgi?[% productstring %]&format=simple" target="somebugs">100-те най-докладвани за всички времена</a> (заредено първоначално) |
-    <a href="duplicates.cgi?[% productstring %]&format=simple&sortby=delta&reverse=1&maxrows=100&changedsince=14" target="somebugs">Гореши в последните две седмици</a>
+    <a href="duplicates.cgi?[% productstring %]&format=simple&sortby=delta&reverse=1&maxrows=100&changedsince=14" target="somebugs">Горещи в последните две седмици</a>
 </p>
 
-<iframe name="somebugs" width="100%" height="80%"
+<iframe name="somebugs" id="somebugs"
   style="border: 2px black solid"
   src="duplicates.cgi?[% productstring %]&format=simple">
 </iframe>
 
 <p>
-    Ако [% terms.bug %] ви не е там, търсете в [% terms.Bugzilla %] с въвеждането
+    Ако [% terms.bug %] не е там, търсете в [% terms.Bugzilla %] с въвеждането
     на няколко ключови думи имащи общо с [% terms.abug %] в тази кутия.
     Например: <tt><b>pop3 mail</b></tt> или <tt><b>copy paste</b></tt>.
     Резултатите ще се покажат по-горе.
@@ -141,26 +143,26 @@ function PutDescription() {
     <input type="hidden" name="format" value="simple">
     <input type="hidden" name="order" value="relevance desc">
     <input type="hidden" name="bug_status" value="__all__">
-    <input type="hidden" name="product" value="[% product FILTER html %]">
-    [% IF product == "Firefox" OR
-          product == "Thunderbird" OR
-          product == "Mozilla Application Suite" OR
-          product == "Camino" %]
+    <input type="hidden" name="product" value="[% product.name FILTER html %]">
+    [% IF product.name == "Firefox" OR 
+          product.name == "Thunderbird" OR 
+          product.name == "Mozilla Application Suite" OR
+          product.name == "Camino" %]
       <input type="hidden" name="product" value="Core">
       <input type="hidden" name="product" value="Toolkit">
       <input type="hidden" name="product" value="PSM">
       <input type="hidden" name="product" value="NSPR">
       <input type="hidden" name="product" value="NSS">
-    [% END %]
+    [% END %]      
     <input type="hidden" name="chfieldfrom" value="-6m">
     <input type="hidden" name="chfieldto" value="Now">
     <input type="hidden" name="chfield" value="[Bug creation]">
     <input type="text" name="content" size="40">
-    <input type="submit" value="Търсене">
+    <input type="submit" id="search" value="Търсене">
   </form>
 
 <p>
-  Разгледайте резултатите. Ако получите съобщението
+  Разгледайте резултатите от търсенето. Ако получите съобщението
   <tt><b>[% terms.zeroSearchResults %]</b></tt>, тогава [% terms.Bugzilla %]
   не е открила [% terms.bugs %] които
   съвпадат. Проверете за правописни грешки или опитайте по-малко или различни ключови думи.
@@ -173,7 +175,7 @@ function PutDescription() {
 <h3>Стъпка 2 от 3 - дайте информация</h3>
 
 <p>
-  Ако сте опитали да търсите няколко пъти и [% terms.abug %] ви наистина не е
+  Ако сте опитали да търсите няколко пъти и [% terms.bug %] наистина не е
   докладван, кажете ни за него.
 </p>
 
@@ -184,6 +186,7 @@ function PutDescription() {
          value="[% default.priority FILTER html %]">
   <input type="hidden" name="version"
          value="[% default.version FILTER html %]">
+  <input type="hidden" name="token" value="[% token FILTER html %]">
 
 <table valign="top" cellpadding="5" cellspacing="5" border="0">
 
@@ -192,8 +195,8 @@ function PutDescription() {
       <b>Продукт</b>
     </td>
     <td valign="top">
-      <input type="hidden" name="product" value="[% product FILTER html %]">
-      [% product FILTER html %]
+      <input type="hidden" name="product" value="[% product.name FILTER html %]">
+      [% product.name FILTER html %]
     </td>
   </tr>
 
@@ -207,7 +210,7 @@ function PutDescription() {
           <td valign="top">
             <select name="component" id="component"
                     size="5" onchange="PutDescription()">
-              [% FOREACH c = component_ %]
+              [% FOREACH c = product.components %]
                 <option value="[% c.name FILTER html %]"
                   [% " selected=\"selected\"" IF c.name == default.component_ %]>
                   [% c.name FILTER html %]
@@ -221,14 +224,14 @@ function PutDescription() {
                 <script type="text/javascript">
                   if ((document.getElementById) && (document.body.innerHTML)) {
                     document.write("\
-                    Изберете съставна част, за да видите описанието и тук.");
+                    Изберете съставна част, за да видите описанието ѝ тук.");
                   }
                 </script>
               </div>
           </td>
         </tr>
       </table>
-
+      
       <p>
         Областа където се появява проблема.
         За да изберете правилната съставна част, можете да използвате същата като на
@@ -266,23 +269,28 @@ function PutDescription() {
     </td>
   </tr>
 
-  [% matches = cgi.user_agent('Gecko/(\d+)') %]
-  [% buildid = cgi.user_agent() IF matches %]
+  [% IF product.name.match("Firefox|Camino|Mozilla Application Suite") %]
+    [% matches = cgi.user_agent('Gecko/(\d+)') %]
+    [% buildid = cgi.user_agent() IF matches %]
+  [% END %]
+  
+  [%# Accept URL parameter build ID for non-browser products %]
+  [% IF cgi.param("buildid") %]
+    [% buildid = cgi.param("buildid") %]
+  [% END %]
 
   <tr bgcolor="[% tablecolour %]">
     <td align="right" valign="top">
-      <b>Идентификатор на версия<br>(Потребителски агент)</b>
+      <b>Идентификатор на версия</b>
     </td>
     <td valign="top">
       <input type="text" size="80" name="buildid" value="[% buildid %]">
       <p>
-        По този начин се определя точно използваната версия на продукта.
-        Ако докладвате [% terms.bug %] в Mozilla или Firefox,
-        това е реда започващ с <tt>"Mozilla/5.0"</tt> в
-        <tt>Помощ | Относно</tt>.
-        Ако използвате проблемното програмно осигуряване за въвеждане на бъга това
-        поле вече ще бъде попълнено правилно.
-        Ако продукта не може да се пусне просто въведете пълния URL от
+        По този начин се определя точната версия на продукта, който използвате.
+        Ако полето по-горе е празно или знаете, че е неправилно, копирайте
+        текста с версията от менюто Помощ |
+        Относно на продукта (за браузърите той ще започва с "Mozilla/5.0...").
+        Ако продукта не може да се пусне просто въведете пълния <abbr title="Uniform Resource Locator">URL</abbr>, от
         който сте го свалили.
       </p>
     </td>
@@ -295,11 +303,10 @@ function PutDescription() {
     <td valign="top">
       <input type="text" size="80" name="bug_file_loc" value="http://">
       <p>
-        URL показващ проблема, който виждате (незадължително).
-        <!--
-        <b>ВАЖНО</b>: проблеми с счупени web страници отиват
-        <a href="http://write-this-webtool/">в тази форма</a>.
-        -->
+        URL показващ проблема, който виждате (незадължително).<br>
+        <b>ВАЖНО</b>: ако проблемa е със счупена web страници, тряба да
+        докладвате на
+        <a href="https://bugzilla.mozilla.org/page.cgi?id=broken-website.html">a different way</a>.
       </p>
    </td>
   </tr>
@@ -309,10 +316,11 @@ function PutDescription() {
       <b>Резюме</b>
     </td>
     <td valign="top">
-      <input type="text" size="80" name="short_desc" id="short_desc">
+      <input type="text" size="80" name="short_desc" id="short_desc" 
+             maxlength="255">
       <p>
         Изречение, което описва накратко проблема.
-        Моля, бъдете описателни и използвайте повече ключови думи.
+        Моля, бъдете описателни и използвайте много ключови думи.
       </p>
       <p>
         <tt>
@@ -321,7 +329,7 @@ function PutDescription() {
         <br>
         <tt>
           <font color="#009900">Добър пример</font>:
-          срив при затваряне на прозореца за поща докато се прави проверка за нова POP поща
+          срив при затваряне на прозореца за поща, докато се прави проверка за нова POP поща
         </tt>
       </p>
     </td>
@@ -332,7 +340,11 @@ function PutDescription() {
       <b>Подробности</b>
     </td>
     <td valign="top">
-      <textarea rows="6" cols="[% constants.COMMENT_COLS FILTER none %]" name="comment"></textarea>
+      [% INCLUDE global/textarea.html.tmpl
+        name    = 'comment'
+        minrows = 6
+        cols    = constants.COMMENT_COLS
+      %]
       <p>
         Разширение на резюмето. Моля, бъдете
         възможно най-конкретни относно това което е неправилно.
@@ -369,7 +381,7 @@ function PutDescription() {
           Не е опитвано възпроизвеждане.
         </option>
         <option name="NotReproducible" value="Couldn't Reproduce">
-          Опит за възпроизвеждане без резултат.
+          Опит за възпроизвеждане, без резултат.
         </option>
       </select>
     </td>
@@ -380,14 +392,15 @@ function PutDescription() {
       <b>Стъпки за възпроизвеждане</b>
     </td>
     <td valign="top">
-<textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="reproduce_steps">
-1.
-2.
-3.
-</textarea>
+      [% INCLUDE global/textarea.html.tmpl
+        name           = 'reproduce_steps'
+        minrows        = 4
+        cols           = constants.COMMENT_COLS
+        defaultcontent = "1.\n2.\n3."
+      %]
       <p>
         Опишете как да бъде възпроизведен проблема, стъпка по
-        стъпка. Включете някакви подготвителни стъпки.
+        стъпка. Включете всички подготвителни стъпки.
       </p>
     </td>
   </tr>
@@ -397,7 +410,11 @@ function PutDescription() {
       <b>Действителни резултати</b>
     </td>
     <td valign="top">
-      <textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="actual_results"></textarea>
+      [% INCLUDE global/textarea.html.tmpl
+        name    = 'actual_results'
+        minrows = 4
+        cols    = constants.COMMENT_COLS
+      %]
       <p>
         Какво се случи след като сте изпълнили стъпките по-горе?
       </p>
@@ -409,7 +426,11 @@ function PutDescription() {
       <b>Очаквани резултати</b>
     </td>
     <td valign="top">
-      <textarea rows="4" cols="[% constants.COMMENT_COLS FILTER none %]" name="expected_results"></textarea>
+      [% INCLUDE global/textarea.html.tmpl
+        name    = 'expected_results'
+        minrows = 4
+        cols    = constants.COMMENT_COLS
+      %]
       <p>
         Какво е трябвало да направи програмата вместо това?
       </p>
@@ -421,19 +442,23 @@ function PutDescription() {
       <b>Допълнителна информация</b>
     </td>
     <td valign="top">
-      <textarea rows="8" cols="[% constants.COMMENT_COLS FILTER none %]" name="additional_info"></textarea>
+      [% INCLUDE global/textarea.html.tmpl
+        name    = 'additional_info'
+        minrows = 8
+        cols    = constants.COMMENT_COLS
+      %]
       <p>
         Добавете всяка допълнителна инофмация, която смятате че е от
         значение за този [% terms.bug %], като използваната <b>тема</b>
         (дали [% terms.abug %] продължава да се случва
         със стандартната тема?), a <b>Talkback идентификатор на срив</b> или специална
         информация относто <b>конфигурацията на вашия компютър</b>. Всяка информация
-        по-дълга от няколко реда, като <b>stack trace</b> или <b>HTML
-        изпитна постановка</b>, трябва да бъде добавяна с
+        по-дълга от няколко реда, като <b>трасиране на стека</b> или <b><abbr lang="en" title="HyperText Markup Language">HTML</abbr>
+        опитна постановка</b>, трябва да бъде добавяна с
         изпозлването на връзката "Създаване на нова приставка" на [% terms.abug %] след
         като е въведен. Ако смятате, че е от значение, моля също включете
         конфигурацията на построението получавана с написването на <tt>about:buildconfig</tt>
-        в URL лентата.
+        в <abbr lang="en" title="Uniform Resource Locator">URL</abbr> лентата.
         <br>
         <br>
         Ако докладвате срив, отбележете модула в
@@ -467,7 +492,7 @@ function PutDescription() {
           неподравнен текст.
         </option>
         <option name="enhancement" value="enhancement">
-          Подобряване: Заявка за нова възможност или подбряване.
+          Подобряване: Заявка за нова възможност или подбрение.
         </option>
       </select>
       <p>
@@ -483,7 +508,7 @@ function PutDescription() {
 <h3>Стъпка 3 от 3 - предаване на [% terms.bug %] доклада</h3>
 
 <p>
-  <input type="submit" value="    Предаване на [% terms.bug %] доклад    "
+  <input type="submit" id="report" value="    Предаване на [% terms.bug %] доклад    "
    onclick="if (this.form.comment.value == '')
    { alert('Моля, въведете подробности относто този [% terms.bug %].');
      this.form.comment.focus();
@@ -492,14 +517,14 @@ function PutDescription() {
 
 <p>
   Това е! Благодаря много. Ще бъдете уведомени по електронна поща за
-  напредъка по оправянето на вашия [% terms.bug %].
+  напредъка по оправянето на вашия [% terms.bug %]. 
 
-<p>
+<p>  
   Моля, имайте в предвид,
   че получаваме много [% terms.bug %] доклади - може да отнеме известно време
   докато стигнем до вашия. Можете да подпомогнете процеса като се уверите, че
   [%+ terms.abug %] ви е
-  пълен и лесен за разбиране и чрез бързо отговаряне на евентуални въпроси,
+  пълен и лесен за разбиране и чрез бързото отговаряне на евентуални въпроси,
   пристигащи по е-поща.
 </p>
 

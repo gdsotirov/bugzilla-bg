@@ -18,38 +18,39 @@
   #
   # Contributor(s): A. Karl Kornel <karl@kornel.name>
   #%]
-  
+
 [% PROCESS global/variables.none.tmpl %]
 
 [% PROCESS global/header.html.tmpl
    title = "Започване на сесия като друг потребител"
    style_urls = ['skins/standard/admin.css']
  %]
- 
+
 [% DEFAULT target_login = "" %]
 
 <p>
-  Възможността <b>сесия като друг потребител</b> на [% terms.Bugzilla %] Ви позволява да се представите за 
-  някой друг за известно време. Докато сте в сесия като някой друг, всяко извършено от вас действие 
+  Възможността <b>сесия като друг потребител</b> на [% terms.Bugzilla %] Ви позволява да се представите за
+  някой друг за известно време. Докато сте в сесия като някой друг, всяко извършено от вас действие
   ще става от името на потребителя, за когото
   се представяте.
 </p>
 
 <p class="areyoureallyreallysure">
-  Това е много мощна възможност; трябва да бъдете много внимателни при използването и&#x341;. 
+  Това е много мощна възможност; трябва да бъдете много внимателни при използването и&#x341;.
   Вашите действия може да бъдат записвани много по-внимателно от обикновено.
 </p>
 
 <form action="relogin.cgi" method="POST">
   <p>
-    За да започнете, 
+    За да започнете,
     [% IF Param('usemenuforusers') %]
-      изберете 
+      изберете
     [% ELSE %]
-      въведете името на 
+      въведете името на
     [% END %]
-    <u>п</u>отребителя, за когото искате да се представите:
+    <label for="target_login"><u>п</u>отребителя, за когото искате да се представите:
     [% INCLUDE global/userselect.html.tmpl
+       id => "target_login"
        name => "target_login"
        value => "$target_login_default"
        accesskey => "п"
@@ -57,39 +58,42 @@
        multiple => 5
     %]
   </p>
-  
+
   [% IF !Param('usemenuforusers') %]
     <p>
       Името трябва да бъде въведено точно.  Няма да бъде извършвано съвпадение.
     </p>
   [% END %]
-  
+
   <p>
-    След това, моля отделете време да обясните защо правите това:<br>
-    <input type="text" name="reason" size="80" maxlength="200" value="
-    [%- reason_default FILTER html %]">
+    След това, моля отделете време да обясните защо правите
+    това:<br>
+    <input type="text" id="reason" name="reason" size="80" maxlength="200"
+           value="[% reason_default FILTER html %]">
   </p>
-  
+
   <p>
     Съобщението, което въведете тук, ще бъде до потребителя, за когото се представяте по е-поща.
     Ако желаете можете да оставите празно, но те все пак ще знаят, че вие
     се представяте за тях.
   </p>
-  
-  [% IF user.get_flag("can_logout") %]
+
+  [% IF user.authorizer.can_login %]
     <p>
-      Накрая, въведете вашата [% terms.Bugzilla %] парола: 
+      Накрая, въведете <label for="Bugzilla_password">вашата [% terms.Bugzilla %]
+      парола:</label>:
       <input type="hidden" name="Bugzilla_login" value="
       [%- user.login FILTER html %]">
-      <input type="password" name="Bugzilla_password" maxlength="20" size="20">
+      <input type="password" id="Bugzilla_password" name="Bugzilla_password"
+             maxlength="20" size="20">
       <br>
-      Това се прави поради две причини.  Първо, за да намали 
-      шанса някой да нанесе големи щети използвайки регистрацията, 
-      с която вече сте влезли.  Второ, за да ви принуди да обмислите 
+      Това се прави поради две причини.  Първо, за да намали
+      шанса някой да нанесе големи щети използвайки сметката,
+      с която вече сте влезли.  Второ, за да ви принуди да обмислите
        отново дали наистина имате нужда от използването на тази възможност.
     </p>
   [% END %]
-  
+
   <p>
     Натиснете върху бутона, за да започнете сесия:
     <input type="submit" value="Започване на сесия">

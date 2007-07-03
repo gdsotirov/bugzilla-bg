@@ -31,7 +31,19 @@
     </tr>
     <tr>
       <th align="right">Описание:</th>
-      <td><textarea rows=4 cols=64 wrap=virtual name="description"></textarea></td>
+      <td>
+        [% INCLUDE global/textarea.html.tmpl
+          name    = 'description'
+          minrows = 4
+          cols    = 64
+          wrap    = 'virtual'
+        %]
+      </td>
+    </tr>
+    <tr>
+      <th align="right"><label for="sortkey">Ключ за подреждане:</label></th>
+      <td><input id="sortkey" size="20" maxlength="20" name="sortkey" 
+                 value=""></td>
     </tr>
   </table>
   <hr>

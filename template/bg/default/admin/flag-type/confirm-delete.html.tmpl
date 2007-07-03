@@ -26,7 +26,7 @@
 [% PROCESS global/header.html.tmpl title = title %]
 
 <p>
-   Съществуват [% flag_count %] флага от тип [% flag_type.name FILTER html %].
+   Съществуват [% flag_type.flag_count %] флага от тип [% flag_type.name FILTER html %].
    Ако изтриете този тип, флаговете също ще бъдат изтрити. Забележете, че
    вместо да изтривате типа можете да го 
    <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]&amp;token=

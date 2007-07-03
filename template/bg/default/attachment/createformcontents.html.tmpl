@@ -1,0 +1,100 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Myk Melez <myk@mozilla.org>
+  #                 Joel Peshkin <bugreport@peshkin.net>
+  #                 Erik Stambaugh <erik@dasbistro.com>
+  #                 Marc Schumann <wurblzap@gmail.com>
+  #%]
+
+<tr>
+  <th><label for="data">Файл</label>:</th>
+  <td>
+    <em>Въведете пътя до файла на компютъра ви.</em><br>
+    <input type="file" id="data" name="data" size="50"
+      [% IF Param("allow_attach_url") %]
+        onchange="DataFieldHandler()" 
+      [% END %]
+    >
+  </td>
+</tr>
+[% IF Param("maxlocalattachment") %]
+<tr>
+  <th>Голям файл:</th>
+  <td>
+    <input type="checkbox" id="bigfile"
+           name="bigfile" value="bigfile">
+    <label for="bigfile">
+      Голям файл - Съхраняван локално и може да бъде прочистен
+    </label>
+  </td>
+</tr>
+[% END %]
+[% IF Param("allow_attach_url") %]
+<tr>
+  <th><label for="attachurl"><abbr title="Uniform Resource Locator">URL</abbr> за прикачване</label>:</th>
+  <td>
+    <em><abbr title="Uniform Resource Locator">URL</abbr> за прикачване.</em><br>
+    <input type="text" id="attachurl" name="attachurl" size="60" 
+           maxlength="2000"
+           onkeyup="URLFieldHandler()" onblur="URLFieldHandler()">
+  </td>
+</tr>
+[% END %]
+<tr>
+  <th><label for="description">Описание</label>:</th>
+  <td>
+    <em>Опишете приставката кратко.</em><br>
+    <input type="text" id="description" name="description" size="60" maxlength="200">
+  </td>
+</tr>
+<tr>
+  <th>Тип на съдържанието:</th>
+  <td>
+    <em>Ако приставката е кръпка, отметнете кутията по-долу.</em><br>
+    <input type="checkbox" id="ispatch" name="ispatch" value="1"
+           onchange="setContentTypeDisabledState(this.form);">
+    <label for="ispatch">patch</label><br><br>
+
+    <em>Иначе, изберете метод за определяне на типа на съдържанието.</em><br>
+    <input type="radio" id="autodetect"
+           name="contenttypemethod" value="autodetect" checked="checked">
+      <label for="autodetect">автоматично откриване</label><br>
+    <input type="radio" id="list"
+           name="contenttypemethod" value="list">
+      <label for="list">избор от списък</label>:
+      <select name="contenttypeselection" id="contenttypeselection"
+              onchange="this.form.contenttypemethod[1].checked = true;">
+        [% PROCESS "attachment/content-types.html.tmpl" %]
+      </select><br>
+    <input type="radio" id="manual"
+                 name="contenttypemethod" value="manual">
+      <label for="manual">ръчно въвеждане</label>:
+      <input type="text" name="contenttypeentry" id="contenttypeentry"
+             size="30" maxlength="200"
+             onchange="if (this.value) this.form.contenttypemethod[2].checked = true;">
+  </td>
+</tr>
+<tr>
+  <td> </td>
+  <td>
+    [% IF flag_types && flag_types.size > 0 %]
+      [% PROCESS "flag/list.html.tmpl" bug_id=bugid attach_id=attachid %]<br>
+    [% END %]
+  </td>
+</tr>

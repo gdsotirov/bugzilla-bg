@@ -1,0 +1,114 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # Contributor(s): Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  # none
+  #%]
+
+[% PROCESS "global/field-descs.none.tmpl" %]
+
+[% PROCESS global/header.html.tmpl
+           title = "Добавяне на ново потребителско поле"
+           onload = "document.getElementById('new_bugmail').disabled = true;" %]
+
+<script type="text/javascript">
+  <!--
+  // Disable a checkbox based on the state of another one.
+  function toggleCheckbox(this_checkbox, other_checkbox_id) {
+    var other_checkbox = document.getElementById(other_checkbox_id);
+    other_checkbox.disabled = !this_checkbox.checked;
+  }
+  //-->
+</script>
+
+<p>
+  Добавянето на потребителски полета може да направи външния вид на [% terms.Bugzilla %] много
+  сложен. Много администратори незапознати с [% terms.Bugzilla %] започват
+  да добавят много потребителски полета и след това потребителите им се оплакват, че външния вид
+  е "твърде сложен". Моля, помислете внимателно преди добавянето на каквото и да е потребителско поле.
+  Вероятно случая е, че [% terms.Bugzilla %] вече прави това от което се нуждаете,
+  и просто не сте разрешили правилния набор възможности.
+</p>
+
+<ul>
+  <li>Имената на потребителските полете започват с "cf_" за разлика от
+      стандартните полета. Ако пропуснете "cf_" в началото на името представката
+      ще бъде добавена за вас.</li>
+  <li>Описанията са много кратък низ описващ полето и ще бъдат
+      използвани като етикет за него в потребителския интерфейс.</li>
+</ul>
+
+<form id="add_field" action="editfields.cgi" method="GET">
+  <table border="0" cellspacing="0" cellpadding="5">
+    <tr>
+      <th align="right"><label for="name">Име:</label></th>
+      <td>
+        <input type="text" id="name" name="name" value="cf_" size="40" maxlength="64">
+      </td>
+
+      <th align="right">
+        <label for="enter_bug">Може да бъде задавано при създаване на [% terms.bug %]:</label>
+      </th>
+      <td>
+        <input type="checkbox" id="enter_bug" name="enter_bug" value="1"
+               onchange="toggleCheckbox(this, 'new_bugmail');">
+      </td>
+    </tr>
+    <tr>
+      <th align="right"><label for="desc">Описание:</label></th>
+      <td><input type="text" id="desc" name="desc" value="" size="40"></td>
+
+      <th align="right">
+        <label for="new_bugmail">Показвано в бъгпоща за нови [% terms.bugs %]:</label>
+      </th>
+      <td><input type="checkbox" id="new_bugmail" name="new_bugmail" value="1"></td>
+    </tr>
+    <tr>
+      <th align="right"><label for="type">Тип:</label></th>
+      <td>
+        <select id="type" name="type">
+          [% FOREACH type = field_types.keys %]
+            [% NEXT IF type == constants.FIELD_TYPE_UNKNOWN %]
+            <option value="[% type FILTER html %]">[% field_types.$type FILTER html %]</option>
+          [% END %]
+        </select>
+      </td>
+
+      <th align="right"><label for="obsolete">Остаряло:</label></th>
+      <td><input type="checkbox" id="obsolete" name="obsolete" value="1"></td>
+    </tr>
+    <tr>
+      <th align="right"><label for="sortkey">Ключ за подреждане:</label></th>
+      <td>
+        <input type="text" id="sortkey" name="sortkey" size="6" maxlength="6">
+      </td>
+
+      <th>&nbsp;</th>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  <p>
+    <input type="hidden" name="action" value="new">
+    <input type="hidden" name="token" value="[% token FILTER html %]">
+    <input type="submit" id="create" value="Създаване">
+  </p>
+</form>
+
+<p>
+  <a href="editfields.cgi">Обратно към списъка със съществуващите потребителски полета</a>
+</p>
+
+[% PROCESS global/footer.html.tmpl %]

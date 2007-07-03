@@ -18,12 +18,11 @@
   #
   # Contributor(s): Terry Weissman <terry@mozilla.org>
   #                 Vlad Dascalu <jocuri@softhome.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# INTERFACE:
-  # name: string. The name of the keyword.
-  # keyword_id: number. The ID of the keyword.
-  # bug_count: number. The number of bugs with the keyword.
+  # keyword: A Bugzilla::Keyword object.
   #%]
 
 [% PROCESS global/header.html.tmpl
@@ -31,23 +30,24 @@
 %]
 
 <p>
-  [% IF bug_count == 1 %]
+  [% IF keyword.bug_count == 1 %]
     Съществува един [% terms.bug %], за който тази ключова дума е зададена.
   [% ELSE %]
-    Съществуват [% bug_count %] [%+terms.bugs %], за които
+    Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %], за които
     тази ключова дума е зададена.
   [% END %]
   
   <b>Сигурни</b> ли сте, че искате да изтриете
-  ключовата дума <code>[% name FILTER html %]</code>?
+  ключовата дума <code>[% keyword.name FILTER html %]</code>?
 </p>
 
 <form method="post" action="editkeywords.cgi">
-  <input type="hidden" name="id" value="[% keyword_id %]">
+  <input type="hidden" name="id" value="[% keyword.id FILTER html %]">
   <input type="hidden" name="action" value="delete">
   <input type="hidden" name="reallydelete" value="1">
   <input type="hidden" name="token" value="[% token FILTER html %]">
-  <input type="submit" value="Да, изтриване на ключовата дума">
+  <input type="submit" id="delete"
+         value="Да, изтриване на ключовата дума">
 </form>
 
 <p><a href="editkeywords.cgi">Редактиране на други ключови думи</a>.</p>

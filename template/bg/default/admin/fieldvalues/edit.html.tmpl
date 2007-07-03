@@ -32,9 +32,16 @@
   <table border="0" cellpadding="4" cellspacing="0">
 
     <tr>
-      <th valign="top"><label for="value">Стойност за полето:</label></th>
-      <td><input id="value" size="20" maxlength="60" name="value" value="
-      [%- value FILTER html %]"></td>
+      <th valign="top"><label for="value">Стойност на полето:</label></th>
+      <td>
+        [% IF is_static %]
+          <input type="hidden" name="value" value="[% value FILTER html %]">
+          [% value FILTER html %]
+        [% ELSE %]
+          <input id="value" size="20" maxlength="60" name="value" value="
+          [%- value FILTER html %]">
+        [% END %]
+      </td>
     </tr>
     <tr>
       <th align="right"><label for="sortkey">Ключ за подреждане:</label></th>
@@ -49,10 +56,8 @@
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="field" value="[% field FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
-  <input type="submit" value="Обновяване">
+  <input type="submit" id="update" value="Обновяване">
 </form>
-
-<p>
 
 [% PROCESS admin/fieldvalues/footer.html.tmpl
   no_edit_link = 1 %]

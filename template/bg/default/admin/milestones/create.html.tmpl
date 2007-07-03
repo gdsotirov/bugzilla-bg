@@ -20,15 +20,16 @@
   #%]
 
 [%# INTERFACE:
-  # product: string; name of the product the milestone is being created for
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the milestone belongs.
   #%]
   
-[% title = BLOCK %]Добавяне на важно събитие към продукта '[% product FILTER html %]'[% END %]
-[% h2 = BLOCK %]Тази страница ви позволява да добавяте ново събитие към продукта
+[% title = BLOCK %]Добавяне на целево събитие към продукта '[% product FILTER html %]'[% END %]
+[% subheader = BLOCK %]Тази страница ви позволява да добавяте ново събитие към продукта
                 '[% product FILTER html %]'.[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
-  h2 = h2
+  subheader = subheader
   onload = "document.forms['f'].milestone.focus()"
 %]
 
@@ -45,13 +46,11 @@
                  value=""></td>
     </tr>
   </table>
-  <input type="submit" value="Добавяне">
+  <input type="submit" id="create" value="Добавяне">
   <input type="hidden" name="action" value="new">
-  <input type="hidden" name='product' value="[% product FILTER html %]">
+  <input type="hidden" name='product' value="[% product.name FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
-
-<p>
 
 [% PROCESS admin/milestones/footer.html.tmpl
     no_add_milestone_link = 1

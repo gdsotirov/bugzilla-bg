@@ -21,15 +21,13 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; The name of the milestone
-  #
-  # bug_count: number; The number of bugs targetted at the milestone
-  #
-  # product: string; The name of the product
-  #
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the milestone belongs.
+  # milestone: object; Bugzilla::Milestone object representing the
+  #                    milestone the user wants to delete.
   #%]
 
-[% title = BLOCK %]Изтриване на важно събитие на продукта '[% product FILTER html %]'
+[% title = BLOCK %]Изтриване на целево събитие на продукта '[% product.name FILTER html %]'
   [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -43,20 +41,21 @@
 </tr>
 <tr>
   <td valign="top">Събитие:</td>
-  <td valign="top">[% name FILTER html %]</td>
+  <td valign="top">[% milestone.name FILTER html %]</td>
 </tr>
 <tr>
   <td valign="top">Събитие на продукт:</td>
-  <td valign="top">[% product FILTER html %]</td>
+  <td valign="top">[% product.name FILTER html %]</td>
 </tr>
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
   <td valign="top">
-[% IF bug_count %]
+[% IF milestone.bug_count %]
   <a title="Списък от [% terms.bugs %] целящи това събитие '
-           [% name FILTER html %]'"
-     href="buglist.cgi?target_milestone=[% name FILTER url_quote %]&amp;product=
-          [%- product FILTER url_quote %]">[% bug_count %]</a>
+           [% milestone.name FILTER html %]'"
+     href="buglist.cgi?target_milestone=[% milestone.name FILTER url_quote %]&amp;product=
+          [%- product.name FILTER url_quote %]">
+          [% milestone.bug_count FILTER none %]</a>
 [% ELSE %]
   Няма
 [% END %]
@@ -66,17 +65,17 @@
 
 <h2>Потвърждение</h2>
   
-[% IF bug_count %]
+[% IF milestone.bug_count %]
 
   <table border="0" cellpadding="20" width="70%" bgcolor="red">
   <tr><td>
-    Има
-    [% IF bug_count > 1 %] 
-      въведени [% bug_count %] [%+ terms.abugs %]
+
+    [% IF milestone.bug_count > 1 %] 
+      Въведени са [% milestone.bug_count FILTER none %] [%+ terms.abugs %] 
     [% ELSE %]
-      въведен 1 [% terms.bug %]
+      Въведен е 1 [% terms.bug %]
     [% END %]
-    за това събитие! Когато го изтриете,
+    за това целево събитие! Когато го изтриете,
     <b><blink>ВСИЧКИ</blink></b> съхранени [% terms.bugs %] ще бъдат преназначени
     на подразбиращото се събитие за този продукт.
   </td></tr>
@@ -87,10 +86,10 @@
 <p>Наистина ли желаете да изтриете това събитие?<p>
 
 <form method="post" action="editmilestones.cgi">
-  <input type="submit" value="Да, изтриване">
+  <input type="submit" id="delete" value="Да, изтриване">
   <input type="hidden" name="action" value="delete">
-  <input type="hidden" name="product" value="[% product FILTER html %]">
-  <input type="hidden" name="milestone" value="[% name FILTER html %]">
+  <input type="hidden" name="product" value="[% product.name FILTER html %]">
+  <input type="hidden" name="milestone" value="[% milestone.name FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 

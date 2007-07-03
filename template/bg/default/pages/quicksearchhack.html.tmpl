@@ -32,8 +32,8 @@
                 { alert('Моля, първо въведете едни или повече термини за търсене.');
                   return false; } return true;">
   <input type="text" size="40" name="quicksearch">
-  <input type="submit" value="Търсене">
-  <input type="submit" name="load" value="Зареждане на формата за търсене">
+  <input type="submit" value="Търсене" id="find">
+  <input type="submit" name="load" value="Зареждане на формата за търсене" id="load">
 </form>
 
 <p>
@@ -50,7 +50,7 @@
   Даден [% terms.bug %] се избира ако поне една от стойностите съществува като
   подниз в поне едно от полетата.
   Например, <tt>assignee,reporter,qa:ibm,sun</tt> ще ви даде
-  [%+ terms.bugs %] където назначения, докладчика, или кач. контрол имат регистрация
+  [%+ terms.bugs %] където назначения, докладчика, или кач. контрол имат сметка
   съдържаща <tt>ibm</tt> или <tt>sun</tt>.
   Ако е дадено <tt>стойност1,&hellip;,стойностM</tt>, представката (приблизително) се свежда до
   <tt>summary,keywords,product,component,statuswhiteboard:</tt>, както е отбелязано по-горе.

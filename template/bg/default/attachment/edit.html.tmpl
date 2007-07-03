@@ -26,16 +26,16 @@
 [% title = BLOCK %]
   Подробности за приставка [% attachment.id %] към [% terms.Bug %] [%+ attachment.bug_id %]
 [% END %]
-[% h1 = BLOCK %]
+[% header = BLOCK %]
   Подробности за приставка [% attachment.id %] към
-  [%+ GetBugLink(attachment.bug_id, "$terms.Bug ${attachment.bug_id}") %]
+  [%+ "$terms.Bug ${attachment.bug_id}" FILTER bug_link(attachment.bug_id) FILTER none %]
 [% END %]
-[% h2 = BLOCK %][% bugsummary FILTER html %][% END %]
+[% subheader = BLOCK %][% bugsummary FILTER html %][% END %]
 
 [% PROCESS global/header.html.tmpl
   title = title
-  h1 = h1
-  h2 = h2
+  header = header
+  subheader = subheader
   style = "
     table.attachment_info th { text-align: right; vertical-align: top; }
     table.attachment_info td { text-align: left; vertical-align: top; }
@@ -82,8 +82,7 @@
 
       // Copy the contents of the diff into the textarea
       var editFrame = document.getElementById('editFrame');
-      editFrame.value = theContent;
-      editFrame.value += "\n\n";
+      editFrame.value = theContent + "\n\n";
 
       has_edited = 1;
     }
@@ -211,23 +210,35 @@
     <tr>
       <td width="25%">
         <small>
-        <b>Описание:</b><br>
-          <textarea rows="3" cols="25" name="description" wrap="soft">
-            [%- attachment.description FILTER html %]</textarea><br>
+        <b><label for="description">Описание</label>:</b><br>
+          [% INCLUDE global/textarea.html.tmpl
+            id             = 'description'
+            name           = 'description'
+            minrows        = 3
+            cols           = 25
+            wrap           = 'soft'
+            defaultcontent = attachment.description
+          %]<br>
 
         [% IF attachment.isurl %]
             <input type="hidden" name="filename"
-                   value="[% attachment.filename FILTER html %]"><br>
+                   value="[% attachment.filename FILTER html %]">
             <input type="hidden" name="contenttypeentry"
-                   value="[% attachment.contenttype FILTER html %]"><br>
+                   value="[% attachment.contenttype FILTER html %]">
         [% ELSE %]
-          <b>Име на файл:</b><br>
-            <input type="text" size="20" name="filename"
+          <b><label for="filename">Име на файл</label>:</b><br>
+            <input type="text" size="20" id="filename" name="filename"
                    value="[% attachment.filename FILTER html %]"><br>
-          <b>Размер: </b>[% attachment.datasize FILTER unitconvert %]<br>
+          <b>Размер: </b>
+          [% IF attachment.datasize %]
+            [%+ attachment.datasize FILTER unitconvert %]
+          [% ELSE %]
+            <em>deleted</em>
+          [% END %]<br>
 
-          <b><abbr lang="en" title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип:</b><br>
-            <input type="text" size="20" name="contenttypeentry"
+          <b><label for="contenttypeentry"><abbr lang="en" title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип</label>:</b><br>
+            <input type="text" size="20"
+                   id="contenttypeentry" name="contenttypeentry"
                    value="[% attachment.contenttype FILTER html %]"><br>
 
           <input type="checkbox" id="ispatch" name="ispatch" value="1"
@@ -236,12 +247,13 @@
         [% END %]
           <input type="checkbox" id="isobsolete" name="isobsolete" value="1"
                  [% 'checked="checked"' IF attachment.isobsolete %]>
-          <label for="isobsolete">остаряла</label><br>
-          [% IF (Param("insidergroup") && UserInGroup(Param("insidergroup"))) %]
-            <input type="checkbox" name="isprivate" value="1"
-                   [% " checked" IF attachment.isprivate %]> частна<br><br>
-          [% ELSE %]<br>
+          <label for="isobsolete">остаряла</label>
+          [% IF (Param("insidergroup") && user.in_group(Param("insidergroup"))) %]
+            <input type="checkbox" id="isprivate" name="isprivate" value="1"
+                   [% " checked" IF attachment.isprivate %]>
+            <label for="isprivate">частна</label><br>
           [% END %]
+          <br>
 
         [% IF flag_types.size > 0 %]
           [% PROCESS "flag/list.html.tmpl" bug_id = attachment.bug_id
@@ -249,25 +261,45 @@
         [% END %]
 
         <div id="smallCommentFrame">
-          <b>Коментар (към [% terms.abug %]):</b><br>
-            <textarea name="comment" rows="5" cols="25" wrap="soft"></textarea><br>
+          <b><label for="comment">Коментар</label> (към
+          [%+ terms.abug %]):</b><br>
+            [% INCLUDE global/textarea.html.tmpl
+              id      = 'comment'
+              name    = 'comment'
+              minrows = 5
+              cols    = 25
+              wrap    = 'soft'
+            %]<br>
         </div>
 
-        <input type="submit" value="Изпращане"><br><br>
+        <input type="submit" value="Изпращане" id="update"><br><br>
         <strong>Действия:</strong>
         <a href="attachment.cgi?id=[% attachment.id %]">Преглед</a>
         [% IF attachment.ispatch && patchviewerinstalled %]
-         | <a href="attachment.cgi?id=[% attachment.id %]&action=diff">Сравняване</a>
+         | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=diff">Diff</a>
+        [% END %]
+        [% IF Param("allow_attachment_deletion")
+              && user.groups.admin
+              && attachment.datasize > 0 %]
+          | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=delete">Изтриване</a>
         [% END %]
         </small>
       </td>
 
-      [% IF isviewable %]
+      [% IF !attachment.datasize %]
+        <td width="75%"><b>Съдържанието на приставката беше изтрито.</b></td>
+      [% ELSIF isviewable %]
         <td width="75%">
-          <textarea id="editFrame" name="comment" wrap="soft" cols="80"
-                    style="height: 400px; width: 100%; display: none;"></textarea>
+          [% INCLUDE global/textarea.html.tmpl
+            id      = 'editFrame'
+            name    = 'comment'
+            style   = 'height: 400px; width: 100%; display: none'
+            minrows = 10
+            cols    = 80
+            wrap    = 'soft'
+          %]
           <iframe id="viewFrame" src="attachment.cgi?id=[% attachment.id %]" style="height: 400px; width: 100%;">
-            <b>Не можете да видите приставката докато преглеждате подробностите и́, защото браузъра ви не поддържа вградени рамки.
+            <b>Не можете да видите приставката докато преглеждате подробностите ѝ, защото браузъра ви не поддържа вградени рамки.
             <a href="attachment.cgi?id=[% attachment.id %]">Преглед на прставката на отделна страница</a>.</b>
           </iframe>
           <script type="text/javascript">
@@ -302,9 +334,8 @@
       [% ELSE %]
         <td id="noview" width="50%">
           <p><b>
-            Приставката не е видима във вашия браузър, защото нейния
-            <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr>
-             тип ([% attachment.contenttype FILTER html %]) не е един от тези, които тя
+            Приставката не е видима във вашия браузър, защото нейния <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип
+            ([% attachment.contenttype FILTER html %]) не е един от тези, които той
             може да покаже.
           </b></p>
           <p><b>

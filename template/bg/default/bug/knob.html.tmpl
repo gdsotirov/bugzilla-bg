@@ -24,17 +24,15 @@
 
 [%# *** Knob *** %]
 
-  <br>
-  <input type="radio" id="knob-leave" name="knob" value="none" checked="checked">
-  <label for="knob-leave">
-    Оставяне като <b>[% status_descs.${bug.bug_status} FILTER html %]&nbsp;
-                [% resolution_descs.${bug.resolution} FILTER html %]</b>
-  </label>
-  <br>
+<br>
+<div id="knob">
+  <div id="knob-options">
 
   [% knum = 1 %]
+  [% initial_action_shown = 0 %]
 
   [% IF bug.isunconfirmed && bug.user.canconfirm %]
+    [% PROCESS initial_action %]
     <input type="radio" id="knob-confirm" name="knob" value="confirm">
     <label for="knob-confirm">
       Потвърждаване на [% terms.abug %] (промяна на състоянието на <b>[% status_descs.NEW FILTER html %]</b>)
@@ -45,6 +43,7 @@
 
   [% IF bug.isopened && bug.bug_status != "ASSIGNED" && bug.user.canedit
         && (!bug.isunconfirmed || bug.user.canconfirm) %]
+    [% PROCESS initial_action %]
     <input type="radio" id="knob-accept" name="knob" value="accept">
     <label for="knob-accept">
       Приемане на [% terms.abug %] (
@@ -58,38 +57,25 @@
   [% IF bug.user.canedit || bug.user.isreporter %]
     [% IF bug.isopened %]
       [% IF bug.resolution %]
+        [% PROCESS initial_action %]
         <input type="radio" id="knob-clear" name="knob" value="clearresolution">
         <label for="knob-clear">
-          Изчистване на решението (премахване на текущото решение 
-          <b>[% bug.resolution FILTER html %]</b>)
+          Изчистване на решението (премахване на текущото решение
+          <b>[% get_resolution(bug.resolution) FILTER html %]</b>)
         </label>
         <br>
         [% knum = knum + 1 %]
       [% END %]
 
+      [% PROCESS initial_action %]
       <input type="radio" id="knob-resolve" name="knob" value="resolve">
       <label for="knob-resolve">
         Разрешаване на [% terms.abug %], смяна на 
         <a href="page.cgi?id=fields.html#resolution">решението</a> на
       </label>  
-      <select name="resolution"
-              onchange="document.changeform.knob[[% knum %]].checked=true">
-        [% FOREACH r = bug.choices.resolution %]
-          <option value="[% r FILTER html %]">[% resolution_descs.${r} FILTER html %]</option>
-        [% END %]
-      </select>
-      <br>
-      [% knum = knum + 1 %]
+      [% PROCESS select_resolution %]
 
-      <input type="radio" id="knob-duplicate" name="knob" value="duplicate">
-      <label for="knob-duplicate">
-        Разрешаване на [% terms.abug %], отбелязване като двойник на [% terms.bug %] №
-      </label>
-      <input name="dup_id" size="6"
-             onchange="if (this.value != '')
-                       {document.changeform.knob[[% knum %]].checked=true}">
-      <br>
-      [% knum = knum + 1 %]
+      [% PROCESS duplicate %]
 
       [% IF bug.user.canedit %]
         <input type="radio" id="knob-reassign" name="knob" value="reassign">
@@ -119,9 +105,9 @@
 
         <input type="radio" id="knob-reassign-cmp" name="knob" value="reassignbycomponent">
         <label for="knob-reassign-cmp">
-          Преназначаване на [% terms.abug %] подразбиращото се назначение
+          Преназначаване на [% terms.abug %] на подразбиращото се назначение
           [% " и качествен контрол" IF Param('useqacontact') %]
-          за избраната съставна част
+          и добавяне на първоначалния <abbr title="Точно Копие">ТК</abbr> за избраната съставна част
         </label>
         <br>
         [% IF bug.isunconfirmed && bug.user.canconfirm %]
@@ -136,14 +122,24 @@
     [% ELSE %]
       [% IF bug.resolution != "MOVED" ||
            (bug.resolution == "MOVED" && bug.user.canmove) %]
+        [% PROCESS initial_action %]
+        <input type="radio" id="knob-change-resolution" name="knob" value="change_resolution">
+        <label for="knob-change-resolution">
+          Смяна на <a href="page.cgi?id=fields.html#resolution">решението</a> на
+        </label>
+        [% PROCESS select_resolution %]
+
+        [% PROCESS duplicate %]
+
         <input type="radio" id="knob-reopen" name="knob" value="reopen">
         <label for="knob-reopen">
-          Отваряне отново
+          Отваряне отново на [% terms.abug %]
         </label>
         <br>
         [% knum = knum + 1 %]
       [% END %]
       [% IF bug.bug_status == "RESOLVED" %]
+        [% PROCESS initial_action %]
         <input type="radio" id="knob-verify" name="knob" value="verify">
         <label for="knob-verify">
           Означаване на [% terms.abug %] като <b>[% status_descs.VERIFIED FILTER html %]</b>
@@ -152,6 +148,7 @@
         [% knum = knum + 1 %]
       [% END %]
       [% IF bug.bug_status != "CLOSED" %]
+        [% PROCESS initial_action %]
         <input type="radio" id="knob-close" name="knob" value="close">
         <label for="knob-close">
           Означаване на [% terms.abug %] като <b>[% status_descs.CLOSED FILTER html %]</b>
@@ -161,29 +158,51 @@
       [% END %]
     [% END %]
   [% END %]
+  </div>
 
-  <input type="submit" value="Изпращане">
-  <input type="hidden" name="form_name" value="process_bug">
-  <p>
-    <font size="+1">
-      <b>
-        <a href="show_activity.cgi?id=[% bug.bug_id %]">Преглед на дейността по [% terms.abug %]</a>
-        &nbsp; | &nbsp;
-        <a href="show_bug.cgi?format=multiple&amp;id=[% bug.bug_id %]">Формат за печат</a>
-        &nbsp; | &nbsp;
-        <a href="show_bug.cgi?ctype=xml&amp;id=[% bug.bug_id %]">XML</a>
-        &nbsp; | &nbsp;
-        <a href="enter_bug.cgi?cloned_bug_id=[% bug.bug_id %]">Клониране на [% terms.abug %]</a>
-
-        [%# Links to more things users can do with this bug. %]
-        [% Hook.process("links") %]
-      </b>
-    </font>
-
+  <div id="knob-buttons">
+  <input type="submit" value="Изпращане" id="commit">
     [% IF bug.user.canmove %]
       &nbsp; <font size="+1"><b> | </b></font> &nbsp;
-      <input type="submit" name="action"
+      <input type="submit" name="action" id="action"
              value="[% Param("move-button-text") %]">
     [% END %]
-  </p>
+  </div>
+</div>
 
+[%# Common actions %]
+
+[% BLOCK initial_action %]
+  [%# Only show 'Leave as' action in combination with another knob %]
+  [% IF !initial_action_shown %]
+    <input type="radio" id="knob-leave" name="knob" value="none" checked="checked">
+    <label for="knob-leave">
+      Оставяне като <b>[% status_descs.${bug.bug_status} FILTER html %]&nbsp;
+                  [% get_resolution(bug.resolution) FILTER html %]</b>
+    </label>
+    <br>
+    [% initial_action_shown = 1 %]
+  [% END %]
+[% END %]
+
+[% BLOCK select_resolution %]
+  <select name="resolution"
+          onchange="document.changeform.knob[[% knum %]].checked=true">
+    [% FOREACH r = bug.choices.resolution %]
+      <option value="[% r FILTER html %]">[% get_resolution(r) FILTER html %]</option>
+    [% END %]
+  </select>
+  <br>
+  [% knum = knum + 1 %]
+[% END %]
+
+[% BLOCK duplicate %]
+  <input type="radio" id="knob-duplicate" name="knob" value="duplicate">
+  <label for="knob-duplicate">
+    Означаване на [% terms.bug %] като двойник на [% terms.bug %] №
+  </label>
+  <input name="dup_id" size="6"
+         onchange="if (this.value != '') {document.changeform.knob[[% knum %]].checked=true}">
+  <br>
+  [% knum = knum + 1 %]
+[% END %]

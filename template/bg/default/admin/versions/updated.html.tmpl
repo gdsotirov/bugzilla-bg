@@ -20,29 +20,25 @@
   #%]
 
 [%# INTERFACE:
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the version belongs.
+  # version: object; Bugzilla::Version object representing the
+  #                    version the user updated.
   #
-  # updated_name: boolean; defined if the 'name' field was updated
-  #
-  # name: string; the new name of the version
-  #
-  # product: string; the name of the product the version belongs to
+  # updated: boolean; defined if the 'name' field was updated
   #%]
   
-[% title = BLOCK %]Обновяване на версията '[% name FILTER html %]' на продукта
-                   '[% product FILTER html %]'[% END %]
+[% title = BLOCK %]Обновяване на версията '[% version.name FILTER html %]' на продукта
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-[% IF updated_name %]
-  <p>Името на версията бе обновено на: '[% name FILTER html %]'.</p>
+[% IF updated %]
+  <p>Името на версията бе обновено на: '[% version.name FILTER html %]'.</p>
+[% ELSE %]
+  <p>Нищо не бе променено за версията '[% version.name FILTER html %]'.</p>
 [% END %]
-
-[% UNLESS updated_name %]
-  <p>Нищо не бе променено за версията '[% name FILTER html %]'.
-[% END %]
-   
-<p>
 
 [% PROCESS admin/versions/footer.html.tmpl %]
 

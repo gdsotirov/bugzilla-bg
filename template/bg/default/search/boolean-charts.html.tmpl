@@ -52,12 +52,22 @@
 
 [%# Whoever wrote the original version of boolean charts had a seriously twisted mind %]
 
-[% jsmagic = "onclick=\"document.forms[0].action='query.cgi#chart'; document.forms[0].method='POST'; return 1;\"" %]
+[% jsmagic = "onclick=\"this.form.action='query.cgi#chart'; this.form.method='POST'; return 1;\"" %]
 
 [% FOREACH chart = default.charts %]
   [% chartnum = loop.count - 1 %]
   <table>
-  [% FOREACH row = chart %]
+    <tr>
+      <td>
+        <input type="checkbox" id="negate[% chartnum FILTER html %]"
+             name="negate[% chartnum FILTER html %]" value="1"
+            [% "checked" IF chart.negate %]>
+        <label for="negate[% chartnum FILTER html %]">
+          Не (отрицание на цялата карта)
+        </label>
+      </td>
+    </tr>
+  [% FOREACH row = chart.rows %]
     [% rownum = loop.count - 1 %]
     <tr>
     [% FOREACH col = row %]
@@ -90,8 +100,9 @@
       [% ELSE %]
         <td>
           [% newor = colnum + 1 %]
-          <input type="submit" value="Или" 
-                 name="cmd-add[% "${chartnum}-${rownum}-${newor}" %]" [% jsmagic %]>
+          <input type="submit" value="Или" [% jsmagic %]
+                 name="cmd-add[% "${chartnum}-${rownum}-${newor}" %]"
+                 id="cmd-add[% "${chartnum}-${rownum}-${newor}" %]">
         </td>
       [% END %]
       
@@ -106,11 +117,13 @@
     <tr>
       <td>
         [% newand = rownum + 1; newchart = chartnum + 1 %]
-        <input type="submit" value="И" 
-               name="cmd-add[% "${chartnum}-${newand}-0" %]" [% jsmagic %]> 
+        <input type="submit" value="И" [% jsmagic %]
+               name="cmd-add[% "${chartnum}-${newand}-0" %]"
+               id="cmd-add[% "${chartnum}-${newand}-0" %]">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="submit" value="Добавяне на друга булева карта" 
-               name="cmd-add[% newchart %]-0-0" [% jsmagic %]>
+        <input type="submit" value="Добавяне на друга булева карта" [% jsmagic %]
+               name="cmd-add[% newchart %]-0-0"
+               id="cmd-add[% newchart %]-0-0">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>   

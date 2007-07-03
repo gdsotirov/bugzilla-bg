@@ -31,7 +31,7 @@
 
 [% PROCESS global/header.html.tmpl
            title = "Система за остроумия на $terms.Bugzilla"
-           h1 = "Добавете вашето остроумно заглавие"
+           header = "Добавете вашето остроумно заглавие"
  %]
 
 [% IF added_quip %]
@@ -76,7 +76,7 @@
     <input type="hidden" name="action" value="add">
     <input size="80" name="quip">
     <p>
-      <input type="submit" value="Добавяне на остроумието">
+      <input type="submit" id="add" value="Добавяне на остроумието">
     </p>
   </form>
 [% ELSE %]
@@ -85,7 +85,7 @@
 [% END %]
 
 [% IF show_quips %]
-  [% IF !UserInGroup('admin') %]
+  [% IF !user.in_group('admin') %]
     <h2>
       Налични остроумия:
     </h2>
@@ -148,15 +148,15 @@
                       +'value="Отмятане на всички" onclick="SetCheckboxes(true);">');
         //--></script>
 
-      <input type="submit" value="Обновяване">
+      <input type="submit" id="update" value="Обновяване">
     </form>
     <br>
   [% END %]
 [% ELSE %]
   <p>
-    Тези които харесват големите си количества остроумия могат да 
+    Тези които харесват остроумия в големи количества могат да
     <a href="quips.cgi?action=show">прегледат
-    [% IF UserInGroup('admin') %]
+    [% IF user.in_group('admin') %]
       и редактират
     [% END %]
     целия списък с остроумия</a>.

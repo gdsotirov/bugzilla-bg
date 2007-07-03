@@ -261,15 +261,31 @@ document.write('<input type="button" value="Забраняване на всич
 Ако наблюдавате потребител, което е като да стоите в техните обувки с
 цел получаване на поща. Електронната поща се изпраща или не според <u>вашите</u>
 настройки за <u>тяхната</u> връзка с [% terms.abug %]
-(напр. Назначение). Вие наблюдавате всеки в следващият разделен със запетаи списък:
+(напр. Назначение). Вие наблюдавате всеки в следващия, разделен със запетаи, списък:
 </p>
 
-<p>Наблюдавани потребители:
-  <input size="60" name="watchedusers" 
-         value="[% watchedusers FILTER html %]">
+<p>
+[% IF watchedusers.size %]
+Наблюдавате всеки в следващия лист:
+  </p>
+  <p>
+    <select id="watched_by_you" name="watched_by_you" multiple="multiple" size="5">
+        [% FOREACH w = watchedusers %]
+           <option value="[% w FILTER html %]">[% w FILTER html %]</option>
+        [% END %]
+    </select> <br />
+    <input type="checkbox" id="remove_watched_users" name="remove_watched_users">
+    <label for="remove_watched_users">Премахване на избраните потребители от списъка ми за наблюдение</label>
+[% ELSE %]
+В момента не наблюдавате никой.
+[% END %]
+</p>
+
+<p><a name="new_watched_by_you" id="new_watched_by_you">Добавяне на потребители към списъка ми за наблюдение (списък разделен със запетаи)</a>:
+  <input size="60" name="new_watchedusers" value="">
 </p>            
 
-<p>Наблюдаващи потребители:<br>
+<p><a name="watching_you" id="watching_you">Наблюдаващи ви потребители</a>:<br>
   [% IF watchers.size %]
     [% FOREACH watcher = watchers %]
       [% watcher FILTER html %] <br>

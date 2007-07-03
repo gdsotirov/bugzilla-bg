@@ -21,10 +21,9 @@
 
 <script type="text/javascript">
 <!-- 
-  var stored_onload = window.onload;
   // Enables or disables a requestee field depending on whether or not
   // the user is requesting the corresponding flag.
-  function toggleRequesteeField(flagField)
+  function toggleRequesteeField(flagField, no_focus)
   {
     // Convert the ID of the flag field into the ID of its corresponding
     // requestee field and then use the ID to get the field.
@@ -36,7 +35,7 @@
     // of the flag field.
     if (flagField.value == "?") {
         requesteeField.disabled = false;
-        requesteeField.focus();
+        if (!no_focus) requesteeField.focus();
     } else                         
         requesteeField.disabled = true;
   }
@@ -60,9 +59,6 @@
             inputElement.disabled = true;
       }
     }
-    if (stored_onload) {
-        stored_onload();
-    }
   }
   window.onload = disableRequesteeFields;
 // -->
@@ -76,17 +72,21 @@
   # on a single bug/attachment).
   #%]
 
-<table id="flags">
-  <tr>
-    <th colspan="3">
-      Флагове:
-    </th>
-    [% IF any_flags_requesteeble %]
-      <th>
-        Изпълнител:
+[% DEFAULT flag_table_id = "flags" %]
+
+<table id="[% flag_table_id FILTER html %]">
+  [% UNLESS flag_no_header %]
+    <tr>
+      <th colspan="3">
+        Флагове:
       </th>
-    [% END %]
-  </tr>
+      [% IF any_flags_requesteeble %]
+        <th>
+          Изпълнител:
+        </th>
+      [% END %]
+    </tr>
+  [% END %]
 
   [%# Step 1: Display every flag type (except inactive types with no flags). %]
   [% FOREACH type = flag_types %]
@@ -98,19 +98,27 @@
           [% flag.setter.nick FILTER html %]:
         </td>
         <td>
-          <label title="[% type.description FILTER html %]">
-            [%- type.name FILTER html FILTER no_break %]</label>
+          <label title="[% type.description FILTER html %]"
+                 for="flag-[% flag.id %]">
+            [%- type.name FILTER html FILTER no_break -%]</label>
         </td>
         <td>
           <select id="flag-[% flag.id %]" name="flag-[% flag.id %]" 
                   title="[% type.description FILTER html %]"
                   onchange="toggleRequesteeField(this);">
-            <option value="X"></option>
+            [%# Only display statuses the user is allowed to set. %]
+            [% IF user.can_request_flag(type) %]
+              <option value="X"></option>
+            [% END %]
             [% IF type.is_active %]
-              <option value="+" [% "selected" IF flag.status == "+" %]>+</option>
-              <option value="-" [% "selected" IF flag.status == "-" %]>-</option>
-              [% IF type.is_requestable || flag.status == "?" %]
+              [% IF (type.is_requestable && user.can_request_flag(type)) || flag.status == "?" %]
                 <option value="?" [% "selected" IF flag.status == "?" %]>?</option>
+              [% END %]
+              [% IF user.can_set_flag(type) || flag.status == "+" %]
+                <option value="+" [% "selected" IF flag.status == "+" %]>+</option>
+              [% END %]
+              [% IF user.can_set_flag(type) || flag.status == "-" %]
+                <option value="-" [% "selected" IF flag.status == "-" %]>-</option>
               [% END %]
             [% ELSE %]
               <option value="[% flag.status %]" selected="selected">[% flag.status %]</option>
@@ -140,18 +148,22 @@
       <tr>
         <td>&nbsp;</td>
         <td>
-          <label title="[% type.description FILTER html %]">
+          <label title="[% type.description FILTER html %]"
+                 for="flag_type-[% type.id %]">
             [%- type.name FILTER html FILTER no_break %]</label>
         </td>
         <td>
           <select id="flag_type-[% type.id %]" name="flag_type-[% type.id %]" 
                   title="[% type.description FILTER html %]"
+                  [% " disabled=\"disabled\"" UNLESS user.can_request_flag(type) %]
                   onchange="toggleRequesteeField(this);">
             <option value="X"></option>
-            <option value="+">+</option>
-            <option value="-">-</option>
-            [% IF type.is_requestable %]
+            [% IF type.is_requestable && user.can_request_flag(type) %]
               <option value="?">?</option>
+            [% END %]
+            [% IF user.can_set_flag(type) %]
+              <option value="+">+</option>
+              <option value="-">-</option>
             [% END %]
           </select>
         </td>
@@ -179,18 +191,22 @@
     [% END %]
     <tr>
       <td colspan="2">
-        допъл. <label title="[% type.description FILTER html %]">
+        допъл. <label title="[% type.description FILTER html %]"
+                     for="flag_type-[% type.id %]">
           [%- type.name FILTER html FILTER no_break %]</label>
       </td>
       <td>
         <select id="flag_type-[% type.id %]" name="flag_type-[% type.id %]" 
                 title="[% type.description FILTER html %]"
+                [% " disabled=\"disabled\"" UNLESS user.can_request_flag(type) %]
                 onchange="toggleRequesteeField(this);">
           <option value="X"></option>
-          <option value="+">+</option>
-          <option value="-">-</option>
-          [% IF type.is_requestable %]
+          [% IF type.is_requestable && user.can_request_flag(type) %]
             <option value="?">?</option>
+          [% END %]
+          [% IF user.can_set_flag(type) %]
+            <option value="+">+</option>
+            <option value="-">-</option>
           [% END %]
         </select>
       </td>

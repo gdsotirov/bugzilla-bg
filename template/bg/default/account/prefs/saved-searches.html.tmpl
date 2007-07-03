@@ -19,6 +19,11 @@
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #%]
 
+[%# INTERFACE:
+  # queryshare_groups: list of groups the user may share queries with
+  #                    (id, name).
+  #%]
+
 <p>Съхранените ви търсения са както следва:</p>
 
 <blockquote>
@@ -40,6 +45,12 @@
         Покажи в
         дъното
       </th>
+      [% may_share = user.in_group(Param('querysharegroup')) && queryshare_groups.size %]
+      [% IF may_share %]
+        <th>
+          Споделяне с група
+        </th>
+      [% END %]
     </tr>
     <tr>
       <td>Мои бъгове</td>
@@ -59,18 +70,24 @@
                value="1"
                [% " checked" IF user.showmybugslink %]>
       </td>
+      [% IF may_share %]
+      <td>
+        &mdash;
+      </td>
+      [% END %]
     </tr>
-    [% FOREACH q = queries %]
+    [% FOREACH q = user.queries %]
       <tr>
         <td>[% q.name FILTER html %]</td>
         <td>
           <a href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% q.name FILTER url_quote %]">Пускане</a>
         </td>
         <td>
-          <a href="query.cgi?[% q.query FILTER html %]&amp;known_name=[% q.name FILTER url_quote %]">Редактиране</a>
+          <a href="query.cgi?[% q.edit_link FILTER html %]&amp;known_name=
+                   [% q.name FILTER url_quote %]">Редактиране</a>
         </td>
         <td>
-          [% IF q.usedinwhine %]
+          [% IF q.used_in_whine %]
             Премахване първо от <a href="editwhines.cgi">напомнянията</a>
           [% ELSE %]
             <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
@@ -79,9 +96,72 @@
         </td>
         <td align="center">
           <input type="checkbox" 
-                 name="linkinfooter_[% q.name FILTER html %]"
+                 name="link_in_footer_[% q.id FILTER html %]"
                  value="1"
-                 [% " checked" IF q.linkinfooter %]>
+                 alt="[% q.name FILTER html %]"
+                 [% " checked" IF q.link_in_footer %]>
+        </td>
+        [% IF may_share %]
+          <td>
+            <select name="share_[% q.id FILTER html %]">
+              <option value="">Не споделяй</option>
+              [% FOREACH group = queryshare_groups %]
+                <option value="[% group.id %]"
+                        [% ' selected="selected"' 
+                           IF q.shared_with_group.id == group.id %]
+                >[% group.name FILTER html %]</option>
+              [% END %]
+            </select>
+          </td>
+        [% END %]
+      </tr>
+    [% END %]
+  </table>
+</blockquote>
+
+<p>Можете да използвате следните търсения съхранени и споделени от други:</p>
+
+<blockquote>
+  <table border="1" cellpadding="3">  
+    <tr>
+      <th>
+        Търсене
+      </th>
+      <th>
+        Споделено от
+      </th>
+      <th>
+        Пускане
+      </th>
+      <th>
+        Показване
+        в дъното
+      </th>
+    </tr>
+    [% found_shared_query = 0 %]
+    [% FOREACH q = user.queries_available %]
+      [% found_shared_query = 1 %]
+      <tr>
+        <td>[% q.name FILTER html %]</td>
+        <td>[% q.user.identity FILTER html %]</td>
+        <td>
+          <a href="buglist.cgi?cmdtype=dorem&amp;remaction=run&amp;namedcmd=
+                   [% q.name FILTER url_quote %]&amp;sharer_id=
+                   [% q.user.id FILTER url_quote %]">Пускане</a>
+        </td>
+        <td align="center">
+          <input type="checkbox" 
+                 name="link_in_footer_[% q.id FILTER html %]"
+                 value="1"
+                 alt="[% q.name FILTER html %]"
+                 [% " checked" IF q.link_in_footer %]>
+        </td>
+      </tr>
+    [% END %]
+    [% IF !found_shared_query %]
+      <tr>
+        <td colspan="4" style="text-align: center">
+          &lt;None&gt;
         </td>
       </tr>
     [% END %]

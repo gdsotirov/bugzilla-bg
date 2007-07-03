@@ -23,12 +23,10 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% bugidsummary = flag.target.bug.id _ ': ' _ flag.target.bug.summary %]
-[% attidsummary = flag.target.attachment.id _ ': ' _
-                  flag.target.attachment.summary %]
+[% bugidsummary = bug.bug_id _ ': ' _ bug.short_desc %]
+[% attidsummary = attachment.id _ ': ' _ attachment.description %]
 [% statuses = { '+' => "разреши" , '-' => 'отказа' , 'X' => "отхвърли" ,
                 '?' => "заяви на" } %]
-[% statuses_sbj = { '+' => "разрешен" , '-' => 'отказан' , 'X' => "отхвърлен" } %]
 [% IF flag.status == '?' %]
   [% to_identity = flag.addressee.identity _ " за" %]
   [% subject_status = "заявен" %]
@@ -36,28 +34,29 @@
   [% IF flag.addressee %]
     [% to_identity = "заявката на " _ flag.addressee.identity _ " за" %]
   [% END %]
-  [% subject_status = statuses_sbj.${flag.status} %]
+  [% subject_status = statuses.${flag.status} %]
 [% END %]
-From: bugzilla-request-daemon
+From: [% Param('mailfrom') %]
 To: [% to %]
-Subject: [%+ subject_status %] [%+ flag.type.name %]: [[% terms.Bug %] [%+ flag.target.bug.id %]] [% flag.target.bug.summary %]
-[%- IF flag.target.attachment.exists %] :
-  [Приставка [% flag.target.attachment.id %]] [% flag.target.attachment.summary %][% END %]
+Subject: [% flag.type.name %] [%+ subject_status %]: [[% terms.Bug %] [%+ bug.bug_id %]] [% bug.short_desc %]
+X-Bugzilla-Type: request
+[%- IF attachment %] :
+  [Приставка [% attachment.id %]] [% attachment.description %][% END %]
 
 [%+ USE wrap -%]
 [%- FILTER bullet = wrap(80) -%]
 
-[% user.identity %] [%+ statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
+[% user.identity %] има [% statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
 
 [% terms.Bug %] [%+ bugidsummary %]
 [% END %]
-[%+ Param('urlbase') %]show_bug.cgi?id=[% flag.target.bug.id %]
-[% IF flag.target.attachment.exists %]
+[%+ Param('urlbase') %]show_bug.cgi?id=[% bug.bug_id %]
+[% IF attachment %]
 
 [% FILTER bullet = wrap(80) %]
 Приставка [% attidsummary %]
 [%- END %]
-[%+ Param('urlbase') %]attachment.cgi?id=[% flag.target.attachment.id %]&action=edit
+[%+ Param('urlbase') %]attachment.cgi?id=[% attachment.id %]&action=edit
 [%- END %]
 [%- FILTER bullet = wrap(80) %]
 

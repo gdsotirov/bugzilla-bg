@@ -23,7 +23,7 @@
 
 [% IF target == "enter_bug.cgi" %]
   [% title = "Избор на класификация" %]
-  [% h2 = "Моля, изберете класификация." %]
+  [% subheader = "Моля, изберете класификация." %]
 [% END %]
 
 [% DEFAULT title = "Избор на класификация" %]
@@ -33,20 +33,23 @@
         
 [% IF Param('showallproducts') %]
   <tr>
-    <th align="right" valign="center" height=50>
+    <th align="right">
       <a href="[% target FILTER url_quote %]?classification=__all
             [% IF cloned_bug_id %]&amp;cloned_bug_id=[% cloned_bug_id FILTER url_quote %][% END -%] 
             [%- IF format %]&amp;format=[% format FILTER url_quote %][% END %]">
       All</a>:
     </th>
 
-    <td valign="center">&nbsp;Показване на всички продукти</td>
-  </tr>    
+    <td valign="top">&nbsp;Показване на всички продукти</td>
+  </tr>
+  <tr>
+    <th colspan="2">&nbsp;</th>
+  </tr>
 [% END %]
 
 [% FOREACH class = classifications %]
   <tr>
-    <th align="right" valign="top">
+    <th align="right">
       <a href="[% target FILTER url_quote %]?classification=[% class.name FILTER url_quote -%]
             [%- IF cloned_bug_id %]&amp;cloned_bug_id=[% cloned_bug_id FILTER url_quote %][% END -%] 
             [%- IF format %]&amp;format=[% format FILTER url_quote %][% END %]">

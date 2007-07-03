@@ -20,21 +20,19 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the deleted version.
-  #
-  # product: string; the name of the product the version belonged to
-  #
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the version belongs.
+  # version: object; Bugzilla::Version object representing the
+  #                    version the user deleted.
   #%]
   
-[% title = BLOCK %]Изтрита версия '[% name FILTER html %]' на продукта
-                   '[% product FILTER html %]'[% END %]
+[% title = BLOCK %]Изтрита версия '[% version.name FILTER html %]' на продукта
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Версията '[% name FILTER html %]' бе изтрита.</p>
-
-<p>
+<p>Версията '[% version.name FILTER html %]' бе изтрита.</p>
 
 [% PROCESS admin/versions/footer.html.tmpl
   no_edit_version_link = 1

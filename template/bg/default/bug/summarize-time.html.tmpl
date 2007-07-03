@@ -21,25 +21,23 @@
 [% title = "Сборно време " %]
 [% IF do_depends %]
     [% title = title _ "за " %]
-    [% h1 = title _  GetBugLink(ids.0, "$terms.Bug $ids.0") %]
-    [% title = title _ "$terms.bug $ids.0: " %]
-    [% h1 = (h1 _ " (и $terms.bugs блокиращи го)") IF do_depends %]
+    [% header = title _ "$terms.Bug $ids.0" FILTER bug_link(ids.0) FILTER none %]
+    [% title = title _ "$terms.Bug $ids.0: " %]
+    [% header = (header _ " (и $terms.bugs блокиращи го)") IF do_depends %]
 [% ELSE %]
-    [% title = title _ "($ids.size $terms.abug избрани)" %]    
-    [% h1 = title %]
+    [% title = title _ "($ids.size $terms.bugs избрани)" %]
+    [% header = title %]
 [% END %]
 
 [% PROCESS global/header.html.tmpl 
     title = title 
-    h1 = h1 
+    header = header 
     style_urls = ["skins/standard/summarize-time.css"]
     %]
 
-<p>
-
 [% IF ids.size == 0 %]
 
-    Няма указани [% terms.bugs %] или те са невидими.
+    Няма указани или видими [% terms.bugs %].
 
 [% ELSE %]
 
@@ -49,7 +47,6 @@
 
         [% global.grand_total = 0 %]
 
-        <p>
         [% FOREACH workdata = part_list %]
             [% part = parts.shift %]
             <div align="right">
@@ -57,7 +54,7 @@
             [% IF part.0 or part.1 %]
                [% part.0 OR "Up" FILTER html %] to [% part.1 OR "now" FILTER html %]
             [% ELSE %]
-               Пълен сбор (не е указан период)
+               Пълен сбор (без указан период)
             [% END %]
               </h4>
             </div>
@@ -66,7 +63,6 @@
             [% ELSE %]
                 [% INCLUDE owner_report %]
             [% END %]
-            <p>
         [% END %]
 
         [% IF monthly %]
@@ -76,7 +72,6 @@
 
         [% IF null.keys.size > 0 %] 
             [% INCLUDE inactive_report %]
-            <p>
             <h4 style="margin: 0">Общо [% null.keys.size %] 
                 неактивни [% terms.abug %]</h4>
         [% END %]
@@ -84,7 +79,6 @@
     [% END %]
 
 [% END %]
-<p>
 
 [% PROCESS global/footer.html.tmpl %]
 
@@ -251,8 +245,8 @@
 
 [% IF warn_swap_dates %]
     <h4 style="border: 1px solid red; margin: 1em; padding: 0.5em">Указаната
-    крайна дата е преди началната дата във времето, която няма смисъл; поради
-    това датите по-долу бяха разменени.</h4>
+    крайна дата е преди началната дата, която няма
+    смисъл; поради това датите по-долу бяха разменени.</h4>
 [% END %]
 
 <table>
@@ -268,7 +262,7 @@
   <input type="text" name="end_date" size="11" id="end_date"
   align="right" value ="[% end_date FILTER html %]" maxlength="10">
 </td><td align="right">
-  <input type="submit" value="Събиране">
+  <input type="submit" id="summarize" value="Събиране">
 </td></tr>
 <tr>
 <td>&nbsp;</td><td colspan="4">
@@ -286,26 +280,24 @@
   %]><label 
   for="owner" accesskey="Р"><u>Р</u>азработчик</label>
 </td><td colspan="2">
-  <b>Формат</b>: <select name="ctype">
+  <label for="ctype"><b>Формат</b></label>: <select name="ctype" id="ctype">
     <option value="html">HTML доклад</option>
   </select>
 </td></tr><tr>
 <td>&nbsp;</td><td colspan="4">
-  <label for="monthly" accesskey="М">
   <input type="checkbox" name="monthly" [% 'checked="checked"' IF
       monthly %] id="monthly">
-  Разделяне по <u>м</u>есеци</label>
+  <label for="monthly" accesskey="м">Разделяне по <u>м</u>есеци</label>
   [%# XXX: allow splitting by other intervals %]
   &nbsp;
-  <label for="detailed" accesskey="Д">
   <input type="checkbox" name="detailed" [% 'checked="checked"' IF
       detailed %] id="detailed">
-  По<u>д</u>робни сборове</label>
+  <label for="detailed" accesskey="д">По<u>д</u>робни сборове</label>
   &nbsp;
-  <label for="inactive" accesskey="К">
   <input type="checkbox" name="inactive" [% 'checked="checked"' IF
       inactive %] id="inactive">
-  Също показване и на неа<u>к</u>тивните [% terms.bugs %]</label>
+  <label for="inactive" accesskey="к">Също показване и на неа<u>к</u>тивните
+  [%+ terms.bugs %]</label>
 </td>
 </tr></table>
 

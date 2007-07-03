@@ -29,27 +29,25 @@
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
-
 [% PROCESS global/header.html.tmpl title="Предупреждение за двойник" %]
+[% orig_bug = "$terms.bug $original_bug_id"
+     FILTER bug_link(original_bug_id) %]
 
 <p>
   Когато маркира [% terms.bug %] като двойник, докладващия двойника
-  нормално бива добавен към <abbr title="Точно Копие">ТК</abbr> списъка
-  на първоначалния [% terms.bug %]. Правата върху [% terms.abug %]
-  [%+ original_bug_id %] (първоначалния) в момента са
-  зададени, така че докладчика нормално няма да го види.
+  нормално бива добавен към <abbr title="Точно Копие">ТК</abbr> списъка на първоначалния. Правата
+  върху [% orig_bug %] (първоначалния) в момента са зададени,
+  така че докладчика нормално няма да го види.
 </p>
 
 <p>
-  <b>Добавянето на докладчика към <abbr title="Точно Копие">ТК</abbr>
-  списъка на [% terms.abug %] 
-    [%+ original_bug_id %]
+  <b>Добавянето на докладчика към <abbr title="Точно Копие">ТК</abbr> списъка на [% orig_bug FILTER none %]
   [% IF cclist_accessible %]
     веднага ще
   [% ELSE %]
     може в бъдеще да
   [% END %]
-  му/и позволи да види този [% terms.bug %].</b>
+  му/ѝ позволи да види този [% terms.bug %].</b>
   Желаете ли да направите това?
 </p>
 
@@ -59,19 +57,18 @@
 
 <p>
   <input type="radio" name="confirm_add_duplicate" value="1">
-    Да, добавяне на докладчика към <abbr title="Точно Копие">ТК</abbr>
-    списъка на [% terms.bug %] [%+ original_bug_id %]
+    Да, добавяне на докладчика към <abbr title="Точно Копие">ТК</abbr> списъка на [% orig_bug FILTER none %]
 </p>
 <p>
   <input type="radio" name="confirm_add_duplicate" value="0" checked="checked">
-    Не, не добавяй докладчика към <abbr title="Точно Копие">ТК</abbr>
-    списъка на [% terms.bug %] [%+ original_bug_id %]
+    Не, не добавяй докладчика към <abbr title="Точно Копие">ТК</abbr> списъка на [% orig_bug FILTER none %]
 </p>
 <p>
-  <a href="show_bug.cgi?id=[% duplicate_bug_id %]">Отхвърляне не промените,
-    и връщане към [% terms.bug %] [%+ duplicate_bug_id %]</a>
+  [% "Отхвърляне не промените, и връщане към terms.bug $duplicate_bug_id"
+     FILTER bug_link(duplicate_bug_id) FILTER none %]
+</p>
 <p>
-  <input type="submit" value="Изпращане">
+  <input type="submit" id="process" value="Изпращане">
 </p>
 
 </form>

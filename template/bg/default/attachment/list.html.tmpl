@@ -17,55 +17,99 @@
   # Rights Reserved.
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
+<script type="text/javascript">
+  <!--
+  function toggle_display(link) {
+    var table = document.getElementById("attachment_table");
+    var rows = table.getElementsByTagName("tr");
+    var originalHeight = table.offsetHeight; // Store current height for scrolling
+
+    var toggle;
+    if (link.innerHTML == "Показване на остарелите") {
+      toggle = ""; // This should be 'table-row', but IE 6 doesn't understand it.
+      link.innerHTML = "Скриване на остарелите";
+    }
+    else {
+      toggle = "none";
+      link.innerHTML = "Показване на остарелите";
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].className.match('bz_tr_obsolete'))
+        rows[i].style.display = toggle;
+    }
+
+    var newHeight = table.offsetHeight;
+    window.scrollBy(0, newHeight - originalHeight);
+
+    return false;
+  }
+  //-->
+</script>
+
 <br>
-<table cellspacing="0" cellpadding="4" border="1">
+<table id="attachment_table" cellspacing="0" cellpadding="4">
   <tr>
-    <th bgcolor="#cccccc" align="left">Приставка</th>
-    <th bgcolor="#cccccc" align="left">Тип</th>
-    <th bgcolor="#cccccc" align="left">Създател</th>
-    <th bgcolor="#cccccc" align="left">Създадена</th>
-    <th bgcolor="#cccccc" align="left">Размер</th>
-    [% IF show_attachment_flags %]
-      <th bgcolor="#cccccc" align="left">Флагове</th>
-    [% END %]
-    <th bgcolor="#cccccc" align="left">Действия</th>
+    <th colspan="[% show_attachment_flags ? 3 : 2 %]" align="left">
+      <a name="a0" id="a0">Приставки</a>
+    </th>
   </tr>
+
+  [% count = 0 %]
+  [% obsolete_attachments = 0 %]
+
   [% FOREACH attachment = attachments %]
+    [% count = count + 1 %]
     [% IF !attachment.isprivate || user.is_insider || attachment.attacher.id == user.id %]
-      <tr [% "class=\"bz_private\"" IF attachment.isprivate %]>
+      [% IF attachment.isobsolete %]
+        [% obsolete_attachments = obsolete_attachments + 1 %]
+      [% END %]
+      <tr class="[% "bz_private" IF attachment.isprivate %][%-%]
+                 [%+ "bz_tr_obsolete" IF attachment.isobsolete %]">
         <td valign="top">
-          <a href="attachment.cgi?id=[% attachment.id %]">[% attachment.description FILTER html FILTER obsolete(attachment.isobsolete) %]</a>
-        </td>
-
-        <td valign="top">
-          [% IF attachment.ispatch %]
-            <i>кръпка</i>
-          [% ELSIF attachment.isurl %]
-            <i>url</i>
-          [% ELSE %]
-            [% attachment.contenttype FILTER html %]
+          [% IF attachment.datasize %]
+            <a name="a[% count %]" href="attachment.cgi?id=[% attachment.id %]"
+               title="Преглед на съдържанието на приставката">
           [% END %]
-        </td>
+          <b>[% attachment.description FILTER html FILTER obsolete(attachment.isobsolete) %]</b>
+          [% "</a>" IF attachment.datasize %]
 
-        <td valign="top">
-          <a href="mailto:[% attachment.attacher.email FILTER html %]">
-          [% attachment.attacher.name || attachment.attacher.login FILTER html %]
-          </a>
+          <span class="bz_attach_extra_info">
+            [% IF attachment.datasize %]
+              ([% attachment.datasize FILTER unitconvert %],
+              [% IF attachment.ispatch %]
+                крипка)
+              [% ELSIF attachment.isurl %]
+                url)
+              [% ELSE %]
+                [%+ attachment.contenttype FILTER html %])
+              [% END %]
+            [% ELSE %]
+              (<em>изтрита</em>)
+            [% END %]
+
+            <br>
+            <a href="#attach_[% attachment.id %]"
+               title="Отиване на коментара свързан с приставката">
+              [%- attachment.attached FILTER time %]</a>,
+
+            <a href="mailto:[% attachment.attacher.email FILTER html %]"
+               title="Писане на писмо на създателя на приставката">
+              [% attachment.attacher.name || attachment.attacher.login FILTER html %]
+            </a>
+          </span>
         </td>
-        <td valign="top">[% attachment.attached FILTER time %]</td>
-        <td valign="top">[% attachment.datasize FILTER unitconvert %]</td>
 
         [% IF show_attachment_flags %]
-          <td valign="top">
+          <td class="bz_attach_flags" valign="top">
             [% IF attachment.flags.size == 0 %]
               <i>няма</i>
             [% ELSE %]
               [% FOREACH flag = attachment.flags %]
-                [% IF flag.setter %]
-                  [% flag.setter.nick FILTER html %]:
-                [% END %]
+                [% flag.setter.nick FILTER html %]:
                 [%+ flag.type.name FILTER html FILTER no_break %][% flag.status %]
                 [%+ IF flag.status == "?" && flag.requestee %]
                   ([% flag.requestee.nick FILTER html %])
@@ -86,19 +130,19 @@
     [% END %]
   [% END %]
 
-  <tr>
-    <td colspan="[% show_attachment_flags ? 6 : 5 %]">
-      <a href="attachment.cgi?bugid=[% bugid %]&amp;action=enter">Създаване на нова приставка</a> (предлагана кръпка, изпитна постановка и др.)
+  <tr class="bz_attach_footer">
+    <td colspan="[% show_attachment_flags ? 3 : 2 %]">
+      [% IF attachments.size %]
+        <span class="bz_attach_view_hide">
+          [% IF obsolete_attachments %]
+            <a href="#a0" onClick="return toggle_display(this);">Скриване на остарелите</a> ([% obsolete_attachments %]) |
+          [% END %]
+          <a href="attachment.cgi?bugid=[% bugid %]&amp;action=viewall">Преглед на всички</a>
+        </span>
+      [% END %]
+      <a href="attachment.cgi?bugid=[% bugid %]&amp;action=enter">Добавяне на приставка</a>
+      (кръпка, изп. постановка и др.)
     </td>
-    [% IF attachments.size %]
-      <td>
-        <a href="attachment.cgi?bugid=[% bugid %]&amp;action=viewall">Преглед на всички</a>
-      </td>
-    [% ELSE %]
-      <td class="bz_disabled">
-        Преглед на всички
-      </td>
-    [% END %]
   </tr>
 </table>
 <br>

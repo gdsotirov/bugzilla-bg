@@ -47,6 +47,7 @@
 [% PROCESS "global/hidden-fields.html.tmpl"
      exclude=(verify_fields ? "^version|component|target_milestone$" : "") %]
 
+<input type="hidden" name="confirm_product_change" value="1">
 [%# Verify the version, component, and target milestone fields. %]
 [% IF verify_fields %]
   <h3>Потвърждавне на версия, съставна част [% ", целево събитие" IF use_target_milestone %]</h3>
@@ -63,22 +64,34 @@
     и полетата за версия и съставна част вече не са правилни.
     Моля, поправете версията и съставната част сега:
   [% END %]
-  <p>
+  </p>
 
   <table>
     <tr>
       <td>
         <b>Версия:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl" name="version" options=versions default=defaults.version %]
+        [% PROCESS "global/select-menu.html.tmpl" 
+                   name="version"
+                   options=versions
+                   default=defaults.version
+                   size=10 %]
       </td>
       <td>
         <b>Съставна част:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl" name="component" options=components default=defaults.component %]
+        [% PROCESS "global/select-menu.html.tmpl"
+                   name="component"
+                   options=components
+                   default=defaults.component
+                   size=10 %]
       </td>
       [% IF use_target_milestone %]
         <td>
           <b>Целево събитие:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl" name="target_milestone" options=milestones default=defaults.target_milestone %]
+        [% PROCESS "global/select-menu.html.tmpl"
+                   name="target_milestone"
+                   options=milestones
+                   default=defaults.target_milestone
+                   size=10 %]
         </td>
       [% END %]
     </tr>
@@ -97,16 +110,24 @@
     <input type="radio" name="addtonewgroup" value="no"><b>не</b><br>
     <input type="radio" name="addtonewgroup" value="yes"><b>да</b><br>
     <input type="radio" name="addtonewgroup" value="yesifinold" checked="checked">
-      <b>да, но само ако [% terms.abug %] е бил в няокоя от подразбиращите се
-      групи на стария продукт</b><br>
+      <b>да, но само ако [% terms.abug %] е бил в няокоя от подразбиращите се групи на стария продукт</b><br>
   </p>
 [% END %]
 
-<input type="submit" value="Изпращане">
+<input type="submit" id="change_product" value="Изпращане">
 
 </form>
 <hr>
-<a href="query.cgi">Отказване и връщане към страницата за търсене</a>
+
+[%# If 'id' is defined, then we are editing a single bug.
+  # Else we are editing several bugs at once. %]
+
+[% IF cgi.param('id') AND cgi.param('id').match('^\d+$') %]
+  [% id = cgi.param('id') %]
+  [% "Отказ и връщане към $terms.bug $id" FILTER bug_link(id) FILTER none %]
+[% ELSE %]
+  <a href="buglist.cgi?regetlastlist=1">Отказ и връщане към последните резултати от търсене</a>
+[% END %]
 
 [% PROCESS global/footer.html.tmpl %]
 

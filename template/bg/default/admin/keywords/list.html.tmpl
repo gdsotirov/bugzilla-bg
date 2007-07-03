@@ -22,7 +22,7 @@
   #%]
 
 [%# INTERFACE:
-  # keywords: array of hashes having the properties:
+  # keywords: array keyword objects having the properties:
   #   - id: number. The ID of the keyword.
   #   - name: string. The name of the keyword.
   #   - description: string. The description of the keyword.
@@ -38,7 +38,7 @@
 [% columns = [
      { 
        name => "name"
-       heading => "Редактиране на ключовата дума..."
+       heading => "Редактиране на ключова дума..."
        contentlink => "editkeywords.cgi?action=edit&amp;id=%%id%%" 
      },
      { 

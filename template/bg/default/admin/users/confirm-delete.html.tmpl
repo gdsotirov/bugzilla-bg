@@ -19,7 +19,6 @@
   # listselectionvalues:      selection values to recreate the current user
   #                           list.
   # editusers:                is viewing user member of editusers?
-  # editcomponents:           is viewing user member of editcomponents?
   # otheruser:                Bugzilla::User object of the viewed user.
   # reporter:                 number of bugs reported by the user
   # assignee_or_qa:           number of bugs the user is either the assignee
@@ -32,7 +31,8 @@
   # flags.setter:             number of flags the viewed user has set
   # longdescs:                number of bug comments the viewed user has written
   # namedqueries:             number of named queries the user has created
-  # profiles_activity:        number of named queries the user has created
+  # namedquery_group_map:     number of named queries the user has shared
+  # profiles_activity:        number of changes made to other users' profiles
   # series:                   number of series the viewed user has created
   # votes:                    number of bugs the viewed user has voted on
   # watch.watched:            number of users the viewed user is being watched
@@ -43,7 +43,8 @@
   #                           created
   #%]
 
-[% title = BLOCK %]Потвърждение за изтриването на потребителя [% otheruser.login FILTER html %][% END %]
+[% title = BLOCK %]Потвърждаване изтриването на потребител [% otheruser.login FILTER html %][% END %]
+
 [% PROCESS global/header.html.tmpl
   title = title
   style_urls = ['skins/standard/admin.css',
@@ -55,8 +56,8 @@
 %]
 
 [% responsibilityterms = {
-  'initialowner'     => 'Подразбиращо се назначение',
-  'initialqacontact' => 'Подразбиращ се качествен контрол'
+  'default_assignee'   => 'Подразбиращо се назначение',
+  'default_qa_contact' => 'Подразбиращ се качествен контрол'
   }
 %]
 
@@ -91,21 +92,21 @@
           [% FOREACH component = otheruser.product_responsibilities %]
             <li>
               [% andstring = '' %]
-              [% FOREACH responsibility = ['initialowner', 'initialqacontact'] %]
-                [% IF component.$responsibility == otheruser.id %]
+              [% FOREACH responsibility = ['default_assignee', 'default_qa_contact'] %]
+                [% IF component.${responsibility}.id == otheruser.id %]
                   [% andstring %] [% responsibilityterms.$responsibility %]
                   [% andstring = ' and ' %]
                 [% END %]
               [% END %]
               за
-              [% IF editcomponents %]
+              [% IF user.in_group("editcomponents", component.product_id) %]
                 <a href="editcomponents.cgi?action=edit&amp;product=
-                         [% component.productname FILTER url_quote %]&amp;component=
-                         [% component.componentname FILTER url_quote %]">
+                         [% component.product.name FILTER url_quote %]&amp;component=
+                         [% component.name FILTER url_quote %]">
               [% END %]
-                [%+ component.productname FILTER html %]:
-                [% component.componentname FILTER html %]
-              [% IF editcomponents %]
+                [%+ component.product.name FILTER html %]:
+                [% component.name FILTER html %]
+              [% IF user.in_group("editcomponents", component.product_id) %]
                 </a>
               [% END %]
             </li>
@@ -123,14 +124,14 @@
     един продукт.
   </p>
   <p>
-    [% IF editcomponents %]
+    [% IF user.in_group("editcomponents", component.product_id) %]
       Можете да промените това като щракнете върку препратките за редактиране на продукта по-горе,
     [% ELSE %]
       За сега можете
     [% END %]
 [% ELSE %]
 
-  <h2>Потвърждение</h2>
+  <h2>Потвърждаване</h2>
 
   [% display_warning = 0 %]
 
@@ -264,7 +265,7 @@
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailcc1=1&amp;emailtype1=exact&amp;email1=
                [%- otheruser.login FILTER url_quote %]">е
-            в списъка Точно Копие на 
+            в списъка Точно Копие на
             [% IF cc == 1 %]
               [%+ terms.bug %]
             [% ELSE %]
@@ -275,14 +276,15 @@
         [% END %]
         [% IF email_setting %]
           <li>
-            Настройките за поща на потребителя ще бъдат изтрити заедно с него.
+            Настройките за поща на потребителя ще бъдат изтрити заедно със
+            сметката му.
           </li>
         [% END %]
         [% IF flags.requestee %]
           <li>
             [% otheruser.login FILTER html %] has been
             <a href="buglist.cgi?field0-0-0=requestees.login_name&amp;type0-0-0=equals&amp;value0-0-0=
-               [% otheruser.login FILTER url_quote %]">е поискал
+               [%- otheruser.login FILTER url_quote %]">е поискал
             задаването на
             [% IF flags.requestee == 1 %]
               флаг
@@ -302,9 +304,9 @@
           <li>
             [% otheruser.login FILTER html %] има
             [% IF namedqueries == 1 %]
-              именована заявка
+              [% 'споделено' IF namedquery_group_map %] именовано търсене
             [% ELSE %]
-              [%+ namedqueries %] именовани заявки
+              [%+ namedqueries FILTER html %] именовани търсения
             [% END %].
             [% IF namedqueries == 1 %]
               Тази именована заявка ще бъде изтрита
@@ -312,11 +314,29 @@
               Тези именовани заявки ще бъдат изтрити
             [% END %]
             заедно с него.
+            [% IF namedquery_group_map %]
+              [% IF namedqueries > 1 %]
+                От тях,
+                [% IF namedquery_group_map > 1 %]
+                  [%+ namedquery_group_map FILTER html %] са
+                [% ELSE %]
+                  едно е
+                [% END %]
+                споделено.
+              [% END %]
+              Други потребители няма да могат да използват
+              [% IF namedquery_group_map > 1 %]
+                споделените именовани търсения
+              [% ELSE %]
+                споделеното именовано търсене
+              [% END %]
+              повече.
+            [% END %]
           </li>
         [% END %]
         [% IF profile_setting %]
           <li>
-            Потребителските предпочитания ще бъдат изтрити заедно с регистацията
+            Потребителските предпочитания ще бъдат изтрити заедно със сметката
             на потребителя.
           </li>
         [% END %]
@@ -424,7 +444,7 @@
 
   <form method="post" action="editusers.cgi">
     <p>
-      <input type="submit" value="Да, изтриване" />
+      <input type="submit" id="delete" value="Да, изтриване" />
       <input type="hidden" name="action" value="delete" />
       <input type="hidden" name="userid" value="[% otheruser.id %]" />
       <input type="hidden" name="token" value="[% token FILTER html %]">

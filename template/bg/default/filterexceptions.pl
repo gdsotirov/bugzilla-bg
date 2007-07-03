@@ -29,7 +29,7 @@
 # Simple literals                 - [% " selected" ...
 # Values always used for numbers  - [% (i|j|k|n|count) %]
 # Params                          - [% Param(...
-# Safe functions                  - [% (time2str|GetBugLink)...
+# Safe functions                  - [% (time2str)...
 # Safe vmethods                   - [% foo.size %] [% foo.length %]
 #                                   [% foo.push() %]
 # TT loop variables               - [% loop.count %]
@@ -49,10 +49,6 @@
 
 'whine/mail.html.tmpl' => [
   'bug.bug_id',
-],
-
-'sidebar.xul.tmpl' => [
-  'template_version', 
 ],
 
 'flag/list.html.tmpl' => [
@@ -83,11 +79,14 @@
   'field.description',
   'field.accesskey',
   'sel.name',
-  'sel.accesskey',
 ],
 
 'search/search-specific.html.tmpl' => [
   'status.name',
+],
+
+'search/tabs.html.tmpl' => [
+  'content',
 ],
 
 'request/queue.html.tmpl' => [
@@ -105,7 +104,6 @@
 'reports/duplicates-table.html.tmpl' => [
   'column.name', 
   'column.description',
-  'bug.id', 
   'bug.count', 
   'bug.delta', 
 ],
@@ -118,7 +116,7 @@
 ],
 
 'reports/keywords.html.tmpl' => [
-  'keyword.bugcount', 
+  'keyword.bug_count', 
 ],
 
 'reports/report-table.csv.tmpl' => [
@@ -127,7 +125,6 @@
 ],
 
 'reports/report-table.html.tmpl' => [
-  'buglistbase', 
   '"&amp;$tbl_vals" IF tbl_vals', 
   '"&amp;$col_vals" IF col_vals', 
   '"&amp;$row_vals" IF row_vals', 
@@ -140,7 +137,6 @@
 ],
 
 'reports/report.html.tmpl' => [
-  'imagebase', 
   'width', 
   'height', 
   'imageurl', 
@@ -172,7 +168,6 @@
 
 'reports/series-common.html.tmpl' => [
   'sel.name', 
-  'sel.accesskey', 
   '"onchange=\"$sel.onchange\"" IF sel.onchange', 
 ],
 
@@ -226,10 +221,6 @@
   'h.html', 
 ],
 
-'global/banner.html.tmpl' => [
-  'VERSION', 
-],
-
 'global/choose-product.html.tmpl' => [
   'target',
 ],
@@ -245,9 +236,9 @@
   'style', 
   'onload',
   'title',
-  'h1',
-  'h2',
-  'h3', 
+  '" &ndash; $header" IF header',
+  'subheader',
+  'header_addl_info', 
   'message', 
 ],
 
@@ -256,13 +247,17 @@
   'series.frequency * 2',
 ],
 
+'global/per-bug-queries.html.tmpl' => [
+  '" value=\"$bugids\"" IF bugids',
+],
+
 'global/select-menu.html.tmpl' => [
   'options', 
   'size', 
 ],
 
-'global/useful-links.html.tmpl' => [
-  'email', 
+'global/tabs.html.tmpl' => [
+  'content', 
 ],
 
 # You are not permitted to add any values here. Everything in this file should 
@@ -301,10 +296,8 @@
 'bug/dependency-tree.html.tmpl' => [
   'bugid', 
   'maxdepth', 
-  'dependson_ids.join(",")', 
-  'blocked_ids.join(",")', 
-  'dep_id', 
   'hide_resolved', 
+  'ids.join(",")',
   'maxdepth + 1', 
   'maxdepth > 0 && maxdepth <= realdepth ? maxdepth : ""',
   'maxdepth == 1 ? 1
@@ -320,13 +313,17 @@
   'group.bit', 
   'dep.title', 
   'dep.fieldname', 
-  '" accesskey=\"$accesskey\"" IF accesskey',
   'bug.${dep.fieldname}.join(\', \')', 
   'selname',
+  '" accesskey=\"$accesskey\"" IF accesskey',
+  'inputname',
+  '" colspan=\"$colspan\"" IF colspan',
+  '" size=\"$size\"" IF size',
+  '" maxlength=\"$maxlength\"" IF maxlength',
+  'flag.status',
 ],
 
 'bug/knob.html.tmpl' => [
-  'bug.bug_id', 
   'knum', 
 ],
 
@@ -339,7 +336,8 @@
 
 'bug/show-multiple.html.tmpl' => [
   'bug.bug_id', 
-  'bug.deadline',
+  'attachment.id', 
+  'flag.status',
 ],
 
 'bug/show.html.tmpl' => [
@@ -347,7 +345,7 @@
 ],
 
 'bug/show.xml.tmpl' => [
-  'VERSION', 
+  'constants.BUGZILLA_VERSION', 
   'a.id', 
   'field', 
 ],
@@ -380,26 +378,17 @@
   'product.maxvotes', 
 ],
 
-'bug/process/confirm-duplicate.html.tmpl' => [
-  'original_bug_id', 
-  'duplicate_bug_id', 
-],
-
-'bug/process/midair.html.tmpl' => [
-  'bug_id', 
-],
-
 'bug/process/results.html.tmpl' => [
   'title.$type', 
-  'id', 
-  'linktext.$type',
+  '"$terms.Bug $id" FILTER bug_link(id)',
+  '"$terms.bug $id" FILTER bug_link(id)',
 ],
 
 'bug/create/create.html.tmpl' => [
   'g.bit',
   'sel.name',
   'sel.description',
-  'cloned_bug_id'
+  'cloned_bug_id',
 ],
 
 'bug/create/create-guided.html.tmpl' => [
@@ -420,7 +409,7 @@
 ],
 
 'attachment/create.html.tmpl' => [
-  'bugid', 
+  'bug.bug_id',
   'attachment.id', 
 ],
 
@@ -428,6 +417,7 @@
   'attachid', 
   'bugid', 
   'contenttype', 
+  '"$terms.bug $bugid" FILTER bug_link(bugid)',
 ],
 
 'attachment/edit.html.tmpl' => [
@@ -440,6 +430,7 @@
   'attachment.id', 
   'flag.status',
   'bugid',
+  'obsolete_attachments',
 ],
 
 'attachment/show-multiple.html.tmpl' => [
@@ -449,7 +440,7 @@
 
 'attachment/updated.html.tmpl' => [
   'attachid', 
-  'bugid', 
+  '"$terms.bug $bugid" FILTER bug_link(bugid)',
 ],
 
 'attachment/diff-header.html.tmpl' => [
@@ -502,18 +493,8 @@
   'classification_text', 
 ],
 
-'admin/keywords/edit.html.tmpl' => [
-  'keyword_id',
-  'bug_count',
-],
-
-'admin/keywords/confirm-delete.html.tmpl' => [
-  'keyword_id',
-  'bug_count',
-],
-
 'admin/flag-type/confirm-delete.html.tmpl' => [
-  'flag_count', 
+  'flag_type.flag_count',
   'flag_type.id', 
 ],
 
@@ -536,8 +517,8 @@
   'comp.bug_count'
 ],
 
-'admin/components/deleted.html.tmpl' => [
-  'deleted_bug_count'
+'admin/groups/delete.html.tmpl' => [
+  'shared_queries'
 ],
 
 'admin/users/confirm-delete.html.tmpl' => [
@@ -549,7 +530,6 @@
   'flags.requestee',
   'flags.setter',
   'longdescs',
-  'namedqueries',
   'votes',
   'series',
   'watch.watched',
@@ -570,18 +550,6 @@
   'comp.bug_count'
 ],
 
-'admin/milestones/confirm-delete.html.tmpl' => [
-  'bug_count'
-],
-
-'admin/milestones/deleted.html.tmpl' => [
-  'bug_count'
-],
-
-'admin/versions/confirm-delete.html.tmpl' => [
-  'bug_count'
-],
-
 'account/login.html.tmpl' => [
   'target', 
 ],
@@ -595,6 +563,10 @@
 'account/prefs/prefs.html.tmpl' => [
   'current_tab.label',
   'current_tab.name',
+],
+
+'account/prefs/saved-searches.html.tmpl' => [
+  'group.id',
 ],
 
 );

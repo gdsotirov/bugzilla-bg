@@ -149,7 +149,7 @@
     <td>
       <dl>
         <dt>
-          <b>[% resolution_descs.FIXED FILTER html %]</b>
+          <b>[% get_resolution("FIXED") FILTER html %]</b>
         </dt>
         <dd>
           Поправка за този [% terms.bug %] е влязла в дървото и е
@@ -157,14 +157,14 @@
         </dd>
 
         <dt>
-          <b>[% resolution_descs.INVALID FILTER html %]</b>
+          <b>[% get_resolution("INVALID") FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем не е [% terms.bug %].
         </dd>
 
         <dt>
-          <b>[% resolution_descs.WONTFIX FILTER html %]</b>
+          <b>[% get_resolution("WONTFIX") FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем е [% terms.bug %], който никога няма да бъде 
@@ -172,7 +172,7 @@
         </dd>
 
         <dt>
-         <b>[% resolution_descs.DUPLICATE FILTER html %]</b>
+         <b>[% get_resolution("DUPLICATE") FILTER html %]</b>
         </dt>
         <dd>
           Проблема е двойник на съществуващ [% terms.bug %].
@@ -182,7 +182,7 @@
         </dd>
 
         <dt>
-          <b>[% resolution_descs.WORKSFORME FILTER html %]</b>
+          <b>[% get_resolution("WORKSFORME") FILTER html %]</b>
         </dt>
         <dd>
           Всички опити за възпроизвеждане на този [% terms.bug %] са безуспешни
@@ -192,7 +192,7 @@
         </dd>
 
         <dt>
-          <b>[% resolution_descs.MOVED FILTER html %]</b>
+          <b>[% get_resolution("MOVED") FILTER html %]</b>
         </dt>
         <dd>
           Проблема е характерен за свързан продукт чиито [% terms.bugs %] се следят

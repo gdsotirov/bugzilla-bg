@@ -26,7 +26,14 @@
 
 [% param_descs = {
   LDAPserver => "Името (и незадължително порта) на вашия <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър " _
-                "(напр. ldap.company.com или ldap.company.com:<номер на порт>).",
+                "(напр. ldap.company.com или ldap.company.com:<номер на порт>)." _
+                "<abbr lang=\"en\" title=\"Uniform Resource Identifier\">URI</abbr> синтаксис също може да се използва, като "_
+                "ldaps://ldap.company.com (за сигурна връзка) или " _
+                "ldapi://%2fvar%2flib%2fldap_sock (за базирана на гнездо " _
+                "локална връзка.",
+
+  LDAPstartls => "Дали да се изисква кодирана комуникация веднъж след като" _
+                 "е осъществена <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> връзка със сървъра.",
 
   LDAPbinddn => "Ако вашия <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър изисква да използвате потребителско име (binddn) и парола " _
                 "вместо да позволява анонимно свързване, въведете ги тук " _
@@ -39,7 +46,11 @@
   LDAPuidattribute => "Името на атрибута съдържащ името за вход на потребителя.",
 
   LDAPmailattribute => "Името на атрибута на потребител във вашата директория, съдържащ " _
-                       "електронния му пощенски адрес.",
+                       "електронния му пощенски адрес, който да бъде" _
+                       "използван като $terms.Bugzilla потребителско име. Ако параметъра " _
+                       "е празен, $terms.Bugzilla ще използва LDAP потребителското име"_
+                       " като $terms.Bugzilla такова. В този случай можете да" _
+                       " зададете параметъра \"emailsuffix\" също.",
 
   LDAPfilter => "<abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> филтър, който заедно с <tt>LDAPuidattribute</tt> служи за " _
                 "прецеждане на списъка от действителни потребители." }

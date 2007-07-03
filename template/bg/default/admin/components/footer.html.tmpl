@@ -20,37 +20,36 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the component
-  #
-  # product: string; the name of the product which the component
-  #                  belongs/belonged to
+  # comp: object; Bugzilla::Component object representing the component 
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the component belongs.
   #%]
-  
-<p>
 
 <hr>
+
+<p>
 Редактиране на 
 
-[% IF name && !no_edit_component_link %]
+[% IF comp && !no_edit_component_link %]
   съставната част <a 
   title="Редактиране на съставната част '[% name FILTER html %]'"
   href="editcomponents.cgi?action=edit&amp;product=
-  [%- product FILTER url_quote %]&amp;component=[% name FILTER url_quote %]">
-   '[% name FILTER html %]'</a> 
+  [%- product.name FILTER url_quote %]&amp;component=[% comp.name FILTER url_quote %]">
+   '[% comp.name FILTER html %]'</a> 
   или редактиране на
 [% END %]
 
 [% IF !no_edit_other_components_link %]
 други съставни части на продукта <a 
-  title="Избор на съставна част от продукта '[% product FILTER html %]' за редактиране"
+  title="Избор на съставна част от продукта '[% product.name FILTER html %]' за редактиране"
   href="editcomponents.cgi?product=
-  [%- product FILTER url_quote %]">'[% product FILTER html %]'</a>, 
+  [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>, 
   или редактиране на 
 [% END %]
 
 продукта <a 
-  title="Редактиране на продукта '[% product FILTER html %]'"
+  title="Редактиране на продукта '[% product.name FILTER html %]'"
   href="editproducts.cgi?action=edit&amp;product=
-  [%- product FILTER url_quote %]">'[% product FILTER html %]'</a>.
+  [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 
 </p>

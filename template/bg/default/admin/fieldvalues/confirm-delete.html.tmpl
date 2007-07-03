@@ -24,7 +24,7 @@
   #             with the field.
   #%]
 
-[% title = BLOCK %]Изтриване на стойността '[% value FILTER html %]' за полето 
+[% title = BLOCK %]Изтриване на стойността '[% value FILTER html %]' от полето 
   '[% field FILTER html %]'[% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -61,13 +61,13 @@
 
 <h2>Потвърждение</h2>
 
-[% IF (Param(param_name) == value) || bug_count || (value_count == 1) %]
+[% IF (param_name.defined && Param(param_name) == value) || bug_count || (value_count == 1) %]
 
   <p>Съжалявам, но стойността '[% value FILTER html %]' не може да бъде изтрита
   от полето '[% field FILTER html %]' поради следната(ите) причина(и):</p>
 
   <ul class="warningmessages">
-    [% IF Param(param_name) == value %]
+    [% IF param_name.defined && Param(param_name) == value %]
       <li>'[% value FILTER html %]' is the default value for
           the '[% field FILTER html %]' field.
           [% IF user.groups.tweakparams %]
@@ -107,7 +107,7 @@
   <p>Наистина ли желаете да изтриете тази стойност?<p>
 
   <form method="post" action="editvalues.cgi">
-    <input type="submit" value="Да, изтриване">
+    <input type="submit" value="Да, изтриване" id="delete">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="field" value="[% field FILTER html %]">
     <input type="hidden" name="value" value="[% value FILTER html %]">

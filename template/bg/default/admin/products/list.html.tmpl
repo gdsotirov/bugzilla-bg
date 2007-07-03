@@ -33,7 +33,7 @@
     класификацията '[% classification.name FILTER html %]'
   [% END %]
 [% END %]
-  
+
 [% PROCESS global/header.html.tmpl
   title = "Избор на продукт от $classification_title"
 %]
@@ -53,7 +53,7 @@
 [% columns = [
      { 
        name => "name"
-       heading => "Редактиране на продукта..."
+       heading => "Редактиране на продукт..."
        contentlink => edit_contentlink
      },
      { 
@@ -119,8 +119,6 @@
      columns = columns
      data = products
 %]
-
-<p>
 
 [% IF !showbugcounts %]
 

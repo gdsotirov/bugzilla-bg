@@ -1,0 +1,773 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Everything Solved.
+  # Portions created by Everything Solved are Copyright (C) 2006
+  # Everything Solved. All Rights Reserved.
+  #
+  # Contributor(s): Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[% PROCESS global/variables.none.tmpl %]
+[% INCLUDE global/header.html.tmpl 
+  title = "$terms.Bugzilla 3.0 Бележки към версията" 
+  style_urls = ['skins/standard/release-notes.css'] 
+%]
+
+<h2>Съдържание</h2>
+
+<ul class="bz_toc">
+  <li><a href="#v30_introduction">Въведение</a></li>
+  <li><a href="#v30_req">Минимални изисквания</a></li>
+  <li><a href="#v30_feat">Нови възможности и подобрения</a></li>
+  <li><a href="#v30_issues">Оставащи проблеми</a></li> 
+  <li><a href="#v30_upgrading">Как да надградите от по-стара версия</a></li>
+  <li><a href="#v30_code_changes">Промени в кода, които могат да засегнат
+    потребителските промени</a></li>
+  <li><a href="#v30_previous">Бележки към версията за предишни версии</a></li>
+</ul>
+
+<h2><a name="v30_introduction"></a>Въведение</h2>
+
+<p>Добре дошли в [% terms.Bugzilla %] 3.0! Минаха повече от осем години откакто
+  пуснахме [% terms.Bugzilla %] 2.0 и всичко се промени от
+  тогава. Дори спрямо предишната версия, [% terms.Bugzilla %] 2.22,
+  добавихме <em>много</em> нови възможности. Така, че се наслаждавайте на тази версия, ние
+  сме щастливи да ви я предоставим.</p>
+
+<p>Ако надграждате наистина прочетете <a href="#v30_upgrading">Как да
+  надградите от по-стара версия</a>. Ако надграждате от версия
+  преди 2.22 наистина прочетете бележките към версиите на всички 
+  <a href="#v30_previous">предишни версия</a> между вашата версия
+  и [% terms.Bugzilla %] 3.0.</p>
+
+<h2><a name="v30_req"></a>Минимални изисквания</h2>
+
+<p>Всички изисквания, които са нови спрямо 2.22 ще изглеждат ето
+  <span class="req_new">така</span>.</p>
+
+<ul>
+  <li><a href="#v30_req_perl"><abbr lang="en" title="Practical Extraction and Reporting Language">Perl</abbr></a></li>
+  <li><a href="#v30_req_mysql">За MySQL потребители</a></li>
+  <li><a href="#v30_req_pg">За PostgreSQL потребители</a></li>
+  <li><a href="#v30_req_modules">Задължителни Perl модули</a></li>
+  <li><a href="#v30_req_optional_mod">Незадължителни Perl
+    модули</a></li>
+</ul>
+
+
+<h3><a name="v30_req_perl"></a>Perl</h3>
+
+<ul>
+  <li>Perl <span class="req_new">v<strong>5.8.0</strong></span> (не-Windows 
+    платформи)</li>
+  <li>Perl v<strong>5.8.1</strong> (Windows платформи)</li>
+</ul>
+
+[% PROCESS db_req db='mysql' %]
+
+[% PROCESS db_req db='pg' %]
+
+<h3><a name="v30_req_modules"></a>Задължителни Perl модули</h3>
+
+[% INCLUDE req_table reqs = REQUIRED_MODULES 
+                     new = ['Email-MIME-Modifier', 'Email-Send']
+                     updated = ['DBI'] %]
+
+<h3><a name="v30_req_optional_mod"></a>Незадължителни Perl модули</h3>
+
+<p>Следните perl модули, ако са инсталирани, разрешават различни
+  възможности на [% terms.Bugzilla %]:</p>
+
+[% INCLUDE req_table reqs = OPTIONAL_MODULES
+                     new  = ['libwww-perl', 'SOAP-Lite', 'mod_perl',
+                             'Apache-DBI', 'Email-MIME-Attachment-Stripper',
+                             'Email-Reply']
+                     updated = ['CGI']
+                     include_feature = 1 %]
+
+<h2><a name="v30_feat"></a>Нови възможности и подобрения</h2>
+
+<ul>
+  <li><a href="#v30_feat_cf">Потребителски полета</a></li>
+  <li><a href="#v30_feat_mp">Поддръжка на mod_perl</a></li>
+  <li><a href="#v30_feat_sq">Споделени съхранени търсения</a></li>
+  <li>
+    <a href="#v30_feat_afn">Приставки и флагове на нови [% terms.bugs %]</a>
+  </li>
+  <li><a href="#v30_feat_cr">Потребителски решения</a></li>
+  <li><a href="#v30_feat_ppp">Позволения на база продукт</a></li>
+  <li><a href="#v30_feat_ui">Подобрения в потребителския интерфейс</a></li>
+  <li><a href="#v30_feat_xml">XML-RPC интерфейс</a></li>
+  <li><a href="#v30_feat_skin">Кожи</a></li>
+  <li><a href="#v30_feat_sbu">Непроменяемите полета изглеждат 
+    непроменяеми</a></li>
+  <li><a href="#v30_feat_et">Всички писма са шаблони</a></li>
+  <li><a href="#v30_feat_df">Без повече двойно въведени [% terms.bugs %]</a></li>
+  <li><a href="#v30_feat_cc">Първоначален ТК списък за съставните части</a></li>
+  <li><a href="#v30_feat_emi">Въвеждане/Промяна на [% terms.bugs %] по е-поща</a></li>
+  <li><a href="#v30_feat_gw">Потребители, които получават всички [% terms.bug %] 
+    уведомления</a></li>
+  <li><a href="#v30_feat_utf8">Подобрена UTF-8 поддръжка</a></li>
+  <li><a href="#v30_feat_upda">Автоматични уведомления за обновявания</a></li>
+  <li><a href="#v30_feat_welc">Страница "добре дошли" за нови инсталации</a></li>
+  <li><a href="#v30_feat_other">Други подобрения и промени</a></li>
+</ul>
+
+<h3><a name="v30_feat_cf"></a>Потребителски полета</h3>
+
+<p>[% terms.Bugzilla %] вече включва доста първична поддръжка на потребителски полета.</p>
+
+<p>Потребителите в групата <kbd>admin</kbd> могат да добавят текстови или изборни
+  потребителски полета. Могат да редактират възможните стойности за изборните полета
+  използвайки контролния панел &quot;Стойности на полета&quot;.</p>
+
+<p>Не добавяйте твърде много потребителски полета! Това може да направи [% terms.Bugzilla %]
+  много трудна за използване. Направете всичко възможно да се справите с подразбиращите се
+  полета и ако откриете, че не можете да живеете без потребителски полета
+  след няколкоседмично използване на [% terms.Bugzilla %], само тогава трябва да
+  започнете вашите потребителски полета.</p>
+
+<h3><a name="v30_feat_mp"></a>Поддръжка на mod_perl</h3>
+
+<p>[% terms.Bugzilla %] 3.0 поддържа mod_perl, което позволява извънредно
+  повишаване на производителността при зареждане на страници. mod_perl търгува използване на паметта за производителност,
+  позволявайки почти мигновени зареждания на страници, но използва много повече памет.</p>
+
+<p>Ако желаете да разрешите mod_perl за вашата [% terms.Bugzilla %], препоръчваме
+  минимум 1.5<abbr title="Гига Байта">ГБ</abbr> оперативна памет, а за инсталация със силен трафик - 4GB до 8GB.</p>
+
+<p>Ако производителността не е толкова критична за инсталацията ви, нямате
+  достатъчно памет или използвате някой друг web сървър различен от
+  Apache, [% terms.Bugzilla %] продължава да работи перфектно като нормално <abbr lang="en" title="Common Gateway Interface">CGI</abbr>
+  приложение, също така.</p>
+
+<h3><a name="v30_feat_sq"></a>Споделени съхранени търсения</h3>
+
+<p>Потребителите вече могат да избират да &quot;споделят&quot; техните съхранени търсения
+  с определена група. Тази група ще може в този случай да се 
+  &quot;абонира&quot; за тях и да ги показва
+  в дъното на страниците си.</p>
+
+<p>Ако потребителя може да &quot;благославя&quot; групата с която споделя,
+  (това е ако може да добавя потребители в групата), се счита
+  че той е управител на групата и неговите заявки се показват
+  автоматично в дъното на страниците създавани за групата (въпреки, че потребителите могат
+  да се отпишат от всяко едно търсене ако желаят.)</p>
+
+<p>За да се разреши на потребителите да споделят заявките си, те също така
+  трябва да са членове на групата указана в 
+  параметъра <code>querysharegroup</code>.</p>
+
+<p>Потребителите могат да управляват съхранените си и абонатни заявки от
+  екрана &quot;Предпочитания&quot;.</p>
+
+<h3><a name="v30_feat_afn"></a>Приставки и флагове на нови 
+  [% terms.bugs %]</h3>
+
+<p>Вече можете да добавяте приставка докато попълвате нов 
+  [% terms.bug %].</p>
+
+<p>Също така можете да задавате флагове на [% terms.abug %] и на приставките докато
+  попълвате нов [% terms.abug %].</p>
+
+<h3><a name="v30_feat_cr"></a>Потребителски решения</h3>
+
+<p>Вече можете да настроите по усмотрение списъка с решения достъпен
+  в [% terms.Bugzilla %], включително преименуване на подразбиращото се решение.</p>
+
+<p>Решенията <code>ОПРАВЕН</code>, <code>ДВОЙНИК</code>
+  и <code>ПРЕМЕСТЕН</code> имат специално значение за [% terms.Bugzilla %],
+  въпреки това и не могат да бъдат премахвани или изтривани.</p>
+
+<h3><a name="v30_feat_ppp"></a>Позволения на база продукт</h3>
+
+<p>Вече можете да позволите на потребителите <kbd>editbugs</kbd> и <kbd>canconfirm</kbd>
+  само за определени продукти. Също така можете да дадете на потребителите <kbd>editcomponents</kbd>
+  за продукт, което означава, че те ще могат да го редактират
+  включително добавяне/премахване на съставни части и други специфични за продуктите
+  действия.</p>
+
+<h3><a name="v30_feat_ui"></a>Подобрения в потребителския интерфейс</h3>
+
+<p>Падна известна работа по потребителския интерфейс за [% terms.Bugzilla %] 3.0,
+  включително:</p>
+
+<ul>
+  <li>Вече има направление и търсене в <em>началото</em> на
+    всяка страница в допълнение към лентата в дъното на страницата.</li>
+  <li>Проектирана наново страница &quot;Формат за печат&quot; за 
+    [% terms.bugs %].</li>
+  <li>Оформлението на <kbd>show_bug.cgi</kbd> (страницата за редактиране на [% terms.bug %] 
+    ) бе променено, а таблицата с приставките проектирана наново.</li>
+</ul>
+
+<h3><a name="v30_feat_xml"></a>XML-RPC интерфейс</h3>
+
+<p>[% terms.Bugzilla %] вече има Web Services интерфейс използващ XML-RPC
+  протокола. Той може да бъде достъпен чрез външни приложения с посещаването
+  на <kbd>xmlrpc.cgi</kbd> на инсталацията ви.</p>
+
+<p>Документация може да бъде намерена в 
+  <a lang="en" href="[% Param('docs_urlbase') FILTER html %]api/">[% terms.Bugzilla %] 
+  API Docs</a> и в различните <kbd>Bugzilla::WebService</kbd> модули.</p>
+
+<h3><a name="v30_feat_skin"></a>Кожи</h3>
+
+<p>[% terms.Bugzilla %] може да има няколко инсталирани &quot;кожи&quot;,
+  като потребителите могат да избират от тях. За да създадете кожа, трябва просто да
+  напишете няколко <abbr title="Cascading Style Sheets">CSS</abbr> файла. Вижте <a lang="en" href="[% Param('docs_urlbase') FILTER html %]cust-skins.html">Custom
+  Skins Documentation</a> за подробности.</p>
+
+<p>В момента не разпространяваме други кожи с
+  [%+ terms.Bugzilla %]. Ако създадете такава, моля
+  кажете ни!</p>
+
+<h3><a name="v30_feat_sbu"></a>Непроменяемите полета изглеждат
+    непроменяеми</h3>
+
+<p>Докато сте вътре, когато преглеждате [% terms.bug %], ако 
+  не можете да променяте поле то няма да изглежда сякаш можете да го променяте. Това 
+  значи, че стойността ще изглежда просто като обикновен текст.</p>
+
+<h3><a name="v30_feat_et"></a>Всички писма са шаблони</h3>
+
+<p>Всички изходящи писма вече се контролират от системата за шаблони.
+  Това което съдържаха параметрите <code>passwordmail</code>, <code>whinemail</code>,
+  <code>newchangedmail</code> и <code>voteremovedmail</code>
+  вече е шаблон и се намира в папката <kbd>template/</kbd>.</p>
+
+<p>Това значи, че вече е много по-лесно да настроите по усмотрение изходящите ви
+  писма и също така дава възможност на локализаторите да имат повече
+  локализирани писма като част от езиковите им пакети, ако желаят.</p>
+
+<p>Също така добавихме параметъра <code>mailfrom</code>, за да ви позволи да задавате
+  какво да се показва в полето <code>От</code> на всички писма, които
+  [%+ terms.Bugzilla %] изпраща.</p>
+
+<h3><a name="v30_feat_df"></a>Без повече двойно въведени [% terms.bugs %]</h3>
+
+<p>Потребителите на [% terms.Bugzilla %] понякога случайно предават 
+  [% terms.abug %] два пъти връщайки се назад в техния браузър 
+  или чрез просто презареждане на страницата. В миналото това можеше да запише един и същ 
+  [% terms.bug %] два пъти (или дори три пъти) последователно, дразнейки 
+  разработчиците и обърквайки потребителите.</p>
+
+<p>Сега, ако се опитате да предадете [% terms.abug %] два пъти от същия екран 
+  (с връщане назад или презареждане на страницата), [% terms.Bugzilla %] ще ви предупреди 
+  за това което правите, преди всъщност да предаде дублиращия
+  [%+ terms.bug %].</p>
+
+<h3><a name="v30_feat_cc"></a>Първоначален ТК списък за съставните части</h3>
+
+<p>Можете да указвате списък с потребители които <em>винаги</em> да се добавят към
+  <abbr title="Точно копие">ТК</abbr> списъка на нови [% terms.bugs %] в съставна част.</p>
+
+<h3><a name="v30_feat_emi"></a>Въвеждане/Промяна на [% terms.Bugs %] по е-поща</h3>
+
+<p>Вече можете да въвеждате или променяте [% terms.bugs %] по е-поща. Предишните версии
+  на [% terms.Bugzilla %] включваха тази възможност само като
+  неподдържано допълнение, но тя вече е официален интерфейс към
+  [%+ terms.Bugzilla %].</p>
+
+<p>За повече подробности вижте <a href="[% Param('docs_urlbase') FILTER html %]api/email_in.html">документацията
+  за email_in.pl</a>.</p>
+
+<h3><a name="v30_feat_gw"></a>Потребители, които получават всички [% terms.Bug %] 
+  уведомления</h3>
+
+<p>Вече има параметър наречен <kbd>globalwatchers</kbd>. Това
+  е разделен със запетайки списък на [% terms.Bugzilla %] потребители които
+  получават всички [% terms.bug %] уведомления създавани от [% terms.Bugzilla %].</p>
+
+<p>Груповите контроли продължават да се прилагат, въпреки това, така че потребителите които не могат да виждат [% terms.bug %]
+  продължават да не получават уведомления за него.</p>
+
+<h3><a name="v30_feat_utf8"></a>Подобрена UTF-8 поддръжка</h3>
+
+<p>[% terms.Bugzilla %] потребителите ползващи MySQL вече трябва да имат отлична
+  UTF-8 поддръжка ако включат параметъра <kbd>utf8</kbd>. (Новите
+  инсталации имат включен този параметър по подразбиране.) [% terms.Bugzilla %]
+  вече правилно поддържа търсене и подреждане при езици различни от английски,
+  включително двубайтови езици като Китайски.</p>
+
+<h3><a name="v30_feat_upda"></a>Автоматични уведомления за обновявания</h3>
+
+<p>Ако принадлежите на групата <kbd>admin</kbd>, ще бъдете уведомен
+  при влизане ако има нова версия на [% terms.Bugzilla %]
+  достъпна за сваляне.</p>
+
+<p>Можете да управлявате тези уведомления с промяната на 
+  параметъра <kbd>upgrade_notification</kbd>.</p>
+
+<h3><a name="v30_feat_welc"></a>Страница "добре дошли" за нови инсталации</h3>
+
+<p>Когато влизате за пръв път в съвсем нова [% terms.Bugzilla %]
+  инсталация, ще ви бъдете представена страница, която описва
+  какво трябва да правите от тук нататък и какви параметри трябва да зададете.</p>
+
+<h3><a name="v30_feat_qs"></a>Добавка БързоТърсене за IE7 и Firefox 2</h3>
+
+<p>На Firefox 2 и Internet Explorer 7 потребители ще бъде представена
+  възможността да добавят [% terms.Bugzilla %] към лентата си за търсене.
+  Тази възможност използва 
+  <a href="page.cgi?id=quicksearch.html">синтаксиса на БързоТърсене</a>.</p>
+
+<p>Ако [% terms.Bugzilla %] инсталацията ви е на машина, която трябва да минава
+  през прокси за достъп до мрежата, може също така да зададете
+  параметъра <kbd>proxy_url</kbd>.</p>
+
+<h3><a name="v30_feat_other"></a>Други подобрения и промени</h3>
+
+<p>Това са или малки подобрения или подобрения имащи
+  много кратки описания. Въпреки това някои от тях са много полезни!</p>
+
+<h4>Подобрения засягащи [% terms.Bugzilla %] потребителите</h4>
+
+<ul>
+  <li>В коментарите, цитиран текст (линии започващи с <kbd>&gt;</kbd>)
+    ще бъдат с различен цвят от нормалния текст.</li>
+  <li>Вече има потребителско предпочитание, което ще ви добавя в ТК списъка
+    на всеки [% terms.bug %], който променяте. Имайте в предвид, че е <strong>включено</strong> 
+    по подразбиране.</li>
+  <li>[% terms.Bugs %] могат да се въвеждат с начално състояние 
+    <kbd>НАЗНАЧЕН</kbd> ако сте в групата <kbd>editbugs</kbd>.</li>
+  <li>По подразбиране полетата за коментари ще се увеличават когато пишете в тях,
+    а ще се намаляват когато се махнете от тях. Можете да забраните това
+    в потребителските си предпочитания.</li>
+  <li>Можете да скривате остарелите приставки на [% terms.abug %] с щракване върху
+    &quot;Скриване на остарелите&quot; в дъното на таблицата с приставки.</li>
+  <li>Ако [% terms.bug %] има зададени флагове и го преместите в различен 
+    продукт, който има флагове със същите имена, флаговете ще бъдат 
+    запазени.</li>
+  <li>Вече не можете да изисквате задаването на флаг от някой, който не може да го зададе
+    ([% terms.Bugzilla %] ще върне грешка ако опитате).</li>
+  <li>Много нови заглавки бяха добавени към изходящите [% terms.Bugzilla %]
+    [%+ terms.bug %] писма: <code>X-Bugzilla-Status</code>,
+    <code>X-Bugzilla-Priority</code>, <code>X-Bugzilla-Assigned-To</code>,
+    <code>X-Bugzilla-Target-Milestone</code>, and 
+    <code>X-Bugzilla-Changed-Fields</code>, <code>X-Bugzilla-Who</code>.
+    Можете да разгледате някое писмо, за да добиете представа какво съдържат те.</li>
+  <li>В допълнение към старото <code>X-Bugzilla-Reason</code> е-пощенско заглавие,
+    което ви казва защо получавате писмото ако получите писмо, защото
+    наблюдавате някого, вече има 
+    <code>X-Bugzilla-Watch-Reason</code> заглавка казваща ви кого
+    наблюдавате и каква роля има той.</li>
+  <li>Ако преместите мишката си над пълен <abbr lang="en" title="Uniform Resource Locator">URL</abbr> (като 
+    <code>http://bugs.mycompany.com/show_bug.cgi?id=1212</code>), който 
+    е свързан с [% terms.bug %], ще видите резюмето на 
+    [%+ terms.abug %]. Разбира се това работи само за [% terms.bugs %] във вашата
+    [%+ terms.Bugzilla %] инсталация.</li>
+  <li>Ако инсталацията ви има разрешено наблюдение на потребителите, вече ще виждате
+    потребителите които можете да премахвате от списъка за наблюдение като кутия за множествен
+    избор, също като текущия <abbr title="Точно Копие">ТК</abbr> списък. (Преди това беше просто текстово
+    поле.)</li>
+  <li>Когато потребителите си създават сметка в [% terms.Bugzilla %], 
+    сметката вече не се създава наистина докато те не удостоверят е-пощенския си
+    адрес с щракване върху изпратената им връзка.</li>
+  <li>Можете да промените решението на [% terms.bug %] без да го отваряте отново.</li>
+  <li>Когато преглеждате дървото на зависимостите на [% terms.bug %], решените 
+    [%+ terms.bugs %] ще бъдат скривани по подразбиране. (В предишни версии,
+    решените [% terms.bugs %] бяха показвани по подразбиране.)</li>
+  <li>При преглеждане на дейността по [% terms.bug %], полетата съдържащи [% terms.bug %] 
+    номера (като &quot;Блокира&quot;) ще показват [% terms.bug %] номерата
+    като връзки към тези [% terms.bugs %].</li>
+  <li>При преглед на полето &quot;Ключови думи&quot; в [% terms.bug %] списък,
+    той ще бъде подреден азбучно, така че да можете нормално да подреждате списъка по
+    него.</li>
+  <li>На повечето места, полето Версия вече е сортирано с използването на сортиране по версии
+    (така че 1.10 е по-голямо от 1.2), вместо азбучно сортиране.</li>
+  <li>Възможностите за флагове ще се показват само ако можете да ги задавате. Така че,
+    например, ако не можете да дадете <kbd>+</kbd> на флаг, тази възможност
+    няма да се показва за вас.</li>
+  <li>Можете да ограничите свързания с продукт изход на <kbd>config.cgi</kbd>
+    с указването на <kbd>product=</kbd> като <abbr lang="en" title="Uniform Resource Locator">URL</abbr> аргумент, съдържащ името
+    на продукт. Можете да указвате аргумента повече от веднъж за няколко
+    продукта.</li>
+  <li>Вече можете да търсите с булеви карти дали коментар е
+    частен или не.</li>
+</ul>
+
+<h4>Подобрения за администратори</h4>
+
+<ul>
+  <li>Администраторите могат вече да изтриват приставки, карайки ги да изчезват
+    напълно от [% terms.Bugzilla %].</li>
+  <li><kbd>sanitycheck.cgi</kbd> вече може да бъде пуснат само от потребители
+    в групата <kbd>editcomponents</kbd>.</li>
+  <li>Контролния панел &quot;Стойности на полета&quot; вече е достъпен само за
+    потребители в групата <kbd>admin</kbd>. (Преди той беше достъпен
+    за всеки в групата <kbd>editcomponents</kbd>.)</li>
+  <li>Има нов параметър <kbd>announcehtml</kbd>, който ще ви позволи да
+    въведете някакъв <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr>,
+    който ще бъде показван в началото на всяка страница, като съобщение.</li>
+  <li>Параметъра <kbd>loginnetmask</kbd> вече е 0 по подразбиране за нови
+    инсталации, което значи, че докато някой има правилната
+    входна бисквитка, той може да влезе от всеки <abbr lang="en" title="Internet
+    Protocol">IP</abbr> адрес. Това прави много по-лесен живота на потребителите с
+    комутируема връзка или други чието <abbr lang="en" title="Internet Protocol">IP</abbr>
+    се сменя много. Това може да бъде постигнато, защото входната бисквитка е вече
+    много случайна и по този начин сигурна.</li>
+  <li>Класификациите вече имат ключ за подреждане, така че могат да бъдат подредени в
+    ред, който не е азбучен.</li>
+  <li>Удостоверяването вече поддържа <abbr lang="en" title="Lightweight Directory Access
+    Protocol">LDAP</abbr> през <abbr lang="en" title="Secure Socket Layer">SSL</abbr>
+    (LDAPS) или <abbr lang="en" title="Transport Layer Security">TLS</abbr> (използвайки
+    командата STARTLS) в допълнение към обикновения <abbr lang="en" title="Lightweight
+    Directory Access Protocol">LDAP</abbr>.</li>
+  <li><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>
+    потребителите вече могат да ползват <abbr lang="en" title="Lightweight Directory
+    Access Protocol">LDAP</abbr> потребителското си име като е-пощенски адрес,
+    вместо да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>
+    атрибута <kbd>mail</kbd> като е-пощенски адрес. Може да желаете да зададете
+    параметъра <kbd>emailsuffix</kbd> ако правите това.</li>
+  <li>Администраторите вече могат да виждат какво се е променило в потребителска сметка,
+    като използват контролния панел &quot;Потребители&quot;.</li>
+  <li><code>НАПОМНЯНЕ</code> и <code>ПО-КЪСНО</code> вече не са част
+    от подразбиращия се списък с решения. Надграждащите инсталации няма да бъдат
+    засегнати--те ще продължават са си имат тези решения.</li>
+  <li>Групата <kbd>editbugs</kbd> е вече подразбираща се за параметъра <kbd>timetrackinggroup</kbd>,
+    което значи че следенето на време ще бъде включено по подразбиране в нова
+    инсталация.</li>
+</ul>
+
+<h2><a name="v30_issues"></a>Оставащи проблеми</h2>
+
+<ul>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370739">
+    [%- terms.Bug %] 370739</a>: There is a problem in Firefox 2.0 that
+    sometimes causes the [% terms.bug %] editing page to render incorrectly
+    after editing a [% terms.bug %].</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=69621">
+    [%- terms.Bug %] 69621</a>: If you rename or remove a keyword that is
+    in use on [% terms.bugs %], you will need to rebuild the "keyword cache"
+    by running <a href="sanitycheck.cgi">sanitycheck.cgi</a> and choosing 
+    the option to rebuild the cache when it asks. Otherwise keywords may 
+    not show up properly in search results.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=99215">
+    [%- terms.Bug %] 99215</a>: Flags are not protected by "mid-air 
+    collision" detection. Nor are any attachment changes.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=89822">
+    [%- terms.Bug %] 89822</a>: When changing multiple [% terms.bugs %] at 
+    the same time, there is no "mid-air collision" protection.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276230">
+    [%- terms.Bug %] 276230</a>: The support for restricting access to 
+    particular Categories of New Charts is not complete. You should treat 
+    the 'chartgroup' Param as the only access mechanism available.<br>
+    However, charts migrated from Old Charts will be restricted to 
+    the groups that are marked MANDATORY for the corresponding Product.
+    There is currently no way to change this restriction, and the 
+    groupings will not be updated if the group configuration
+    for the Product changes.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370370">
+    [%- terms.Bug %] 370370</a>: mod_perl support may currently not
+    be working on Windows machines. Also, even when it does work,
+    editparams.cgi seems to crash on certain versions of mod_perl.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=361149">
+    [%- terms.Bug %] 361149</a>: If you are using Perl 5.8.0, you may
+    get a lot of warnings in your Apache error_log about "deprecated
+    pseudo-hashes." These are harmless--they are a b[%# fool test %]ug in 
+    Perl 5.8.0. Perl 5.8.1 and later do not have this problem.</li>
+  <li>[% terms.Bugzilla %] 3.0rc1 allowed custom field column names in 
+    the database to be mixed-case. [% terms.Bugzilla %] 3.0 only allows
+    lowercase column names. It will fix any column names that you have
+    made mixed-case, but if you have custom fields that previously were
+    mixed-case in any Saved Search, you will have to re-create that Saved
+    Search yourself.</li>
+</ul>
+
+<h2><a name="v30_upgrading"></a>Как да надградите от по-стара версия</h2>
+
+<h3>Бележки за надграждащите</h3>
+
+<ul>
+  <li>Ако надграждате през <abbr lang="en" title="Concurrent Versions
+    System">CVS</abbr>, има няколко .cvsignore файла които вече са в
+    <abbr lang="en" title="Concurrent Versions System">CVS</abbr> вместо
+    да бъдат създавани локално от  kbd>checksetup.pl</kbd>. Това значи,
+    че ще трябва да ги изтриете когато <abbr lang="en" title="Concurrent
+    Versions System">CVS</abbr> ви каже, че има конфликт и да пуснете
+    <kbd>cvs update</kbd> отново.</li>
+  <li>В тази версия на [% terms.Bugzilla %] полето Резюме
+    е ограничено до 255 символа. Когато надграждате, всяко Резюме
+    по-дълго от това ще бъде отрязано, а старото Резюме ще бъде
+    запазено в коментар.</li>
+  <li>Ако сте задали параметъра <kbd>utf8</kbd> в даден
+    момент ще трябва да преобразувате вашата база данни. <kbd>checksetup.pl</kbd>
+    ще ви каже когато този момент настъпи и ще ви даде определени инструкции
+    в този момент, които трябва да следвате преди да завършите
+    надграждането. Не правете преобразуването собственоръчно--следвайте
+    инструкциите на checksetup.pl.</li>
+  <li>Ако сте ползвали 2.23.3, 2.23.4 или 3.0rc1, ще трябва да пуснете
+    <kbd>./collectstats.pl --regenerate</kbd> на командния ред, защото
+    данните ви за Стари Графики са повредени. Това може да отнеме няколко дни,
+    така че е добре да го пуснете само ако използвате Стари Графики.</li>
+  <li>Трябва също така да прочетете секциите Оставащи проблеми на
+    <a href="#v30_previous">по-старите бележки към версии</a> ако надграждате
+    от версия по-ниска от 2.22.</li>
+</ul>
+
+<h3>Стъпки за надграждане</h3>
+
+<ol>
+  <li>Прочетете изцяло тези бележки към версията, и най-вече секцията
+    &quot;Бележки за надграждащите&quot; по-горе.</li>
+
+  <li>Прегледайте страницата <a href="sanitycheck.cgi">Санитарна проверка</a> на
+   инсталацията ви преди да надградите. Опитайте се да оправите всички предупреждения, 
+   които страницата покаже преди да продължите или може да се натъкнете 
+   на проблеми при надграждането.</li>
+
+  <li>Направете резервно копие на базата данни на [% terms.Bugzilla %] преди да надградите,
+   може би с използването на <kbd>mysqldump</kbd>. <strong>ТОВА Е МНОГО 
+   ВАЖНО</strong>. Ако нещо се обърка при надграждането инсталацията ви
+   може да бъде повредена без възможност за възстановяване. Наличието на резервно копие ви държи
+   в безопасност.
+
+    <p>Например: <kbd>mysqldump -u root -p bu[%# trick filter %]gs &gt; 
+      bu[%# trick filter %]gs-db.sql</kbd></p></li>
+
+  <li>Замяна на файловете на инсталацията ви с новата версия на 
+   [% terms.Bugzilla %], а може да опитате с използване на <abbr
+   lang="en" title="Concurrent Versions System">CVS</abbr> за
+   надграждане.
+
+   <p>Можете също така да използвате изцяло нова [% terms.Bugzilla %] папка, като 
+     копирате старата <kbd>data/</kbd> папка и файла 
+     <kbd>localconfig</kbd> в новата инсталация.</p></li>
+
+  <li>След това следвайте стандартната 
+    <a href="[% Param('docs_urlbase') FILTER html %]installing-bugzilla.html">
+    инсталационна процедура на [%- terms.Bugzilla %]</a>.</li>
+
+  <li>Пуснете <kbd>checksetup.pl</kbd> след инсталирането на новата версия.</li>
+
+  <li>Прегледайте страницата <a href="sanitycheck.cgi">Санитарна проверка</a> отново след 
+    пускането на <kbd>checksetup.pl</kbd>.</li>
+
+  <li>Препоръчително е, ако е възможно, да поправите всички проблеми които откриете
+   незабавно. Ако не направите това значи, че [% terms.Bugzilla %] няма 
+   да работи правилно. Имайте в предвид, че ако санитарната проверка съдържа повече
+   грешки след надграждане, това определено не значи, че има повече 
+   грешки в базата ви данни от преди, тъй като допълнителни проверки 
+   се добавят към санитарната проверка с времето и е възможно за тези
+   грешки да не е било проверявано в старите версии.</li>
+</ol>
+
+<h2><a name="v30_code_changes"></a>Промени в кода, които могат да засегнат 
+  потребителските модификации</h2>
+
+<ul>
+  <li><a href="#v30_code_loc"><strong>За пакетиращи:</strong> Променливите за
+    местоположение са преместени</a></li>
+  <li><a href="#v30_code_hooks">Куки!</a></li>
+  <li><a href="#v30_code_api">API документация</a></li>
+  <li><a href="#v30_code_globals">Отстраняване на globals.pl</a></li>
+  <li><a href="#v30_code_scope">Изчистени проблеми с обхвата на променливите</a></li>
+  <li><a href="#v30_code_sql">Без повече SendSQL</a></li>
+  <li><a href="#v30_code_auth">Пренаписан Auth</a></li>
+  <li><a href="#v30_code_obj">Bugzilla::Object</a></li>
+  <li><a href="#v30_code_req">Bugzilla-&gt;request_cache</a></li>
+  <li><a href="#v30_code_other">Други промени</a></li>
+</ul>
+
+<h3><a name="v30_code_loc"></a><strong>За пакетиращи:</strong> Променливите за
+    местоположение са преместени</h3>
+
+<p>В предишни версии на [% terms.Bugzilla %], <kbd>Bugzilla::Config</kbd>
+  държеше всички пътища за различни неща като пътя до localconfig
+  и пътя до папката <kbd>data/</kbd>.</p>
+
+<p>Сега, всички тези данни се съхраняват в подпрограмата
+  <kbd>Bugzilla::Constants::bz_locations</kbd>.</p>
+
+<p>Също така имайте в предвид, че за mod_perl, <kbd>bz_locations</kbd> трябва да връща
+  <em>абсолютни</em> (не относителни) пътища. Вече има код в тази
+  подпрограма, който да ви помогне с това.</p>
+
+<h3><a name="v30_code_hooks"></a>Куки!</h3>
+
+<p>[% terms.Bugzilla %] вече поддържа механизъм за закачане на код. Вижте 
+  документацията на 
+  <a href="[% Param('docs_urlbase') FILTER html %]api/Bugzilla/Hook.html">Bugzilla::Hook</a>
+  за повече подробности.</p>
+
+<p>Това дава на [% terms.Bugzilla %] много модерна поддръжка на добавки. Можете да
+  закачате шаблони, закачате код и нови параметри и да използвате XML-RPC
+  интерфейса. Така, че искаме да видим написани някакви [% terms.Bugzilla %]
+  добавки! Уведомете ни в пощенския списък <a href="http://bugzilla.org/cgi-bin/mj_wwwusr?func=lists-long-full&amp;extra=developers">developers&#64;bugzilla.org</a>
+  ако напишете такава.</p>
+
+<p>Ако имате нужда от повече куки, моля 
+  <a href="http://www.bugzilla.org/developers/reporting_bugs.html">Въведете
+  бъг</a>!</p>
+
+<h3><a name="v30_code_api"></a>API документация</h3>
+
+<p>[% terms.Bugzilla %] вече се предлага с целия perldoc построен
+  като <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr>. Продължете и прочетете
+  <a href="[% Param('docs_urlbase') FILTER html %]api/">API документацията</a>
+  за всички [% terms.Bugzilla %] модули сега! Дори скриптове като
+  <kbd>checksetup.pl</kbd> имат <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> документация.</p>
+
+<h3><a name="v30_code_globals"></a>Отстраняване на globals.pl</h3>
+
+<p>Старият файл <kbd>globals.pl</kbd> беше премахнат.
+  Неговия код сега е в различни модули. Всяка функция отиде в модула,
+  който беше най-подходящ за нея.</p>
+
+<p>Обикновено въвеждахме [% terms.abug %] в 
+  <a href="https://bugzilla.mozilla.org">bugzilla.mozilla.org</a> за
+  всяка функция която премествахме. Можете да търсите там за старото има на
+  функцията и това трябва да ви даде информация за това как
+  се казва сега и къде се намира.</p>
+
+<h3><a name="v30_code_scope"></a>Изчистени проблеми с обхвата на променливите</h3>
+
+<p>В обикновен perl, можете да имате код като този:</p>
+<pre>my $var = 0;
+sub y { $var++ }</pre>
+
+<p>Обаче, под mod_perl това не работи. Така че променливите повече
+  не са &quot;споделени&quot; с подпрограмите--вместо това всички променливи
+  от които има нужда подпрограмата трябва да бъдат обявени вътре в нея.</p>
+
+<h3><a name="v30_code_sql"></a>Без повече SendSQL</h3>
+
+<p>Старата функция <kbd>SendSQL</kbd> и всичките и другари ги
+  <strong>няма</strong>. Вместо това сега използваме DBI за цялото взаимодействие
+  с базата данни.</p>
+
+<p>За повече информация относно използването на 
+  <a href="http://search.cpan.org/perldoc?DBI">DBI</a> с 
+  [% terms.Bugzilla %], вижте 
+  <a href="http://www.bugzilla.org/docs/developer.html#sql-sendreceive">Developer's
+  Guide Section About DBI</a></p>
+
+<h3><a name="v30_code_auth"></a>Пренаписан Auth</h3>
+
+<p>Семейството модули <kbd>Bugzilla::Auth</kbd> беше напълно
+  пренаписано. За подробности по новата структура на удостоверяването,
+  прочетете 
+  <a href="[% Param('docs_urlbase') FILTER html %]api/Bugzilla/Auth.html">Bugzilla::Auth
+  API docs</a>.</p>
+
+<p>Би трябвало да е много лесно да се пишат нови добавки за удостоверяване сега.</p>
+
+<h3><a name="v30_code_obj"></a>Bugzilla::Object</h3>
+
+<p>Това е нов основен клас за повечето от обектите ни, 
+  <a href="[% Param('docs_urlbase') FILTER html %]api/Bugzilla/Object.html">Bugzilla::Object</a>.
+  Той прави много лесно създаването на нови обекти основани на неща които са 
+  в базата данни.</p>
+
+<h3><a name="v30_code_req"></a>Bugzilla-&gt;request-cache</h3>
+
+<p><kbd>Bugzilla.pm</kbd> кешираше неща като връзката с
+  базата данни в глобални за пакета променливи (като <kbd>$_dbh</kbd>).
+  Това не работи в mod_perl, така че вместо това сега има хеш,
+  към който може да се обърнете през <code>Bugzilla-&gt;request_cache</code>,
+  за да съхрани неща за остатъка от текущата заявка за страница.</p>
+
+<p>Не трябва да се обръщате към <code>Bugzilla-&gt;request_cache</code> направо,
+  но трябва да го използвате вътре в <kbd>Bugzilla.pm</kbd> ако го
+  променяте. Единствения случай, в който трябва да се обръщате направо е ако имате нужда
+  да зададете наново някой от кешовете. Хеш ключовете са винаги именувани на функцията
+  която кешират, така че за да зададете наново обекта за шаблони, правите:
+  <code>delete Bugzilla-&gt;request_cache-&gt;{template};</code>.</p>
+
+<h3><a name="v30_code_other"></a>Други промени</h3>
+
+<ul>
+  <li><code>checksetup.pl</code> беше напълно пренаписан, като повечето
+    от кода му преместен в модули в <kbd>Bugzilla::Install</kbd>
+    именното пространство. Вижте
+    <a href="[% Param('docs_urlbase') FILTER html %]api/checksetup.html">документацията на
+    checksetup</a> и <a href="https://bugzilla.mozilla.org/showdependencytree.cgi?id=277502&amp;hide_resolved=0">[% terms.Bugzilla %]
+   [%+ terms.bug %] 277502</a> за подробности.</li>
+  <li>Вместо <kbd>UserInGroup()</kbd> цялата [% terms.Bugzilla %] сега 
+    използва <kbd>Bugzilla-&gt;user-&gt;in_group</kbd></li>
+  <li>mod_perl не харесва цикли на зависимостите в модули, затова сега имаме
+    проверка, която открива цикли на зависимости в модули когато пуснете
+   <kbd>runtests.pl</kbd>.</li>
+  <li><kbd>globals.pl</kbd> променяше променливите на средата,
+    като <kbd>PATH</kbd>. Това сега става в <kbd>Bugzilla.pm</kbd>.</li>
+  <li>Шаблоните сега могат да препращат към документацията по-лесно.
+    Вижте <kbd>global/code-error.html.tmpl</kbd> и
+    <kbd>global/user-error.html.tmpl</kbd> шаблоните за примери.
+    (Търсете за &quot;docslinks.&quot;)</li>
+  <li>Сега обръщението към параметрите става през <kbd>Bugzilla-&gt;params</kbd>
+    вместо използването на <kbd>Param()</kbd> функцията.</li>
+  <li>Променливите от <kbd>localconfig</kbd> файла са достъпни
+    през <code>Bugzilla-&gt;localconfig</code> хеша вместо през
+    <kbd>Bugzilla::Config</kbd>.</li>
+  <li><kbd>Bugzilla::BugMail::MessageToMTA()</kbd> се премести в свой 
+    собствен модул, заедно с друг обработващ поща код, наречен
+    <kbd>Bugzilla::Mailer</kbd></li>
+  <li>Подпрограмата <kbd>CheckCanChangeField()</kbd> в 
+    <kbd>process_bug.cgi</kbd> беше преместена в <kbd>Bugzilla::Bug</kbd>,
+    и сега е метод на обекта за [% terms.bug %].</li>
+  <li>Кода, който беше в <kbd>global/banner.html.tmpl</kbd>
+    шаблона сега е в <kbd>global/header.html.tmpl</kbd>. Банера
+    все още съществува, но файла е празен.</li>
+</ul>
+
+<h2><a name="v30_previous"></a>Бележки към версията за предишни версии</h2>
+
+<p>Бележките към версията за версии на [% terms.Bugzilla %]
+  преди 3.0 са достъпни само в текстов формат: 
+  <a href="docs/rel_notes.txt">Бележки към версията за [% terms.Bugzilla %] 2.22
+  и по-ранна</a>.</p>
+
+[% INCLUDE global/footer.html.tmpl %]
+
+[% BLOCK db_req %]
+  [% SET m = DB_MODULE.$db %]
+  <h3><a name="v30_req_[% db FILTER html %]"></a>За [% m.name FILTER html %] 
+    потребители</h3>
+
+  <ul>
+    <li>[% m.name FILTER html %] v[% m.db_version FILTER html %]</li>
+    <li><strong>perl module:</strong>
+      [%+ m.dbd.module FILTER html %] v[% m.dbd.version FILTER html %]</li>
+  </ul>
+[% END %]
+
+
+[% BLOCK req_table %]
+  <table class="req_table" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th>Модул</th> <th>Версия</th>
+      [% IF include_feature %]
+        <th>Разрешава възможноста</th>
+      [% END %]
+    </tr>
+    [% FOREACH req = reqs %]
+      <tr>
+        <td [% 'class="req_new"' IF new.contains(req.package) %]>
+          [%- req.module FILTER html %]</td> 
+        <td [% 'class="req_new"' IF updated.contains(req.package) 
+                                    OR new.contains(req.package) %]>
+          [%- IF req.version == 0 %]
+            (Всяка)
+          [% ELSE %]
+            [%- req.version FILTER html %]
+          [% END %]
+        </td>
+        [% IF include_feature %] 
+          <td>[% req.feature FILTER html %]</td>
+        [% END %]
+      </tr>
+    [% END %]
+</table>
+[% END %]

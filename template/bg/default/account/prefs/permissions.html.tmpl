@@ -36,9 +36,7 @@
   <tr>
     <td>
       [% IF has_bits.size %]
-        Имате следните [% terms.bits %] за позволения зададени на регистрацията ви:
-        <p>
-        <br>
+        Имате следните позволяващи [% terms.bits %] зададени на сметката ви:
         <table align="center">
           [% FOREACH bit_description = has_bits %]
             <tr>
@@ -47,8 +45,25 @@
             </tr>
           [% END %]
         </table>
+
+        [% FOREACH privs = ["editcomponents", "canconfirm", "editbugs"] %]
+          [% SET products = ${"local_$privs"} %]
+          [% IF products && products.size %]
+            <br>
+            <p>
+              Също така имате локални '[% privs FILTER html %]' права
+              за следните продукти:
+            </p>
+            <p>
+              [% FOREACH product = products %]
+                [% product.name FILTER html %]<br>
+              [% END %]
+            </p>
+          [% END %]
+        [% END %]
+
       [% ELSE %]
-        Няма [% terms.bits %] за позволения зададени на регистрацията ви.
+        Няма позволяващи [% terms.bits %] зададени на сметката ви.
       [% END %]
 
       [% IF user.groups.editusers %]
@@ -59,7 +74,6 @@
         <br>
         И можете да давате или снемате следните [% terms.bits %] за
         <a href="editusers.cgi">други потребители</a>:
-        <p>
           <table align="center">
           [% FOREACH bit_description = set_bits %]
             <tr>
@@ -68,13 +82,12 @@
             </tr>
           [% END %]
           </table>
-        </p>
       [% END %]
-      
+
       [% IF user.groups.bz_sudoers %]
         <br>
         Член сте на групата <b>bz_sudoers</b>, така че можете да
-        <a href="relogin.cgi?action=prepare-sudo">се представите за някой друг</a>.
+        <a href="relogin.cgi?action=prepare-sudo">се представяте за някой друг</a>.
       [% END %]
     </td>
   </tr>

@@ -39,7 +39,7 @@
   %]
 </table>
 <p>
-  <input type="submit" value="Добавяне" />
+  <input type="submit" id="add" value="Добавяне" />
   <input type="hidden" name="action" value="new" />
   <input type="hidden" name="token" value="[% token FILTER html %]">
   [% INCLUDE listselectionhiddenfields %]
@@ -47,11 +47,11 @@
 </form>
 
 <p>
-  Също <a href="editusers.cgi">търсене на потребител</a>
+  Можете също така да <a href="editusers.cgi">търсите потребител</a>
   [% IF listselectionvalues %],
     или
-    <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">връщане
-    към списъка с потребители</a>
+    <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">да се върнете
+    обратно към списъка с потребители</a>
   [% END %].
 </p>
 

@@ -42,12 +42,16 @@
     [% END %]
   </td>
 
+</tr><tr>
+  <td valign="top">Ключ за подреждане:</td>
+  <td valign="top">[% classification.sortkey FILTER html %]</td>
+
 </tr>
 </table>
 
 <h2>Потвърждение</h2>
 
-<p>Наистина ли желаете да изтриете този класификация?<p>
+<p>Наистина ли желаете да изтриете тази класификация?</p>
 <form method=post action="editclassifications.cgi">
   <input type=submit value="Да, изтриване">
   <input type=hidden name="action" value="delete">
@@ -56,6 +60,6 @@
 </form>
 
 <p>Обратно към <a href="./">главната страница с [% terms.bugs %]</a>
-или <a href="editclassifications.cgi">редактиране</a> на други класификации.
+или <a href="editclassifications.cgi">редактиране</a> на други класификации.</p>
 
 [% PROCESS global/footer.html.tmpl %] 

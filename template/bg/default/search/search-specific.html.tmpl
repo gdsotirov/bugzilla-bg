@@ -23,10 +23,9 @@
 
 [% PROCESS global/header.html.tmpl 
   title = "Търсене на определен $terms.bug"
-  h1 = ""
 %]
 
-[% PROCESS search/tabs.html.tmpl %]
+[% WRAPPER search/tabs.html.tmpl %]
 
 <p>
 Търсете определен [% terms.bug %] с въвеждане на думи, които го описват.  
@@ -73,8 +72,8 @@
         [% IF Param('useclassification') %]
           [% FOREACH c = classification %]
             <optgroup label="[% c.name FILTER html %]">
-            [% FOREACH p = c.products %]
-              [% IF user.can_see_product(p.name) %]
+            [% FOREACH p = user.get_selectable_products(c.id) %]
+              [% IF p.components.size %]
                 <option value="[% p.name FILTER html %]"
                   [% " selected" IF lsearch(default.product, p.name) != -1 %]>
                   [% p.name FILTER html %]
@@ -110,11 +109,17 @@
   <tr>
     <td></td>
     <td>
-      <input type="submit" value="Търсене">
+      <input type="submit" id="search" value="Търсене"
+             onclick="if (this.form.content.value == '')
+                      {alert('The Words field cannot be empty. You have to ' +
+                             'enter at least one word in your search criteria.');
+                       return false;} return true;">
     </td>
   </tr>
 </table>
 </form>
+
+[% END %]
 
 [% PROCESS global/footer.html.tmpl %]
 

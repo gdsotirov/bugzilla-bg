@@ -35,26 +35,26 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% title = "Настройване на whining" %]
+[% title = "Настройване на хленч" %]
 [% PROCESS global/header.html.tmpl %]
 
 <p>
-  "Whining" е тогава, когато [% terms.Bugzilla %] изпълнява съхранено търсене
+  "Хленч" има тогава, когато [% terms.Bugzilla %] изпълнява съхранено търсене
   на определен промеждутък от време и изпраща получения списък от  [% terms.bugs %] по е-поща.
 </p>
 
 <p>
-  За да зададете ново whine събитие, щракнете върху "Добавяне на ново
-  събитие". Въведете тема на съобщението, което ще бъде изпращано заедно с
-  параграф текст, който ще придружава [% terms.bug %] списъка в тялото на съобщението.
+  За да зададете ново хленч събитие, щракнете върху "Добавяне на ново събитие". Въведете тема
+  за съобщението, което ще бъде изпращано, заедно с параграф текст, който ще
+  придружава [% terms.bug %] списъка в тялото на съобщението.
 </p>
 
 <p>
-  Разписанията се добавят към събитие с щракванете върху "Добавяне на ново
-  разписание". Разписанието се сътои от ден, време през деня или интервал от
-  време (напр. всеки 15 минути) и целеви е-пощенски адрес, който може или не
-  може да бъде променян в зависимост от вашите права. Събитията могат да имат
-  повече от едно разписание, за да бъдат пускани по различно време или за различни потребители.
+  Разписанията се добавят към събитие с щракванете върху "Добавяне на ново разписание". Разписанието
+  се сътои от ден, време през деня или интервал от време
+  (напр. всеки 15 минути) и целеви е-пощенски адрес, който може или не може
+  да бъде променян в зависимост от вашите права. Събитията могат да имат повече от едно разписания,
+  за да бъдат пускани няколко пъти или за различни потребители.
 </p>
 
 <p>
@@ -64,8 +64,8 @@
   запитване" и избирането на името на желаното съхранено търсене под "Търсене" и добавяне
   на заглавие за [% terms.bug %] таблицата. Незадължителното число въвеждано под
   "Подредба" ще определи реда на изпълнение (по-малко към по-голямо) ако са описани
-  няколко заявки. Ако отметнете "Едно съобщение за [% terms.bug %]," всеки [%
-  terms.bug %] който отговаря на търсенето ще бъде изпратен в отделно е-пощенско съобщение.
+  няколко заявки. Ако отметнете "Писмо за всеки [% terms.bug %]", всеки [%
+  terms.bug %], който отговаря на търсенето ще бъде изпратен в отделно писмо.
 </p>
 
 <p>
@@ -80,7 +80,7 @@
 [%# This hidden submit button must be here to set default behavior when
     the user presses return on a form input field #%]
 <input type="submit" value="Обновяване / Изпращане" name="commit"
-       style="visibility: hidden">
+       style="display: none;" id="commit">
 <input type="hidden" name="update" value="1">
 <input type="hidden" name="token" value="[% token FILTER html %]">
 
@@ -94,13 +94,14 @@
     </th>
     <td align="right">
       <input type="submit" value="Премахване на събитието"
-             name="remove_event_[% event.key %]">
+             name="remove_event_[% event.key %]"
+             id="remove_event_[% event.key %]">
     </td>
   </tr>
 
   <tr>
     <td valign="top" align="right">
-      Тема на съобщението:
+      Тема на писмото:
     </td>
     <td>
       <input type="text" name="event_[% event.key %]_subject"
@@ -111,12 +112,17 @@
 
   <tr>
     <td valign="top" align="right">
-      Описателен тескт изпращан заедно с whine съобщението:
+      Описателен тескт изпращан заедно с хленч писмото:
     </td>
     <td>
-      <textarea name="event_[% event.key %]_body"
-                rows="5" cols="80">
-          [% event.value.body FILTER html %]</textarea>
+      [% INCLUDE global/textarea.html.tmpl
+         name           = "event_${event.key}_body"
+         minrows        = 3
+         maxrows        = 10
+         defaultrows    = 5
+         cols           = 80
+         defaultcontent = event.value.body
+       %]
     </td>
   </tr>
 
@@ -129,7 +135,8 @@
       <td align="left" bgcolor="#FFEEEE">
         Не е разписано за пускане<br>
         <input type="submit" value="Добавяне на ново разписание"
-               name="add_schedule_[% event.key %]">
+               name="add_schedule_[% event.key %]"
+               id="add_schedule_[% event.key %]">
       </td>
     </tr>
 
@@ -186,7 +193,8 @@
               </td>
               <td align="left">
                 <input type="submit" value="Премахване"
-                       name="remove_schedule_[% schedule.id %]">
+                       name="remove_schedule_[% schedule.id %]"
+                       id="remove_schedule_[% schedule.id %]">
               </td>
             </tr>
           [% END %]
@@ -194,7 +202,8 @@
         <tr>
           <td>
             <input type="submit" value="Добавяне на ново разписание"
-                   name="add_schedule_[% event.key %]">
+                   name="add_schedule_[% event.key %]"
+                   id="add_schedule_[% event.key %]">
           </td>
         </tr>
 
@@ -210,14 +219,16 @@
 
     <tr>
       <td valign="top" align="right">
-        Запитвания:
+        Търсения:
       </td>
       <td align="left" colspan="1">
-        Няма запитвания <br>
-        <input type="submit" value="Добавяне на ново запитване" name="add_query_[% event.key %]">
+        Няма търсения <br>
+        <input type="submit" value="Добавяне на ново запитване"
+               name="add_query_[% event.key %]"
+               id="add_query_[% event.key %]">
       </td>
       <td align="right" valign="bottom">
-        <input type="submit" value="Обновяване / Изпращане" name="commit">
+        <input type="submit" value="Обновяване / Изпращане" name="commit" id="update">
       </td>
     </tr>
 
@@ -225,7 +236,7 @@
 
     <tr>
       <td valign="top" align="right">
-        Запитвания:
+        Търсения:
       </td>
       <td align="left">
 
@@ -263,11 +274,12 @@
                 <input type="checkbox" [% IF query.onemailperbug == 1 %]
                        checked [% END %]name="query_onemailperbug_
                        [% query.id %]">
-                Съобщение за всеки [% terms.bug %]
+                Писмо за всеки [% terms.bug %]
               </td>
               <td align="right">
                 <input type="submit" value="Премахване"
-                       name="remove_query_[% query.id %]">
+                       name="remove_query_[% query.id %]"
+                       id="remove_query_[% query.id %]">
               </td>
             </tr>
 
@@ -276,7 +288,8 @@
           <tr>
             <td colspan="3">
               <input type="submit" value="Добавяне на ново запитване"
-                     name="add_query_[% event.key %]">
+                     name="add_query_[% event.key %]"
+                     id="add_query_[% event.key %]">
             </td>
           </tr>
 
@@ -284,7 +297,7 @@
 
       </td>
       <td align="right" valign="bottom">
-        <input type="submit" value="Обновяване / Изпращане" name="commit">
+        <input type="submit" value="Обновяване / Изпращане" name="commit" id="update">
       </td>
     </tr>
 
@@ -295,7 +308,7 @@
 [% END %]
 
 <p align="left">
-  <input type="submit" value="Добавяне на ново събитие" name="add_event">
+  <input type="submit" value="Добавяне на ново събитие" name="add_event" id="add_event">
 </p>
 
 </form>

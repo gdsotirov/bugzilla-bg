@@ -18,6 +18,9 @@
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #                 Vaskin Kissoyan <vkissoyan@yahoo.com>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #                 Olav Vitters <olav@bkor.dhs.org>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -56,7 +59,7 @@
 
       replytext = "(В отговор на коментар №" + id + ")\n" + replytext + "\n";
 
-    [% IF Param("insidergroup") && UserInGroup(Param("insidergroup")) %]
+    [% IF Param("insidergroup") && user.in_group(Param("insidergroup")) %]
       if (document.getElementById('isprivate-'+id).checked) {
           document.getElementById('newcommentprivacy').checked = 'checked';
       }
@@ -96,7 +99,7 @@
       return text;
   }
 
-[% IF UserInGroup(Param('timetrackinggroup')) %]
+[% IF user.in_group(Param('timetrackinggroup')) %]
   var fRemainingTime = [% bug.remaining_time %]; // holds the original value
   function adjustRemainingTime() {
       // subtracts time spent from remaining time
@@ -134,329 +137,196 @@
   <input type="hidden" name="longdesclength" value="[% bug.longdescs.size %]">
   <input type="hidden" name="id" value="[% bug.bug_id %]">
 
-[%# *** Hardware Reporter Product OS AddCC *** %]
-
+  [%# That's the main table, which contains all editable fields. %]
   <table>
-
     <tr>
       <td valign="top">
-        <table cellspacing="1" cellpadding="1">
-          <tr>
-            <td align="right">
-              [% IF Param('useclassification') && bug.classification_id != 1 %]
-                <b>[[% bug.classification FILTER html %]]</b>
-              [% END %]
-              <b>[% terms.Bug %] №:</b>
-            </td>
-            <td>
-              <a href="[% Param('urlbase') %]show_bug.cgi?id=[% bug.bug_id %]">
-                [% bug.bug_id %]</a>
-            </td>
-          </tr>
+        <fieldset>
+          <legend>Подробности</legend>
+          <table>
 
-          [% IF Param("usebugaliases") %]
+            [%# *** Summary *** %]
             <tr>
               <td align="right">
-                <b>Псевдоним:</b>
+                <label for="short_desc" accesskey="Р"><b><u>Р</u>езюме</b></label>:
               </td>
-              <td>
-                <label for="alias" title="име за [% terms.abug %], което може да бъде използвано вместо неговия номер, например когато бива добавян в списък на зависимостите">
-                  <input id="alias" name="alias" value="[% bug.alias FILTER html %]"
-                         size="20" maxlength="20">
-                </label>
+              [% PROCESS input inputname => "short_desc" size => "60" colspan => 2
+                               maxlength => 255 %]
+            </tr>
+
+            <tr>
+              <td colspan="3">
+                <table>
+                  <tr>
+                    [%# *** ID, product, component, status and resolution *** %]
+                    <td valign="top">[% PROCESS section_details1 %]</td>
+
+                    [%# *** Platform, OS, severity, priority, version and milestone *** %]
+                    <td valign="top">[% PROCESS section_details2 %]</td>
+                  </tr>
+                </table>
               </td>
             </tr>
-          [% END %]
 
-          <tr>
-            <td align="right">
-              <b><u>П</u>родукт:</b>
-            </td>
-            [% PROCESS select selname => "product" accesskey => "П" %]
-          </tr>
+            <tr>
+              <td colspan="3"><hr size="1"></td>
+            </tr>
 
-          [%# *** Component Version CC Priority Severity AssignedTo Milestone *** %]
+            [%# *** URL Whiteboard Keywords *** %]
 
-          <tr>
-            <td align="right">
-              <b>
-                <a href="describecomponents.cgi?product=[% bug.product FILTER url_quote %]">
-                  Съставна <u>ч</u>аст</a>:
-              </b>
-            </td>
-            [% PROCESS select selname => "component" accesskey => "Ч" %]
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b>
-                <a href="page.cgi?id=fields.html#status">Състояние</a>:
-              </b>
-            </td>
-            <td>[% status_descs.${bug.bug_status} FILTER html %]</td>
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b>
-                <a href="page.cgi?id=fields.html#resolution">Решение</a>:
-              </b>
-            </td>
-            <td>
-              [% resolution_descs.${bug.resolution} FILTER html %]
-              [% IF bug.resolution == "DUPLICATE" %]
-                of [% terms.bug %] [%+ "${bug.dup_id}" FILTER bug_link(bug.dup_id) FILTER none %]
-              [% END %]
-            </td>
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b>
-                <a href="page.cgi?id=fields.html#assigned_to">Назначен&nbsp;на</a>:
-              </b>
-            </td>
-            <td>[% bug.assigned_to.identity FILTER html %]</td>
-          </tr>
-
-        </table>
-
-      </td>
-      <td valign="top">
-
-        <table cellspacing="1" cellpadding="1">
-
-          <tr>
-            <td align="right">
-              <b>П<u>л</u>атформа:</b>
-            </td>
-            [% PROCESS select selname => "rep_platform" accesskey => "Л" %]
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b><u>О</u>С:</b>
-            </td>
-            [% PROCESS select selname => "op_sys" accesskey => "О" %]
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b>Версия:</b>
-            </td>
-            [% PROCESS select selname => "version" %]
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b><a href="page.cgi?id=fields.html#priority">Пр<u>и</u>оритет</a>:</b>
-            </td>
-            [% PROCESS select selname => "priority" accesskey => "И" %]
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b><a href="page.cgi?id=fields.html#bug_severity">Суровост</a>:</b>
-            </td>
-            [% PROCESS select selname = "bug_severity" %]
-          </tr>
-
-          [% IF Param("usetargetmilestone") && bug.target_milestone %]
             <tr>
               <td align="right">
-                <b>
-                  [% IF bug.milestoneurl %]
-                    <a href="[% bug.milestoneurl FILTER html %]">
+                <label for="bug_file_loc" accesskey="u"><b>
+                  [% IF bug.bug_file_loc 
+                     AND NOT bug.bug_file_loc.match("^(javascript|data)") %]
+                    <a href="[% bug.bug_file_loc FILTER html %]"><u>U</u>RL</a>
+                  [% ELSE %]
+                    <u>U</u>RL
                   [% END %]
-                  Целево събититие[% "</a>" IF bug.milestoneurl %]:
-                </b>
+                [%%]</b></label>:
               </td>
-              [% PROCESS select selname = "target_milestone" %]
+              [% PROCESS input inputname => "bug_file_loc" size => "60" colspan => 2 %]
             </tr>
-          [% END %]
 
-        </table>
-      </td>
-
-      <td valign="top">
-
-        <table cellpadding="1" cellspacing="1">
-
-          <tr>
-            <td align="right">
-              <b>Докладчик:</b>
-            </td>
-            <td>
-              <a href="mailto:[% bug.reporter.email FILTER html %]">
-                [% bug.reporter.identity FILTER html %]</a>
-            </td>
-          </tr>
-
-          <tr>
-            <td align="right" valign="top">
-              <b><u>Д</u>обавяне&nbsp;в&nbsp;<abbr title="Точно Копие">ТК</abbr>:</b>
-            </td>
-            <td>
-               [% INCLUDE global/userselect.html.tmpl
-                  id => "newcc"
-                  name => "newcc"
-                  value => ""
-                  accesskey => "Д"
-                  size => 30
-                  multiple => 5
-                %]
-            </td>
-          </tr>
-
-          <tr>
-            <td align="right" valign="top">
-              <b><abbr title="Точно Копие">ТК</abbr>:</b>
-            </td>
-            <td valign="top">
-            [% IF bug.cc %]
-              <select name="cc" multiple="multiple" size="5">
-              [% FOREACH c = bug.cc %]
-                <option value="[% c FILTER html %]">[% c FILTER html %]</option>
-              [% END %]
-              </select>
-              <br>
-              <input type="checkbox" name="removecc">Премахване на избраните <abbr title="Точно Копие">ТК</abbr> елементи
-              <br>
-            [% ELSE %]
-              <input type="hidden" name="cc" value="">
+            [% IF Param('usestatuswhiteboard') %]
+              <tr>
+                <td align="right">
+                  <label for="status_whiteboard" accesskey="б"><b><u>Б</u>яла дъска</b></label>:
+                </td>
+                [% PROCESS input inputname => "status_whiteboard" size => "60" colspan => 2 %]
+              </tr>
             [% END %]
-            </td>
-          </tr>
 
-        </table>
+            [% IF use_keywords %]
+              <tr>
+                <td align="right">
+                  <label for="keywords" accesskey="k">
+                    <b><a href="describekeywords.cgi"><u>К</u>лючови думи</a></b></label>:
+                </td>
+                [% PROCESS input inputname => "keywords" size => 60 colspan => 2
+                                 value => bug.keywords.join(', ') %]
+              </tr>
+            [% END %]
 
-      </td>
-      </tr>
+            [%# *** Custom Fields *** %]
 
-      <tr>
-        <td colspan="2">
-          <table cellspacing="1" cellpadding="1">
+            [% USE Bugzilla %]
+            [% fields = Bugzilla.get_fields({ obsolete => 0, custom => 1 }) %]
+            [% IF fields %]
+              [% FOREACH field = fields %]
+                <tr>
+                  [% PROCESS bug/field.html.tmpl value=bug.${field.name}
+                                                 editable = bug.check_can_change_field(field.name, 0, 1)
+                                                 value_span = 2 %]
+                </tr>
+              [% END %]
+            [% END %]
 
-      [%# *** QAContact URL Requests Summary Whiteboard Keywords *** %]
+            [%# *** Dependencies *** %]
 
-         [% IF Param('useqacontact') %]
-           <tr>
-             <td align="right">
-             <b>Качес<u>т</u>вен контрол:</b>
-             </td>
-             <td colspan="7">
-               [% INCLUDE global/userselect.html.tmpl
-                  id => "qa_contact"
-                  name => "qa_contact"
-                  value => bug.qa_contact.login
-                  accesskey => "Т"
-                  size => 60
-                  emptyok => 1
-                %]
-             </td>
-           </tr>
-         [% END %]
+            <tr>
+              [% PROCESS dependencies
+                         dep = { title => "Зависи&nbsp;от", fieldname => "dependson" } %]
+            </tr>
 
-          <tr>
-            <td align="right">
-              <b>
-                [% IF bug.bug_file_loc 
-                   AND NOT bug.bug_file_loc.match("^(javascript|data)") %]
-                  <a href="[% bug.bug_file_loc FILTER html %]"><u>U</u>RL</a>:
-                [% ELSE %]
-                  <u>U</u>RL:
+            <tr>
+              [% PROCESS dependencies accesskey = "b"
+                         dep = { title => "<u>Б</u>локира", fieldname => "blocked" } %]
+            </tr>
+
+            <tr>
+              <th>&nbsp;</th>
+
+              <td colspan="2">
+                <a href="showdependencytree.cgi?id=[% bug.bug_id %]&amp;hide_resolved=1">Показване
+                   на дърво на зависимостите</a>
+
+                [% IF Param('webdotbase') %]
+                  - <a href="showdependencygraph.cgi?id=[% bug.bug_id %]">Показване
+                       на графика на зависимостите</a>
                 [% END %]
-              </b>
-            </td>
-            <td colspan="5">
-              <input name="bug_file_loc" accesskey="U"
-                     value="[% bug.bug_file_loc FILTER html %]" size="60">
-            </td>
-          </tr>
-
-          <tr>
-            <td align="right">
-              <b><u>Р</u>езюме:</b>
-            </td>
-            <td colspan="5">
-              <input name="short_desc" accesskey="Р"
-                     value="[% bug.short_desc FILTER html %]" size="60">
-            </td>
-          </tr>
-
-          [% IF Param('usestatuswhiteboard') %]
-            <tr>
-              <td align="right">
-                <b><u>Б</u>яла дъска на състоянието:</b>
-              </td>
-              <td colspan="5">
-                <input name="status_whiteboard" accesskey="Б"
-                       value="[% bug.status_whiteboard FILTER html %]" size="60">
               </td>
             </tr>
-          [% END %]
-
-          [% IF bug.use_keywords %]
-            <tr>
-              <td align="right">
-                <b>
-                  <a href="describekeywords.cgi">Кл<u>ю</u>чови думи</a>:
-                </b>
-              <td colspan="5">
-                <input name="keywords" accesskey="Ю"
-                       value="[% bug.keywords.join(', ') FILTER html %]" size="60">
-              </td>
-            </tr>
-          [% END %]
-
-        </table>
+          </table>
+        </fieldset>
       </td>
 
       <td valign="top">
-        <table cellspacing="1" cellpadding="1">
-          <tr>
-            <td colspan="2" valign="top">
-                [% IF bug.flag_types.size > 0 %]
-                  [% PROCESS "flag/list.html.tmpl"
-                     flag_types = bug.flag_types
-                     any_flags_requesteeble = bug.any_flags_requesteeble %]
-                [% END %]
-            </td>
-          </tr>
-        </table>
+        [%# *** Reporter, owner and QA contact *** %]
+        <fieldset>
+          <legend>Хора</legend>
+          [% PROCESS section_people %]
+        </fieldset>
+
+        [%# *** Flags *** %]
+        [% show_bug_flags = 0 %]
+        [% FOREACH type = bug.flag_types %]
+          [% IF (type.flags && type.flags.size > 0) || (user.id && type.is_active) %]
+            [% show_bug_flags = 1 %]
+            [% LAST %]
+          [% END %]
+        [% END %]
+        [% IF show_bug_flags %]
+          <fieldset>
+            <legend>Флагове</legend>
+            <table cellspacing="1" cellpadding="1">
+              <tr>
+                <td colspan="2" valign="top">
+                  [% IF user.id %]
+                    [% IF bug.flag_types.size > 0 %]
+                      [% PROCESS "flag/list.html.tmpl" flag_no_header = 1
+                                                       flag_types = bug.flag_types
+                                                       any_flags_requesteeble = bug.any_flags_requesteeble %]
+                    [% END %]
+                  [% ELSE %]
+                    [% FOREACH type = bug.flag_types %]
+                      [% FOREACH flag = type.flags %]
+                          [% flag.setter.nick FILTER html %]:
+                          [%+ type.name FILTER html FILTER no_break %][% flag.status %]
+                          [%+ IF flag.requestee %]
+                            ([% flag.requestee.nick FILTER html %])
+                          [% END %]<br>
+                      [% END %]
+                    [% END %]
+                  [% END %]
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+        [% END %]
       </td>
     </tr>
   </table>
 
-  [% IF UserInGroup(Param('timetrackinggroup')) %]
+  [% IF user.in_group(Param('timetrackinggroup')) %]
     <br>
     <table cellspacing="0" cellpadding="4" border="1">
       <tr>
         <th align="center" bgcolor="#cccccc">
-          Пъронач. оценка
+          <label for="estimated_time">Първ. оценка</label>
         </th>
         <th align="center" bgcolor="#cccccc">
           Текуща оценка
         </th>
         <th align="center" bgcolor="#cccccc">
-          Отработени часове
+          <label for="work_time">Отработени часове</label>
         </th>
         <th align="center" bgcolor="#cccccc">
-          Оставащи часове
+          <label for="remaining_time">Оставащи часове</label>
         </th>
         <th align="center" bgcolor="#cccccc">
-          %Завършен
+          % завършен
         </th>
         <th align="center" bgcolor="#cccccc">
           Увеличение
         </th>
         <th align="center" bgcolor="#cccccc">
-          Краен срок
+          <label for="deadline">Краен срок</label>
         </th>
       </tr>
       <tr>
         <td align="center">
-          <input name="estimated_time"
+          <input name="estimated_time" id="estimated_time"
                  value="[% PROCESS formattimeunit
                                    time_unit=bug.estimated_time %]"
                  size="6" maxlength="6">
@@ -467,11 +337,12 @@
         </td>
         <td align="center">
           [% PROCESS formattimeunit time_unit=bug.actual_time %] +
-          <input name="work_time" value="0" size="3" maxlength="6"
+          <input name="work_time" id="work_time"
+                 value="0" size="3" maxlength="6"
                  onchange="adjustRemainingTime();">
         </td>
         <td align="center">
-          <input name="remaining_time"
+          <input name="remaining_time" id="remaining_time"
                  value="[% PROCESS formattimeunit
                                    time_unit=bug.remaining_time %]"
                  size="6" maxlength="6" onchange="updateRemainingTime();">
@@ -484,14 +355,14 @@
           [% PROCESS formattimeunit time_unit=bug.estimated_time - (bug.actual_time + bug.remaining_time) %]
         </td>
          <td align="center">
-           <input name="deadline" value="[% bug.deadline %]"
+           <input name="deadline" id="deadline" value="[% bug.deadline %]"
                   size="10" maxlength="10"><br />
            <small>(ГГГГ-ММ-ДД)</small>
         </td>        
       </tr>
       <tr>
         <td colspan="7" align="right">
-          <a href="summarize_time.cgi?id=[% bug.bug_id %]&do_depends=1">
+          <a href="summarize_time.cgi?id=[% bug.bug_id %]&amp;do_depends=1">
           Сборно време (включително времето за [% terms.bugs %]
           блокиращи този [% terms.bug %])</a>
         </td>
@@ -508,68 +379,87 @@
              show_attachment_flags = bug.show_attachment_flags
    %]
 
-[%# *** Dependencies Votes *** %]
-
-  <table>
-    <tr>
-    [% PROCESS dependencies
-       dep = { title => "зависи от", fieldname => "dependson" } %]
-      <td rowspan="2">
-        <a href="showdependencytree.cgi?id=[% bug.bug_id %]">Показване на
-        дърво на зависимостите</a>
-
-        [% IF Param('webdotbase') %]
-          <br>
-          <a href="showdependencygraph.cgi?id=[% bug.bug_id %]">Показване на
-          графика на зависимостите</a>
-        [% END %]
-      </td>
-    </tr>
-
-    <tr>
-    [% PROCESS dependencies accesskey = "Б"
-       dep = { title => "<u>б</u>локира", fieldname => "blocked" } %]
-    </tr>
-  </table>
-
-  [% IF bug.use_votes %]
-  <table>
-    <tr>
-      <th>
-        <a href="page.cgi?id=voting.html">Гласове</a>:
-      </th>
-      <td>
-        [% bug.votes %]&nbsp;&nbsp;&nbsp;
-        <a href="votes.cgi?action=show_bug&amp;bug_id=[% bug.bug_id %]">Показване на
-        гласовете за този [% terms.bug %]</a>&nbsp;&nbsp;&nbsp;
-        <a href="votes.cgi?action=show_user&amp;bug_id=[% bug.bug_id %]#vote_[% bug.bug_id %]">Гласуване
-        за този [% terms.bug %]</a>
-      </td>
-    </tr>
-  </table>
-  [% END %]
 
 [%# *** Comments Groups *** %]
 
   <br>
-  <b>Допълнителни Ко<u>м</u>ентари:</b>
-  [% IF Param("insidergroup") && UserInGroup(Param("insidergroup")) %]
-    <input type="checkbox" name="commentprivacy" value="1"
-           id="newcommentprivacy"
-           onClick="updateCommentTagControl(this, form)"> Частен
-  [% END %]
-  <br>
-  <a name="add_comment"></a>
-  <textarea name="comment" id="comment" rows="10" cols="[% constants.COMMENT_COLS FILTER none %]"
-            accesskey="М"></textarea>
+  <table cellpadding="1" cellspacing="1">
+    <tr>
+      <td>
+        [% IF user.id %]
+          <label for="comment" accesskey="c"><b>Допълнителни <u>к</u>оментари</b></label>:
+          [% IF Param("insidergroup") && user.in_group(Param("insidergroup")) %]
+            <input type="checkbox" name="commentprivacy" value="1"
+                   id="newcommentprivacy"
+                   onClick="updateCommentTagControl(this, form)">
+            <label for="newcommentprivacy">Частен</label>
+          [% END %]
+          <br>
+          <a name="add_comment"></a>
+          [% INCLUDE global/textarea.html.tmpl
+                     name      = 'comment'
+                     id        = 'comment'
+                     minrows   = 10
+                     maxrows   = 25
+                     cols      = constants.COMMENT_COLS
+          %]
 
-  [% IF NOT bug.cc || NOT bug.cc.contains(user.login) %]
-    <br>
-    <label for="addselfcc">
-      <input type="checkbox" id="addselfcc" name="addselfcc">
-      Добавяне на [% user.login FILTER html %] към <abbr title="Точно Копие">ТК</abbr> списъка
-    </label>
-  [% END %]
+          [% IF NOT bug.cc || NOT bug.cc.contains(user.login) %]
+            [% has_role = bug.user.isreporter
+                          || bug.assigned_to.id == user.id
+                          || (Param('useqacontact')
+                              && bug.qa_contact
+                              && bug.qa_contact.id == user.id) %]
+
+            <br>
+            <input type="checkbox" id="addselfcc" name="addselfcc"
+              [% " checked=\"checked\""
+                   IF user.settings.state_addselfcc.value == 'always'
+                      || (!has_role
+                          && user.settings.state_addselfcc.value == 'cc_unless_role') %]>
+            <label for="addselfcc">Добавяне на [% user.identity FILTER html %] към <abbr title="Точно Копие">TK</abbr> списъка</label>
+          [% END %]
+        [% ELSE %]
+          <fieldset>
+            <legend>Забележка</legend>
+            <p>
+              Трябва да
+              <a href="show_bug.cgi?id=[% bug.bug_id %]&amp;GoAheadAndLogIn=1">влезете</a>
+              преди да можете да коментирате или правите промени по [% terms.abug %].
+            </p>
+          </fieldset>
+        [% END %]
+      </td>
+
+      <td valign="top">
+        <fieldset>
+          <legend>Свързани действия</legend>
+          <ul>
+            <li><a href="show_activity.cgi?id=[% bug.bug_id %]">Преглед на дейността по [% terms.abug %]</a></li>
+            <li><a href="show_bug.cgi?format=multiple&amp;id=[% bug.bug_id %]">Формат за печат</a></li>
+            <li><a href="show_bug.cgi?ctype=xml&amp;id=[% bug.bug_id %]"><abbr lang="en" title="eXtensible Markup Language">XML</abbr></a></li>
+            <li><a href="enter_bug.cgi?cloned_bug_id=[% bug.bug_id %]">Клониране на [% terms.abug %]</a></li>
+          </ul>
+
+          [% IF bug.use_votes %]
+            <br>
+            <b><a href="page.cgi?id=voting.html">Гласове</a></b>: [% bug.votes %]
+            <ul>
+              [% IF bug.votes %]
+                <li><a href="votes.cgi?action=show_bug&amp;bug_id=[% bug.bug_id %]">Показване
+                             на гласовете за този [% terms.bug %]</a></li>
+              [% END %]
+              <li><a href="votes.cgi?action=show_user&amp;bug_id=[% bug.bug_id %]#vote_[% bug.bug_id %]">Гласуване
+                           за този [% terms.bug %]</a></li>
+            </ul>
+          [% END %]
+
+          [%# Links to more things users can do with this bug. %]
+          [% Hook.process("links") %]
+        </fieldset>
+      </td>
+    </tr>
+  </table>
   <br>
 
   [% IF bug.groups.size > 0 %]
@@ -593,10 +483,11 @@
         [% END %]
 
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="checkbox" name="bit-[% group.bit %]" value="1"
-        [% " checked=\"checked\"" IF group.ison %]
-        [% " disabled=\"disabled\"" IF NOT group.ingroup %]>
-      [% group.description FILTER html_light %]
+      <input type="checkbox" value="1"
+             name="bit-[% group.bit %]" id="bit-[% group.bit %]"
+             [% " checked=\"checked\"" IF group.ison %]
+             [% " disabled=\"disabled\"" IF NOT group.ingroup %]>
+      <label for="bit-[% group.bit %]">[% group.description FILTER html_light %]</label>
       <br>
       [% END %]
     [% END %]
@@ -624,41 +515,274 @@
       </p>
 
       <p>
-        <input type="checkbox" name="reporter_accessible" value="1"
-          [% " checked" IF bug.reporter_accessible %]>Докладчик
-        <input type="checkbox" name="cclist_accessible" value="1"
-          [% " checked" IF bug.cclist_accessible %]><abbr title="Точно Копие">ТК</abbr> списък
+        <input type="checkbox" value="1"
+               name="reporter_accessible" id="reporter_accessible"
+               [% " checked" IF bug.reporter_accessible %]>
+        <label for="reporter_accessible">Докладчик</label>
+        <input type="checkbox" value="1"
+               name="cclist_accessible" id="cclist_accessible"
+               [% " checked" IF bug.cclist_accessible %]>
+        <label for="cclist_accessible"><abbr title="Точно Копие">ТК</abbr> списък</label>
       </p>
     [% END %]
   [% END %]
 
-[% PROCESS bug/knob.html.tmpl %]
+[% PROCESS bug/knob.html.tmpl IF user.id %]
 
 [%# *** Additional Comments *** %]
 
 <hr>
 
+<div id="comments">
 [% PROCESS bug/comments.html.tmpl
    comments = bug.longdescs
-   mode = "edit"
+   mode = user.id ? "edit" : "show"
  %]
+</div>
 
 </form>
+
+[%############################################################################%]
+[%# Block for the first table in the "Details" section                       #%]
+[%############################################################################%]
+
+[% BLOCK section_details1 %]
+  <table cellspacing="1" cellpadding="1">
+    <tr>
+      <td align="right">
+        [% IF Param('useclassification') && bug.classification_id != 1 %]
+          <b>[[% bug.classification FILTER html %]]</b>
+        [% END %]
+        <b>[% terms.Bug %] №</b>:
+      </td>
+      <td>
+        <a href="[% Param('urlbase') %]show_bug.cgi?id=[% bug.bug_id %]">
+           [% bug.bug_id %]</a>
+      </td>
+    </tr>
+
+    [% IF Param("usebugaliases") %]
+      <tr>
+        <td align="right">
+          <label for="alias" title="име на [% terms.abug %], което може да се използва вместо номера му, напр. при добавянето му в списък със зависимости"><b>Псевдоним</b></label>:
+        </td>
+        [% PROCESS input inputname => "alias" size => "20" maxlength => "20" %]
+      </tr>
+    [% END %]
+
+    <tr>
+      <td align="right">
+        <label for="product" accesskey="п"><b><u>П</u>родукт</b></label>:
+      </td>
+      [% PROCESS select selname => "product" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <label for="component" accesskey="с"><b><a href="describecomponents.cgi?product=[% bug.product FILTER url_quote %]"><u>С</u>ъставна част</a></b></label>:
+      </td>
+      [% PROCESS select selname => "component" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <b><a href="page.cgi?id=fields.html#status">Състояние</a></b>:
+      </td>
+      <td>[% status_descs.${bug.bug_status} FILTER html %]</td>
+    </tr>
+
+    <tr>
+      <td align="right">
+        <b><a href="page.cgi?id=fields.html#resolution">Решение</a></b>:
+      </td>
+      <td>
+        [% get_resolution(bug.resolution) FILTER html %]
+        [% IF bug.resolution == "DUPLICATE" %]
+          на [% terms.bug %] [%+ "${bug.dup_id}" FILTER bug_link(bug.dup_id) FILTER none %]
+        [% END %]
+      </td>
+    </tr>
+  </table>
+[% END %]
+
+[%############################################################################%]
+[%# Block for the second table in the "Details" section                      #%]
+[%############################################################################%]
+
+[% BLOCK section_details2 %]
+  <table cellspacing="1" cellpadding="1">
+    <tr>
+      <td align="right">
+        <label for="rep_platform" accesskey="ф"><b>Плат<u>ф</u>орма</b></label>:
+      </td>
+      [% PROCESS select selname => "rep_platform" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <label for="op_sys" accesskey="о"><b><abbr title="Операциона Система"><u>О</u>С</abbr></b></label>:
+      </td>
+      [% PROCESS select selname => "op_sys" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <label for="version"><b>Версия</b></label>:
+      </td>
+      [% PROCESS select selname => "version" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <label for="priority" accesskey="р"><b><a href="page.cgi?id=fields.html#priority">П<u>р</u>иоритет</a></b></label>:
+      </td>
+      [% PROCESS select selname => "priority" %]
+    </tr>
+
+    <tr>
+      <td align="right">
+        <label for="bug_severity"><b><a href="page.cgi?id=fields.html#bug_severity">Суровост</a></b></label>:
+      </td>
+      [% PROCESS select selname = "bug_severity" %]
+    </tr>
+
+    [% IF Param("usetargetmilestone") && bug.target_milestone %]
+      <tr>
+        <td align="right">
+          <label for="target_milestone"><b>
+            [% IF bug.milestoneurl %]
+              <a href="[% bug.milestoneurl FILTER html %]">
+            [% END %]
+            Целево събитие[% "</a>" IF bug.milestoneurl %]
+          [%%]</b></label>:
+        </td>
+        [% PROCESS select selname = "target_milestone" %]
+      </tr>
+    [% END %]
+  </table>
+[% END %]
+
+[%############################################################################%]
+[%# Block for the table in the "People" section                              #%]
+[%############################################################################%]
+
+[% BLOCK section_people %]
+  <table cellpadding="1" cellspacing="1">
+    <tr>
+      <td align="right">
+        <b>Докладчик</b>:
+      </td>
+      <td>
+        <a href="mailto:[% bug.reporter.email FILTER html %]">
+          [% bug.reporter.identity FILTER html %]</a>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="right">
+        <b><a href="page.cgi?id=fields.html#assigned_to">Назначен&nbsp;на</a></b>:
+      </td>
+      <td>
+        <a href="mailto:[% bug.assigned_to.email FILTER html %]">
+           [% bug.assigned_to.identity FILTER html %]</a>
+      </td>
+    </tr>
+
+    [% IF Param('useqacontact') %]
+    <tr>
+      <td align="right">
+        <label for="qa_contact" accesskey="к"><b><u>К</u>ачествен контрол</b></label>:
+      </td>
+      <td colspan="7">
+        [% IF bug.check_can_change_field("qa_contact", 0, 1) %]
+          [% INCLUDE global/userselect.html.tmpl
+              id => "qa_contact"
+              name => "qa_contact"
+              value => bug.qa_contact.login
+              size => 30
+              emptyok => 1
+          %]
+        [% ELSE %]
+          <input type="hidden" name="qa_contact" id="qa_contact"
+                 value="[% bug.qa_contact.login FILTER html %]">
+          <a href="mailto:[% bug.qa_contact.email FILTER html %]">
+            [% IF bug.qa_contact.login && bug.qa_contact.login.length > 30 %]
+              <span title="[% bug.qa_contact.login FILTER html %]">
+                [% bug.qa_contact.identity FILTER truncate(30) FILTER html %]
+              </span>
+            [% ELSE %]
+              [% bug.qa_contact.identity FILTER html %]
+            [% END %]
+          </a>
+        [% END %]
+      </td>
+    </tr>
+    [% END %]
+
+    [% IF user.id %]
+      <tr>
+        <td align="right" valign="top">
+          <label for="newcc" accesskey="д"><b><u>Д</u>обавяне&nbsp;към <abbr title="Точно Копие">ТК</abbr></b></label>:
+        </td>
+        <td>
+           [% INCLUDE global/userselect.html.tmpl
+              id => "newcc"
+              name => "newcc"
+              value => ""
+              size => 30
+              multiple => 5
+            %]
+        </td>
+      </tr>
+    [% END %]
+
+    <tr>
+      [% IF bug.cc %]
+        <td align="right" valign="top">
+          <label for="cc"><b><abbr title="Точно Копие">ТК</abbr></b></label>:
+        </td>
+        <td valign="top">
+          <select id="cc" name="cc" multiple="multiple" size="5">
+          [% FOREACH c = bug.cc %]
+            <option value="[% c FILTER html %]">[% c FILTER html %]</option>
+          [% END %]
+          </select>
+          [% IF user.id %]
+            <br>
+            <input type="checkbox" id="removecc" name="removecc">
+            [%%]<label for="removecc">Премахване на избраните</label>
+            <br>
+          [% END %]
+        </td>
+      [% ELSE %]
+        <td colspan="2"><input type="hidden" name="cc" value=""></td>
+      [% END %]
+    </tr>
+  </table>
+[% END %]
 
 [%############################################################################%]
 [%# Block for dependencies                                                   #%]
 [%############################################################################%]
 
 [% BLOCK dependencies %]
-  <th align="right">[% terms.Bug %] [%+ bug.bug_id %] [%+ dep.title %]:</th>
+  <th align="right">
+    <label for="[% dep.fieldname %]"[% " accesskey=\"$accesskey\"" IF accesskey %]>
+    [% dep.title %]</label>:
+  </th>
   <td>
   [% FOREACH depbug = bug.${dep.fieldname} %]
     [% depbug FILTER bug_link(depbug) FILTER none %][% " " %]
   [% END %]
   </td>
   <td>
-    <input name="[% dep.fieldname %]" [% " accesskey=\"$accesskey\"" IF accesskey %]
-           value="[% bug.${dep.fieldname}.join(', ') %]">
+    [% IF bug.check_can_change_field(dep.fieldname, 0, 1) %]
+      <input name="[% dep.fieldname %]" id="[% dep.fieldname %]"
+             value="[% bug.${dep.fieldname}.join(', ') %]">
+    [% ELSE %]
+      <input type="hidden" id="[% dep.fieldname %]" name="[% dep.fieldname %]"
+             value="[% bug.${dep.fieldname}.join(', ') %]">
+    [% END %]
   </td>
   [% accesskey = undef %]
 [% END %]
@@ -670,15 +794,46 @@
 
 [% BLOCK select %]
   <td>
-    <label for="[% selname %]"[% " accesskey=\"$accesskey\"" IF accesskey %]>
-      <select name="[% selname %]" id="[% selname %]">
+    [% IF bug.check_can_change_field(selname, 0, 1) AND bug.choices.${selname}.size > 1 %]
+      <select id="[% selname %]" name="[% selname %]">
         [% FOREACH x = bug.choices.${selname} %]
           <option value="[% x FILTER html %]"
             [% " selected" IF x == bug.${selname} %]>[% x FILTER html %]
           </option>
         [% END %]
       </select>
-    </label>
+    [% ELSE %]
+      <input type="hidden" id="[% selname %]" name="[% selname %]" value="[% bug.${selname} FILTER html %]">
+      [% bug.${selname} FILTER html %]
+    [% END %]
   </td>
-  [% accesskey = undef %]
+[% END %]
+
+[%############################################################################%]
+[%# Block for INPUT fields                                                   #%]
+[%############################################################################%]
+
+[% BLOCK input %]
+  <td[% " colspan=\"$colspan\"" IF colspan %]>
+    [% val = value ? value : bug.$inputname %]
+    [% IF bug.check_can_change_field(inputname, 0, 1) %]
+       <input id="[% inputname %]" name="[% inputname %]"
+              value="[% val FILTER html %]"[% " size=\"$size\"" IF size %]
+              [% " maxlength=\"$maxlength\"" IF maxlength %]>
+    [% ELSE %]
+       <input type="hidden" name="[% inputname %]" id="[% inputname %]"
+              value="[% val FILTER html %]">
+      [% IF size && val.length > size %]
+        <span title="[% val FILTER html %]">
+          [% val FILTER truncate(size) FILTER html %]
+        </span>
+      [% ELSE %]
+        [% val FILTER html %]
+      [% END %]
+    [% END %]
+  </td>
+  [% maxlength = 0 %]
+  [% colspan = 0 %]
+  [% size = 0 %]
+  [% value = undef %]
 [% END %]

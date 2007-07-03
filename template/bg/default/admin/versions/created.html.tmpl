@@ -20,24 +20,23 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the newly created version
-  #
-  # product: string; the name of the product the version belongs to
+  # product: object; Bugzilla::Product object representing the product to
+  #                  which the version belongs.
+  # version: object; Bugzilla::Version object representing the
+  #                  newly created version
   #%]
   
 [% title = BLOCK %]Добавяне на нова версяи за продукта 
-                   '[% product FILTER html %]'[% END %]
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Версията '<a title="Редактиране на версията '[% name FILTER html %]' на продукта '
-   [%- product FILTER html %]'"
+<p>Версията '<a title="Редактиране на версията '[% version.name FILTER html %]' на продукта '
+   [%- product.name FILTER html %]'"
    href="editversions.cgi?action=edit&amp;product=
-   [%- product FILTER url_quote %]&amp;version=[% name FILTER url_quote %]">
-   [%- name FILTER html %]</a>' беше създадена.</p>
-
-<p>
+   [%- product.name FILTER url_quote %]&amp;version=[% version.name FILTER url_quote %]">
+   [%- version.name FILTER html %]</a>' беше създадена.</p>
 
 [% PROCESS admin/versions/footer.html.tmpl %]
 

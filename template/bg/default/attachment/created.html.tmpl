@@ -32,38 +32,34 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Промените получени"
-  style = "th { text-align: left; }"
 %]
 
-<table border="1">
-  <tr>
-    <td>
-      <h2>
-        <a title="[% description FILTER html %]" href="attachment.cgi?id=[% attachid %]&amp;action=edit">Приставка №[% attachid %]</a>
-        към <a href="show_bug.cgi?id=[% bugid %]">[% terms.Bug %] №[% bugid %]</a> е създадена
-      </h2>
+<dl>
+  <dt>
+    <a title="[% description FILTER html %]" href="attachment.cgi?id=[% attachid %]&amp;action=edit">Приставка №[% attachid %]</a>
+    към [% "$terms.bug $bugid" FILTER bug_link(bugid) %] е създадена
+  </dt>
+  <dd>
+    [% PROCESS "bug/process/bugmail.html.tmpl" mailing_bugid = bugid %]
+    [% IF convertedbmp %]
+      <p>
+        <b>Забележка:</b> [% terms.Bugzilla %] автоматично превърна <acronym lang="en" title="Bitmap">BMP</acronym> файлa ви до 
+        сбит <abbr lang="en" title="Portable Network Graphics">PNG</abbr> формат.
+      </p>
+    [% END %]
+    [% IF contenttypemethod == 'autodetect' %]
+      <p>
+        <b>Забележка:</b> [% terms.Bugzilla %] автоматично откри типа на съдържанието
+        <em>[% contenttype %]</em> за тази приставка. Ако това e
+        направилно, поправете стойността като
+        редактирате <a href="attachment.cgi?id=[% attachid %]&amp;action=edit">параметрите</a> ѝ.
+      </p>
+    [% END %]
 
-      [% PROCESS "bug/process/bugmail.html.tmpl" mailing_bugid = bugid %]
-      [% IF convertedbmp %]
-        <p>
-          <b>Забележка:</b> [% terms.Bugzilla %] автоматично превърна вашия BMP файл с изображение до 
-          сбит PNG формат.
-        </p>
-      [% END %]
-      [% IF contenttypemethod == 'autodetect' %]
-        <p>
-          <b>Забележка:</b> [% terms.Bugzilla %] автоматично откри типа на
-           съдържанието <em>[% contenttype %]</em> за тази приставка. Ако това
-          е направилно, поправете стойността като
-          редактирате <a href="attachment.cgi?id=[% attachid %]&amp;action=edit">параметрите</a> на приставката.
-        </p>
-      [% END %]
-    </td>
-    <td>
-      <a href="show_bug.cgi?id=[% bugid %]">Връщане към [% terms.bug %] №[% bugid %]</a>
-    </td>
-  </tr>
-</table>
+    [%# Links to more information about the changed bug. %]
+    [% Hook.process("links") %]
+  </dd>
+</dl>
 
 <p>
 <a href="attachment.cgi?bugid=[% bugid %]&amp;action=enter">Създаване на 

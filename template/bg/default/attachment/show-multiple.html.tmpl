@@ -21,12 +21,17 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% filtered_summary = bugsummary FILTER html %]
-[% h1 = BLOCK %]Преглед на всички приставки за
-  [%+ GetBugLink(bugid, "$terms.Bug $bugid") %][% END %]
+[% header = BLOCK %]Преглед на всички приставки за
+  [%+ "$terms.Bug $bug.bug_id" FILTER bug_link(bug.bug_id) FILTER none %][% END %]
+
+[% title = BLOCK %]
+  Преглед на всички приставки за [% terms.bug %] [%+ bug.bug_id FILTER html %]
+[% END %]
+
 [% PROCESS global/header.html.tmpl
-  title = "Преглед на всички приставки за $terms.Bug №$bugid"
-  h1 = h1
-  h2 = filtered_summary
+  title = title
+  header = header
+  subheader = filtered_summary
   style = "
     table.attachment_info th { text-align: right; vertical-align: top; }
     table.attachment_info td { text-align: left; vertical-align: top; }
@@ -65,9 +70,7 @@
           <i>няма флагове</i>
         [% ELSE %]
           [% FOREACH flag = a.flags %]
-            [% IF flag.setter %]
-              [% flag.setter.nick FILTER html %]:
-            [% END %]
+            [% flag.setter.nick FILTER html %]:
             [%+ flag.type.name FILTER html %][% flag.status %]
             [% IF flag.status == "?" && flag.requestee %]
               ([% flag.requestee.nick FILTER html %])
@@ -84,16 +87,14 @@
   </table>
 
   [% IF a.isviewable %]
-    <iframe src="attachment.cgi?id=[% a.id %]&amp;action=view" width="75%" height="350">
-      <b>Не можете да видите приставката докато я редактирате, защото браузъра ви не поддържа
-      вградени рамки. <a href="attachment.cgi?id=[% a.id %]&amp;action=view">Преглед на прставката
-      на отделна страница</a>.</b>
+    <iframe src="attachment.cgi?id=[% a.id %]" width="75%" height="350">
+      <b>Не можете да видите приставката на тази страница, защото браузъра ви не поддържа вградени рамки.
+      <a href="attachment.cgi?id=[% a.id %]>Преглед на прставката на отделна страница</a>.</b>
     </iframe>
   [% ELSE %]
     <p><b>
-      Приставката не може да бъде видяна, защото нейния
-      <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип не е
-      text/*, image/*, или application/vnd.mozilla.*. <a href="attachment.cgi?id=[% a.id %]&amp;action=view">Изтегляне на приставката, вместо това</a>.
+      Приставката не може да бъде видяна, защото нейния <abbr title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип не е text/*, image/*, или application/vnd.mozilla.*.
+      <a href="attachment.cgi?id=[% a.id %]>Изтегляне на приставката, вместо това</a>.
     </b></p>
   [% END %]
   </div>

@@ -23,20 +23,20 @@
   # login: string. The user's Bugzilla login email address.
   #%]
 
-[% PROCESS global/header.html.tmpl 
-  title = "Регистрацияте е създадена"
+[% PROCESS global/header.html.tmpl
+  title = "Сметката е създадена"
 %]
 
 <p>
-  Новата регистрация,  
+  Новата сметка,
   <tt>[% login FILTER html %]</tt>,
   беше създадена и произведена по случаен начин парола беше изпратена по
   електронна поща до този адрес.
 </p>
 
 <p>
-  Когато електронното съобщение пристигне, 
+  Когато електронното съобщение пристигне,
   <a href="index.cgi?GoAheadAndLogIn=1">влезте от тук</a>.
 </p>
 
-[% PROCESS global/footer.html.tmpl %] 
+[% PROCESS global/footer.html.tmpl %]

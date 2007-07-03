@@ -20,10 +20,11 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the milestone
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the milestone belongs.
   #
-  # product: string; the name of the product which the milestone
-  #                  belongs/belonged to
+  # milestone: object; Bugzilla::Milestone object representing the
+  #                    milestone.
   #
   # no_XXX_link: boolean; if defined, then don't show the corresponding
   #                       link. Supported parameters are:
@@ -32,35 +33,36 @@
   # no_edit_other_milestones_link
   # no_add_milestone_link
   #%]
-  
-<p>
 
 <hr>
 
+<p>
+
 [% UNLESS no_add_milestone_link %]
-  <a title="Добавяне на важно събитие към продукта '[% product FILTER html %]'"
+  <a title="Добавяне на целево събитие към продукта '[% product.name FILTER html %]'"
      href="editmilestones.cgi?action=add&amp;product=
-          [%- product FILTER url_quote %]">Добавяне</a> на събитие. 
+          [%- product.name FILTER url_quote %]">Добавяне</a> на събитие. 
 [% END %]
 
-[% IF name && !no_edit_milestone_link %]
+[% IF milestone.name && !no_edit_milestone_link %]
   Редакция на събитието <a 
-  title="Редакция на събитието '[% name FILTER html %]' на продукта '
-         [%- product FILTER html %]'"
+  title="Редакция на събитието '[% milestone.name FILTER html %]' на продукта '
+         [%- product.name FILTER html %]'"
   href="editmilestones.cgi?action=edit&amp;product=
-        [%- product FILTER url_quote %]&amp;milestone=[% name FILTER url_quote %]">
-        '[% name FILTER html %]'</a>.
+        [%- product.name FILTER url_quote %]&amp;milestone=
+        [%- milestone.name FILTER url_quote %]">
+        '[% milestone.name FILTER html %]'</a>.
 [% END %]
 
 [% UNLESS no_edit_other_milestones_link %]
   Редактиране на други важни събития на продукта <a 
   href="editmilestones.cgi?product=
-        [%- product FILTER url_quote %]">'[% product FILTER html %]'</a>.
-   
+        [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
+
 [% END %]
 
   Редактиране на продукта <a 
   href="editproducts.cgi?action=edit&amp;product=
-        [%- product FILTER url_quote %]">'[% product FILTER html %]'</a>.
+        [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 
 </p>

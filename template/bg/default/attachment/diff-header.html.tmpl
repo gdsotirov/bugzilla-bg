@@ -207,7 +207,7 @@ tbody.file pre:empty {
 [% BLOCK diffurl %][% PROCESS viewurl %]&amp;action=diff[% END %]
 
 [% IF headers %]
-  [% h1 = BLOCK %]
+  [% header = BLOCK %]
     [% IF attachid %]
       Приставка №[% attachid %]: [% description FILTER html %]
     [% ELSE %]
@@ -218,7 +218,7 @@ tbody.file pre:empty {
     [% END %]
     за <a href="show_bug.cgi?id=[% bugid %]">[% terms.bug %] №[% bugid %]</a>
   [% END %]
-  [% h2 = BLOCK %]
+  [% subheader = BLOCK %]
     [% bugsummary FILTER html %]
   [% END %]
   [% PROCESS global/header.html.tmpl %]
@@ -257,7 +257,7 @@ tbody.file pre:empty {
       [% END %]
       </select>
       и тази кръпка
-      <input type="submit" value="Сравняване">
+      <input type="submit" id="diff" value="Сравняване">
       <input type="hidden" name="action" value="interdiff">
       <input type="hidden" name="newid" value="[% attachid %]">
       <input type="hidden" name="headers" value="[% headers FILTER html %]">
@@ -275,11 +275,11 @@ tbody.file pre:empty {
 <a href="#"
    onmouseover="lastStatus = window.status; window.status='Свий всички'; return true"
    onmouseout="window.status = lastStatus; return true"
-   onclick="return collapse_all()">Свиване на всички</a> | 
+   onclick="return collapse_all()">Сгъване на всички</a> | 
 <a href="#"
    onmouseover="lastStatus = window.status; window.status='Разтвори всички'; return true"
    onmouseout="window.status = lastStatus; return true"
-   onclick="return expand_all()">Разтваряне на всички</a>
+   onclick="return expand_all()">Разгъване на всички</a>
 
 [% IF do_context %]
   [%# only happens for normal viewing, not interdiff %]

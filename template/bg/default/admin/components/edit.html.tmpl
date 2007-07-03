@@ -17,18 +17,19 @@
   # Rights Reserved.
   #
   # Contributor(s): Gavin Shelley <bugzilla@chimpychompy.org>
+  #                 Akamai Technologies <bugzilla-dev@akamai.com>
   #%]
 
 [%# INTERFACE:
   # comp: object; Bugzilla::Component object representing the component the
   #               user wants to edit.
-  # prod: object; Bugzilla::Product object representing the product to
+  # product: object; Bugzilla::Product object representing the product to
   #               which the component belongs.
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% title = BLOCK %]Редактиране на съставаната част '[% name FILTER html %]'[% END %]
+[% title = BLOCK %]Редактиране на съставаната част '[% comp.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
@@ -43,8 +44,14 @@
     </tr>
     <tr>
       <td valign="top">Описание на съставната част:</td>
-      <td><textarea rows="4" cols="64" wrap="virtual"
-        name="description">[% comp.description FILTER html %]</textarea>
+      <td>
+        [% INCLUDE global/textarea.html.tmpl
+          name           = 'description'
+          minrows        = 4
+          cols           = 64
+          wrap           = 'virtual'
+          defaultcontent = comp.description
+        %]
       </td>
     </tr>
     <tr>
@@ -76,13 +83,31 @@
   
     </tr>
     <tr>
+      <td valign="top">
+        <label for="initialcc">Подразбиращ се <abbr title="Точно копие">ТК</abbr> списък:</label>
+      </td>
+      <td>
+        [% INCLUDE global/userselect.html.tmpl
+           name     => "initialcc"
+           id       => "initialcc"
+           value    => initial_cc_names
+           size     => 64
+           multiple => 5
+        %]
+        <br>
+        [% IF !Param("usemenuforusers") %]
+          <em>Въведете потребителски имена за <abbr title="Точно копие">ТК</abbr> списъка едно след друго разделени със запетая.</em>
+        [% END %]
+      </td>
+    </tr>
+    <tr>
       <td>[% terms.Bugs %]:</td>
       <td>
 [% IF comp.bug_count > 0 %]
         <a title="Бъгове за съставната част '[% comp.name FILTER html %]'"
            href="buglist.cgi?component=
                 [%- comp.name FILTER url_quote %]&amp;product=
-                [%- prod.name FILTER url_quote %]">[% comp.bug_count %]</a>
+                [%- product.name FILTER url_quote %]">[% comp.bug_count %]</a>
 [% ELSE %]
         Няма
 [% END %]
@@ -93,19 +118,17 @@
 
    <input type="hidden" name="action" value="update">
    <input type="hidden" name="componentold" value="[% comp.name FILTER html %]">
-   <input type="hidden" name="product" value="[% prod.name FILTER html %]">
+   <input type="hidden" name="product" value="[% product.name FILTER html %]">
    <input type="hidden" name="token" value="[% token FILTER html %]">
-   <input type="submit" value="Обновяване"> или <a 
+   <input type="submit" value="Обновяване" id="update"> или <a 
         href="editcomponents.cgi?action=del&amp;product=
-        [%- prod.name FILTER url_quote %]&amp;component=
+        [%- product.name FILTER url_quote %]&amp;component=
         [%- comp.name FILTER url_quote %]">Изтриване</a> на съставната част.
 
 </form>
 
 [% PROCESS admin/components/footer.html.tmpl
   no_edit_component_link = 1
-  name = comp.name
-  product = prod.name
 %]
 
 [% PROCESS global/footer.html.tmpl %]

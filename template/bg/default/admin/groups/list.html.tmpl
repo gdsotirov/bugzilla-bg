@@ -34,7 +34,7 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Редактиране на групи"
-  h2 = "Тази страница ви позволява да редактирате наличните за добавяне на потребители групи."
+  subheader = "Тази страница ви позволява да редактирате наличните за добавяне на потребители групи."
 %]
 
 [% edit_contentlink = "editgroups.cgi?action=changeform&amp;group=%%id%%" %]
@@ -103,6 +103,12 @@
      content => "(използвана като 'timetrackinggroup')"
    },
    {
+     match_value => Param("querysharegroup")
+     match_field => 'name'
+     override_content => 1
+     content => "(използвана като 'querysharegroup')"
+   },
+   {
      match_value => "1"
      match_field => 'isbuggroup'
      override_content => 1
@@ -122,7 +128,7 @@
      override_content => 1
      content => "потребителска"
    }]
-%]
+%] 
 
 [% PROCESS admin/table.html.tmpl
   columns = columns
@@ -133,10 +139,10 @@
 <p><a href="editgroups.cgi?action=add">Добавяне на група</a></p>
 
 <p>
-  <b>Името</b> е това което се използва с функцията UserInGroup() във всеки
-допълнително обработен cgi файл, който пишете и който трябва да използва дадена
-група. Също така може да бъде използвано от хора предаващи [% terms.bugs %] по
-е-поща, за да ограничи [% terms.abug %] до известен набор от групи.
+  <b>Името</b> е това което се използва с функцията B<!-- blah -->ugzilla->user->in_group()
+във всеки допълнително обработен cgi файл, който пишете и който трябва да използва дадена група.
+Също така може да бъде използвано от хора предаващи [% terms.bugs %] по е-поща, за да
+ограничи [% terms.abug %] до известен набор от групи.
 </p>
 
 <p>

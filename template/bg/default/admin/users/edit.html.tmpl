@@ -25,7 +25,7 @@
   #                      canbless) for viewed user.
   #%]
 
-[% title = BLOCK %]Редактиране на потребителя [% otheruser.login FILTER html %][% END %]
+[% title = BLOCK %]Редактиране на потребител [% otheruser.identity FILTER html %][% END %]
 
 [% PROCESS global/header.html.tmpl
   title = title
@@ -103,11 +103,15 @@
 </table>
 
 <p>
-  <input type="submit" value="Обновяване" />
+  <input type="submit" id="update" value="Обновяване" />
   <input type="hidden" name="userid" value="[% otheruser.id %]" />
   <input type="hidden" name="action" value="update" />
   <input type="hidden" name="token" value="[% token FILTER html %]">
   [% INCLUDE listselectionhiddenfields %]
+
+  or <a href="editusers.cgi?action=activity&amp;userid=[% otheruser.id %]"
+        title="Преглед на журнал на сметката за потребител  '
+        [%- otheruser.login FILTER html %]'">Преглед на журнала на сметката за потребителя</a>
 </p>
 </form>
 <p>
@@ -127,7 +131,7 @@
 [% IF Param('allowuserdeletion') && editusers %]
   <form method="post" action="editusers.cgi">
   <p>
-    <input type="submit" value="Изтриване на потребителя" />
+    <input type="submit" id="delete" value="Изтриване на потребителя" />
     <input type="hidden" name="action" value="del" />
     <input type="hidden" name="userid" value="[% otheruser.id %]" />
     [% INCLUDE listselectionhiddenfields %]

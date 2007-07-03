@@ -25,17 +25,19 @@
 
 <p>
   Ако въведете някакъв текст тази форма ще го върне описан като стандартен 
-  [% terms.Bugzilla %] коментар. Това значи, че действителни номера на 
-  [% terms.bugs %], <abbr title="Uniform Resource Locator" lang="en">URL</abbr>та,
-  е-пощенски адреси и т.н. ще бъдат заменени с подобаващи
-  <abbr title="Hyper Text Markup Language" lang="en">HTML</abbr> връзки.
+  [% terms.Bugzilla %] коментар. Това значи, че действителни номера на [% terms.bugs %],
+  <abbr lang="en" title="Uniform Resource Locator">URL</abbr>та, е-пощенски адреси и т.н. ще бъдат заменени с подобаващи <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> връзки.
 </p>
 
 <form action="page.cgi" method="post">
-  <textarea cols="[% constants.COMMENT_COLS FILTER none %]" rows="20" name="text"></textarea>
+  [% INCLUDE global/textarea.html.tmpl
+    name    = 'text'
+    minrows = 20
+    cols    = constants.COMMENT_COLS
+  %]
   <br>
   <input type="hidden" name="id" value="linked.html">
-  <input value="Създаване на връзки" type="submit">
+  <input type="submit" id="linkify" value="Създаване на връзки">
 </form>
 
 [% INCLUDE global/footer.html.tmpl %]

@@ -40,33 +40,29 @@
 
 [% mail = SendBugMail(mailing_bugid, mailrecipients) %]
 
+<dl>
 [% PROCESS emails
    description = "Е-поща изпратена до"
    names = mail.sent
 %]
-<br>
+
 [% PROCESS emails
    description = "С изключение на"
    names = mail.excluded
 %]
-<br>
-<center>
-  Ако желаете да настроите вида поща, който [% terms.Bugzilla %] изпраща
-  до вас, можете да <a href="userprefs.cgi?tab=email">промените вашите
-  предпочитания</a>.
-</center>
-
+</dl>
 
 [%############################################################################%]
 [%# Block for a set of email addresses                                       #%]
 [%############################################################################%]
 
 [% BLOCK emails %]
-  <b>[% description FILTER html %]:</b>
+  <dt>[% description FILTER html %]:</dt>
+  <dd>
   [% IF user.can_see_bug(mailing_bugid) %]
     [% IF names.size > 0 %]
       [%+ FOREACH name = names %]
-        [% name FILTER html %][% ", " UNLESS loop.last() %]
+        <code>[% name FILTER html %]</code>[% ", " UNLESS loop.last() %]
       [% END %]
     [% ELSE %]
       никой
@@ -74,4 +70,5 @@
   [% ELSE %]
     (списъка с е-пощеи не е достъпен)
   [% END %]
+  </dd>
 [% END %]

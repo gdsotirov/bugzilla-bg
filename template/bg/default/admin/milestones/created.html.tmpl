@@ -20,24 +20,24 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; the name of the newly created milestone
+  # milestone: object; Bugzilla::Milestone object representing the
+  #                    milestone the user created.
   #
-  # product: string; the name of the product the milestone belongs to
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the milestone belongs.
   #%]
   
 [% title = BLOCK %]Добавяне на ново важно събитите към продукта
-                   '[% product FILTER html %]'[% END %]
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Важното събитие '<a title="Редактиране на събитието '[% name FILTER html %]' на
-   продукта '[% product FILTER html %]'"
+<p>Важното събитие '<a title="Редактиране на събитието '[% milestone.name FILTER html %]' на
+   продукта '[% product.name FILTER html %]'"
    href="editmilestones.cgi?action=edit&amp;product=
-   [%- product FILTER url_quote %]&amp;milestone=[% name FILTER url_quote %]">
-   [%- name FILTER html %]</a>' беше създадено.</p>
-
-<p>
+   [%- product FILTER url_quote %]&amp;milestone=[% milestone.name FILTER url_quote %]">
+   [%- milestone.name FILTER html %]</a>' беше създадено.</p>
 
 [% PROCESS admin/milestones/footer.html.tmpl %]
 

@@ -156,6 +156,7 @@
       [% ELSE %]
         Версии:
       [% END %]
+    </td>
     <td>
       [% IF product.versions.size > 0 %]
         [% FOREACH v = product.versions %]
@@ -215,7 +216,7 @@
 
   [% IF !Param("allowbugdeletion") %]
 
-    Съжалявам, има
+    <p>Съжалявам, има
 
     [% IF product.bug_count > 1 %]
       [% product.bug_count FILTER html %] [%+ terms.abug %]
@@ -231,7 +232,7 @@
        този [% terms.bug %]
     [% END %]
 
-    на друг продукт преди да можете да изтриете този.
+    на друг продукт преди да можете да изтриете този.</p>
 
   [% ELSE %]
 
@@ -257,10 +258,10 @@
 
 [% IF product.bug_count == 0 || Param('allowbugdeletion') %]
 
-  <p>Наистина ли желаете да изтриете този продукт?<p>
+  <p>Наистина ли желаете да изтриете този продукт?</p>
 
   <form method="post" action="editproducts.cgi">
-    <input type="submit" value="Да, изтриване">
+    <input type="submit" id="delete" value="Да, изтриване">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="product" value="[% product.name FILTER html %]">
     <input type="hidden" name="token" value="[% token FILTER html %]">

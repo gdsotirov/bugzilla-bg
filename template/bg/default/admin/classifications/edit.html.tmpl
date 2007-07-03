@@ -32,9 +32,19 @@
     </tr>
     <tr>
       <th align="right">Описание:</th>
-      <td><textarea rows=4 cols=64 name="description">
-            [% classification.description FILTER html %]</textarea>
+      <td>
+        [% INCLUDE global/textarea.html.tmpl
+          name           = 'description'
+          minrows        = 4
+          cols           = 64
+          defaultcontent = classification.description
+        %]
       </td>
+    </tr>
+    <tr>
+      <th align="right"><label for="sortkey">Ключ за подреждане:</label></th>
+      <td><input id="sortkey" size="20" maxlength="20" name="sortkey" value="
+      [%- classification.sortkey FILTER html %]"></td>
     </tr>
     <tr valign=top>
       <th align="right">

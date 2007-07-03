@@ -26,7 +26,7 @@
   
 [% PROCESS global/header.html.tmpl
   title = "Добавяне на ключова дума"
-  h2 = "Тази страница ви позволява да добавите нова ключова дума."
+  subheader = "Тази страница ви позволява да добавите нова ключова дума."
 %]
 
 <form method="post" action="editkeywords.cgi">
@@ -38,14 +38,18 @@
     <tr>
       <th align="right">Описание:</th>
       <td>
-        <textarea rows="4" cols="64" wrap="virtual"
-        name="description"></textarea>
+        [% INCLUDE global/textarea.html.tmpl
+          name    = 'description'
+          minrows = 4
+          cols    = 64
+          wrap    = 'virtual'
+        %]
       </td>
     </tr>
   </table>
   <hr>
   <input type="hidden" name="id" value="-1">
-  <input type="submit" value="Добавяне">
+  <input type="submit" id="create" value="Добавяне">
   <input type="hidden" name="action" value="new">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>

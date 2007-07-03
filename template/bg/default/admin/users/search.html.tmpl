@@ -12,6 +12,7 @@
   # The Original Code is the Bugzilla Bug Tracking System.
   #
   # Contributor(s): Marc Schumann <wurblzap@gmail.com>
+  #                 David Lawrence <dkl@redhat.com>
   #%]
 
 [%# INTERFACE:
@@ -35,7 +36,13 @@
 
 <form name="f" method="get" action="editusers.cgi">
 <input type="hidden" name="action" value="list" />
-<p><label for="matchstr">Списък на потребителите с потребителско име съвпадащо с</label>
+<p><label for="matchvalue">Списък на потребителите чието/чийто</label>
+<select id="matchvalue" name="matchvalue">
+  <option value="login_name">потребителско име</option>
+  <option value="realname">истинско име</option>
+  <option value="userid">потребителски номер</option>
+</select>
+<label for="matchstr">съвпада с</label>
 <input size="32" name="matchstr" id="matchstr" />
 <select name="matchtype">
   <option value="substr" selected="selected">нечуствителен към регистъра подниз</option>
@@ -43,7 +50,7 @@
   <option value="notregexp">не (нечуствителен към регистъра регулярен израз)</option>
 <option value="exact">точно (намира този потребител)</option>
 </select>
-<input type="submit" value="Търсене" /></p>
+<input type="submit" id="search" value="Търсене" /></p>
 
 [% IF restrictablegroups.size %]
   <p><input type="checkbox" name="grouprestrict" value="1" id="grouprestrict" />

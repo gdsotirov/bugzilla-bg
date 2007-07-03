@@ -18,39 +18,47 @@
   #
   # Contributor(s): Eli Goldberg <eli@prometheus-music.com>
   #                 Gervase Markham <gerv@gerv.net>
+  #                 Vera Horiuchi
   #                 Claudius Gayle
   #                 Peter Mock
   #                 Chris Pratt
   #                 Tom Schutter
   #                 Chris Yeh
   #%]
-  
-[% PROCESS global/variables.none.tmpl %] 
+
+[% PROCESS "global/field-descs.none.tmpl" %]
+
 [% INCLUDE global/header.html.tmpl title = "Насоки за писане на $terms.bug" %] 
 
-<h3>Защо трябва да прочетете това</h3>
+<h3>Съдържание</h3>
+<ul>
+<li><a href="#why">Защо трябва да прочетете това</a></li>
+<li><a href="#useful">Кое прави [% terms.bug %] доклада полезен?</a></li>
+<li><a href="#before">Преди да започнете...</a></li>
+<li><a href="#reporting">Докладване на нов [% terms.Bug %]</a></li>
+<li><a href="#more">Още информация за писането на добри [% terms.bugs %]</a></li>
+</ul>
+
+<h3><a name="why">Защо трябва да прочетете това</a></h3>
 
 <blockquote>
   <p>Казано просто, колкото по сполучливо докладвате [% terms.bug %], толкова по
-  вероятно е някой инженер да го оправи.</p>
-
-  <p>Тези напътствия са общо ръководство за обучение на новаци и
-  средно напреднали докладчици на [% terms.bugs %] как да съставят сполучливи 
-  [% terms.bug %] доклади. Не всяко изречение може да бъде точно приложено
-  към вашия софтуерен проект.</p>
+  вероятно е някой инженер да го оправи. Това ръководство обучава новаци и
+  средно напреднали [% terms.bug %] докладчици как да пишат сполучливи 
+  [% terms.bug %] доклади.</p>
 </blockquote>
 
-<h3>Как да пишете полезен [% terms.bug %] доклад</h3>
+<h3><a name="useful">Какво прави [% terms.bug %] доклада полезен?</a></h3>
 
 <blockquote>
   <p>Полезните [% terms.bug %] доклади са тези с които се стига до оправяне на [% terms.bugs %]. 
   Полезният [% terms.bug %] доклад нормално има две качества:</p>
 
   <ol>
-    <li><b>Възпроизводим.</b> Ако инженер не може да види [% terms.abug %]
-    за себе си, за да потвърди че съществува, той вероятно ще отбележи вашия [% terms.bug %]
-    доклад "РАБОТИ ЗА МЕН" или "НЕДЕЙСТВИТЕЛЕН" и ще премине към
-    следващия [% terms.bug %]. Всяка подробност, която дадете помага.<br>
+    <li><b>Възпроизводим.</b> Инженерите обикновено предпочитат да поправят [% terms.bugs %]
+    които могат да видят. Ако инженер не може да възпроизведе [% terms.abug %],
+    той най-вероятно ще бъде отбелязан "[% get_resolution("WORKSFORME") FILTER html %]" или
+    "[% get_resolution("INVALID") FILTER html %]".<br>
     <br>
     </li>
 

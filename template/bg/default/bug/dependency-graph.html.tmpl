@@ -35,14 +35,14 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% title = "Графика на зависимостите"
-   h1 = title
+   header = title
  %]
 
 [% IF NOT multiple_bugs AND NOT doall %]
   [% filtered_desc = short_desc FILTER html %]
   [% title = "$title for $terms.bug $bug_id"
-     h1 = "$h1 за $terms.bug <a href=\"show_bug.cgi?id=$bug_id\">$bug_id</a>"
-     h2 = filtered_desc
+     header = "$header за $terms.bug <a href=\"show_bug.cgi?id=$bug_id\">$bug_id</a>"
+     subheader = filtered_desc
    %]
 [% END %]
 
@@ -104,7 +104,7 @@
       </td>
     </tr>
   </table>
-  <input type="submit" value="Промяна на параметрите">
+  <input type="submit" id="change" value="Промяна на параметрите">
 </form>
 
 [% PROCESS global/footer.html.tmpl %]

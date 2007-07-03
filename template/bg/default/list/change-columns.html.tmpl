@@ -64,14 +64,15 @@
   </p>
 
   <p>
-    <input type="submit" value="Промяна на колоните">
+    <input type="submit" id="change" value="Промяна на колоните">
   </p>
 </form>
 
 <form action="colchange.cgi">
   <input type="hidden" name="rememberedquery" value="[% buffer FILTER html %]">
   <input type="hidden" name="resetit" value="1">
-  <input type="submit" value="Връщане на подразбиращите се за [% terms.Bugzilla %]">
+  <input type="submit" id="reset" 
+         value="Връщане на подразбиращите се за [% terms.Bugzilla %]">
 </form>
 
 [% PROCESS global/footer.html.tmpl %]

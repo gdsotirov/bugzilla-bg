@@ -33,18 +33,27 @@
 [% message = BLOCK %]
   [% IF    message_tag == "account_created" %]
     [% title = "Потребителя $otheruser.login е създаден" %]
-    Новата регистрация [% otheruser.login FILTER html %] беше създадена
+    Новата сметка [% otheruser.login FILTER html %] беше създадена
     успешно.
     [% IF groups.size %]
-      Ако желаете можете да редактирате груповите настройки сега, използвайки формата отдолу.
+      Може да желаете да редактирате груповите настройки сега, използвайки формата отдолу.
     [% END %]
+    [% IF login_info %]
+      Можете да отидете на <a href="index.cgi">Входната</a> страница, за да влезете в
+      тази [% terms.Bugzilla %] инсталация.
+    [% END %]
+
+  [% ELSIF message_tag == "account_creation_cancelled" %]
+    [% title = "Отхвърлено създаването на потребителска сметка" %]
+    Създаването на потребителската сметка [% account FILTER html %] беше
+    отхвърлено.
 
   [% ELSIF message_tag == "account_updated" %]
     [% IF changed_fields.size
           + groups_added_to.size + groups_removed_from.size
           + groups_granted_rights_to_bless.size + groups_denied_rights_to_bless.size %]
-      [% title = "Регистрацията $loginold бе обновена" %]
-      Следните промени бяха направени върху регистрацията
+      [% title = "Сметката $loginold бе обновена" %]
+      Следните промени бяха направени върху сметката
       [%+ loginold FILTER html %]:
       <ul>
         [% FOREACH field = changed_fields %]
@@ -57,48 +66,76 @@
               Беше зададена нова парола.
             [% ELSIF field == 'disabledtext' %]
               Текста за неспособен беше променен.
+            [% ELSIF field == 'disable_mail' %]
+              [% IF otheruser.email_disabled %]
+                Бъгпощата беше забранена.
+              [% ELSE %]
+                Бъгпощата беше разрешена.
+              [% END %]
             [% END %]
           </li>
         [% END %]
         [% IF groups_added_to.size %]
           <li>
-            Потребителя беше добавен към 
-            груп[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %] 
+            Сметката беше добавена към
+            груп[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %]
             [%+ groups_added_to.join(', ') FILTER html %].
           </li>
         [% END %]
         [% IF groups_removed_from.size %]
           <li>
-            Потребителя беше премахнат от 
-            груп[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %] 
+            Сметката беше премахната от
+            груп[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %]
             [%+ groups_removed_from.join(', ') FILTER html %].
           </li>
         [% END %]
         [% IF groups_granted_rights_to_bless.size %]
           <li>
-            На потребителя бяха дадени правата да добавя потребители към 
-            груп[% 'ата' IF groups_granted_rights_to_bless.size == 1 %][% 'ите' IF groups_granted_rights_to_bless.size > 1 %] 
+            На сметката бяха дадени правата да добавя сметки към
+            груп[% 'ата' IF groups_granted_rights_to_bless.size == 1 %][% 'ите' IF groups_granted_rights_to_bless.size > 1 %]
             [%+ groups_granted_rights_to_bless.join(', ') FILTER html %].
           </li>
         [% END %]
         [% IF groups_denied_rights_to_bless.size %]
           <li>
-            На потребителя бяха отнети правата да добавя потребители към 
-            груп[% 'ата' IF groups_denied_rights_to_bless.size == 1 %][% 'ите' IF groups_denied_rights_to_bless.size > 1 %] 
+            На сметката бяха отнети правата да добавя сметки към
+            груп[% 'ата' IF groups_denied_rights_to_bless.size == 1 %][% 'ите' IF groups_denied_rights_to_bless.size > 1 %]
             [%+ groups_denied_rights_to_bless.join(', ') FILTER html %].
           </li>
         [% END %]
       </ul>
     [% ELSE %]
-      [% title = "Потребителя $otheruser.login не е променян" %]
-      Не сте заявили никаква промяна за потребителя 
+      [% title = "Сметката $otheruser.login не е променена" %]
+      Не сте заявили никакви промени по потребителската сметка
       [%+ otheruser.login FILTER html %].
     [% END %]
 
   [% ELSIF message_tag == "account_deleted" %]
-    [% title = "Потребителя $otheruser.login е изтрит" %]
+    [% title = "Сметката $otheruser.login е изтрита" %]
     The user account [% otheruser.login FILTER html %] has been deleted
     successfully.
+
+  [% ELSIF message_tag == "attachment_creation_failed" %]
+    [% terms.Abug %] беше създаден успешно, но създаването на приставката
+    се провали.
+    МОля, добавете приставката си чрез щракване върху връзката "Създаване на нова приставка"
+    отдолу.
+
+  [% ELSIF message_tag == "bug_confirmed_by_votes" %]
+    *** [% terms.Abug %] бе потвърден чрез преки избори. ***
+
+  [% ELSIF message_tag == "bug_duplicate_of" %]
+    *** [% terms.Abug %] бе означен като двойник на [% terms.bug %] [%+ dupe_of FILTER html %] ***
+
+  [% ELSIF message_tag == "bug_has_duplicate" %]
+    *** [% terms.Bug %] [%+ dupe FILTER html %] бе означен като двойник на този [% terms.bug %]. ***
+
+  [% ELSIF message_tag == "bug_moved_to" %]
+    <p>[% terms.ABug %] е преместен на [% Param("move-to-url") FILTER html %].</p>
+    <p>Ако преместването е успешно, [% login FILTER html %] ще получи поща
+    съдържаща номера на новия [% terms.bug %] в другата база данни.
+    Ако всичкомине добре, моля означете [% terms.abug %] като проверен и пуснете
+    връзка към новия [% terms.bug %]. В противен случай, отворете отново [% terms.abug %].
 
   [% ELSIF message_tag == "buglist_adding_field" %]
     [% title = "Добавяне на поле към страницата за търсене..." %]
@@ -139,6 +176,16 @@
     Щракнете <a href="[% redirect_url FILTER html %]">тук</a>
     ако страницата не се обнови автоматично.
 
+  [% ELSIF message_tag == "custom_field_created" %]
+    [% title = "Създадено потребителското поле" %]
+    Новото потребителско поле '[% field.name FILTER html %]' беше
+    успешно създадено.
+
+  [% ELSIF message_tag == "custom_field_updated" %]
+    [% title = "Обновено потребителско поле" %]
+    Свойствата на полето '[% field.name FILTER html %]' бяха
+    обновени успешно.
+
   [% ELSIF message_tag == "emailold_change_cancelled" %]
     [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
     Заявката за смяна на електронния пощенски адрес, за ващия потребител на
@@ -152,30 +199,39 @@
 
   [% ELSIF message_tag == "email_change_cancelled_reinstated" %]
     [% title = "Отхвърлена заявка за смяна на е-пощенски адрес" %]
-    Заявката за смяна на е-пощенски адрес за потребителя
-    [%+ old_email FILTER html %] на [%+ new_email FILTER html %] бе отхвърлена.
-    Старите ви потребителски настройки бяха възстановени.
+    Заявката за смяна на е-пощенски адрес за
+    сметката  [%+ old_email FILTER html %] на
+    [%+ new_email FILTER html %] бе отхвърлена.
+    Старите ви настройки са възстановени.
+
+  [% ELSIF message_tag == "flag_creation_failed" %]
+    [% title = "Неуспех при създаване на флаг" %]
+    Възникна грешка при потвърждаването на флаговете:
+    [%+ flag_creation_error FILTER none %]
 
   [% ELSIF message_tag == "logged_out" %]
     [% title = "Излязъл" %]
     [% url = "index.cgi?GoAheadAndLogIn=1" %]
     [% link = "Влизане отново." %]
-    <b>Вашите входни данни бяха забравени</b>.
-    Бисквитката съхраняваща данните ви, е изгубена. Ще бъдете
-    подтикнати да въведете име и парола следващият път когато са необходими.
+    <b>Входните ви данни са забравени</b>.
+    Бисквитката съхраняваща данните ви е изтрита. Ще бъдете
+    подтикнати към вход следващия път когато е необходим.
 
   [% ELSIF message_tag == "login_changed" %]
-    [% title = "Промяна на $terms.Bugzilla регистрация" %]
+    [% title = "Промяна на $terms.Bugzilla сметка" %]
     Вашия [% terms.Bugzilla %] потребител беше променен.
 
   [% ELSIF message_tag == "parameters_updated" %]
-    [% title = "Параметрите обновени" %]
+    [% title = "Обновени параметри" %]
     [% IF param_changed.size > 0 %]
       [% FOREACH param = param_changed %]
         <em>[% param FILTER html %]</em> променен<br>
+        [% IF param == 'utf8' && Param('utf8') %]
+          <strong>Трябва да пуснете отново checksetup.pl.</strong><br>
+        [% END %]
       [% END %]
     [% ELSE %]
-      Не са нправени промени.
+      Не са направени промени.
     [% END %]
 
     [% IF shutdown_is_active == 1 %]
@@ -201,30 +257,115 @@
     [% title = "Типа флаг създаден" %]
       Типа флаг <em>[% name FILTER html %]</em> беше създаден.
       <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
-    
+
   [% ELSIF message_tag == "flag_type_changes_saved" %]
     [% title = "Промените по типа флаг запазени" %]
     <p>
-      Промените ви по типа флаг <em>[% name FILTER html %]</em> 
+      Промените ви по типа флаг <em>[% name FILTER html %]</em>
       бяха запазени.
       <a href="editflagtypes.cgi">бяха запазени.</a>
     </p>
-    
+
   [% ELSIF message_tag == "flag_type_deleted" %]
     [% title = "Типа флаг изтрит" %]
     <p>
       Типа флаг <em>[% name FILTER html %]</em> беше изтрит.
       <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
     </p>
-    
+
   [% ELSIF message_tag == "flag_type_deactivated" %]
     [% title = "Типа флаг недействуващ" %]
     <p>
-      Типа флаг <em>[% flag_type.name FILTER html %]</em> 
+      Типа флаг <em>[% flag_type.name FILTER html %]</em>
       беше изваден от употреба.
       <a href="editflagtypes.cgi">Обратно към типовете флагове.</a>
     </p>
-    
+
+  [% ELSIF message_tag == "install_admin_get_email" %]
+    Въведете е-пощенския адрес на администратора:
+
+  [% ELSIF message_tag == "install_admin_get_name" %]
+    Въведете истинското име на администратора:
+
+  [% ELSIF message_tag == "install_admin_get_password" %]
+    Въведете парола за администраторската сметка:
+
+  [% ELSIF message_tag == "install_admin_get_password2" %]
+    Моля, въведете паролата отново за проверка:
+
+  [% ELSIF message_tag == "install_admin_created" %]
+    [% user.login FILTER html %] е вече зададен като администратор.
+
+  [% ELSIF message_tag == "install_admin_setup" %]
+    Изглежда нямаме зададен администратор все още.
+    Или това е първият път, в който използвате [% terms.Bugzilla %] или
+    администраторските ви права може да са били изтрити случайно.
+
+  [% ELSIF message_tag == "install_column_add" %]
+    Добавяне на нова колона '[% column FILTER html %]' към таблицата '[% table FILTER html %]'...
+
+  [% ELSIF message_tag == "install_column_drop" %]
+    Изтриване на колоната '[% column FILTER html %]' от таблицата '[% table FILTER html %]'...
+
+  [% ELSIF message_tag == "install_column_rename" %]
+    Преименуване на колоната '[% old FILTER html %]' в '[% new FILTER html %]'...
+
+  [% ELSIF message_tag == "install_default_classification" %]
+    Създаване на подразбираща се класификация '[% name FILTER html %]'...
+
+  [% ELSIF message_tag == "install_default_product" %]
+    Създаване на първоначален фиктивен продукт '[% name FILTER html %]'...
+
+  [% ELSIF message_tag == "install_file_perms_fix" %]
+    Оправяне на файлови права...
+
+  [% ELSIF message_tag == "install_group_create" %]
+    Създаване на група [% name FILTER html %]...
+
+  [% ELSIF message_tag == "install_setting_new" %]
+    Добавяне на нова потребителска настройка именована '[% name FILTER html %]'
+
+  [% ELSIF message_tag == "install_table_drop" %]
+    Премахване на таблицата '[% name FILTER html %]'...
+
+  [% ELSIF message_tag == "install_table_rename" %]
+    Преименуване на таблицата '[% old FILTER html %]' на '[% new FILTER html %]'...
+
+  [% ELSIF message_tag == "install_urlbase_default" %]
+    Сега след като сте инсталирали [% terms.Bugzilla %], трябва да посетите
+    страницата 'Параметри' (връзка за която има в дъното на страниците на администраторската
+    сметка), за да се уверите, че е настроена както желаете - това включва
+    задаване на правилен адрес за 'urlbase'.
+
+  [% ELSIF message_tag == "install_webservergroup_empty" %]
+    ****************************************************************************
+    ВНИМАНИЕ! Не сте задали стойност на параметъра "webservergroup" във
+    файла localconfig. Това означава, че определени файлове и папкаи, за които е нужно
+    да са редактируеми както от вас така и от уеб сървъра трябва да са редактируеми от всички, а
+    други файлове (включително файла localconfig съхраняващ паролата ви за
+    базата с данни) трябва да е четим от всички. Това означава, че _всеки_ сдобил се
+    с местен достъп до тази машина може да прави каквото си поиска с вашата
+    [%+ terms.Bugzilla %] инсталация и вероятно също ще има възможност да пусне
+    произволен Perl код като потребителя, с който се изпълнява уеб сървъра.
+
+    Наистина, наистина, наистина трябва да промените тази настройка.
+    ****************************************************************************
+
+  [% ELSIF message_tag == "install_webservergroup_not_in" %]
+    Внимание: въвели сте стойност за параметъра "webservergroup" във файла
+    localconfig, но не сте a) пуснали този скрипт като [% constants.ROOT_USER FILTER html %];
+    или b) член на тази група. Това може да предизвика проблеми с правата и
+    намалена сигурност.  Ако изпитвате затруднения с пускането на [% terms.Bugzilla %]
+    скриптове, влезте като [% constants.ROOT_USER FILTER html %] и пуснете отново скрипта, станете
+    член на групата или премахнете стойността на "webservergroup" параметъра.
+
+  [% ELSIF message_tag == "install_webservergroup_windows" %]
+    Внимание: Задали сте webservergroup в [% constants.bz_locations.localconfig FILTER html %]
+    Моля, разберете, че това не ви носи никаква сигурност когато
+    работите под Windows.
+    Проверете дали правата над файловете в [% terms.Bugzilla %] папката ви са
+    подходящи за вашата система. Избягвайте ненужен достъп за писане.
+
   [% ELSIF message_tag == "product_invalid" %]
     [% title = "Описания на съставни части в $terms.Bugzilla" %]
     Продукта <em>[% product FILTER html %]</em> не съществува
@@ -238,10 +379,10 @@
 
   [% ELSIF message_tag == "sudo_started" %]
     [% title = "Започната е сесия като друг потребител" %]
-      Сесията като друг потребител е започната.  За следващите 6 часа или докато не 
+      Сесията като друг потребител е започната.  За следващите 6 часа или докато не
       прекратите сесията, всичко което правите го правите като човека за
       когото се представяте ([% target FILTER html %]).
-  
+
   [% ELSIF message_tag == "sudo_ended" %]
     [% title = "Сесията като друг потребител завърши" %]
       Сесията като друг потребител приключи.  От тук нататък всичко което
@@ -250,15 +391,15 @@
   [% ELSIF message_tag == "series_created" %]
     [% title = "Редицата създадена" %]
       Редицата <em>[% series.category FILTER html %] /
-      [%+ series.subcategory FILTER html %] / 
+      [%+ series.subcategory FILTER html %] /
       [%+ series.name FILTER html %]</em>
       беше създадена. Имайте предвид, че може да се наложи да изчакате до
       [%+ series.frequency * 2 %] дни преди да има достатъчно данни за
       произвеждането на графика от тази редица.
       <br><br>
-      Връщане или 
+      Връщане или
       <a href="query.cgi?format=create-series">създаване на още една редица</a>.
-    
+
   [% ELSIF message_tag == "shutdown" %]
     [% title = "$terms.Bugzilla е спряна" %]
     [% Param("shutdownhtml") %]
@@ -267,8 +408,11 @@
       Бисквитката съхраняваща данните ви за вход е изгубена.
     [% END %]
 
+  [% ELSIF message_tag == "term" %]
+    [% terms.$term FILTER html %]
+
   [% ELSIF message_tag == "user_match_failed" %]
-    Въведохте потребителско име, което не съвпадна с никой познат 
+    Въведохте потребителско име, което не съвпадна с никой познат
     на [% terms.Bugzilla %] потребител, затова нарочно оставихме
     полето [% match_field FILTER html %] празно.
 
@@ -276,16 +420,16 @@
     Въведохте потребителско име което съвпадна с повече от един
     потребител, затова нарочно оставихме полето [% match_field FILTER html %]
     празно.
-    
+
   [% ELSE %]
     [%# Give sensible error if error functions are used incorrectly.
-      #%]     
+      #%]
     Използвате функцияиите за съобщения на [% terms.Bugzilla %] неправилно.
     Подадохте низа '[% message_tag %]'. Правилното използване е чрез подаване на
     таг и описването му във файла messages.html.tmpl.<br>
     <br>
     Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля
     съхранете тази страница и я изпратете на [% Param('maintainer') %].
-    
+
   [% END %]
 [% END %]

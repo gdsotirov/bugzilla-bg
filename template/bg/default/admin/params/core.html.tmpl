@@ -32,6 +32,12 @@
   urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички $terms.Bugzilla " _
              "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
+  docs_urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички " _
+                  "$terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та за документация. " _
+                  "Може да бъде абсолютен <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> или относителен към urlbase " _
+                  "по-горе. " _
+                  "Оставете празно за подтискане на връзките към документацията.",
+
   sslbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abbr> " _
              "(<abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>) $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
@@ -58,11 +64,48 @@
 
   utf8 => "Използване на UTF-8 (Уникод) кодиране за всичкия текст в ${terms.Bugzilla}. Новите " _
           "инсталации трябва да разрешат този параметър, за да предотвратят проблеми с кодирането на " _
-          "знаците. Съществуващите бази данни трябва да разрешат параметъра само след като " _
-          "данните бъдат обърнати от съществуващи наследствени кодирания " _
-          "към UTF-8.",
+          "знаците. <strong>Съществуващите бази данни трябва да разрешат параметъра " _
+          " само след като данните бъдат обърнати от съществуващи наследствени " _
+          " кодирания към UTF-8 с използването на " _
+          " скрипта <kbd>contrib/recode.pl</kbd></strong>. <br><br> Забележете, " _
+          " че ако вклчите параметъра от &quot;off&quot; на " _
+          " &quot;on&quot; трябва да пуснете отново checksetup.pl незабавно " _
+          " след това.",
 
   shutdownhtml => "Ако това поле не е празно, тогава $terms.Bugzilla ще бъде напълно " _
                   "забранена и този текст ще бъде показван вместо всички " _
-                  "страници на ${terms.Bugzilla}." }
+                  "страници на ${terms.Bugzilla}.",
+
+announcehtml => "Ако полето не е празно, $terms.Bugzilla ще " _
+                  "показва това което е в него отгоре на всяка " _
+                "<abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> страница.  <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> кода, който поставите, не бива " _
+                  "обвит или вмъкнат в нищо; ако желаете може да го " _
+                  "обвиете в <tt>&lt;div&gt;</tt>.  Дайта не div " _
+                  "<em>id=message</em> за да получите зелен текст в " _
+                  "червена кутия или <em>class=bz_private</em> за тъмно " _
+                  "черно на червен фон.  Всичко зададено в " _
+                  "<tt>skins/standard/global.css</tt> или " _
+                  "<tt>skins/custom/global.css</tt> ще стане.  За да " _
+                  "получите центриран текст използвайте <em>style=\"text-align: " _
+                  "center;\"</em>.",
+
+  proxy_url => "$terms.Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за нови " _
+               "версии, виж параметъра <tt>upgrade_notification</tt>. В случай, че сте " _
+               "зад прокси, може да се наложи да въведете адреса му ако групата на web " _
+               "сървъра няма достъп до променливата на средата HTTP_PROXY.",
+
+  upgrade_notification => "<p>$terms.Bugzilla може да ви уведоми когато е налична нова версия. " _
+                          "Уведомлението ще се появи на началната страница на $terms.Bugzilla, " _
+                          "само за администраторите.</p>" _
+                          "<ul><li>'development_snapshot' уведомява за последната " _
+                          "версия в ствола, т.е. версия за разработчици.</li>" _
+                          "<li>'latest_stable_release' уведомява за най-скорошната версия " _
+                          "налична от най-скорошния стабилен клон. Клона може да бъде " _
+                          "различен от клона на който е основана инсталацията ви.</li>" _
+                          "<li>'stable_branch_release' уведомява само за нови версии " _
+                          "съответстуващи на клона на който е основана инстлацията ви. " _
+                          "Ако ползвате кандидат версия, ще получите " _
+                          "уведомление за по-нови кандидат версии също.</li>" _
+                          "<li>'disabled' не уведомява за нови версии и не " _
+                          "осъществява връкза към отдалечен сървър.</li></ul>" }
 %]

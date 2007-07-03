@@ -17,12 +17,14 @@
   # Rights Reserved.
   #
   # Contributor(s): Bradley Baetz <bbaetz@student.usyd.edu.au>
+  #                 Colin Ogilvie <mozilla@colinogilvie.co.uk>
   #
   #%]
+[% PROCESS bug/time.html.tmpl %]
 <?xml version="1.0" [% IF Param('utf8') %]encoding="UTF-8" [% END %]standalone="yes" ?>
 <!DOCTYPE bugzilla SYSTEM "[% Param('urlbase') %]bugzilla.dtd">
 
-<bugzilla version="[% VERSION %]"
+<bugzilla version="[% constants.BUGZILLA_VERSION %]"
           urlbase="[% Param('urlbase') %]"
           maintainer="[% Param('maintainer') FILTER xml %]"
 [% IF user.id %]
@@ -65,10 +67,13 @@
       [% END %]
       [% IF displayfields.long_desc %]
         [% FOREACH c = bug.longdescs %]
-          [% NEXT IF c.isprivate && !UserInGroup(Param("insidergroup")) %]
+          [% NEXT IF c.isprivate && !user.in_group(Param("insidergroup")) %]
           <long_desc isprivate="[% c.isprivate FILTER xml %]">
-            <who>[% c.email FILTER xml %]</who>
+            <who name="[% c.name FILTER xml %]">[% c.email FILTER xml %]</who>
             <bug_when>[% c.time FILTER time FILTER xml %]</bug_when>
+            [% IF user.in_group(Param('timetrackinggroup')) && (c.work_time - 0 != 0) %]
+              <work_time>[% PROCESS formattimeunit time_unit = c.work_time FILTER xml %]</work_time>
+            [% END %]
             <thetext>[% c.body FILTER xml %]</thetext>
           </long_desc>
         [% END %]
@@ -76,7 +81,7 @@
       
       [% IF displayfields.attachment %]
         [% FOREACH a = bug.attachments %]
-          [% NEXT IF a.isprivate && !UserInGroup(Param("insidergroup")) %]
+          [% NEXT IF a.isprivate && !user.in_group(Param("insidergroup")) %]
           <attachment
               isobsolete="[% a.isobsolete FILTER xml %]"
               ispatch="[% a.ispatch FILTER xml %]"
@@ -87,6 +92,7 @@
             <desc>[% a.description FILTER xml %]</desc>
             <filename>[% a.filename FILTER xml %]</filename>
             <type>[% a.contenttype FILTER xml %]</type>
+            <size>[% a.datasize FILTER xml %]</size>
         [% IF displayfields.attachmentdata %]
             <data encoding="base64">[% a.data FILTER base64 %]</data>
         [% END %]        
@@ -94,9 +100,7 @@
             [% FOREACH flag = a.flags %]
               <flag name="[% flag.type.name FILTER xml %]"
                     status="[% flag.status FILTER xml %]"
-                    [% IF flag.setter %]
-                      setter="[% flag.setter.email FILTER xml %]"
-                    [% END %]
+                    setter="[% flag.setter.email FILTER xml %]"
                     [% IF flag.status == "?" && flag.requestee %]
                       requestee="[% flag.requestee.email FILTER xml %]"
                     [% END %]
@@ -116,12 +120,14 @@
     [%# We need to handle some fields differently. This should become
       # nicer once we have custfields, and a type attribute for the fields
       #%]
+    [% name = '' %]
     [% IF field == 'reporter' OR field == 'assigned_to' OR
           field == 'qa_contact' %]
+      [% name = val.name %]
       [% val = val.email %]
     [% ELSIF field == 'creation_ts' OR field == 'delta_ts' %]
       [% val = val FILTER time %]
     [% END %]
-    <[% field %]>[% val FILTER xml %]</[% field %]>
+    <[% field %][% IF name != '' %] name="[% name FILTER xml %]"[% END -%]>[% val FILTER xml %]</[% field %]>
   [% END %]
 [% END %]

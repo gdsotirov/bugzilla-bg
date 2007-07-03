@@ -1,0 +1,77 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): André Batosti <batosti@async.com.br>
+  #%]
+
+[% PROCESS "global/variables.none.tmpl" %]
+From: [% Param('mailfrom') %]
+To: [% to %]
+Subject: [[% terms.Bug %] [%+ bugid %]] [% neworchanged %][%+ summary %]
+X-Bugzilla-Reason: [% reasonsheader %]
+X-Bugzilla-Type: newchanged
+X-Bugzilla-Watch-Reason: [% reasonswatchheader %]
+X-Bugzilla-Product: [% product %]
+X-Bugzilla-Component: [% comp %]
+X-Bugzilla-Keywords: [% keywords %]
+X-Bugzilla-Severity: [% severity %]
+X-Bugzilla-Who: [% changer %]
+X-Bugzilla-Status: [% status %]
+X-Bugzilla-Priority: [% priority %]
+X-Bugzilla-Assigned-To: [% assignedto %]
+X-Bugzilla-Target-Milestone: [% targetmilestone %]
+X-Bugzilla-Changed-Fields: [% changedfields %]
+[%+ threadingmarker %]
+
+[%+ Param('urlbase') %]show_bug.cgi?id=[% bugid %]
+
+[%+ diffs %]
+
+-- 
+Настройване на бъгпоща: [% Param('urlbase') %]userprefs.cgi?tab=email
+------- Получавате тава писмо защото: -------
+[% FOREACH relationship = reasons %]
+  [% SWITCH relationship %]
+    [% CASE constants.REL_ASSIGNEE %]
+Сте назначения по [% terms.abug %].
+    [% CASE constants.REL_REPORTER %]
+Сте докладвали [% terms.abug %].
+    [% CASE constants.REL_QA %]
+Сте качествения контрол по [% terms.abug %].
+    [% CASE constants.REL_CC %]
+Сте в списъка ТК на [% terms.bug %].
+    [% CASE constants.REL_VOTER %]
+Сте гласували за [% terms.abug %].
+    [% CASE constants.REL_GLOBAL_WATCHER %]
+Следите всички промени по [% terms.aug %].
+  [% END %]
+[% END %]
+[% FOREACH relationship = reasons_watch %]
+  [% SWITCH relationship %]
+    [% CASE constants.REL_ASSIGNEE %]
+Наблюдавате назначения по [% terms.abug %].
+    [% CASE constants.REL_REPORTER %]
+Наблюдавате докладчика.
+    [% CASE constants.REL_QA %]
+Наблюдавате качествения конрол по [% terms.abug %].
+    [% CASE constants.REL_CC %]
+Наблюдавате някой от списъка ТК на [% terms.abug %].
+    [% CASE constants.REL_VOTER %]
+Наблюдавате гласувал за [% terms.abug %].
+  [% END %]
+[% END %]

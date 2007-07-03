@@ -46,9 +46,9 @@
 
 [% title = BLOCK %]
   [% IF curpanel == -1 %]
-    [% terms.Bugzilla FILTER html %] параметри: Index
+    Параметри: Индекс
   [% ELSE %]
-    [% terms.Bugzilla FILTER html %] профил:
+    Конфигурация:
     [%+ current_panel.title FILTER html %]
   [% END %]
 [% END %]
@@ -89,11 +89,21 @@
       [% IF curpanel == -1 %]
         [% PROCESS admin/params/index.html.tmpl panels = panels %]
       [% ELSE %]
+
+        <div class="contribute"><strong>Note:</strong>
+          [%+ terms.Bugzilla %] се разработва изцяло от доброволци. Най-добрия
+          начин да се отблагодарите на проекта [% terms.Bugzilla %] е
+          като самия вие <a href="http://www.bugzilla.org/contribute/">съдействувате</a>!
+          Не е нужно да сте програмист, за да участвате, има
+          много неща от които имаме нужда.
+        </div>
+
         <p>
           Тази страница Ви позволява да редактирате основните работни параметри на [% terms.Bugzilla %].
           Бъдете внимателни!<br>
           Всеки параметър, за който изберете "Изчистване", ще бъде върнат към подразбиращата се стойност.
         </p>
+
         [%# CONTENT PANEL %]
         <form method="post" action="editparams.cgi">
           [% PROCESS admin/params/common.html.tmpl panel = current_panel %]

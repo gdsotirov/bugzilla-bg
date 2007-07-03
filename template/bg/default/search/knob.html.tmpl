@@ -34,17 +34,17 @@
 
 [%# This is not necessary for English templates, but useful for localisers. %]
 [% ordersdesc = {
-   "Reuse same sort as last time" => "Използвай същата подредба като последния път",
+   "Reuse same sort as last time" => "Използване на същата подредба като последния път",
    "Bug Number"   => "$terms.Bug №",
    "Importance"   => "Важност",
    "Assignee"     => "Назначение",
-   "Last Changed" => "Послено променен" } %]
+   "Last Changed" => "Послена промяна" } %]
 
 <input type="hidden" name="cmdtype" value="doit">
 
 <p>
-  Подреди резултатите по:
-  <select name="order">
+  <label for="order">Подреждане на резултатите по</label>:
+  <select name="order" id="order">
   [% FOREACH order = orders %]
     <option value="[% order FILTER html %]"
       [% " selected" IF default.order.0 == order %]>
@@ -54,10 +54,14 @@
 </p>
 
 <p>  
-  <input type="submit" value="[% button_name FILTER html %]">
+  <input type="submit" id="[% button_name FILTER html %]"
+         value="[% button_name FILTER html %]">
   [% IF known_name %]
-    <input type="hidden" name="query_based_on" 
-           value="[% known_name FILTER html %]">
+    [%# We store known_name in case the user add a boolean chart. %]
+    <input type="hidden" name="known_name" value="[% known_name FILTER html %]">
+
+    [%# The name of the existing query will be passed to buglist.cgi. %]
+    <input type="hidden" name="query_based_on" value="[% known_name FILTER html %]">
   [% END %]
 </p>
 
@@ -66,13 +70,13 @@
   <input type="checkbox" id="remasdefault"
          name="remtype" value="asdefault">
   <label for="remasdefault">
-    и запомняне на тези като мои подразбиращи се опции за търсене
+    и запомняне като подразбиращи ми се критрии за търсене
   </label>
 </p>
         
 [% IF userdefaultquery %]
   <p>
     <a href="query.cgi?nukedefaultquery=1">
-      Смяна на моето подразбиращо се търсене със системното такова.</a>.
+      Смяна на подразбиращото ми се търсене със системното такова.</a>.
   </p>
 [% END %]

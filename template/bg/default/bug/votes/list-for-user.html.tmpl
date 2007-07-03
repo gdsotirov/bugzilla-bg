@@ -39,7 +39,7 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% IF !header_done %]
-  [% h2 = voting_user.login FILTER html %]
+  [% subheader = voting_user.login FILTER html %]
   [% IF canedit %]
     [% title = "Промяна на гласове" %]
     [% IF bug_id %]
@@ -95,9 +95,8 @@
                   product.maxperbug > 1 %]
               <font size="-1">
                 (Забележка: само [% product.maxperbug %] глас
-                [% "а" IF product.maxperbug != 1 %] за [% terms.bug %] 
-                [% IF product.maxperbug != 1 %]са[% ELSE %]е[% END %]
-                 разрешен[% "и" IF product.maxperbug != 1 %] в този продукт.)
+                [% "а" IF product.maxperbug != 1 %] за [% terms.bug %] в
+                този продукт.)
               </font>
             [% END %]
           </td>
@@ -122,22 +121,19 @@
               [% END %]
             </a></td>
             <td align="center">
-              [% isclosed = !bug.opened %]
-                <a href="show_bug.cgi?id=[% bug.id %]">
-                  [% bug.id FILTER closed(isclosed) %]</a>
+              [% bug.id FILTER bug_link(bug.id) FILTER none %]
             </td>
             <td>
-              <a href="votes.cgi?action=show_bug&amp;bug_id=[% bug.id %]">
-                [% bug.summary FILTER html %]
-              </a>
+              [% bug.summary FILTER html %]
+              (<a href="votes.cgi?action=show_bug&amp;bug_id=[% bug.id %]">Гласоподаватели</a>)
             </td>
           </tr>
         [% END %]
 
         <tr>
           <td></td>
-          <td colspan="3">[% product.total %] използван[% "и" IF product.total != 1 %]
-            глас[% "а" IF product.total != 1 %] от [% product.maxvotes %] 
+          <td colspan="3">[% product.total %] използван
+            [% "и" IF product.total != 1 %] глас[% "а" IF product.total != 1 %] от [% product.maxvotes %]
             разрешени.
             <br>
             <br>
@@ -147,7 +143,7 @@
     </table>
 
     [% IF canedit %]
-      <input type="submit" value="Промяна на гласовете ми">
+      <input type="submit" value="Промяна на гласовете ми" id="change">
       <br>
       <br>
       За да промените вашите гласове,

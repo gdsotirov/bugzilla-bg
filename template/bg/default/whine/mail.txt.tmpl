@@ -39,7 +39,7 @@
 [% body %]
 
 [% IF author.login == recipient.login %]
-  За да редактирате вашето разписание за подсещания посетете следващия <abbr title="Uniform Resource Locator" lang="en">URL</abbr>:
+  За да редактирате хленч разписанието си, посетете следващия URL:
   [%+ Param('urlbase') %]editwhines.cgi
 [% ELSE %]
   Търсенето беше насрочено от [% author.login %].
@@ -59,7 +59,7 @@
    Платформа: [%+ bug.rep_platform %]
   Назначение: [%+ bug.$assignee_login_string %]
    Състояние: [%+ status_descs.${bug.bug_status} %]
-              [%- IF bug.resolution -%] Resolution: [% resolution_descs.${bug.resolution} -%]
+              [%- IF bug.resolution -%] Resolution: [% get_resolution(bug.resolution) -%]
                                 [%- END %]
       Резюме: [% bug.short_desc %]
 

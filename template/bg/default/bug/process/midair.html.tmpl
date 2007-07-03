@@ -45,8 +45,10 @@
 <h1>Установено сблъскване във въздуха!</h1>
 
 <p>
-  Някой друг е направил промени по този [% terms.bug %] по същото време по
-  което вие сте опитал. Направените промени са:
+  Някой друг е направил промени по този
+  [%+ "$terms.bug $bug_id" FILTER bug_link(bug_id) FILTER none %]
+  по същото време по което и вие.
+  Направените промени са:
 </p>
 
 <p>
@@ -77,14 +79,14 @@
   <li>
     <form method="post" action="process_bug.cgi">
       [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
-      <input type="submit" value="Изпращане на промените въпреки това">
-        Това ще предизвика презаписването на всички промени по-горе 
-        [% "с изключение на добавените коментари" IF comments.size > start_at %].
+      <input type="submit" id="process" value="Изпращане на промените въпреки това">
+        Това ще предизвика презаписването на всички промени по-горе
+        [% ", с изключение на добавените коментар(и)" IF comments.size > start_at %].
     </form>
   </li>
   <li>
-    <a href="show_bug.cgi?id=[% bug_id %]">Отхвърляне на промените ми,
-      и връщане към [% terms.bug %] [%+ bug_id %]</a>
+    Отхвърляне на промените и
+    [%+ "връщане към $terms.bug $bug_id" FILTER bug_link(bug_id) FILTER none %]
   </li>
 </ul>
 

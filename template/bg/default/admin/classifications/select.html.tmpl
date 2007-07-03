@@ -25,8 +25,9 @@
 
 <table border=1 cellpadding=4 cellspacing=0>
   <tr bgcolor="#6666ff">
-    <th align="left">Редакция на класификацията...</th>
+    <th align="left">Редакция на класификация...</th>
     <th align="left">Описание</th>
+    <th align="left">Ключ за подреждане</th>
     <th align="left">Продукти</th>
     <th align="left">Действие</th>
   </tr>
@@ -41,6 +42,7 @@
         <font color="red">няма</font>
       [% END %]
       </td>
+      <td valign="top">[% cl.sortkey FILTER html %]</td>
       [% IF (cl.id == 1) %]
         <td valign="top">[% cl.product_count FILTER html %]</td>
       [% ELSE %]
@@ -57,7 +59,7 @@
   [% END %]
 
   <tr>
-    <td valign="top" colspan=3>Добавяне на нова класификация</td>
+    <td valign="top" colspan=4>Добавяне на нова класификация</td>
     <td valign="top" align="center"><a href="editclassifications.cgi?action=add">Добавяне</a></td>
   </tr>
 </table>

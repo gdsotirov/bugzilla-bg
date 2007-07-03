@@ -69,6 +69,21 @@
                    "votes"                => "Гласове",
                    "work_time"            => "Отработени часове"} %]
 
+[%# Also include any custom fields or fields which don't have a
+    Description here, by copying their Description from the
+    database. If you want to override this for your language
+    or your installation, just use a hook. %]
+
+[% USE Bugzilla %]
+[% FOREACH bz_field = Bugzilla.get_fields() %]
+  [% SET field_descs.${bz_field.name} = bz_field.description
+     IF !field_descs.${bz_field.name}.defined %]
+[% END %]
+
+[% field_types = { ${constants.FIELD_TYPE_UNKNOWN}       => "Непознат тип",
+                   ${constants.FIELD_TYPE_FREETEXT}      => "Свободен текст",
+                   ${constants.FIELD_TYPE_SINGLE_SELECT} => "Поле за избор" } %]
+
 [% status_descs = { "UNCONFIRMED" => "НЕПОТВЪРДЕН",
                     "NEW"         => "НОВ",
                     "ASSIGNED"    => "НАЗНАЧЕН",
@@ -80,12 +95,12 @@
 [% resolution_descs = { "FIXED"      => "ОПРАВЕН",
                         "INVALID"    => "НЕДЕЙСТВИТЕЛЕН",
                         "WONTFIX"    => "НЯМА ДА БЪДЕ ОПРАВЕН",
-                        "LATER"      => "ПО-КЪСНО",
-                        "REMIND"     => "НАПОМНЯНЕ",
                         "DUPLICATE"  => "ДВОЙНИК",
                         "WORKSFORME" => "РАБОТИ ЗА МЕН",
                         "MOVED"      => "ПРЕМЕСТЕН",
                         "---"        => "---",
                         " "          => " " } %]
+
+[% MACRO get_resolution(res) GET resolution_descs.$res || res %]
 
 [% Hook.process("end") %]

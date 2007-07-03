@@ -21,15 +21,13 @@
   #%]
 
 [%# INTERFACE:
-  # name: string; The name of the version
-  #
-  # bug_count: number; The number of bugs targetted at the version
-  #
-  # product: string; The name of the product
-  #
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the version belongs.
+  # version: object; Bugzilla::Version object representing the
+  #                    version the user wants to delete.
   #%]
 
-[% title = BLOCK %]Изтриване на версия на продукта '[% product FILTER html %]'
+[% title = BLOCK %]Изтриване на версия на продукта '[% product.name FILTER html %]'
   [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -47,16 +45,17 @@
 </tr>
 <tr>
   <td valign="top">Версия на продукта:</td>
-  <td valign="top">[% product FILTER html %]</td>
+  <td valign="top">[% product.name FILTER html %]</td>
 </tr>
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
   <td valign="top">
-[% IF bug_count %]
+[% IF version.bug_count %]
   <a title="Списък на [% terms.bugs %] целящи версията '
-           [% name FILTER html %]'"
-     href="buglist.cgi?version=[% name FILTER url_quote %]&amp;product=
-          [%- product FILTER url_quote %]">[% bug_count %]</a>
+           [%- version.name FILTER html %]'"
+     href="buglist.cgi?version=[% version.name FILTER url_quote %]&amp;product=
+          [%- product.name FILTER url_quote %]">
+          [%- version.bug_count FILTER none %]</a>
 [% ELSE %]
   Няма
 [% END %]
@@ -65,19 +64,19 @@
 </table>
 
 <h2>Потвърждение</h2>
-  
-[% IF bug_count %]
 
+[% IF version.bug_count %]
+  <p>
   Съжалявам, има
-  [% IF bug_count > 1 %] 
-    [% bug_count %] [%+ terms.abug %] 
+  [% IF version.bug_count > 1 %] 
+    [% version.bug_count FILTER none %] [%+ terms.abug %] 
   [% ELSE %]
-    [% bug_count %] [%+ terms.bug %] 
+    [% version.bug_count FILTER none %] [%+ terms.bug %] 
   [% END %]
 
   оставащ за тази версия. Трябва да преместите
 
-  [% IF bug_count > 1 %]
+  [% IF version.bug_count > 1 %]
      тези [% terms.bugs %] 
   [% ELSE %]
      този [% terms.bug %]
@@ -89,7 +88,7 @@
   <p>Наистина ли желаете да изтриете тази версия?<p>
   
   <form method="post" action="editversions.cgi">
-    <input type="submit" value="Да, изтриване">
+    <input type="submit" id="delete" value="Да, изтриване">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="product" value="[% product FILTER html %]">
     <input type="hidden" name="version" value="[% name FILTER html %]">

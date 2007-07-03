@@ -27,15 +27,16 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% expiration_ts = token_ts + (max_token_age * 86400) %]
-From: bugzilla-admin-daemon
+From: [% Param('mailfrom') %]
 To: [% emailaddress %]
 Subject: Заявка за смяна на електронен пощенски адрес в [% terms.Bugzilla %]
 Importance: High
 X-MSMail-Priority: High
 X-Priority: 1
+X-Bugzilla-Type: admin
 
 [%+ terms.Bugzilla %] получи заявка за смяна на електронния пощенски адрес
-за вашата регистрация на [%+ newemailaddress %].
+за сметката ви на [%+ newemailaddress %].
 
 Ако вие не сте лицето направило заявката или желаете да я отхвърлите,
 посетете следващата препратка:
@@ -43,5 +44,5 @@ X-Priority: 1
 [%+ Param('urlbase') %]token.cgi?t=[% token FILTER url_quote %]&a=cxlem
 
 Ако не направите нищо и [%+ newemailaddress %] потвърди заявката,
-промяната ще бъде неизменна след [%+ max_token_age %] дни (точно в 
-[%+ time2str("%H:%M на %o %B %Y", expiration_ts) %]).
+промяната ще бъде неизменна след [%+ max_token_age %] дни
+(на [%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]).

@@ -30,6 +30,7 @@
   # hasbugs: boolean int. True if the group includes bugs in it.
   # hasproduct: boolean int. True if the group is binded to a product.
   # hasflags: boolean int. True if the group is used by a flag type.
+  # shared_queries: int. Number of saved searches being shared with this group.
   # buglist: string. The list of bugs included in this group.
   #%]
 
@@ -71,7 +72,8 @@
 
     <p><b>БЕЛЕЖКА:</b> Напълно е възможно да направите поверителни [% terms.bugs %]
     публични, отмятайки това поле. <B>Горещо</B> се препоръчва
-    да прегледате [% terms.bugs %]те в тази група преди да го отметнете.</p>
+    да прегледате [% terms.bugs %]те в тази група преди да го
+    отметнете.</p>
   [% END %]
 
   [% IF hasproduct %]
@@ -91,6 +93,25 @@
     на всички типове флагове от групата.</p>
   [% END %]
 
+  [% IF shared_queries %]
+    <p>
+      <b>
+      [% IF shared_queries > 1 %]
+        Съществуват [% shared_queries %] съхранени търсения
+      [% ELSE %]
+        Съществува съхранено търсене
+      [% END %]
+      споделяно с тази група.</b>
+      Ако я изтриете,
+      [% IF shared_queries > 1 %]
+        съхранените търсения
+      [% ELSE %]
+        съхраненото търсене
+      [% END %]
+      отново ще бъде частно.
+    </p>
+  [% END %]
+
   <h2>Потвърждение</h2>
 
   <p>Наистина ли искате да изтриете групата?</p>
@@ -99,7 +120,7 @@
           посочените проблеми преди да можете да продължите.</b></p>
   [% END %]
 
-  <p><input type="submit" value="Да, изтриване">
+  <p><input type="submit" id="delete" value="Да, изтриване">
   <input type="hidden" name="action" value="delete">
   <input type="hidden" name="group" value="[% gid FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">

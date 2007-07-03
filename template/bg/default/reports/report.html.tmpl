@@ -29,6 +29,7 @@
   # format: string. Format of the individual reports.
   # width: integer. For image charts, height of the image.
   # height: integer. For image charts, width of the image.
+  # imagebase: string. Base URL for chart image.
   # switchbase: string. Base URL for format switching.
   # cumulate: boolean. For bar/line charts, whether to cumulate data sets.
   #%]
@@ -51,6 +52,7 @@
 [% tbl_field_disp = field_descs.$tbl_field || tbl_field %]
 [% col_field_disp = field_descs.$col_field || col_field %]
 [% row_field_disp = field_descs.$row_field || row_field %]
+[% switchbase     = switchbase FILTER html %]
 
 [% title = BLOCK %]
   Report: 
@@ -73,7 +75,7 @@
     .t4     { background-color: #c3d3ed } /* darker blue */
     .ttotal { background-color: #cfffdf } /* light green */
   "
-  h3 = time2str("%Y-%m-%d %H:%M:%S", time)
+  header_addl_info = time2str("%Y-%m-%d %H:%M:%S", time)
 %]
 
 [% IF debug %]
@@ -96,7 +98,7 @@
         <h2>[% tbl_disp FILTER html %]</h2>
       [% END %]
       
-      [% imageurl = BLOCK %]report.cgi?[% imagebase %]&amp;format=
+      [% imageurl = BLOCK %]report.cgi?[% imagebase FILTER html %]&amp;format=
         [% format FILTER url_quote %]&amp;ctype=png&amp;action=plot&amp;
         [% IF tbl_field %]
           [% IF tbl != "-total-" %]
@@ -125,8 +127,8 @@
                        { name => "line",  description => "Линия" },
                        { name => "table", description => "Таблица" } ] %]
 
-        [% formaturl = "report.cgi?$switchbase&width=$width&height=$height" _ 
-                       "&action=wrap" %]
+        [% formaturl = "report.cgi?$switchbase&amp;width=$width" _ 
+                       "&amp;height=$height&amp;action=wrap" %]
         [% FOREACH other_format = formats %]
           [% NEXT IF other_format.name == "pie" AND row_field AND col_field %]
           [% UNLESS other_format.name == format %]
@@ -135,7 +137,7 @@
           [% other_format.description FILTER html %]
           [% "</a>" UNLESS other_format.name == format %] | 
         [% END %]
-        <a href="[% formaturl %]&amp;ctype=csv&amp;format=table"><abbr title="Comma Separated Values - Разделени със запетая стойности">CSV</abbr></a> 
+        <a href="[% formaturl %]&amp;ctype=csv&amp;format=table"><abbr lang="en" title="Comma Separated Values">CSV</abbr></a> 
       </td>
       
       [% IF format != "table" %]
@@ -157,12 +159,13 @@
                    [% height - 100 %]">По-ниска</a><br>
         </td>
       [% END %]
-    <tr>
+    </tr>
   </table>
 
   <p>
     [% IF format == "table" %]
-      <a href="query.cgi?[% switchbase %]&amp;format=report-table">Редактиране на доклада</a>
+      <a href="query.cgi?[% switchbase %]&amp;format=report-table">Редактиране 
+      на доклада</a>
     [% ELSE %]
       <a href="query.cgi?[% switchbase %]&amp;chart_format=
         [% format %]&amp;format=report-graph&amp;cumulate=[% cumulate %]">

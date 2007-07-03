@@ -20,15 +20,16 @@
   #%]
 
 [%# INTERFACE:
-  # product: string; name of the product the version is being created for
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the version is being created for
   #%]
   
-[% title = BLOCK %]Добавяне на версия към продукта '[% product FILTER html %]'[% END %]
-[% h2 = BLOCK %]Тази страница ви позволява да добавите нова версия към продукта 
-                '[% product FILTER html %]'.[% END %]
+[% title = BLOCK %]Добавяне на версия към продукта '[% product.name FILTER html %]'[% END %]
+[% subheader = BLOCK %]Тази страница ви позволява да добавите нова версия към продукта 
+                '[% product.name FILTER html %]'.[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
-  h2 = h2
+  subheader = subheader
 %]
 
 <form method="post" action="editversions.cgi">
@@ -39,13 +40,11 @@
                  value=""></td>
     </tr>
   </table>
-  <input type="submit" value="Добавяне">
+  <input type="submit" id="create" value="Добавяне">
   <input type="hidden" name="action" value="new">
-  <input type="hidden" name='product' value="[% product FILTER html %]">
+  <input type="hidden" name='product' value="[% product.name FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
-
-<p>
 
 [% PROCESS admin/versions/footer.html.tmpl
     no_add_version_link = 1

@@ -16,25 +16,24 @@
   # Copyright (C) 1998 Netscape Communications Corporation. All
   # Rights Reserved.
   #
-  # Contributor(s): Gervase Markham <gerv@gerv.net>
-  #%]
-
-[%# INTERFACE:
-  # login: string. The user's Bugzilla login email address.
+  # Contributor(s): Emmanuel Seyman <eseyman@linagora.com>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% PROCESS global/header.html.tmpl
-  title = "Регистрацията съществува"
-%]
+From: [% Param('mailfrom') %]
+To: [% to %]
+Subject: [% terms.Bug %] [%+ bugid %] Някоки или всичките ви гласове бяха премахнати.
+X-Bugzilla-Type: voteremoved
 
-<form method="get" action="token.cgi">
-  <input type="hidden" name="a" value="reqpw">
-  <input type="hidden" name="loginname" value="[% login FILTER html %]">
-  [% terms.Bugzilla %] регистрацията за <tt>[% login FILTER html %]</tt> вече съществува. Ако вие
-  сте притежателя на тази регистрация и сте забравили паролата си,
-  <input type="submit" value="изпратете заявка за смяната и">.
-</form>
+Някои или всичките ви гласове бяха премахнати от [% terms.bug %] [%+ bugid %].
 
-[% PROCESS global/footer.html.tmpl %]
+[% votesoldtext %]
+
+[% votesnewtext %]
+
+Причина: [% reason %]
+
+
+[% Param("urlbase") %]show_bug.cgi?id=[% bugid %]
+

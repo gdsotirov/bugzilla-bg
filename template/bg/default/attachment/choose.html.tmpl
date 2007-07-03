@@ -29,15 +29,15 @@
 <form name="choose-id" method="get" action="attachment.cgi">
   <p>Доберете се до приставка чрез въвеждане на нейния номер в полето отдолу:</p>
   <p>Номер на приставка: <input name="id" size="6">
-  <button name="action" value="edit">&nbsp;Промяна&nbsp;</button>
-  <button name="action" value="view">Преглед</button>
+  <button name="action" value="edit" id="edit">Подробности</button>
+  <button name="action" value="view" id="view">Преглед</button>
   </p>
 </form>
 
 <form method="get" action="show_bug.cgi">
   <p>Или се доберете до нея през списъка с приставки в свързания с него [% terms.bug %] доклад:</p>
   <p>[% terms.Bug %] номер: <input name="id" size="6">
-  <input type="submit" name="action" value="Преглед">
+  <input type="submit" name="action" value="Преглед" id="action">
   </p>
 </form>
 

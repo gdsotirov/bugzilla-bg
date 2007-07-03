@@ -19,6 +19,7 @@
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #                 Vaskin Kissoyan <vkissoyan@yahoo.com>
   #                 Bradley Baetz <bbaetz@student.usyd.edu.au>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -30,10 +31,10 @@
   [% filtered_desc = bug.short_desc FILTER html %]
   [% filtered_timestamp = bug.delta_ts FILTER time %]
   [% PROCESS global/header.html.tmpl
-    title = "$terms.Bug $bug.bug_id - $filtered_desc"
-    h1 = "$terms.Bugzilla $terms.Bug $bug.bug_id"
-    h2 = filtered_desc
-    h3 = "Последно променян: $filtered_timestamp"
+    title = "$terms.Bug $bug.bug_id &ndash; $filtered_desc"
+    header = "$terms.Bug&nbsp;$bug.bug_id"
+    subheader = filtered_desc
+    header_addl_info = "Последно променян: $filtered_timestamp"
     bodyclasses = ['bz_bug',
                    "bz_status_$bug.bug_status",
                    "bz_component_$bug.component",

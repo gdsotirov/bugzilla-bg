@@ -17,18 +17,20 @@
   # Rights Reserved.
   #
   # Contributor(s): Gavin Shelley <bugzilla@chimpychompy.org>
+  #                 Akamai Technologies <bugzilla-dev@akamai.com>
   #%]
 
 [%# INTERFACE:
-  # product: string; name of product
+  # product: object; Bugzilla::Product object representing the product to
+  #               which the component belongs.
   #%]
   
 [% title = BLOCK %]Добавяне на съставна част за продукта '[% product FILTER html %]'[% END %]
-[% h2 = BLOCK %]Тази страница ви дава възможност да добавите нова съставна част за продукта
-                '[% product FILTER html %]'.[% END %]
+[% subheader = BLOCK %]Тази страница ви дава възможност да добавите нова съставна част за продукта
+                '[% product.name FILTER html %]'.[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
-  h2 = h2
+  subheader = subheader
 %]
 
 <form method="post" action="editcomponents.cgi">
@@ -40,8 +42,12 @@
     <tr>
       <th align="right">Описание:</th>
       <td>
-        <textarea rows="4" cols="64" wrap="virtual"
-                  name="description"></textarea>
+        [% INCLUDE global/textarea.html.tmpl
+          name    = 'description'
+          minrows = 4
+          cols    = 64
+          wrap    = 'virtual'
+        %]
       </td>
     </tr>
     <tr>
@@ -71,13 +77,31 @@
       </td>
     </tr>
 [% END %]
+    <tr>
+      <th align="right">
+        <label for="initialcc">Подразбиращ се <abbr title="Точно копие">ТК</abbr> списък:</label>
+      </th>
+      <td>
+        [% INCLUDE global/userselect.html.tmpl
+           name => "initialcc"
+           id => "initialcc"
+           value => ""
+           size => 64
+           multiple => 5
+        %]
+        <br>
+        [% IF !Param("usemenuforusers") %]
+          <em>Въведете потребителски имена за <abbr title="Точно копие">ТК</abbr> списъка едно след друго разделени със запетая.</em>
+        [% END %]
+      </td>
+    </tr>
   </table>
   <hr>
-  <input type="submit" value="Добавяне">
+  <input type="submit" id="create" value="Добавяне">
   <input type="hidden" name="action" value="new">
   <input type="hidden" name='open_name' value='All Open'>
   <input type="hidden" name='nonopen_name' value='All Closed'>
-  <input type="hidden" name='product' value="[% product FILTER html %]">
+  <input type="hidden" name='product' value="[% product.name FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 
