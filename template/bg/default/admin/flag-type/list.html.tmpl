@@ -31,7 +31,7 @@
     .inactive { color: #787878; }
     .multiplicable { display: block; }
   "
-  onload="selectProduct(document.forms[0], 'product', 'component', '__All__');"
+  onload="selectProduct(document.forms[0], 'product', 'component', '__Any__');"
   javascript_urls=["productmenu.js"]
 %]
 
@@ -63,7 +63,7 @@
       <th><label for="product">Продукт:</label></th>
       <td>
         <select name="product" onchange="selectProduct(this.form, 'product', 'component', '__Any__');">
-          <option value="">__Който и да е__</option>
+          <option value="__Any__">__Който и да е__</option>
           [% FOREACH prod = products %]
             <option value="[% prod.name FILTER html %]"
                     [% " selected" IF selected_product == prod.name %]>
@@ -74,7 +74,7 @@
       <th><label for="component">Съставна част:</label></th>
       <td>
         <select name="component">
-          <option value="">__Която и да е__</option>
+          <option value="__Any__">__Която и да е__</option>
           [% FOREACH comp = components %]
             <option value="[% comp FILTER html %]"
                     [% " selected" IF selected_component == comp %]>

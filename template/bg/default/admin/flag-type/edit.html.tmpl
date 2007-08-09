@@ -101,7 +101,7 @@
             <td style="vertical-align: top;">
               <b>Продукт/съставна част:</b><br>
               <select name="product" onchange="selectProduct(this.form, 'product', 'component', '__Any__');">
-                <option value="">__Който и да е__</option>
+                <option value="__Any__">__Който и да е__</option>
                 [% FOREACH prod = products %]
                   <option value="[% prod FILTER html %]" 
                           [% "selected" IF type.product.name == item %]>
@@ -109,7 +109,7 @@
                 [% END %]
               </select><br>
               <select name="component">
-                <option value="">__Който и да е__</option>
+                <option value="__Any__">__Която и да е__</option>
                 [% FOREACH comp = components %]
                   <option value="[% comp FILTER html %]" 
                           [% "selected" IF type.component.name == item %]>

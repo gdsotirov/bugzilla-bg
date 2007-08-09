@@ -56,7 +56,7 @@
       <td>Мои бъгове</td>
       <td>
         [% filtered_username = user.login FILTER url_quote %]
-        <a href="[% Param('mybugstemplate').replace('%userid%', filtered_username) %]">Пусни</a>
+        <a href="[% Param('mybugstemplate').replace('%userid%', filtered_username) %]">Пускане</a>
       </td>
       <td>
         &nbsp;
@@ -88,7 +88,7 @@
         </td>
         <td>
           [% IF q.used_in_whine %]
-            Премахване първо от <a href="editwhines.cgi">напомнянията</a>
+            Премахване първо от <a href="editwhines.cgi">хленча</a>
           [% ELSE %]
             <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
                      [% q.name FILTER url_quote %]">Забравяне</a>

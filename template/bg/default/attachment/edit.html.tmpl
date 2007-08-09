@@ -276,7 +276,7 @@
         <strong>Действия:</strong>
         <a href="attachment.cgi?id=[% attachment.id %]">Преглед</a>
         [% IF attachment.ispatch && patchviewerinstalled %]
-         | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=diff">Diff</a>
+         | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=diff">Сравняване</a>
         [% END %]
         [% IF Param("allow_attachment_deletion")
               && user.groups.admin

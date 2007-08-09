@@ -46,7 +46,7 @@
 
 [% IF Param('usetargetmilestone') -%]
   <tr>
-    <th align="right"><abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> описващ целевите събития за този продукт:</th>
+    <th align="right"><abbr lang="en" title="Uniform Resource Locator">URL</abbr> описващ целевите събития за този продукт:</th>
     <td><input type="text" size="64" maxlength="255" name="milestoneurl"
                value="[% product.milestoneurl FILTER html %]">
     </td>
@@ -94,7 +94,7 @@
 </tr>
 <tr [% IF !Param('usevotes') %]class="param_disabled" [% END %]>
   <th align="right">
-    Максимум гласове, които човек може да сложи на един [% terms.bug %]:
+    Максимум гласове, които човек може да даде на един [% terms.bug %]:
   </th>
   <td><input size="5" maxlength="5" name="maxvotesperbug" 
              value="[% product.maxvotesperbug FILTER html %]">
@@ -106,9 +106,9 @@
   </th>
   <td>
     Броя гласове за [% terms.bug %] в този продукт, необходим за
-    автоматичното му изваждане от
-    <a href="page.cgi?id=fields.html#status">[% status_descs.UNCONFIRMED FILTER html %]</a>
-    състояние.<br>
+    автоматичното му изваждане от състояние <a
+    href="page.cgi?id=fields.html#status">[% status_descs.UNCONFIRMED FILTER html %]</a>
+    <br>
     <input size="5" maxlength="5" name="votestoconfirm" 
            value="[% product.votestoconfirm FILTER html %]">
   </td>
