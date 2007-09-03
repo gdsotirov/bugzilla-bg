@@ -22,7 +22,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% title = BLOCK %]Редактиране на стойността '[% value FILTER html %]' на полето '
+[% title = BLOCK %]Редактиране на стойност '[% value FILTER html %]' на полето '
                    [%- field FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -32,7 +32,7 @@
   <table border="0" cellpadding="4" cellspacing="0">
 
     <tr>
-      <th valign="top"><label for="value">Стойност на полето:</label></th>
+      <th valign="top"><label for="value">Стойност:</label></th>
       <td>
         [% IF is_static %]
           <input type="hidden" name="value" value="[% value FILTER html %]">

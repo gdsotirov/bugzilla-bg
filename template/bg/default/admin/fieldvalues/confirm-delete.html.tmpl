@@ -24,7 +24,7 @@
   #             with the field.
   #%]
 
-[% title = BLOCK %]Изтриване на стойността '[% value FILTER html %]' от полето 
+[% title = BLOCK %]Изтриване на стойност '[% value FILTER html %]' от полето 
   '[% field FILTER html %]'[% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -84,7 +84,7 @@
           [% ELSE %]
              1 [% terms.bug %] 
           [% END %]
-          с тази стойност в полето. Трябва да смените стойността в полето на
+          с тази стойност. Трябва да смените стойността на
           <a title="Списък на [% terms.bugs %], където '[% field FILTER html %]' е '[% value FILTER html %]'"
              href="buglist.cgi?[% field FILTER url_quote %]=[% value FILTER url_quote %]">
             [% IF bug_count > 1 %]

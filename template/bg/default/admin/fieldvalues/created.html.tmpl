@@ -19,13 +19,13 @@
   # field: string; the name of the field the value belongs to
   #%]
   
-[% title = BLOCK %]Новата стойност '[% value FILTER html %]' беше добавена за
+[% title = BLOCK %]Нова стойност '[% value FILTER html %]' е добавена към 
   полето '[% field FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Стойността '<a title="Редактиране на стойността '[% value FILTER html %]' за 
+<p>Стойността '<a title="Редактиране на стойност '[% value FILTER html %]' на 
    полето '[% field FILTER html %]'"
    href="editvalues.cgi?action=edit&amp;field=
    [%- field FILTER url_quote %]&amp;value=[% value FILTER url_quote %]">

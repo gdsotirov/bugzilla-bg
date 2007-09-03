@@ -27,7 +27,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% title = BLOCK %]Избор на версия на продукта
+[% title = BLOCK %]Избор на версия на продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -44,7 +44,7 @@
 [% columns = [
      { 
        name => "name"
-       heading => "Редактиране на версията..."
+       heading => "Редактиране на версия..."
        contentlink => edit_contentlink
      }
    ]

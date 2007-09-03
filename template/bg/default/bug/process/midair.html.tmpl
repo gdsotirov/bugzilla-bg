@@ -79,7 +79,7 @@
   <li>
     <form method="post" action="process_bug.cgi">
       [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
-      <input type="submit" id="process" value="Изпращане на промените въпреки това">
+      <input type="submit" id="process" value="Предаване на промените въпреки това">
         Това ще предизвика презаписването на всички промени по-горе
         [% ", с изключение на добавените коментар(и)" IF comments.size > start_at %].
     </form>

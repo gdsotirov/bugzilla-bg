@@ -26,13 +26,13 @@
   #                    version the user deleted.
   #%]
   
-[% title = BLOCK %]Изтрита версия '[% version.name FILTER html %]' на продукта
+[% title = BLOCK %]Изтрита версия '[% version.name FILTER html %]' на продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Версията '[% version.name FILTER html %]' бе изтрита.</p>
+<p>Версия '[% version.name FILTER html %]' беше изтрита.</p>
 
 [% PROCESS admin/versions/footer.html.tmpl
   no_edit_version_link = 1

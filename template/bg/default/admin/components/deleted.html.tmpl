@@ -26,7 +26,7 @@
   #               which the component belongs.
   #%]
   
-[% title = BLOCK %]Изтрита съставна част '[% name FILTER html %]' от продукта
+[% title = BLOCK %]Изтрита съставна част '[% name FILTER html %]' от продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -42,7 +42,7 @@
   [% END %]
 
   </p><p>
-  Всички обръщения към изтритите [% terms.bugs %] са премахнати.
+  Всички обръщения към изтритите [% terms.bugs %] бяха премахнати.
 [% ELSE %]
   Не съществуваха [% terms.bugs %] за съставната част.
 [% END %]
@@ -50,7 +50,7 @@
 
 <p>Включенията и изключенията на флагове са изтрити.</p>
 
-<p>Съставната част '[% comp.name FILTER html %]' бе изтрита.</p>
+<p>Съставна част '[% comp.name FILTER html %]' бе изтрита.</p>
 
 [% PROCESS admin/components/footer.html.tmpl
   no_edit_component_link = 1

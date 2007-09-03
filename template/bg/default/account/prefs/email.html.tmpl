@@ -100,6 +100,16 @@ document.write('<input type="button" value="Забраняване на всич
       <br>
     </td>
   </tr>
+[% IF user.is_global_watcher %]
+  <tr>
+    <td width="150"></td>
+    <td>
+      Наблюдавате всички [% terms.bugs %]. За премахването на тази ви роля,
+      свържете се с
+      <a href="mailto:[% Param("maintainer") %]">[% Param("maintainer") %]</a>.
+    </td>
+  </tr>
+[% END %]
 </table>
 
 <hr>

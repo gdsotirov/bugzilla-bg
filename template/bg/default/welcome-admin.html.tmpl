@@ -31,59 +31,59 @@
 <div id="welcome-admin">
   <p>Добре дошъл, [% user.identity FILTER html %].</p>
 
-  <p>You are seeing this page because some of the core parameters have not been set up yet.
-  The goal of this page is to inform you about the last steps required to set up
-  your installation correctly.</p>
+  <p>Виждате тази страница, защото някои от параметрите на ядрото все още не са зададени.
+  Целта на тази страница е да ви информира за последните стъпки необходими за правилното
+  настройването на инсталацията ви.</p>
 
-  <p>As an administrator, several administrative links are available at the bottom of
-  this page. These links will always be visible, on all pages. Among these links,
-  you must visit at least the <a href="editparams.cgi">Parameters</a> one,
-  which is the page from where you can set all important parameters for this installation.
-  By clicking this link, you will be able to set among others:</p>
+  <p>Като администратор, няколко административни връзки са достъпни в дъното на
+  тази страница. Тези връзки ще бъдат винаги видими, на всички страници. Сред тези връзки,
+  трябва да посетите поне <a href="editparams.cgi">Параметри</a>,
+  която е страницата от където можете да зададете всички важни параметри на тази инсталацията.
+  С щракването върху тази връзка, ще можете да зададете освен другите:</p>
 
   <ul>
-    <li><a href="editparams.cgi?section=core#maintainer">maintainer</a>, the person
-    responsible for this installation if something is running wrong.</li>
+    <li><a href="editparams.cgi?section=core#maintainer">maintainer</a>, човека
+    отговорен за тази инсталация ако нещо се обърка.</li>
 
-    <li><a href="editparams.cgi?section=core#urlbase">urlbase</a>, which is the URL
-    pointing to this installation and which will be used in emails (which is also the
-    reason you see this page: as long as this parameter is not set, you will see this
-    page again and again).</li>
+    <li><a href="editparams.cgi?section=core#urlbase">urlbase</a>, което е адреса
+    сочещ към тази инсталация и който ще бъде използван в писма (който е също
+    причината да виждате тази страница: докато този параметър не е зададен, ще виждате тази
+    страница оново и отново).</li>
 
-    <li><a href="editparams.cgi?section=core#cookiepath">cookiepath</a> is important
-    for your browser to manage your cookies correctly.</li>
+    <li><a href="editparams.cgi?section=core#cookiepath">cookiepath</a> е важен
+    за вашия браузър, за да управлява бисквитките правилно.</li>
 
-    <li><a href="editparams.cgi?section=core#utf8">utf8</a> will let you encode all
-    texts into UTF-8, if desired (it is strongly recommended to keep this parameter
-    turned on).</li>
+    <li><a href="editparams.cgi?section=core#utf8">utf8</a> ще ви позволи да кодирате всичкия
+    текст в UTF-8, ако желаете (силно препоръчително е да оставите този параметър
+    включен).</li>
   </ul>
 
-  <p>Also important are the following parameters:</p>
+  <p>Също важни са следните параметри:</p>
 
   <ul>
-    <li><a href="editparams.cgi?section=auth#requirelogin">requirelogin</a>, if turned
-    on, will protect your installation from users having no account on this installation.
-    In other words, users who are not explicitly authenticated with a valid account
-    cannot see any data. This is what you want if you want to keep your data private.</li>
+    <li><a href="editparams.cgi?section=auth#requirelogin">requirelogin</a>, ако е
+    включен, ще защити вашата инсталация от потребители нямащи сметка в нея.
+    С други думи, потребителите които не са изрично удостоверени с правилна сметка
+    не могат да видя никакви данни. Това е което бихте искали ако искате да запазите данните си лични.</li>
 
     <li><a href="editparams.cgi?section=auth#createemailregexp">createemailregexp</a>
-    defines which users are allowed to create an account on this installation. If set
-    to ".*" (the default), everybody is free to create his own account. If set to
-    "@mycompany.com$", only users having an account @mycompany.com will be allowed to
-    create an account. If left blank, users will not be able to create accounts themselves;
-    only an administrator will be able to create one for them. If you want a private
-    installation, you must absolutely set this parameter to something different from
-    the default.</li>
+    определя на кои потребители е разрешено да създават сметка на тази инсталация. Ако е зададено
+    на ".*" (по подразбиране), всеки е свободен да създаде своя сметка. Ако е зададено
+    "@mycompany.com$", само на потребители имащи поща @mycompany.com ще бъде разрешено да
+    създават сметка. Ако бъде оставено празно, потребителите няма да могат да създават сметки сами;
+    амо администратор ще бъде способен да създава сметки за тях. Ако желаете частна
+    инсталация, трябва абсолютно да зададете този параметър на с нещо различно от
+    подразбиращото се.</li>
 
     <li><a href="editparams.cgi?section=mta#mail_delivery_method">mail_delivery_method</a>
-    defines the method used to send emails, such as sendmail or SMTP. You have to set
-    it correctly to send emails.</li>
+    определя метоа използван за изпращане на поща, като sendmail или SMTP. Трябва да го зададете
+    правилно за изпращане на поща.</li>
   </ul>
 
   <p>
-    After having set up all this, we recommend looking at [% terms.Bugzilla %]'s other
-    parameters as well at some time so that you understand what they do and whether you
-    want to modify their settings for your installation.
+    След като сте задали всичко това, ви препроъчваме да погледнете също и другите [% terms.Bugzilla %]
+    параметри по някое време, така че да разберете какво правят и дали
+    желаете да промените зададеното за тях за вашата инсталация.
   </p>
 </div>
 

@@ -31,8 +31,8 @@
 Редактиране на 
 
 [% IF comp && !no_edit_component_link %]
-  съставната част <a 
-  title="Редактиране на съставната част '[% name FILTER html %]'"
+  съставна част <a 
+  title="Редактиране на съставна част '[% name FILTER html %]'"
   href="editcomponents.cgi?action=edit&amp;product=
   [%- product.name FILTER url_quote %]&amp;component=[% comp.name FILTER url_quote %]">
    '[% comp.name FILTER html %]'</a> 
@@ -48,7 +48,7 @@
 [% END %]
 
 продукта <a 
-  title="Редактиране на продукта '[% product.name FILTER html %]'"
+  title="Редактиране на продукт '[% product.name FILTER html %]'"
   href="editproducts.cgi?action=edit&amp;product=
   [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 

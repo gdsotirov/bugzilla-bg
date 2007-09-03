@@ -21,13 +21,13 @@
   #
   #%]
   
-[% title = BLOCK %]Изтрита стойността '[% value FILTER html %]' за полето
+[% title = BLOCK %]Изтрита стойност '[% value FILTER html %]' на полето
                    '[% field FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Стойността '[% value FILTER html %]' бе изтрита.</p>
+<p>Стойност '[% value FILTER html %]' беше изтрита.</p>
 
 [% PROCESS admin/fieldvalues/footer.html.tmpl
   no_edit_link = 1

@@ -27,8 +27,8 @@
   # 'XXX' field was updated during the edit just being handled.
   #%]
 
-[% title = BLOCK %]Събитието '[% milestone.name FILTER html %]' на продукта
-                   '[% product.name FILTER html %]' бе обновено[% END %]
+[% title = BLOCK %]Обновяване на събитие '[% milestone.name FILTER html %]' на продукт
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
@@ -42,7 +42,7 @@
 [% END %]
 
 [% UNLESS updated_sortkey || updated_name %]
-  <p>Нищо не бе променено за събитието '[% milestone.name FILTER html %]'.</p>
+  <p>Нищо не бе променено по събитие '[% milestone.name FILTER html %]'.</p>
 
 [% END %]
 

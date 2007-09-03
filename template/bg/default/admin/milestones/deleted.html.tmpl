@@ -27,8 +27,8 @@
   #                    milestone the user deleted.
   #%]
   
-[% title = BLOCK %]Събитието '[% milestone.name FILTER html %]' на продукта
-                   '[% product.name FILTER html %]' бе изтрито[% END %]
+[% title = BLOCK %]Изтрито събитие '[% milestone.name FILTER html %]' на продукт
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]

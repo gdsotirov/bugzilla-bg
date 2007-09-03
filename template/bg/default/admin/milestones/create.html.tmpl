@@ -24,9 +24,9 @@
   #               which the milestone belongs.
   #%]
   
-[% title = BLOCK %]Добавяне на целево събитие към продукта '[% product FILTER html %]'[% END %]
-[% subheader = BLOCK %]Тази страница ви позволява да добавяте ново събитие към продукта
-                '[% product FILTER html %]'.[% END %]
+[% title = BLOCK %]Добавяне на целево събитие към продукт '[% product.name FILTER html %]'[% END %]
+[% subheader = BLOCK %]Тази страница ви позволява да добавяте ново събитие към продукт
+                '[% product.name FILTER html %]'.[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
   subheader = subheader

@@ -28,7 +28,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% title = BLOCK %]Избор на съставна част на продукта
+[% title = BLOCK %]Избор на съставна част на продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -114,7 +114,7 @@
 %]
 
 <p><a href="editcomponents.cgi?action=add&amp;product=[% product.name FILTER url_quote %]">Добавяне</a>
-    на нова съставна част към продукта '[% product.name FILTER html %]'</p>
+    на нова съставна част към продукт '[% product.name FILTER html %]'</p>
 
 [% IF ! showbugcounts %]
 

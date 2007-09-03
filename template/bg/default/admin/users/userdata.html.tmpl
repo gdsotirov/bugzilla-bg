@@ -64,12 +64,12 @@
     </td>
   </tr>
   <tr>
-    <th><label for="disable_mail">Бъгпоща забранена:</label></th>
+    <th><label for="disable_mail">[% terms.Bug %]поща забранена:</label></th>
     <td>
       <input type="checkbox" name="disable_mail" id="disable_mail" value="1" 
       [% IF otheruser.email_disabled %] checked="checked" [% END %] />
-      (Влияе на бъгпоща и хленч без поща за смяна на парола или друга
-      несвързана с бъгове поща)
+      (Влияе на [% terms.bug %]поща и хленч без поща за смяна на парола или друга
+      несвързана с [% terms.bugs %] поща)
     </td>
   </tr>
   <tr>
@@ -84,8 +84,8 @@
          cols           = 60
          defaultcontent = otheruser.disabledtext
        %]<br>
-      (Ако полето не е празно сметката ще бъде спряна и текста му
-       трябва да обясни защо.)
+      (Ако полето не е празно сметката ще бъде спряна и текста му трябва
+      да обясни защо.)
     </td>
   </tr>
 [% END %]

@@ -26,8 +26,8 @@
   #               which the component belongs.
   #%]
   
-[% title = BLOCK %]Добавяне на нова съставна част за продукта
-                   '[% product FILTER html %]'[% END %]
+[% title = BLOCK %]Добавяне на нова съставна част на продукт
+                   '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]

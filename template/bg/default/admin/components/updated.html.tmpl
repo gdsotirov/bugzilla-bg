@@ -45,7 +45,7 @@
   #                   the Initial CC, if it was updated.
   #%]
   
-[% title = BLOCK %]Обновяване на '[% comp.name FILTER html %]' за продукта
+[% title = BLOCK %]Обновяване на '[% comp.name FILTER html %]' за продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -90,7 +90,7 @@
 [% UNLESS updated_description || updated_initialowner || 
           updated_initialqacontact || updated_name  ||
           updated_initialcc %]
-  <p>Нищо не бе променено за съставната част '[% comp.name FILTER html %]'.
+  <p>Нищо не бе променено по съставна част '[% comp.name FILTER html %]'.
 [% END %]
 
 [% PROCESS admin/components/footer.html.tmpl %]

@@ -37,14 +37,14 @@
 <p>
 
 [% UNLESS no_add_version_link %]
-  <a title="Добавяне на версия към продукта '[% product.name FILTER html %]'"
+  <a title="Добавяне на версия към продукт '[% product.name FILTER html %]'"
      href="editversions.cgi?action=add&amp;product=
           [%- product.name FILTER url_quote %]">Добавяне</a> на версия. 
 [% END %]
 
 [% IF version.name && !no_edit_version_link %]
-  Редакция на версията <a 
-  title="Редакция на версията '[% version.name FILTER html %]' на продукта '
+  Редакция на версия <a 
+  title="Редакция на версия '[% version.name FILTER html %]' на продукт '
          [%- product.name FILTER html %]'"
   href="editversions.cgi?action=edit&amp;product=
         [%- product.name FILTER url_quote %]&amp;version=
@@ -53,13 +53,13 @@
 [% END %]
 
 [% UNLESS no_edit_other_versions_link %]
-  Редактиране на други версии на продукта <a 
+  Редактиране на други версии на продукт <a 
   href="editversions.cgi?product=
         [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 
 [% END %]
 
-  Редактиране на продукта <a 
+  Редактиране на продукт <a 
   href="editproducts.cgi?action=edit&amp;product=
         [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 

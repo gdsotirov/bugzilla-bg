@@ -26,13 +26,13 @@
   #                  newly created version
   #%]
   
-[% title = BLOCK %]Добавяне на нова версяи за продукта 
+[% title = BLOCK %]Добавяне на нова версяи на продукт 
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
 %]
 
-<p>Версията '<a title="Редактиране на версията '[% version.name FILTER html %]' на продукта '
+<p>Версията '<a title="Редактиране на версия '[% version.name FILTER html %]' на продукта '
    [%- product.name FILTER html %]'"
    href="editversions.cgi?action=edit&amp;product=
    [%- product.name FILTER url_quote %]&amp;version=[% version.name FILTER url_quote %]">

@@ -28,7 +28,7 @@
   # updated: boolean; defined if the 'name' field was updated
   #%]
   
-[% title = BLOCK %]Обновяване на версията '[% version.name FILTER html %]' на продукта
+[% title = BLOCK %]Обновяване на версия '[% version.name FILTER html %]' на продукт
                    '[% product.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
   title = title
@@ -37,7 +37,7 @@
 [% IF updated %]
   <p>Името на версията бе обновено на: '[% version.name FILTER html %]'.</p>
 [% ELSE %]
-  <p>Нищо не бе променено за версията '[% version.name FILTER html %]'.</p>
+  <p>Нищо не бе променено по версия '[% version.name FILTER html %]'.</p>
 [% END %]
 
 [% PROCESS admin/versions/footer.html.tmpl %]

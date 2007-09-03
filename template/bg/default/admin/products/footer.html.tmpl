@@ -30,7 +30,6 @@
   #%]
 
 [% IF Param('useclassification') && classification %]
-<p>
   [% classification_url_part = BLOCK %]&amp;classification=
      [%- classification.name FILTER url_quote %]
   [% END %]
@@ -38,9 +37,8 @@
      [%- classification.name FILTER url_quote %]
   [% END %]
   [% classification_text = BLOCK %] 
-    от класификацията '[% classification.name FILTER html %]'
+    от класификация '[% classification.name FILTER html %]'
   [% END %]
-</p>
 [% END %]
 
 <hr>
@@ -52,17 +50,17 @@
 [%# Strictly speaking, we should not have to check for a
     classification if they are enabled, but I'm just being paranoid %]
   [% IF Param('useclassification') && classification %]
-    (<a title="Добавяне на продукт към класификацията '
+    (<a title="Добавяне на продукт към класификация '
                [%- classification.name FILTER html %]'"
          href="editproducts.cgi?action=add
                [%- classification_url_part %]">към
-     класификацията '[% classification.name FILTER html %]'</a>)
+     класификация '[% classification.name FILTER html %]'</a>)
   [% END %].
 [% END %]
 
 [% IF product && !no_edit_product_link %]
-  Редактиране на продукта <a 
-  title="Редактиране на продукта '[% product.name FILTER html %]' 
+  Редактиране на продукт <a 
+  title="Редактиране на продук '[% product.name FILTER html %]' 
          [%- classification_text %]"
   href="editproducts.cgi?action=edit&amp;product=
         [%- product.name FILTER url_quote %]
@@ -81,7 +79,7 @@
 [% END %]
 
 [% IF Param('useclassification') && classification %]
-  Редактиране на класификацията <a href="editclassifications.cgi?action=edit
+  Редактиране на класификация <a href="editclassifications.cgi?action=edit
     [%- classification_url_part %]">'
     [%- classification.name FILTER html %]'</a>.
 

@@ -109,11 +109,16 @@
   <tr>
     <td></td>
     <td>
-      <input type="submit" id="search" value="Търсене"
+    
+      [% IF Param('specific_search_allow_empty_words') %]
+        <input type="submit" id="search" value="Търсене">
+      [% ELSE %]
+        <input type="submit" id="search" value="Търсене"
              onclick="if (this.form.content.value == '')
                       {alert('The Words field cannot be empty. You have to ' +
                              'enter at least one word in your search criteria.');
                        return false;} return true;">
+      [% END %]
     </td>
   </tr>
 </table>

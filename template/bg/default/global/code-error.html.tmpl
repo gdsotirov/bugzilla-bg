@@ -40,7 +40,7 @@
 [% error_message = BLOCK %]
   [% IF    error == "action_unrecognized" %]
     [% docslinks = {'query.html' => "Searching for $terms.bugs",
-                    'list.html'  => "$terms.Bug lists"} %]
+                    'query.html#list'  => "$terms.Bug lists"} %]
     Не разпознавам стойността (<em>[% action FILTER html %]</em>)
     на променливата <em>action</em>.
 
@@ -129,7 +129,7 @@
     [% terms.Bugzilla %] не получи е-пощенски адрес от
     средата.
     [% IF Param("auth_env_email") %]
-      Това значи, че променливата на средата '[% Param("auth_env_email") FILTER html %]'
+      Това значи, че параметъра '[% Param("auth_env_email") FILTER html %]'
       е празна или не същестува.
     [% ELSE %]
       Необходимо е да зададете параметъра "auth_env_email" с
@@ -156,7 +156,7 @@
     Пуснете checksetup.pl за инструкции по инсталацията.
 
   [% ELSIF error == "illegal_content_type_method" %]
-    Предаването на вашите данни се е повредило по някакъв начин. Полето <em>content
+    Данните ви са се повредили при предаването по някакъв начин. Полето <em>content
     method</em>, което указва как се определя типа на съдържанието,
     трябваше да бъде едно от <em>автоматично откриване</em>, <em>списък</em>,
     или <em>ръчно</em>, но вместо това беше
@@ -429,12 +429,18 @@
     Неправилна настройка за post_bug_submit_action
 
   [% ELSE %]
-    [% title = "Вътрешна грешка" %]
-    Възникна вътрешна грешка, но [% terms.Bugzilla %] не знае
-    какво значи <code>[% error FILTER html %]</code>.
+    [%# Try to find hooked error messages %]
+    [% error_message = Hook.process("errors") %]
+    [% IF NOT error_message %]
+      [% title = "Вътрешна грешка" %]
+      Възникна вътрешна грешка, но [% terms.Bugzilla %] не знае
+      какво значи <code>[% error FILTER html %]</code>.
 
-    Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля съхранете
-    тази страница и я изпратете на [% Param('maintainer') %].
+      Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля съхранете
+      тази страница и я изпратете на [% Param('maintainer') %].
+    [% ELSE %]
+      [% error_message FILTER none %]
+    [% END %]
   [% END %]
 [% END %]
 

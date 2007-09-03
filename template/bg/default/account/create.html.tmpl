@@ -21,7 +21,7 @@
 
 [%# INTERFACE
   # none
-  #
+  # 
   # Param("maintainer") is used to display the maintainer's email.
   # Param("emailsuffix") is used to pre-fill the email field.
   #%]
@@ -31,45 +31,35 @@
 [% title = BLOCK %]
 Създаване на нова [% terms.Bugzilla %] сметка
 [% END %]
-[% PROCESS global/header.html.tmpl %]
+
+[% PROCESS global/header.html.tmpl
+           title = title
+           onload = "document.forms['account_creation_form'].login.focus();" %]
 
 <p>
   За създаване на [% terms.Bugzilla %] сметка, всичко което трябва да направите е
-  да въведете истински електронен пощенски адрес. Сметката ще бъде създадена и
-  паролата за нея ще ви бъде изпратена по електронна поща. <b>Няма да имате възможност да
-  влезете докато не получите паролта.</b> Ако тя не пристигне
-  в приемлив интервал от време, можете да се свържете с поддържащия тази инсталация
-  на [% terms.Bugzilla %]
+  да въведете истински електронен пощенски адрес. Ще получите писмо на този адрес,
+  за да потвърдите създаването на сметката ви. <b>Няма да имате възможност да влезете
+  докато не получите писмото.</b> Ако то не пристигне
+  в приемлив интервал от време, можете да се свържете с поддържащия
+  тази [% terms.Bugzilla %] инсталация
   на <a href="mailto:[% Param("maintainer") %]">[% Param("maintainer") %]</a>.
 </p>
 
-<p>
-  По избор можете да въведете истинското си име.
-</p>
-
-<form method="get" action="createaccount.cgi">
+<form id="account_creation_form" method="get" action="createaccount.cgi">
   <table>
     <tr>
       <td align="right">
         <b>Е-пощенски адрес:</b>
       </td>
       <td>
-        <input size="35" name="login">
+        <input size="35" id="login" name="login">
         [% Param('emailsuffix') FILTER html %]
-      </td>
-    </tr>
-
-    <tr>
-      <td align="right">
-        <b>Истинско име:</b>
-      </td>
-      <td>
-        <input size="35" name="realname">
       </td>
     </tr>
   </table>
   <br>
-  <input type="submit" value="Създаване на сметка">
+  <input type="submit" id="send" value="Изпращане">
 </form>
 
 [% PROCESS global/footer.html.tmpl %]

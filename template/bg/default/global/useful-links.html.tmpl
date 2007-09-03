@@ -48,7 +48,7 @@
         [% IF user.groups.tweakparams %]
           <li>[% '<span class="separator">| </span>' IF print_pipe %]<a href="editparams.cgi">Параметри</a></li>
           [% print_pipe = 1 %]
-          <li>[% '<span class="separator">| </span>' IF print_pipe %]<a href="editsettings.cgi">Потребителски предпочитания</a></li>
+          <li>[% '<span class="separator">| </span>' IF print_pipe %]<a href="editsettings.cgi">Подразбиращи се предпочитания</a></li>
         [% END %]
         [% IF user.groups.editcomponents %]
           <li>[% '<span class="separator">| </span>' IF print_pipe %]<a href="sanitycheck.cgi">Санитарна проверка</a></li>

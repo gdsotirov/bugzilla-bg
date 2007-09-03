@@ -35,7 +35,7 @@
 [% columns = [
      { 
        name => "name"
-       heading => "Редактиране на сътавна част за..."
+       heading => "Редактиране на сътавна част на..."
        contentlink => "editcomponents.cgi?product=%%name%%" 
      },
      { 
@@ -65,7 +65,7 @@
 
 [% IF !showbugcounts %]
   <p><a href="editcomponents.cgi?showbugcounts=1">
-      Показване на таблицата с включени брой на [% terms.bugs %]те (бавно)</a></p>
+      Показване на таблицата с включен брой на [% terms.bugs %]те (бавно)</a></p>
 [% END %]
 
 [% PROCESS global/footer.html.tmpl %]

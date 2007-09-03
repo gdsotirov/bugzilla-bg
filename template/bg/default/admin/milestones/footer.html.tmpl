@@ -45,8 +45,8 @@
 [% END %]
 
 [% IF milestone.name && !no_edit_milestone_link %]
-  Редакция на събитието <a 
-  title="Редакция на събитието '[% milestone.name FILTER html %]' на продукта '
+  Редакция на събитие <a 
+  title="Редакция на събитие '[% milestone.name FILTER html %]' на продукта '
          [%- product.name FILTER html %]'"
   href="editmilestones.cgi?action=edit&amp;product=
         [%- product.name FILTER url_quote %]&amp;milestone=
@@ -55,13 +55,13 @@
 [% END %]
 
 [% UNLESS no_edit_other_milestones_link %]
-  Редактиране на други важни събития на продукта <a 
+  Редактиране на други целеви събития на продукта <a 
   href="editmilestones.cgi?product=
         [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 
 [% END %]
 
-  Редактиране на продукта <a 
+  Редактиране на продукт <a 
   href="editproducts.cgi?action=edit&amp;product=
         [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
 

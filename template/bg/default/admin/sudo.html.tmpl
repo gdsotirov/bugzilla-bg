@@ -18,14 +18,14 @@
   #
   # Contributor(s): A. Karl Kornel <karl@kornel.name>
   #%]
-
+  
 [% PROCESS global/variables.none.tmpl %]
 
 [% PROCESS global/header.html.tmpl
    title = "Започване на сесия като друг потребител"
    style_urls = ['skins/standard/admin.css']
  %]
-
+ 
 [% DEFAULT target_login = "" %]
 
 <p>
@@ -58,26 +58,26 @@
        multiple => 5
     %]
   </p>
-
+  
   [% IF !Param('usemenuforusers') %]
     <p>
       Името трябва да бъде въведено точно.  Няма да бъде извършвано съвпадение.
     </p>
   [% END %]
-
+  
   <p>
     След това, моля отделете време да обясните защо правите
     това:<br>
     <input type="text" id="reason" name="reason" size="80" maxlength="200"
            value="[% reason_default FILTER html %]">
   </p>
-
+  
   <p>
     Съобщението, което въведете тук, ще бъде до потребителя, за когото се представяте по е-поща.
     Ако желаете можете да оставите празно, но те все пак ще знаят, че вие
     се представяте за тях.
   </p>
-
+  
   [% IF user.authorizer.can_login %]
     <p>
       Накрая, въведете <label for="Bugzilla_password">вашата [% terms.Bugzilla %]
@@ -93,9 +93,9 @@
        отново дали наистина имате нужда от използването на тази възможност.
     </p>
   [% END %]
-
+  
   <p>
-    Натиснете върху бутона, за да започнете сесия:
+    Щракнете върху бутона, за да започнете сесия:
     <input type="submit" value="Започване на сесия">
     <input type="hidden" name="action" value="begin-sudo">
     <input type="hidden" name="token" value="[% token FILTER html %]">

@@ -27,12 +27,14 @@
 [% attidsummary = attachment.id _ ': ' _ attachment.description %]
 [% statuses = { '+' => "разреши" , '-' => 'отказа' , 'X' => "отхвърли" ,
                 '?' => "заяви на" } %]
+
+[% to_identity = "" %]
 [% IF flag.status == '?' %]
-  [% to_identity = flag.addressee.identity _ " за" %]
+  [% to_identity = flag.requestee.identity _ " за" %]
   [% subject_status = "заявен" %]
 [% ELSE %]
-  [% IF flag.addressee %]
-    [% to_identity = "заявката на " _ flag.addressee.identity _ " за" %]
+  [% IF flag.requester %]
+    [% to_identity = "заявката на " _ flag.requester.identity _ " за" %]
   [% END %]
   [% subject_status = statuses.${flag.status} %]
 [% END %]

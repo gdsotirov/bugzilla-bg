@@ -20,7 +20,7 @@
   #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
-[%
+[% 
    title = "Задължителни настройки"
    desc = "Задължителни настройки за правилна работа на ${terms.Bugzilla}"
 %]
@@ -76,23 +76,24 @@
                   "забранена и този текст ще бъде показван вместо всички " _
                   "страници на ${terms.Bugzilla}.",
 
-announcehtml => "Ако полето не е празно, $terms.Bugzilla ще " _
+  announcehtml => "Ако полето не е празно, $terms.Bugzilla ще " _
                   "показва това което е в него отгоре на всяка " _
-                "<abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> страница.  <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> кода, който поставите, не бива " _
+                  "<abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> страница.  <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> кода, който поставите в това поле, не бива да бъде" _
                   "обвит или вмъкнат в нищо; ако желаете може да го " _
-                  "обвиете в <tt>&lt;div&gt;</tt>.  Дайта не div " _
-                  "<em>id=message</em> за да получите зелен текст в " _
+                  "обвиете в <tt>&lt;div&gt;</tt>.  Дайте на div " _
+                  "<em>id=message</em>, за да получите зелен текст в " _
                   "червена кутия или <em>class=bz_private</em> за тъмно " _
-                  "черно на червен фон.  Всичко зададено в " _
+                  "червено на червен фон.  Всичко зададено в " _
                   "<tt>skins/standard/global.css</tt> или " _
-                  "<tt>skins/custom/global.css</tt> ще стане.  За да " _
+                  "<tt>skins/custom/global.css</tt> ще работи.  За да " _
                   "получите центриран текст използвайте <em>style=\"text-align: " _
                   "center;\"</em>.",
 
   proxy_url => "$terms.Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за нови " _
                "версии, виж параметъра <tt>upgrade_notification</tt>. В случай, че сте " _
                "зад прокси, може да се наложи да въведете адреса му ако групата на web " _
-               "сървъра няма достъп до променливата на средата HTTP_PROXY.",
+               "сървъра няма достъп до променливата на средата HTTP_PROXY. Ако трябва да " _
+               "се удостоверите, използвайте синтаксиса <code>http://user:pass@proxy_url/</code>.",
 
   upgrade_notification => "<p>$terms.Bugzilla може да ви уведоми когато е налична нова версия. " _
                           "Уведомлението ще се появи на началната страница на $terms.Bugzilla, " _

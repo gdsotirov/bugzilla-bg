@@ -38,8 +38,8 @@
 [% END %]
 
 [% IF value && !no_edit_link %]
-  Редакция на стойността <a 
-  title="Редактиране на стойността '[% value FILTER html %]' за полето '
+  Редакция на стойност <a 
+  title="Редактиране на стойност '[% value FILTER html %]' за полето '
          [%- field FILTER html %]'"
   href="editvalues.cgi?action=edit&amp;field=
         [%- field FILTER url_quote %]&amp;value=[% value FILTER url_quote %]">

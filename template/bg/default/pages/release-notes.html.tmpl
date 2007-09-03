@@ -20,7 +20,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.0 Бележки към версията" 
+  title = "$terms.Bugzilla 3.0.1 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -28,9 +28,11 @@
 
 <ul class="bz_toc">
   <li><a href="#v30_introduction">Въведение</a></li>
+  <li><a href="#v30_point">Промени в тази 3.0.x версия</a></li>
   <li><a href="#v30_req">Минимални изисквания</a></li>
   <li><a href="#v30_feat">Нови възможности и подобрения</a></li>
   <li><a href="#v30_issues">Оставащи проблеми</a></li> 
+  <li><a href="#v30_security">Обновления по сигурността в тази версия</a></li>
   <li><a href="#v30_upgrading">Как да надградите от по-стара версия</a></li>
   <li><a href="#v30_code_changes">Промени в кода, които могат да засегнат
     потребителските промени</a></li>
@@ -50,6 +52,91 @@
   преди 2.22 наистина прочетете бележките към версиите на всички 
   <a href="#v30_previous">предишни версия</a> между вашата версия
   и [% terms.Bugzilla %] 3.0.</p>
+
+<h2><a name="v30_point">Промени в тази 3.0.x версия</a></h2>
+
+<p>Тази секция описва какво се е променило в най-скорошните поправящи
+  версии на [% terms.Bugzilla %] след 3.0. Описваме само
+  най-важните поправки на бъгове във всяка версия. Ако желаете подробен списък на
+  <em>всичко</em>, което е променено след 3.0, трябва да използвате нашата
+  <a href="http://www.bugzilla.org/status/changes.html">страница Журнал на промените</a>.</p>
+
+<h3>3.0.1</h3>
+
+<ul>
+  <li>За потребителите на Firefox 2, потребителския интерфейс на <code>show_bug.cgi</code>
+    не трябва повече да "рухва" след промяна на [% terms.bug %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370739">[% terms.Bug %] 370739</a>)</li>
+  <li>Ако можете да благословите група и можете да споделяте съхранени търсения с
+    нея, тя няма повече да се появяват автоматично в всички дъна на страница на тази
+    група докато не поискате това специално.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=365890">[% terms.Bug %] 365890</a>)</li>
+  <li>Вече съществува параметър, с който се разрешава на потребителите да извършват търсения без
+    никакви термини за търсене. (С други думи, да търсят само за Продукт
+    и Състояние на страницата за просто търсене.) Параметъра е наречен
+    <code>specific_search_allow_empty_words</code>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=385910">[% terms.Bug %] 385910</a>)</li>
+  <li>Ако прикачвате файл, който има <abbr lang="en" title="Multi-purpose Internet Mail Extensions">MIME</abbr>-тип <code>text/x-patch</code>
+    или <code>text/x-diff</code>, той автоматично ще бъде обработен като 
+    кръпка от [% terms.Bugzilla %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=365756">[% terms.Bug %] 365756</a>)</li>
+  <li>Графиките на зависимостите сега работят правилно с всички mod_perl инсталации.
+    Сега не трябва да има значителни оставащи проблеми с ползването на
+    [%+ terms.Bugzilla %] под mod_perl.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370398">[% terms.Bug %] 370398</a>)</li>
+  <li>Ако местите [% terms.bug %] между продукти, което ще премахне групи
+    от [% terms.bug %], вече ще бъдете предупреждавани.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=303183">[% terms.Bug %] 303183</a>)</li>
+  <li>Върху <abbr lang="en" title="Internet Information Services">IIS</abbr>, когато [% terms.Bugzilla %] изхвърли предупреждение, то ще
+    се появи върху web страницата всъщност. Сега предупрежденията са подтиснати,
+    освен ако нямате файл в <code>data</code> папката с име
+    <code>errorlog</code>, като в този случай предупрежденията се печатат там.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=390148">[% terms.Bug %] 390148</a>)</li>
+  <li>Ако използвате <kbd>email_in.pl</kbd> за редактиране на [% terms.abug %] който е бил
+    защитен от групи, всички групи ще бъдат изчистени.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=385453">[% terms.Bug %] 385453</a>)</li>
+  <li>PostgreSQL потребители: Нови Графики се провалят в събирането на данни с времето.
+    Сега те ще почнат да събират данни правилно.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=257351">[% terms.Bug %] 257351</a>)</li>
+  <li>Някои писма за флагове не указват кой е изпълнителя на искането. 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=379787">[% terms.Bug %] 379787</a>)</li>
+  <li>Вместо изхвърлянето на истински грешки, <kbd>collectstats.pl</kbd> ще
+    каже просто, че не може да намери <code>ThrowUserError</code>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=380709">[% terms.Bug %] 380709</a>)</li>
+  <li>Логването в [% terms.Bugzilla %] от началната страница работи отново
+    с IIS5. 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=364008">[% terms.Bug %] 364008</a>)</li>
+  <li>Ако използвате <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> за изпращане на поща, понякога на писмата ще
+    липсва заглавието <code>Date</code>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=304999">[% terms.Bug %] 304999</a>).</li>
+  <li>В XML-RPC WebService, <code>B<!-- -->ug.legal_values</code> сега
+    правилно връща стойности от потребителски полета ако заявявате стойност 
+    от потребителски полета.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=381737">[% terms.Bug %] 381737</a>)</li>
+  <li>Страницата "Насоки за писане на [% terms.Bug %]" беше скъсена
+    и пренаписана.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=378590">[% terms.Bug %] 378590</a>)</li>
+  <li>Ако параметъра ви <code>urlbase</code> е включвал номер на порт,
+    като <code>www.domain.com:8080</code>, възможно е <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</> да е пропадало.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=384501">[% terms.Bug %] 384501</a>)</li>
+  <li>За <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> потребителите, има нов параметър, <code>smtp_debug</code>.
+    Включването на този параметър ще записва пълната информация за
+    всяка <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> сесия в журналния файл на web сървъра ви, за подпомагане на
+    диагностицирането на проблеми със <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=384497">[% terms.Bug %] 384497</a>)</li>
+  <li>Ако сте "глобален наблюдаващ" (получавате всичката поща от всеки 
+    [% terms.bug %]), вече можете да видите това във вашите Е-пощенски предпочитания.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=365302">[% terms.Bug %] 365302</a>)</li>
+  <li>Състоянието и Решението на [% terms.bugs %] вече са правилно
+    локализирани в резултатите от търсена с формат <abbr lang="en" title="Concurrent Versions System">CSV</abbr>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=389517">[% terms.Bug %] 389517</a>)</li>
+  <li>Линията "Тема" на писмата биваше обезобразявана ако съдържаше
+    не латински символи.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=387860">[% terms.Bug %] 387860</a>)</li>
+  <li>Редактирането на параметъра "languages" с използването на <kbd>editparams.cgi</kbd> се
+    проваляше понякога, предизвиквайки изхвърлянето на грешка от [% terms.Bugzilla %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=335354">[% terms.Bug %] 335354</a>)</li>
+</ul>
 
 <h2><a name="v30_req"></a>Минимални изисквания</h2>
 
@@ -444,47 +531,53 @@
 <h2><a name="v30_issues"></a>Оставащи проблеми</h2>
 
 <ul>
-  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370739">
-    [%- terms.Bug %] 370739</a>: There is a problem in Firefox 2.0 that
-    sometimes causes the [% terms.bug %] editing page to render incorrectly
-    after editing a [% terms.bug %].</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=69621">
-    [%- terms.Bug %] 69621</a>: If you rename or remove a keyword that is
-    in use on [% terms.bugs %], you will need to rebuild the "keyword cache"
-    by running <a href="sanitycheck.cgi">sanitycheck.cgi</a> and choosing 
-    the option to rebuild the cache when it asks. Otherwise keywords may 
-    not show up properly in search results.</li>
+    [%- terms.Bug %] 69621</a>: Ако преименувате или премахнете ключова дума която се
+    използва в [% terms.bugs %], ще се наложи да преизградите "наличността с ключови думи"
+    с пускането на <a href="sanitycheck.cgi">sanitycheck.cgi</a> и избирането 
+    на възможността за преизграждане на наличността при запитване. В противен случай ключовите думи може 
+    да не се показват правилно в резултатите от търсене.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=99215">
-    [%- terms.Bug %] 99215</a>: Flags are not protected by "mid-air 
-    collision" detection. Nor are any attachment changes.</li>
+    [%- terms.Bug %] 99215</a>: Флаговете не са защитени от откриването на "въздушна 
+    колизия". Нито всякакви промени по приставките.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=89822">
-    [%- terms.Bug %] 89822</a>: When changing multiple [% terms.bugs %] at 
-    the same time, there is no "mid-air collision" protection.</li>
+    [%- terms.Bug %] 89822</a>: При промяна на няколко [% terms.bugs %] 
+    едновременно, няма защита от "въздушна колизия".</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276230">
-    [%- terms.Bug %] 276230</a>: The support for restricting access to 
-    particular Categories of New Charts is not complete. You should treat 
-    the 'chartgroup' Param as the only access mechanism available.<br>
-    However, charts migrated from Old Charts will be restricted to 
-    the groups that are marked MANDATORY for the corresponding Product.
-    There is currently no way to change this restriction, and the 
-    groupings will not be updated if the group configuration
-    for the Product changes.</li>
+    [%- terms.Bug %] 276230</a>: Поддръжката за ограничаване на достъпа до 
+    определени Категории от Нови Графики не е готова. Трябва да използвате 
+    параметъра 'chartgroup' като единствен възможен механизъм за достъп.<br>
+    Въпреки това, графики мигрирани от Стари Графики ще бъдат ограничени 
+    до групите означени като ЗАДЪЛЖИТЕЛНИ за съответния продукт.
+    В момента няма начин за премахване на това ограничение, а 
+    групиранията няма да бъдат обновени ако конфигурацията на групата
+    за Продукта се промени.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370370">
-    [%- terms.Bug %] 370370</a>: mod_perl support may currently not
-    be working on Windows machines. Also, even when it does work,
-    editparams.cgi seems to crash on certain versions of mod_perl.</li>
+    [%- terms.Bug %] 370370</a>: mod_perl поддръжката в момента не работи
+    на машини с Windows.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=361149">
-    [%- terms.Bug %] 361149</a>: If you are using Perl 5.8.0, you may
-    get a lot of warnings in your Apache error_log about "deprecated
-    pseudo-hashes." These are harmless--they are a b[%# fool test %]ug in 
-    Perl 5.8.0. Perl 5.8.1 and later do not have this problem.</li>
-  <li>[% terms.Bugzilla %] 3.0rc1 allowed custom field column names in 
-    the database to be mixed-case. [% terms.Bugzilla %] 3.0 only allows
-    lowercase column names. It will fix any column names that you have
-    made mixed-case, but if you have custom fields that previously were
-    mixed-case in any Saved Search, you will have to re-create that Saved
-    Search yourself.</li>
+    [%- terms.Bug %] 361149</a>: Ако използвате Perl 5.8.0, може да
+    получите много предупреждения в Apache error_log журнала за "deprecated
+    pseudo-hashes." Те са безобидни--те са б[%# fool test %]ъг в 
+    Perl 5.8.0. Perl 5.8.1 и по-нов нямат този проблем.</li>
+  <li>[% terms.Bugzilla %] 3.0rc1 позволяваше имената на потребителските полета в 
+    базата данни да са със смесен регистър. [% terms.Bugzilla %] 3.0 позволява само
+    малки букви в имената на колоните. Тя ще поправи всички имена на колони които сте
+    направили със смесен регистър, но ако имате потребителски полета, които преди това са били
+    със смесен регистър в някое Съхранено търсене, ще трябва да го направите отново
+    собственоръчно.</li>
 </ul>
+
+<h2><a name="v30_security"></a>Обновления по сигурността в тази версия</h2>
+
+<h3>3.0.1</h3>
+
+<p>[% terms.Bugzilla %] 3.0 имаше три проблема със сигурността, които бяха
+  оправени в тази версия: едино маловажно изтичане на информация, една дупка
+  използваема само от администратор или с използването на <code>email_in.pl</code>, и една в
+  рядко използван шаблон. За подробности, вижте 
+  <a href="http://www.bugzilla.org/security/2.20.4/">Бюлетина по сигурността</a>.</p>
+
 
 <h2><a name="v30_upgrading"></a>Как да надградите от по-стара версия</h2>
 

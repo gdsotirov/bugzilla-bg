@@ -21,7 +21,7 @@
 [% PROCESS "global/field-descs.none.tmpl" %]
 
 [% title = BLOCK %]
-  Редактиране на потребителското поле '[% field.name FILTER html %]' ([% field.description FILTER html %])
+  Редактиране на потребителско поле '[% field.name FILTER html %]' ([% field.description FILTER html %])
 [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -62,7 +62,7 @@
                  value="[% field.description FILTER html %]"></td>
 
       <th align="right">
-        <label for="new_bugmail">Показвано в бъгпоща за нови [% terms.bugs %]:</label>
+        <label for="new_bugmail">Показвано в [% terms.bug %]поща за нови [% terms.bugs %]:</label>
       </th>
       <td><input type="checkbox" id="new_bugmail" name="new_bugmail" value="1"
                  [%- " checked" IF field.mailhead %]></td>
@@ -99,7 +99,7 @@
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="name" value="[% field.name FILTER html %]">
   <input type="hidden" name="token" value="[% token FILTER html %]">
-  <input type="submit" id="edit" value="Изпращане">
+  <input type="submit" id="edit" value="Предаване">
 </form>
 
 <p>

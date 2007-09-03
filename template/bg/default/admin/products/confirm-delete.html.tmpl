@@ -24,7 +24,7 @@
   #
   #%]
 
-[% title = BLOCK %]Изтриване на продукта '[% product.name FILTER html %]'
+[% title = BLOCK %]Изтриване на продукт '[% product.name FILTER html %]'
 [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -87,7 +87,7 @@
 
   [% IF Param('usetargetmilestone') %]
     <tr>
-      <td>URL на важно събитите:</td>
+      <td>URL на целево събитите:</td>
       <td>
         [% IF product.milestone_url %]
           <a href="[% product.milestone_url FILTER uri %]">

@@ -22,9 +22,10 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-From: bugzilla-admin-daemon
+From: [% Param('mailfrom') %]
 To: [% emailaddress %]
 Subject: [% PROCESS subject %]
+X-Bugzilla-Type: admin
 
 Заявка беше отхвърлена от [% remoteaddress %].
 
@@ -39,11 +40,12 @@ Subject: [% PROCESS subject %]
        Потребител: [% emailaddress %]
  Дата на издаване: [% issuedate %]
 Дата на събитието: [% eventdata %]
-  Отказано поради:
-[% PROCESS cancelactionmessage %]
+  Отказано поради: [% PROCESS cancelactionmessage %]
 
 [% BLOCK subject %]
-  [% IF tokentype == 'password' %]
+  [% IF tokentype == 'new_account' %]
+    Отхвърлена заявка за създаване на сметка
+  [% ELSIF tokentype == 'password' %]
     Отхвърлена заявка за смяна на парола
   [% ELSIF tokentype == 'emailnew' OR tokentype == 'emailold' %]
     Отхвърлена заявка за смяна на електронен пощенски адрес
@@ -73,6 +75,10 @@ Subject: [% PROCESS subject %]
   [% ELSIF cancelaction == 'password_change_cancelled' %]
     Заявили сте отхвърляне.
 
+  [% ELSIF cancelaction == 'account_creation_cancelled' %]
+    Създаването на потребителската сметка [% emailaddress %]
+    беше отхвърлено.
+
   [% ELSIF cancelaction == 'user_logged_in' %]
     Влезли сте.
 
@@ -84,6 +90,9 @@ Subject: [% PROCESS subject %]
 
   [% ELSIF cancelaction == 'wrong_token_for_confirming_email_change' %]
     Опитахте се да използвате признака за потвърждаване на промяната на електронния пощенски адрес.
+
+  [% ELSIF cancelaction == 'wrong_token_for_creating_account' %]
+    Опитахте се да използвате признака за създаване на потребителска сметка.
 
   [% ELSE %]
     [%# Give sensible error if the cancel-token function is used incorrectly.

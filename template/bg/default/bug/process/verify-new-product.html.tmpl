@@ -17,6 +17,7 @@
   # Rights Reserved.
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [%# INTERFACE:
@@ -31,6 +32,8 @@
   #   if they want to add the bug to its new product's group
   # use_target_milestone: boolean; whether or not to use
   #   the target milestone field
+  # old_groups: a list of group objects which are not available
+  #   for the new product.
   #%]
 
 [%# The global Bugzilla->cgi object is used to obtain form variable values. %]
@@ -102,19 +105,34 @@
 [% IF verify_bug_group %]
   <h3>Проверка на [% terms.Bug %] група</h3>
 
-  <p>
-    Желаете ли да добавите [% terms.abug %] към подразбиращите се групи на новия продукт (ако има)?
-  </p>
+  [% IF old_groups.size %]
+    <p>Следните групи не са позволени за продукта <b>[% cgi.param("product") FILTER html %]</b>
+    или не ви е разрешено да ограничавте [% terms.bugs %] до тях:</p>
+    <ul>
+      [% FOREACH group = old_groups %]
+        <li>[% group.name FILTER html %]: [% group.description FILTER html %]</li>
+      [% END %]
+    </ul>
+    <p><b>[%+ terms.Bugs %] няма повече да са ограничени до тези групи и могат да станат
+    публични ако не се приложи друга група.</b></p>
+  [% END %]
 
-  <p>
-    <input type="radio" name="addtonewgroup" value="no"><b>не</b><br>
-    <input type="radio" name="addtonewgroup" value="yes"><b>да</b><br>
-    <input type="radio" name="addtonewgroup" value="yesifinold" checked="checked">
-      <b>да, но само ако [% terms.abug %] е бил в няокоя от подразбиращите се групи на стария продукт</b><br>
+  [% IF verify_bug_group %]
+    <p>
+      Новия продукт има зададени подразбиращи се групи. Желаете ли да добавите
+      [%+ terms.abug %] към тях?<br>
+      <input type="radio" id="add_no" name="addtonewgroup" value="no"><label for="add_no">не</label><br>
+      <input type="radio" id="add_yes" name="addtonewgroup" value="yes"><label for="add_yes">да</label><br>
+      <input type="radio" id="add_yesifinold" name="addtonewgroup" value="yesifinold" checked="checked">
+        <label for="add_yesifinold"><b>да, но само ако [% terms.abug %] е бил в няокоя от
+        подразбиращите се групи на стария продукт</label>
   </p>
+  [% END %]
 [% END %]
 
-<input type="submit" id="change_product" value="Изпращане">
+<p>
+  <input type="submit" id="change_product" value="Преаване">
+</p>
 
 </form>
 <hr>
@@ -124,9 +142,9 @@
 
 [% IF cgi.param('id') AND cgi.param('id').match('^\d+$') %]
   [% id = cgi.param('id') %]
-  [% "Отказ и връщане към $terms.bug $id" FILTER bug_link(id) FILTER none %]
+  Отказ и връщане към [% "$terms.bug $id" FILTER bug_link(id) FILTER none %]
 [% ELSE %]
-  <a href="buglist.cgi?regetlastlist=1">Отказ и връщане към последните резултати от търсене</a>
+  Отказ и връщане към <a href="buglist.cgi?regetlastlist=1">последните резултати от търсене</a>
 [% END %]
 
 [% PROCESS global/footer.html.tmpl %]

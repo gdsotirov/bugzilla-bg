@@ -225,7 +225,7 @@
   [% ELSIF error == "buglist_parameters_required" %]
     [% title = "Необходими са параметри" %]
     [% docslinks = {'query.html' => "Търсене за $terms.bugs",
-                    'list.html'  => "$terms.Bug lists"} %]
+                    'query.html#list'  => "$terms.Bug lists"} %]
     Не можете да търсите или да създавате съхранени търсения без никакви термини за търсене.
 
   [% ELSIF error == "bugs_not_changed" %]
@@ -967,7 +967,7 @@
   [% ELSIF error == "missing_query" %]
     [% title = "Липсващо търсене" %]
     [% docslinks = {'query.html' => "Търсене на $terms.bugs",
-                    'list.html'  => "$terms.Bug списъци"} %]
+                    'query.html#list'  => "$terms.Bug списъци"} %]
     Търсенето именовано <em>[% queryname FILTER html %]</em>
     [% IF sharer_id && sharer_id != user.id %]
       не е направено видимо за вас.
@@ -1261,12 +1261,26 @@
 
   [% ELSIF error == "query_name_missing" %]
     [% title = "Не е указано има не търсене" %]
-    [% docslinks = {'list.html' => "За $terms.bug списъците"} %]
+    [% docslinks = {'query.html#list' => "За $terms.bug списъците"} %]
     Трябва да укажете име за вашето търсене.
 
   [% ELSIF error == "query_name_too_long" %]
     [% title = "Твърде дълго име на заявка" %]
     Името на заявката трябва да бъде по-късо от 64 символа.
+
+  [% ELSIF error == "quicksearch_unknown_field" %]
+    [% title = "Непознато поле за бързо търсене" %]
+    [% IF fields.unique.size == 1 %]
+      Полето <code>[% fields.first FILTER html %]</code> не е познато.
+    [% ELSE %]
+      Полетата
+      [% FOREACH field = fields.unique.sort %]
+         <code>[% field FILTER html %]</code>
+         [% ', ' UNLESS loop.last() %]
+      [% END %]
+      не са познати.
+    [% END %]
+    Правилните имена на полета са <a href="page.cgi?id=quicksearchhack.html">описани тук</a>.
 
   [% ELSIF error == "reassign_to_empty" %]
     [% title = "Незаконно преназначаване" %]
@@ -1479,7 +1493,8 @@
 
   [% ELSIF error == "zero_length_file" %]
     [% title = "Файлът е празен" %]
-    Файлът, който се опитвате да прикачите е празен!
+    Файлът, който се опитвате да прикачите е празен, не съществува или нямате
+    права за четенето му.
 
   [% ELSIF error == "illegal_user_id" %]
     [% title = "Недействителен потребителски идентификатор" %]
