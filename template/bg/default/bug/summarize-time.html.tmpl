@@ -16,7 +16,7 @@
 
 [% USE date %]
 
-[% PROCESS global/variables.none.tmpl %]
+[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% title = "Сборно време " %]
 [% IF do_depends %]
@@ -37,7 +37,7 @@
 
 [% IF ids.size == 0 %]
 
-    Няма указани или видими [% terms.bugs %].
+    <p>Няма указани или видими [% terms.bugs %].</p>
 
 [% ELSE %]
 
@@ -72,7 +72,7 @@
 
         [% IF null.keys.size > 0 %] 
             [% INCLUDE inactive_report %]
-            <h4 style="margin: 0">Общо [% null.keys.size %] 
+            <h4 style="margin: 0">Общо [% null.keys.size %]
                 неактивни [% terms.abug %]</h4>
         [% END %]
 
@@ -193,7 +193,7 @@
     <tr class="bug_header[% '2' IF cid % 2 %]">
         <td width="10" valign="top">
         [% INCLUDE buglink id=id %]</td>
-        <td width="10"><b>[% bug_status FILTER html %]</b></td>
+        <td width="10"><b>[% status_descs.${bug_status} FILTER html %]</b></td>
         <td colspan="2">[% short_desc FILTER html %]</td>
         [% extra FILTER none %]
     </tr>

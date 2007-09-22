@@ -1020,19 +1020,18 @@
     [% title = BLOCK %]Не са избрани [% terms.bugs %][% END %]
     Не сте избрали никакви [% terms.bugs %] за
     [% IF action == "add" %] добавяне към [% ELSE %] премахване от [% END %]
-    съхраненото търсене.
+    етикета [% tag FILTER html %].
 
   [% ELSIF error == "no_bugs_in_list" %]
-    [% title = "Изтриване на съхранено търсене?" %]
-    Ще премахнете всички [% terms.bugs %] от съхраненото търсене
-    '[% saved_search FILTER html %]'. Това ще го изтрие напълно. Щракнете
+    [% title = "Изтриване на етикета?" %]
+    Ще премахнете всички [% terms.bugs %] от етикета
+    [% tag FILTER html %]. Това ще го изтрие напълно. Щракнете
     <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-    [%- saved_search FILTER url_quote %]">тук</a> ако наистина желаете да
-    го премахнете.
+    [%- tag FILTER url_quote %]">тук</a> ако наистина желаете да го премахнете.
 
   [% ELSIF error == "no_bugs_to_remove" %]
-    [% title = "Не е избрано съхранено търсене" %]
-    Не сте избрали съхранено търсене за премахване на [% terms.bugs %] от него.
+    [% title = "Не е избран етикет" %]
+    Не сте избрали етикет, от който да премахвате [% terms.bugs %].
 
   [% ELSIF error == "no_component_change_for_multiple_products" %]
     [% title = "Неразрешено действие" %]
