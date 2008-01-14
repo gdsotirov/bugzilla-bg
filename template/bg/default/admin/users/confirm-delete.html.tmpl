@@ -401,32 +401,32 @@
             заедно с изтриването му.
           </li>
         [% END %]
-        [% IF whine_events || whine_schedules %]
+        [% IF whine_events %]
           <li>
-            [% otheruser.login FILTER html %]
-            [% IF whine_events %]
-              е насрочил
-              [% IF whine_events == 1 %]
-                известяване
-              [% ELSE %]
-                [%+ whine_events %] известявания
-              [% END %]
-            [% END %]
-            [% IF whine_schedules %]
-              [%+ 'и' IF whine_events %]
-              е получател на
-              [% IF whine_schedules == 1 %]
-                известие
-              [% ELSE %]
-                [%+ whine_schedules %] известия
-              [% END %]
-            [% END %].
-            [% IF whine_events + whine_schedules == 1 %]
-              Това известие ще бъде изтрито
+            [% otheruser.login FILTER html %] е насрочил
+            [% IF whine_events == 1 %]
+              хленч
             [% ELSE %]
-              Тези известия ще бъдат изтрити
+              [%+ whine_events %] хленча
+            [% END %].
+            [% IF whine_events == 1 %]
+              Този хленч
+            [% ELSE %]
+              Тези хленчове
             [% END %]
-            заедно с него.
+            ще бъдат изтрити заедно с потребителската сметка.
+          </li>
+        [% END %]
+        [% IF whine_schedules %]
+          <li>
+            [% otheruser.login FILTER html %] е на приемащия край на
+            [% IF whine_schedules == 1 %]
+              хленч
+            [% ELSE %]
+              [%+ whine_schedules %] хленча
+            [% END %].
+            Съответстващите разписания ще бъдат изтрити заедно с потребителската сметка,
+            но самите хленчове ще бъдат оставени непроменени.
           </li>
         [% END %]
       </ul>

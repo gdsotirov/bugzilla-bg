@@ -50,14 +50,17 @@
        name => "product_count"
        align => "right"
        heading => "Брой продукти"
-     },
-     { 
-       heading => "Действие..."
-       content => "Добавяне на продукт"
-       contentlink => add_contentlink
-     },
+     }
    ]
 %]
+
+[% IF user.in_group('editcomponents') %]
+  [% columns.push({
+       heading => "Действие..."
+       content => "Добавяне на продукт"
+       contentlink => add_contentlink })
+  %]
+[% END %]
 
 [% PROCESS admin/table.html.tmpl
      columns = columns

@@ -1201,7 +1201,7 @@
     създадете целевото събитие '[% defaultmilestone FILTER html %]'</a> преди
     то да бъде направено подразбиращо се за продукта '[% product FILTER html %]'.
 
-  [% ELSIF error == "product_access_denied" %]
+  [% ELSIF error == "product_admin_denied" %]
     [% title = "Отказан достъп до продукт" %]
     Не ви е позволено да редактирате свойствата на продукта '[% product FILTER html %]'.
 
