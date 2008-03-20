@@ -25,7 +25,7 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [%# Define strings that will serve as the title and header of this page %]
-[% title = BLOCK %]Създаване на нова приставка за [% terms.Bug %] №[% bugid %][% END %]
+[% title = BLOCK %]Създаване на нова приставка за [% terms.Bug %] №[% bug.bug_id %][% END %]
 [% header = BLOCK %]Създаване на нова приставка за 
   [%+ "$terms.Bug $bug.bug_id" FILTER bug_link(bug.bug_id) FILTER none %][% END %]
 [% subheader = BLOCK %][% bug.short_desc FILTER html %][% END %]
