@@ -82,8 +82,7 @@
         <dd>
           Този [% terms.bug %] все още не е разрешен, но е назначен на
           правилния човек. От тук [% terms.bugs %] могат да бъдат дадени на
-          някое друго лице и да станат <b>[% status_descs.NEW FILTER html %]</b> или разрешени ставайки
-          <b>[% status_descs.RESOLVED FILTER html  %]</b>.
+          някое друго лице и да станат <b>[% status_descs.NEW FILTER html %]</b> или разрешени ставайки <b>[% status_descs.RESOLVED FILTER html  %]</b>.
         </dd>
 
         <dt>
@@ -91,7 +90,7 @@
         </dt>
         <dd>
           Този [% terms.bug %] е бил разрешен, но решението е било сметнато
-          за неправилно. Например [% terms.bug %] със състояние <b>[% status_descs.WORKSFORME FILTER html %]</b> е
+          за неправилно. Например [% terms.bug %] със състояние <b>[% get_resolution("WORKSFORME") FILTER html %]</b> е
           <b>[% status_descs.REOPENED FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
           вече възпроизводим. От тук [% terms.bugs %] са отбелязвани или
           <b>[% status_descs.ASSIGNED FILTER html %]</b> или <b>[% status_descs.RESOLVED FILTER html %]</b>.
@@ -195,7 +194,8 @@
           <b>[% get_resolution("MOVED") FILTER html %]</b>
         </dt>
         <dd>
-          Проблема е характерен за свързан продукт чиито [% terms.bugs %] се следят
+          Проблема е характерен за свързан продукт
+          чиито [% terms.bugs %] се следят
           в друга база данни с [% terms.bugs %]. [% terms.Abug %] е бил преместен
           в нея.
         </dd>
@@ -225,6 +225,13 @@
 
     <td>Важна загуба на функционалност</td>
   </tr>
+
+  <tr>
+    <th>Нормален</th>
+
+    <td>нормален пропуск, малка загуба на функционалност при определени обстоятелства</td>
+  </tr>
+
 
   <tr>
     <th>Маловажен</th>

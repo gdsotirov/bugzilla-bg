@@ -327,10 +327,10 @@ function doOnSelectProduct(selectmode) {
         <label for="deadlinefrom" accesskey="н">Крае<u>н</u> срок</label>:
       </th>
       <td>
-        от&nbsp;
-        <input name="deadlinefrom" id="deadlinefrom" size="10" maxlength="10">&nbsp;
-        до&nbsp;
-        <input name="deadlineto" size="10" maxlength="10">
+        от <input name="deadlinefrom" id="deadlinefrom" size="10" maxlength="10"
+                    value="[% default.deadlinefrom.0 FILTER html %]">
+        до <input name="deadlineto" size="10" maxlength="10"
+                  value="[% default.deadlineto.0 FILTER html %]">
       </td>
       <td>
         <small>(ГГГГ-ММ-ДД)</small>

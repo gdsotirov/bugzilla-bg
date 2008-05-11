@@ -28,11 +28,28 @@ X-Bugzilla-Type: voteremoved
 
 Някои или всичките ви гласове бяха премахнати от [% terms.bug %] [%+ bugid %].
 
-[% votesoldtext %]
+Имахте [% votesold FILTER html %] [%+ IF votesold == 1 %]глас[% ELSE %]гласа[% END
+%] за този [% terms.bug %], но [% votesremoved FILTER html %] бяха премахнати.
 
-[% votesnewtext %]
+[% IF votesnew %]
+Все още имате [% votesnew FILTER html %] [%+ IF votesnew == 1 %]глас[% ELSE %]гласа[% END %] за този [% terms.bug %].
+[% ELSE %]
+Нямате повече оставащи гласове за този [% terms.bug %].
+[% END %]
 
-Причина: [% reason %]
+Причина:
+[% IF reason == "votes_bug_moved" %]
+  Този [% terms.bug %] беше преместен в друг продукт.
+
+[% ELSIF reason == "votes_too_many_per_bug" %]
+  Правилата за гласуване на продукта са променени;
+  имате твърде много гласове за един [% terms.bug %].
+
+[% ELSIF reason == "votes_too_many_per_user" %]
+  Правилата за гласуване на продукта са променени; имате
+  твърде много гласове общо, така че всички гласове бяха премахнати.
+[% END %]
+
 
 
 [% Param("urlbase") %]show_bug.cgi?id=[% bugid %]

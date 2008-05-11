@@ -250,6 +250,11 @@
     [% title = "Класификацията не е позволена" %]
     Съжалявам, класофикацията не е позволена.
 
+  [% ELSIF error == "bug_status_not_allowed" %]
+    [% title = "Състоянието на $terms.abug не е разрешено" %]
+    Не можете да обозначите отворени [% terms.bugs %] като [% status_descs.$status FILTER html %].
+    Трябва да ги обозначите първо като [% status_descs.RESOLVED FILTER html %].
+
   [% ELSIF error == "classification_not_specified" %]
     [% title = "Трябва да предоставите име на класификацията" %]
     Трябва да въведете име на класификация.
@@ -570,6 +575,13 @@
     [% title = "Недействителен ключ за подреждане на тип флаг" %]
     Ключа за подреждане трябва да бъде цяло число между 0 и 32767 включително.
     Не може да бъде <em>[% sortkey FILTER html %]</em>.
+
+  [% ELSIF error == "freetext_too_long" %]
+    [% title = "Текста е твърде дълъг" %]
+    Текста, който въведохте е твърде дълъг ([% text.length FILTER html %] символа,
+    над максималната разрешена дължина от [% constants.MAX_FREETEXT_LENGTH FILTER none %]
+    символа):
+    <p><em>[% text FILTER html %]</em></p>
 
   [% ELSIF error == "group_cannot_delete" %]
     [% title = "Изтриването на група е невъзможно" %]
@@ -1298,6 +1310,10 @@
   [% ELSIF error == "require_summary" %]
     [% title = "Необходимо е резюме" %]
     Трябва да въведете резюме за този [% terms.bug %].
+
+  [% ELSIF error == "resolution_deletion_not_allowed" %]
+    [% title = "Смяна на решение не е разрешена" %]
+    Не можете да изчистите решението на неотворени [% terms.bugs %].
 
   [% ELSIF error == "resolution_not_allowed" %]
     [% title = "Решението не е позволено" %]

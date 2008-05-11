@@ -31,7 +31,7 @@
         [% IF !otheruser.groups.bz_sudo_protect %]
           <br />
           <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
-          [%- otheruser.login FILTER html %]">Представяне за този потребител</a>
+          [%- otheruser.login FILTER url_quote %]">Представяне за този потребител</a>
         [% END %]
       [% END %]
     [% ELSE %]

@@ -20,7 +20,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.0.3 Бележки към версията" 
+  title = "$terms.Bugzilla 3.0.4 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -51,7 +51,7 @@
   надградите от по-стара версия</a>. Ако надграждате от версия
   преди 2.22 наистина прочетете бележките към версиите на всички 
   <a href="#v30_previous">предишни версия</a> между вашата версия
-  и [% terms.Bugzilla %] 3.0.</p>
+  и тази.</p>
 
 <h2><a name="v30_point">Промени в тази 3.0.x версия</a></h2>
 
@@ -60,6 +60,54 @@
   най-важните поправки на бъгове във всяка версия. Ако желаете подробен списък на
   <em>всичко</em>, което е променено във всяка версия, трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">страница Журнал на промените</a>.</p>
+
+<h3>3.0.4</h3>
+
+<ul>
+  <li>[% terms.Bugzilla %] администраторите не са били правилно уведомявани
+    за нови версии.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=414726">[% terms.Bug %] 414726</a>)</li>
+
+  <li>Възможно е да има допълнително бяло пространство в линиите тема на е-поща.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=411544">[% terms.Bug %] 411544</a>)</li>
+
+  <li>Полетата приоритет, суровост, <abbr title="Операциона система">ОС</abrev> и платформа бяха винаги задължителни за
+    WebService функцията <kbd>B<!-- -->ug.create</kbd>, дори ако имат
+    указани стойности по подразбиране.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=384009">[% terms.Bug %] 384009</a>)</li>
+
+  <li>По-добро показване на дискусии за [% terms.bug %]поща в някои е-пощенски клиенти.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=376453">[% terms.Bug %] 376453</a>)</li>
+
+  <li>Имаше много поправки в Inbound Email Interface 
+    (<kbd>email_in.pl</kbd>).
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=92274">[% terms.Bug %] 92274</a>,
+     <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=377025">[% terms.Bug %] 377025</a>,
+     <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=412943">[% terms.Bug %] 412943</a>,
+     <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=413672">[% terms.Bug %] 413672</a>, and
+     <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=431721">[% terms.Bug %] 431721</a>)</li>
+
+  <li>checksetup.pl вече борави с UTF-8 обръщането по-надеждно при надграждания.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=374951">[% terms.Bug %] 374951</a>)</li>
+
+  <li>Коментари написани на <abbr lang="en" title="Chinese, Japanese, and Korean">CJK</abbr> езици са вече правилно подреждани до дума.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=388723">[% terms.Bug %] 388723</a>)</li>
+
+  <li>Всички е-писма ще бъдат вече пращани в правилния език, когато потребителя
+    е избрал език за е-писма.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=405946">[% terms.Bug %] 405946</a>)
+
+  <li>При Windows, временните файлове създавани при качване на пртурки са вече
+    правилно изтривани, когато качването завърши.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=414002">[% terms.Bug %] 414002</a>)</li>
+
+  <li><kbd>checksetup.pl</kbd> вече отпечатва правилните инструкции за инсталация
+    за Windows потребителите използващи Perl 5.10.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=414430">[% terms.Bug %] 414430</a>)
+</ul>
+
+<p>Вижте също раздела <a href="#v30_security">Бюлетин по сигурността</a> за
+  информация относно поправени важени проблеми по сигурността в тази версия.</p>
 
 <h3>3.0.3</h3>
 
@@ -116,7 +164,8 @@
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370739">[% terms.Bug %] 370739</a>)</li>
   <li>Ако можете да благословите група и можете да споделяте съхранени търсения с
     нея, тя няма повече да се появяват автоматично в всички дъна на страница на тази
-    група докато не поискате това специално.
+    група докато не поискате
+    това специално.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=365890">[% terms.Bug %] 365890</a>)</li>
   <li>Вече съществува параметър, с който се разрешава на потребителите да извършват търсения без
     никакви термини за търсене. (С други думи, да търсят само за Продукт
@@ -444,6 +493,10 @@
 <p>Можете да управлявате тези уведомления с промяната на 
   параметъра <kbd>upgrade_notification</kbd>.</p>
 
+<p>Ако [% terms.Bugzilla %] инсталацията ви е на машина, която трябва да минава
+  през прокси за достъп до мрежата, може също така да зададете
+  параметъра <kbd>proxy_url</kbd>.</p>
+
 <h3><a name="v30_feat_welc"></a>Страница "добре дошли" за нови инсталации</h3>
 
 <p>Когато влизате за пръв път в съвсем нова [% terms.Bugzilla %]
@@ -456,10 +509,6 @@
   възможността да добавят [% terms.Bugzilla %] към лентата си за търсене.
   Тази възможност използва 
   <a href="page.cgi?id=quicksearch.html">синтаксиса на БързоТърсене</a>.</p>
-
-<p>Ако [% terms.Bugzilla %] инсталацията ви е на машина, която трябва да минава
-  през прокси за достъп до мрежата, може също така да зададете
-  параметъра <kbd>proxy_url</kbd>.</p>
 
 <h3><a name="v30_feat_other"></a>Други подобрения и промени</h3>
 
@@ -547,24 +596,18 @@
     който ще бъде показван в началото на всяка страница, като съобщение.</li>
   <li>Параметъра <kbd>loginnetmask</kbd> вече е 0 по подразбиране за нови
     инсталации, което значи, че докато някой има правилната
-    входна бисквитка, той може да влезе от всеки <abbr lang="en" title="Internet
-    Protocol">IP</abbr> адрес. Това прави много по-лесен живота на потребителите с
-    комутируема връзка или други чието <abbr lang="en" title="Internet Protocol">IP</abbr>
+    входна бисквитка, той може да влезе от всеки <abbr lang="en" title="Internet Protocol">IP</abbr> адрес. Това прави
+    много по-лесен живота на потребителите с комутируема връзка или други чието <abbr lang="en" title="Internet Protocol">IP</abbr>
     се сменя много. Това може да бъде постигнато, защото входната бисквитка е вече
     много случайна и по този начин сигурна.</li>
   <li>Класификациите вече имат ключ за подреждане, така че могат да бъдат подредени в
     ред, който не е азбучен.</li>
-  <li>Удостоверяването вече поддържа <abbr lang="en" title="Lightweight Directory Access
-    Protocol">LDAP</abbr> през <abbr lang="en" title="Secure Socket Layer">SSL</abbr>
-    (LDAPS) или <abbr lang="en" title="Transport Layer Security">TLS</abbr> (използвайки
-    командата STARTLS) в допълнение към обикновения <abbr lang="en" title="Lightweight
-    Directory Access Protocol">LDAP</abbr>.</li>
-  <li><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>
-    потребителите вече могат да ползват <abbr lang="en" title="Lightweight Directory
-    Access Protocol">LDAP</abbr> потребителското си име като е-пощенски адрес,
-    вместо да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>
-    атрибута <kbd>mail</kbd> като е-пощенски адрес. Може да желаете да зададете
-    параметъра <kbd>emailsuffix</kbd> ако правите това.</li>
+  <li>Удостоверяването вече поддържа <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> през <abbr lang="en" title="Secure Socket Layer">SSL</abbr>     (LDAPS) или <abbr lang="en" title="Transport Layer Security">TLS</abbr> (използвайки
+    командата STARTLS) в допълнение към обикновения <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>.</li>
+  <li><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> потребителите вече могат да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> потребителското си име като е-пощенски адрес,
+    вместо да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> атрибута <kbd>mail</kbd> като
+    е-пощенски адрес. Може да желаете да зададете параметъра <kbd>emailsuffix</kbd>
+    ако правите това.</li>
   <li>Администраторите вече могат да виждат какво се е променило в потребителска сметка,
     като използват контролния панел &quot;Потребители&quot;.</li>
   <li><code>НАПОМНЯНЕ</code> и <code>ПО-КЪСНО</code> вече не са част
@@ -617,6 +660,13 @@
 
 <h2><a name="v30_security"></a>Обновления по сигурността в тази версия</h2>
 
+<h3>3.0.4</h3>
+
+<p>[% terms.Bugzilla %] 3.0.4 съдържа три поправки по сигурността.
+  За подробности, вижте
+  <a href="http://www.bugzilla.org/security/2.20.5/">Бюлетина по сигурността</a>.</p>
+</p>
+
 <h3>3.0.3</h3>
 
 <p>Няма поправки по сигурността в тази версия.</p>
@@ -641,13 +691,11 @@
 <h3>Бележки за надграждащите</h3>
 
 <ul>
-  <li>Ако надграждате през <abbr lang="en" title="Concurrent Versions
-    System">CVS</abbr>, има няколко .cvsignore файла които вече са в
-    <abbr lang="en" title="Concurrent Versions System">CVS</abbr> вместо
-    да бъдат създавани локално от  kbd>checksetup.pl</kbd>. Това значи,
-    че ще трябва да ги изтриете когато <abbr lang="en" title="Concurrent
-    Versions System">CVS</abbr> ви каже, че има конфликт и да пуснете
-    <kbd>cvs update</kbd> отново.</li>
+  <li>Ако надграждате през <abbr lang="en" title="Concurrent Versions System">CVS</abbr>, има няколко .cvsignore файла
+    които вече са в <abbr lang="en" title="Concurrent Versions System">CVS</abbr> вместо
+    да бъдат създавани локално от  kbd>checksetup.pl</kbd>. Това значи, че ще трябва да
+    ги изтриете когато <abbr lang="en" title="Concurrent Versions System">CVS</abbr> ви каже, че има конфликт и
+    да пуснете <kbd>cvs update</kbd> отново.</li>
   <li>В тази версия на [% terms.Bugzilla %] полето Резюме
     е ограничено до 255 символа. Когато надграждате, всяко Резюме
     по-дълго от това ще бъде отрязано, а старото Резюме ще бъде
@@ -688,9 +736,7 @@
       bu[%# trick filter %]gs-db.sql</kbd></p></li>
 
   <li>Замяна на файловете на инсталацията ви с новата версия на 
-   [% terms.Bugzilla %], а може да опитате с използване на <abbr
-   lang="en" title="Concurrent Versions System">CVS</abbr> за
-   надграждане.
+   [% terms.Bugzilla %], а може да опитате с използване на <abbr lang="en" title="Concurrent Versions System">CVS</abbr> за надграждане.
 
    <p>Можете също така да използвате изцяло нова [% terms.Bugzilla %] папка, като 
      копирате старата <kbd>data/</kbd> папка и файла 

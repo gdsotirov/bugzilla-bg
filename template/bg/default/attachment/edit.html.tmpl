@@ -36,13 +36,6 @@
   title = title
   header = header
   subheader = subheader
-  style = "
-    table.attachment_info th { text-align: right; vertical-align: top; }
-    table.attachment_info td { text-align: left; vertical-align: top; }
-    #noview { text-align: left; vertical-align: middle; }
-
-    table#flags th, table#flags td { font-size: small; vertical-align: baseline; text-align: left; }
-  "
 %]
 
 <script type="text/javascript">
@@ -254,6 +247,7 @@
             <label for="isprivate">частна</label><br>
           [% END %]
           <br>
+        </small>
 
         [% IF flag_types.size > 0 %]
           [% PROCESS "flag/list.html.tmpl" bug_id = attachment.bug_id
@@ -261,8 +255,8 @@
         [% END %]
 
         <div id="smallCommentFrame">
-          <b><label for="comment">Коментар</label> (към
-          [%+ terms.abug %]):</b><br>
+          <b><small><label for="comment">Коментар</label> (към
+          [%+ terms.abug %]):</small></b><br>
             [% INCLUDE global/textarea.html.tmpl
               id      = 'comment'
               name    = 'comment'
@@ -283,7 +277,6 @@
               && attachment.datasize > 0 %]
           | <a href="attachment.cgi?id=[% attachment.id %]&amp;action=delete">Изтриване</a>
         [% END %]
-        </small>
       </td>
 
       [% IF !attachment.datasize %]
@@ -306,15 +299,15 @@
             <!--
             if (typeof document.getElementById == "function") {
 [% IF patchviewerinstalled %]
-              document.write('<iframe id="viewDiffFrame" style="height: 400px; width: 100%; display: none;"></iframe>');
+              document.write('<iframe id="viewDiffFrame" style="height: 400px; width: 100%; display: none;"><\/iframe>');
 [% END %]
-              document.write('<button type="button" id="editButton" onclick="editAsComment();">Редактиране на приставката като коментар</button>');
-              document.write('<button type="button" id="undoEditButton" onclick="undoEditAsComment();" style="display: none;">Отмяна на редакцията като коментар</button>');
-              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакацията като коментар</button>');
+              document.write('<button type="button" id="editButton" onclick="editAsComment();">Редактиране на приставката като коментар<\/button>');
+              document.write('<button type="button" id="undoEditButton" onclick="undoEditAsComment();" style="display: none;">Отмяна на редакцията като коментар<\/button>');
+              document.write('<button type="button" id="redoEditButton" onclick="redoEditAsComment();" style="display: none;">Връщане на редакацията като коментар<\/button>');
 [% IF patchviewerinstalled %]
-              document.write('<button type="button" id="viewDiffButton" onclick="viewDiff();">Преглед на приставката като разлики</button>');
+              document.write('<button type="button" id="viewDiffButton" onclick="viewDiff();">Преглед на приставката като разлики<\/button>');
 [% END %]
-              document.write('<button type="button" id="viewRawButton" onclick="viewRaw();" style="display: none;">Преглед на необработената приставка</button>');
+              document.write('<button type="button" id="viewRawButton" onclick="viewRaw();" style="display: none;">Преглед на необработената приставка<\/button>');
             }
             //-->
           </script>
@@ -351,7 +344,7 @@
   Приставки за този [% terms.bug %]:
   [% FOREACH a = attachments %]
     [% IF a == attachment.id %]
-      [% a %]
+      [%+ a %]
     [% ELSE %]
       <a href="attachment.cgi?id=[% a %]&amp;action=edit">[% a %]</a>
     [% END %]
