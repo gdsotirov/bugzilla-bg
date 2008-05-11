@@ -274,7 +274,7 @@ function PutDescription() {
       <b>Идентификатор на версия<br>(Потребителски агент)</b>
     </td>
     <td valign="top">
-      <input type="text" size="80" name="buildid" value="[% buildid %]">
+      <input type="text" size="80" name="buildid" value="[% buildid FILTER html %]">
       <p>
         По този начин се определя точно използваната версия на продукта.
         Ако докладвате [% terms.bug %] в Mozilla или Firefox,
