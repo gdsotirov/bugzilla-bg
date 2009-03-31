@@ -1,0 +1,64 @@
+[%# 1.0@bugzilla.org %]
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Frédéric Buclin.
+  # Portions created by Frédéric Buclin are Copyright (C) 2008
+  # Frédéric Buclin. All Rights Reserved.
+  #
+  # Contributor(s): Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  # script_name: the script generating this warning.
+  # token: a valid token for the current action.
+  # reason: reason of the failure.
+  #%]
+
+[% PROCESS global/header.html.tmpl title = "Подозрително действие"
+                                   style_urls = ['skins/standard/global.css'] %]
+
+<div class="throw_error">
+  [% IF reason == "expired_token" %]
+    Промените ви бяха отхвърлени, защото просрочихте времевото ограничение
+    от [% constants.MAX_TOKEN_AGE FILTER html %] дни преди да ги подадете
+    към [% script_name FILTER html %]. Страницата може да е била отворена
+    твърде дълго, или стари промени да бъдат подавани отново поради авария.
+
+  [% ELSIF reason == "missing_token" %]
+    Изглежда сякаш не идвате от правилната страница.
+    Една от причините може да е, че сте въвели адреса в адресната лента на вашия
+    браузър директно, което трябва да е безопсано. Друга причина може да е, че
+    сте щракнали на връзка, която ви е препратила тук <b>без вашето съгласие</b>.
+
+  [% ELSIF reason == "invalid_token" %]
+    Подадохте промени към [% script_name FILTER html %] с недействителна
+    символика, което може да показва, че някой се опитва да злоупотреби с вас, например
+    като ви кара да щракнете на връзка, която ви е препратила тук <b>без вашето
+    съгласие</b>.
+  [% END %]
+  <p>
+    Сигурни ли сте, че искате да подадете промените?
+  </p>
+</div>
+
+<form name="check" id="check" method="post" action="[% script_name FILTER html %]">
+  [% PROCESS "global/hidden-fields.html.tmpl"
+             exclude="^(Bugzilla_login|Bugzilla_password|token)$" %]
+  <input type="hidden" name="token" value="[% token FILTER html %]">
+  <input type="submit" id="confirm" value="Да, потвърждавам промените">
+</form>
+
+<p><a href="index.cgi">Не, отхвърляне на промените</a> (ще бъдете прехвърлени
+към началната страница).</p>
+
+[% PROCESS global/footer.html.tmpl %]

@@ -118,7 +118,8 @@
             Премахване първо от <a href="editwhines.cgi">хленча</a>
           [% ELSE %]
             <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-                     [% q.name FILTER url_quote %]">Забравяне</a>
+                     [% q.name FILTER url_quote %]&amp;token=
+                     [% issue_hash_token([q.id, q.name]) FILTER url_quote %]">Забравяне</a>
           [% END %]
         </td>
         <td align="center">

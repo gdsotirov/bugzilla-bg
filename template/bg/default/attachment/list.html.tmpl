@@ -137,7 +137,9 @@
           [% IF obsolete_attachments %]
             <a href="#a0" onClick="return toggle_display(this);">Скриване на остарелите</a> ([% obsolete_attachments %]) |
           [% END %]
-          <a href="attachment.cgi?bugid=[% bugid %]&amp;action=viewall">Преглед на всички</a>
+          [% IF Param("allow_attachment_display") %]
+            <a href="attachment.cgi?bugid=[% bugid %]&amp;action=viewall">Преглед на всички</a>
+          [% END %]
         </span>
       [% END %]
       <a href="attachment.cgi?bugid=[% bugid %]&amp;action=enter">Добавяне на приставка</a>

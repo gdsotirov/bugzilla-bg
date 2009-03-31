@@ -32,7 +32,7 @@
 <p>
   [% IF keyword.bug_count == 1 %]
     Съществува един [% terms.bug %], за който тази ключова дума е зададена.
-  [% ELSE %]
+  [% ELSIF keyword.bug_count > 1 %]
     Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %], за които
     тази ключова дума е зададена.
   [% END %]
@@ -44,7 +44,6 @@
 <form method="post" action="editkeywords.cgi">
   <input type="hidden" name="id" value="[% keyword.id FILTER html %]">
   <input type="hidden" name="action" value="delete">
-  <input type="hidden" name="reallydelete" value="1">
   <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type="submit" id="delete"
          value="Да, изтриване на ключовата дума">

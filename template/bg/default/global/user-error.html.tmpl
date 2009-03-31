@@ -1269,8 +1269,9 @@
     Името <em>[% name FILTER html %]</em> вече се използва от друго
     съхранено търсене. Първо трябва да го
     <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-    [%- name FILTER url_quote %]">изтриете</a> ако наистина желаете да
-    ползвате името.
+    [%- name FILTER url_quote %]&amp;token=
+    [% issue_hash_token([query_id, name]) FILTER url_quote %]">изтриете</a>
+    ако наистина желаете да ползвате името.
 
   [% ELSIF error == "query_name_missing" %]
     [% title = "Не е указано има не търсене" %]
