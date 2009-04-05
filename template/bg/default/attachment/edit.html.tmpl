@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -36,10 +35,8 @@
   title = title
   header = header
   subheader = subheader
+  doc_section = "attachments.html"
 %]
-
-[%# No need to display the Diff button and iframe if the attachment is not a patch. %]
-[% patchviewerinstalled = (patchviewerinstalled && attachment.ispatch) %]
 
 <script type="text/javascript">
   <!--
@@ -49,7 +46,37 @@
   var has_viewed_as_diff = 0;
   function editAsComment()
     {
+      // Get the content of the document as a string.
+      var viewFrame = document.getElementById('viewFrame');
+      var aSerializer = new XMLSerializer();
+      var contentDocument = viewFrame.contentDocument;
+      var theContent = aSerializer.serializeToString(contentDocument);
+
+      // If this is a plaintext document, remove cruft that Mozilla adds
+      // because it treats it as an HTML document with a big PRE section.
+      // http://bugzilla.mozilla.org/show_bug.cgi?id=86012
+      var contentType = '[% attachment.contenttype FILTER js %]';
+      if ( contentType == 'text/plain' )
+        {
+          theContent = theContent.replace( /^<html><head\/?><body><pre>/i , "" );
+          theContent = theContent.replace( /<\/pre><\/body><\/html>$/i , "" );
+          theContent = theContent.replace( /&lt;/gi , "<" );
+          theContent = theContent.replace( /&gt;/gi , ">" );
+          theContent = theContent.replace( /&amp;/gi , "&" );
+        }
+
+      // Add mail-style quote indicators (>) to the beginning of each line.
+      // ".*\n" matches lines that end with a newline, while ".+" matches
+      // the rare situation in which the last line of a file does not end
+      // with a newline.
+      theContent = theContent.replace( /(.*\n|.+)/g , ">$1" );
+
       switchToMode('edit');
+
+      // Copy the contents of the diff into the textarea
+      var editFrame = document.getElementById('editFrame');
+      editFrame.value = theContent + "\n\n";
+
       has_edited = 1;
     }
   function undoEditAsComment()
@@ -170,6 +197,7 @@
   <input type="hidden" name="id" value="[% attachment.id %]">
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="contenttypemethod" value="manual">
+  <input type="hidden" name="delta_ts" value="[% attachment.modification_time FILTER html %]">
 
   <table class="attachment_info" width="100%">
 
@@ -208,11 +236,11 @@
                    value="[% attachment.contenttype FILTER html %]"><br>
 
           <input type="checkbox" id="ispatch" name="ispatch" value="1"
-                 [% 'checked="checked"' IF attachment.ispatch %]>
+                 [%+ 'checked="checked"' IF attachment.ispatch %]>
           <label for="ispatch">кръпка</label>
         [% END %]
           <input type="checkbox" id="isobsolete" name="isobsolete" value="1"
-                 [% 'checked="checked"' IF attachment.isobsolete %]>
+                 [%+ 'checked="checked"' IF attachment.isobsolete %]>
           <label for="isobsolete">остаряла</label>
           [% IF (Param("insidergroup") && user.in_group(Param("insidergroup"))) %]
             <input type="checkbox" id="isprivate" name="isprivate" value="1"
@@ -266,18 +294,7 @@
             [% END %]
           </a>
         </td>
-      [% ELSIF !Param("allow_attachment_display") %]
-        <td id="view_disabled" width="50%">
-          <p><b>
-            Приставката не е видима във вашия браузър поради ограничения
-            свързани със сигурността разрешени от [% terms.Bugzilla %].
-          </b></p>
-          <p><b>
-            За да прегледата приставката, трябва първо да
-            <a href="attachment.cgi?id=[% attachment.id %]">я изтеглите</a>.
-          </b></p>
-        </td>
-      [% ELSIF isviewable %]
+      [% ELSIF attachment.is_viewable %]
         <td width="75%">
           [% INCLUDE global/textarea.html.tmpl
             id      = 'editFrame'
@@ -286,8 +303,6 @@
             minrows = 10
             cols    = 80
             wrap    = 'soft'
-            defaultcontent = (attachment.contenttype.match('^text\/')) ?
-                               attachment.data.replace('(.*\n|.+)', '>$1') : undef
           %]
           <iframe id="viewFrame" src="attachment.cgi?id=[% attachment.id %]" style="height: 400px; width: 100%;">
             <b>Не можете да видите приставката докато преглеждате подробностите ѝ, защото браузъра ви не поддържа вградени рамки.

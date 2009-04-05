@@ -16,19 +16,15 @@
   # Rights Reserved.
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [%# INTERFACE:
-  # operations: array; bug activity since the user last displayed the bug form,
+  # operations: array; bug activity since the user last displayed the attachment form,
   #   used by bug/activity/table.html.tmpl to display recent changes that will
   #   be overwritten if the user submits these changes.  See that template
   #   for further documentation.
-  # start_at: number; the comment at which show/comments.tmpl should begin
-  #   displaying comments, either the index of the last comment (if the user
-  #   entered a comment along with their change) or a number less than that
-  #   (if they didn't), in which case no comments are displayed.
-  # comments: array; all the comments on the bug.
-  # bug: Bugzilla::Bug; the bug being changed.
+  # attachment: object; the attachment being changed.
   #%]
 
 [%# The global Bugzilla->cgi object is used to obtain form variable values. %]
@@ -36,32 +32,20 @@
 [% cgi = Bugzilla.cgi %]
 
 [% PROCESS global/variables.none.tmpl %]
-
-[% UNLESS header_done %]
-  [% PROCESS bug/process/header.html.tmpl %]
-[% END %]
+[% PROCESS global/header.html.tmpl title = "Сблъскване във въздуха!" %]
 
 <h1>Установено сблъскване във въздуха!</h1>
 
 <p>
-  Някой друг е направил промени по този
-  [%+ "$terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
-  по същото време по което и вие.
-  Направените промени са:
+  Някой друг е направил промени по
+  <a href="attachment.cgi?id=[% attachment.id %]&amp;action=edit">приставка [% attachment.id %]</a>
+  на [% "$terms.bug $attachment.bug_id" FILTER bug_link(attachment.bug_id) FILTER none %]
+  по същото време по което и вие. Направените промени са:
 </p>
 
 <p>
   [% PROCESS "bug/activity/table.html.tmpl" incomplete_data=0 %]
 </p>
-
-[% IF comments.size > start_at %]
-<p>
-  Добавен(и) коментар(и):
-  <blockquote>
-    [% PROCESS "bug/comments.html.tmpl" %]
-  </blockquote>
-</p>
-[% END %]
 
 [% IF cgi.param("comment") %]
 <p>
@@ -78,19 +62,16 @@
 
 <ul>
   <li>
-    <form method="post" action="process_bug.cgi">
-      <input type="hidden" name="delta_ts" 
-             value="[% bug.delta_ts FILTER html %]">
-      [% PROCESS "global/hidden-fields.html.tmpl" 
-          exclude="^Bugzilla_login|Bugzilla_password|delta_ts$" %]
+    <form method="post" action="attachment.cgi">
+      [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
       <input type="submit" id="process" value="Предаване на промените ми въпреки това">
-        Това ще предизвика презаписването на всички промени по-горе
-        [% ", с изключение на добавените коментар(и)" IF comments.size > start_at %].
+        Това ще предизвика презаписването на всички промени по-горе.
     </form>
   </li>
   <li>
     Отхвърляне на промените ми и
-    [%+ "връщане към $terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
+    <a href="attachment.cgi?id=[% attachment.id %]&amp;action=edit">връщане към
+    приставка [% attachment.id %]</a>
   </li>
 </ul>
 

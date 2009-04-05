@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -37,7 +36,6 @@
   font-size: 1em;
   background-color: #c3c3c3;
   border: 1px solid black;
-  width: 100%;
 }
 
 .file_head a {
@@ -51,7 +49,6 @@
 }
 
 .section_head {
-  width: 100%;
   background-color: #f0f0f0;
   border: 1px solid black;
   text-align: left;
@@ -65,12 +62,6 @@ table.file_table {
   border-collapse: collapse;
   /* draw border below last open context section in listing */
   border-bottom: 1px solid black;
-}
-
-tbody.file td {
-  border-left: 1px dashed black;
-  border-right: 1px dashed black;
-  width: 50%;
 }
 
 tbody.file pre {
@@ -95,6 +86,13 @@ tbody.file pre:empty {
 
 .removed {
   background-color: #FFCC99;
+}
+
+.num {
+  background-color: #ffe9ae;
+  text-align:right;
+  padding: 0 0.3em;
+  width: 3em;
 }
 
 .warning {
@@ -198,7 +196,7 @@ tbody.file pre:empty {
     return twisty.parentNode.parentNode.parentNode.nextSibling;
   }
   function get_twisty_from_tbody(tbody) {
-    return tbody.previousSibling.firstChild.firstChild.firstChild;
+    return tbody.previousSibling.firstChild.nextSibling.firstChild.firstChild;
   }
 [% END %]
 
@@ -223,7 +221,7 @@ tbody.file pre:empty {
   [% subheader = BLOCK %]
     [% bugsummary FILTER html %]
   [% END %]
-  [% PROCESS global/header.html.tmpl %]
+  [% PROCESS global/header.html.tmpl doc_section = "attachments.html#patchviewer" %]
 [% ELSE %]
   <html>
   <head>
