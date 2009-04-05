@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -58,13 +57,13 @@
       </td>
     </tr>
 
-    [% IF Param('rememberlogin') == 'defaulton' ||
+    [% IF Param('rememberlogin') == 'defaulton' || 
           Param('rememberlogin') == 'defaultoff' %]
       <tr>
         <th>&nbsp;</th>
         <td>
           <input type="checkbox" id="Bugzilla_remember" name="Bugzilla_remember" value="on"
-                 [% "checked" IF Param('rememberlogin') == "defaulton" %]>
+                 [%+ "checked" IF Param('rememberlogin') == "defaulton" %]>
           <label for="Bugzilla_remember">Запомняне на моите данни</label>
         </td>
       </tr>
@@ -87,7 +86,7 @@
      exclude="^Bugzilla_(login|password|restrictlogin)$" %]
 
   <input type="submit" name="GoAheadAndLogIn" value="Вход" id="log_in">
-
+  
   <p>
     (Забележка: трябва да се уверите, че бисквитките са разрешени за този сайт.
     В противен случай често ще ви се налага да влизате отново.)

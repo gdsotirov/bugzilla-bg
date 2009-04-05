@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -27,11 +26,9 @@
 
 [% expiration_ts = date + (constants.MAX_TOKEN_AGE * 86400) %]
 <div>
-  За да завършите създаването на сметката си, трябва да изберете парола в
-  формуляра по-долу. Можете също така да въведете истинското си име, което е незадължително.<p>
-  Ако не попълните този формуляр преди
-  <u>[%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]</u>,
-  създаването на сметката ще бъде отхвърлено автоматично.
+  За да създадете сметката си, трябва да въведете парола в формуляра отдолу.
+  Вашия пощенски адрес и Истинското име (ако е указано) ще бъдат показвани с
+  промените, които правите.<p>
 </div>
 
 <form id="confirm_account_form" method="post" action="token.cgi">
@@ -43,7 +40,7 @@
       <td>[% email FILTER html %]</td>
     </tr>
     <tr>
-      <th align="right"><label for="realname">Истинско име</label>:</th>
+      <th align="right"><small><i>(НЕЗАДЪЛЖИТЕЛНО)</i></small> <label for="realname">Истинско име</label>:</th>
       <td><input type="text" id="realname" name="realname" value=""></td>
     </tr>
     <tr>
@@ -51,7 +48,7 @@
       <td><input type="password" id="passwd1" name="passwd1" value=""></td>
     </tr>
     <tr>
-      <th align="right"><label for="passwd1">Повторно въвеждане на парола</label>:</th>
+      <th align="right"><label for="passwd2">Повторно въвеждане на парола</label>:</th>
       <td><input type="password" id="passwd2" name="passwd2" value=""></td>
     </tr>
     <tr>
@@ -59,6 +56,22 @@
       <td><input type="submit" id="confirm" value="Предаване"></td>
     </tr>
   </table>
+</form>
+
+<p>
+  Сметката няма да бъде създадена ако този формуляр не е попълнен до
+  <u>[%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]</u>.
+</p>
+
+<p>
+  Ако не желаете да създавате сметка с този пощенски адрес щракнете върху
+  бутона за отказ отдолу и вшата информация ще бъде забравена.
+</p>
+
+<form id="cancel_account_form" method="post" action="token.cgi">
+  <input type="hidden" name="t" value="[% token FILTER html %]">
+  <input type="hidden" name="a" value="cancel_new_account">
+  <input type="submit" id="confirm" value="Отказ от сметката">
 </form>
 
 [% PROCESS global/footer.html.tmpl %]

@@ -15,35 +15,22 @@
   # Copyright (C) 1998 Netscape Communications Corporation. All
   # Rights Reserved.
   #
-  # Contributor(s): Gervase Markham <gerv@gerv.net>
-  #                 Svetlana Harisova <light@rathedg.com>
+  # Contributor(s): Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
-[%# INTERFACE:
-  # This template has no interface. However, you must fulfill the interface to
-  # global/useful-links.html.tmpl.
-  #%]
+[% PROCESS "global/variables.none.tmpl" %]
+From: [% Param('mailfrom') %]
+To: [% addressee %]
+Subject: Резултати от санитарна проверка на [[% terms.Bugzilla %]]
+X-Bugzilla-Type: sanitycheck
 
-[% INCLUDE "global/help.html.tmpl" %]
+[%+ urlbase %]sanitycheck.cgi
 
-</div>
+Отдолу можете да прочетете резултатите от санитарната проверка.
+[% IF error_found %]
+Бяха открити някои грешки.
+[% ELSE %]
+Не бяха открити грешки.
+[% END %]
 
-[%# Migration note: below this point, this file corresponds to the old Param
-  # 'footerhtml'
-  #%]
-
-<div id="footer">
-  <div class="intro"></div>
-
-[%# Migration note: the old param 'blurbhtml' goes here %]
-
-[%# Migration note: useful-links.html.tmpl corresponds to %commandmenu% %]
-
-           [% PROCESS "global/useful-links.html.tmpl" %]
-
-  <div class="outro"></div>
-</div>
-
-</body>
-</html>
-
+[% output FILTER txt %]

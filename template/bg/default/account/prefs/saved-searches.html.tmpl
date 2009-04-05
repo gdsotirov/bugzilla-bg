@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -31,17 +30,7 @@
       var bless_groups = [[% bless_group_ids.join(",") FILTER js %]];
       var checkbox = document.getElementById(group.name.replace(/share_(\d+)/, "force_$1"));
 
-      // Check if the selected group is in the bless group array
-      var found = false;
-      for (var i = 0; i < bless_groups.length; i++) {
-        if (bless_groups[i] == group.value) {
-          found = true;
-          break;
-        }
-      }
-
-      // Enable or disable checkbox
-      if (found) {
+      if (bz_isValueInArray(bless_groups, group.value)) {
         checkbox.disabled = false;
       } else {
         checkbox.disabled = true;
@@ -69,7 +58,7 @@
         Забравяне
       </th>
       <th>
-        Покажи в
+        Показване в
         дъното
       </th>
       [% may_share = user.in_group(Param('querysharegroup')) && queryshare_groups.size %]
@@ -118,8 +107,7 @@
             Премахване първо от <a href="editwhines.cgi">хленча</a>
           [% ELSE %]
             <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-                     [% q.name FILTER url_quote %]&amp;token=
-                     [% issue_hash_token([q.id, q.name]) FILTER url_quote %]">Забравяне</a>
+                     [% q.name FILTER url_quote %]">Забравяне</a>
           [% END %]
         </td>
         <td align="center">
@@ -149,6 +137,10 @@
                      %]>
               <label for="force_[% q.id FILTER html %]">Добавяне в дъното</label>
             [% END %]
+            [% IF q.shared_with_users %]
+              (споделено с [% q.shared_with_users FILTER html %]
+              [%+ q.shared_with_users > 1 ? "потребителите" : "потребителя" %])
+            [% END %]
           </td>
         [% END %]
       </tr>
@@ -173,11 +165,17 @@
         Споделено от
       </th>
       <th>
+        Споделено с
+      </th>
+      <th>
         Пускане
       </th>
       <th>
-        Показване
-        в дъното
+        Редакция
+      </th>
+      <th>
+        Показване в
+        дъното
       </th>
     </tr>
     [% found_shared_query = 0 %]
@@ -186,10 +184,15 @@
       <tr>
         <td>[% q.name FILTER html %]</td>
         <td>[% q.user.identity FILTER html %]</td>
+        <td>[% q.shared_with_group.name FILTER html %]</td>
         <td>
           <a href="buglist.cgi?cmdtype=dorem&amp;remaction=run&amp;namedcmd=
                    [% q.name FILTER url_quote %]&amp;sharer_id=
                    [% q.user.id FILTER url_quote %]">Пускане</a>
+        </td>
+        <td>
+          <a href="query.cgi?[% q.edit_link FILTER html %]&amp;known_name=
+                   [% q.name FILTER url_quote %]">Редакция</a>
         </td>
         <td align="center">
           <input type="checkbox" 
@@ -202,7 +205,7 @@
     [% END %]
     [% IF !found_shared_query %]
       <tr>
-        <td colspan="4" style="text-align: center">
+        <td colspan="6" style="text-align: center">
           &lt;None&gt;
         </td>
       </tr>

@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -40,7 +39,7 @@
 [% error_message = BLOCK %]
   [% IF    error == "action_unrecognized" %]
     [% docslinks = {'query.html' => "Searching for $terms.bugs",
-                    'query.html#list'  => "$terms.Bug lists"} %]
+                    'query.html#list' => "$terms.Bug lists"} %]
     Не разпознавам стойността (<em>[% action FILTER html %]</em>)
     на променливата <em>action</em>.
 
@@ -150,6 +149,10 @@
     Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
     и <code>[% type FILTER html %]</code> заедно.
 
+  [% ELSIF error == "field_not_custom" %]
+    '[% field.description FILTER html %]' ([% field.name FILTER html %])
+    не е потребителско поле.
+
   [% ELSIF error == "gd_not_installed" %]
 [% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули необходими за Графики'} %]
     Графиките няма да работят без GD Perl модула да бъде инсталиран.
@@ -209,9 +212,6 @@
   [% ELSIF error == "invalid_webservergroup" %]
     Няма такава група: [% group FILTER html %]. Проверете $webservergroup
     настройката ви в [% constants.bz_locations.localconfig FILTER html %].
-
-  [% ELSIF error == "list_comparison_error" %]
-    Неочаквана грешка в кода за сравнение на списъци.
 
   [% ELSIF error == "mismatched_bug_ids_on_obsolete" %]
     Приставката [% attach_id FILTER html %] ([% description FILTER html %])
@@ -279,7 +279,7 @@
     Указания LDAP атрибут [% attr FILTER html %] не бе намерен.
 
   [% ELSIF error == "ldap_connect_failed" %]
-    Не може да бъде установена връзка с LDAP сървъра <code>[% server FILTER html %]</code>.
+    Не може да бъде установена връзка с LDAP сървър(и) <code>[% server FILTER html %]</code>.
 
   [% ELSIF error == "ldap_start_tls_failed" %]
     Не може да бъде започната защитена връзка с LDAP сървъра: <code>[% error FILTER html %]</code>.
@@ -309,6 +309,10 @@
   [% ELSIF error == "need_quipid" %]
     Необходим е действителен идентификатор на остроумие.
 
+  [% ELSIF error == "no_manual_moved" %]
+    Не можете да зададете решениeто на [% terms.abug %] като ПРЕМЕСТЕН, без
+    да преместите [% terms.abug %].
+
   [% ELSIF error == "param_must_be_numeric" %]
     [% title = "Неправилен параметър" %]
     Подаден е неправилен параметър на [% function FILTER html %].
@@ -336,6 +340,9 @@
     извън пакета. Тази функция може да бъе извикна само от
     подклас на <code>[% superclass FILTER html %]</code>.
 
+  [% ELSIF error == "radius_preparation_error" %]
+    Възникна грешка при подготовката за RADIUS удостоверителна заявка:
+    <code>[% errstr FILTER html %]</code>.
 
   [% ELSIF error == "unknown_comparison_type" %]
     Указаният тип за сравнение не се поддържа.
@@ -387,11 +394,7 @@
 
   [% ELSIF error == "undefined_field" %]
     Полето [% field FILTER html %] на формата не е зададено;
-    [%# Useful message if browser did not select show_bug radio button %]
-    [% IF field == "knob" %]
-      Проверете дали "Остави като..." радио бутона е избран.
-    [% END %]
-
+    
   [% ELSIF error == "unknown_action" %]
     [% IF action %]
        Непознато действие [% action FILTER html %]!
@@ -406,19 +409,8 @@
     [% title = "Приставката трябва да бъде кръпка" %]
     Приставка #[% attach_id FILTER html %] трябва да е кръпка.
 
-  [% ELSIF error == "nested_transaction" %]
-    Опит за пускане на нова транзакция, без първо да е приключена предишната.
-
   [% ELSIF error == "not_in_transaction" %]
     Опит да се приключи транзакция без да е стартирана такава.
-
-  [% ELSIF error == "already_locked" %]
-    Опит за заключване на таблица, без първо да бъде освободено предишното заключване:
-    <p>Вече заключени таблици:<br>[% current FILTER html %]
-    <p>Таблици изискващи заключване:<br>[% new FILTER html %]
-
-  [% ELSIF error == "no_matching_lock" %]
-    Опит за отключване на таблици без първо да са заключени.
 
   [% ELSIF error == "comma_operator_deprecated" %]
     [% title = "Вътрешна грешка на създателя на SQL заявки" %]

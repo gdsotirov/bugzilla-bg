@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -23,66 +22,89 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% field_descs = { "[Bug creation]"       => "[$terms.Bug creation]",
-                   "actual_time"          => "Действителни часове"
-                   "alias"                => "Псевдоним",
-                   "assigned_to"          => "Назначение",
-                   "blocked"              => "Блокира",
-                   "bug_file_loc"         => "URL",
-                   "bug_id"               => "$terms.Bug №",
-                   "bug_severity"         => "Суровост",
-                   "bug_status"           => "Състояние",
-                   "changeddate"          => "Променен",
-                   "cc"                   => "Точно Копие",
-                   "classification"       => "Класификация",
-                   "cclist_accessible"    => "Достъпен ТК списък?",
-                   "component_id"         => "Идентификатор на съставна част",
-                   "component"            => "Съставна част",
-                   "creation_ts"          => "Време на създаване на $terms.abug",
-                   "deadline"             => "Краен срок",
-                   "delta_ts"             => "Средно",
-                   "dependson"            => "Зависи от",
-                   "dup_id"               => "Повтаря",
-                   "estimated_time"       => "Първоначална оценка",
-                   "everconfirmed"        => "Някога потвърждаван?",
-                   "groupset"             => "Набор групи",
-                   "keywords"             => "Ключови думи",
-                   "newcc"                => "Точно Копие",
-                   "op_sys"               => "ОС",
-                   "opendate"             => "Отворен",
-                   "percentage_complete"  => "% завършен",
-                   "priority"             => "Приоритет",
-                   "product_id"           => "Идентификатор на продукт",
-                   "product"              => "Продукт",
-                   "qa_contact"           => "Качествен контрол",
-                   "remaining_time"       => "Оставащи часове",
-                   "rep_platform"         => "Платформа",
-                   "reporter"             => "Докладчик",
-                   "reporter_accessible"  => "Докладчика достъпен?",
-                   "resolution"           => "Решение",
-                   "setting"              => "Настройка",
-                   "settings"             => "Настройки",
-                   "short_desc"           => "Резюме",
-                   "status_whiteboard"    => "Бяла дъска",
-                   "target_milestone"     => "Целево събитие",
-                   "version"              => "Версия",
-                   "votes"                => "Гласове",
-                   "work_time"            => "Отработени часове"} %]
+[% field_descs = { "[Bug creation]"          => "[$terms.Bug creation]",
+                   "actual_time"             => "Действителни часове"
+                   "alias"                   => "Псевдоним",
+                   "assigned_to"             => "Назначение",
+                   "attach_data.thedata"     => "Данни на приставка",
+                   "attachments.description" => "Описание на приставка",
+                   "attachments.filename"    => "Име на файл на приставка",
+                   "attachments.mimetype"    => "Тип на приставка",
+                   "attachments.ispatch"     => "Приставката е кръпка",
+                   "attachments.isobsolete"  => "Приставката е остаряла",
+                   "attachments.isprivate"   => "Приставката е частна",
+                   "attachments.isurl"       => "Приставката е URL",
+                   "attachments.submitter"   => "Създател на приставка",
+                   "blocked"                 => "Блокира",
+                   "bug_file_loc"            => "URL",
+                   "bug_group"               => "Група",
+                   "bug_id"                  => "$terms.Bug №",
+                   "bug_severity"            => "Суровост",
+                   "bug_status"              => "Състояние",
+                   "changeddate"             => "Променен",
+                   "cc"                      => "ТК",
+                   "classification"          => "Класификация",
+                   "cclist_accessible"       => "Достъпен ТК списък",
+                   "commenter"               => "Коментатор",
+                   "component_id"            => "Идентификатор на съставна част",
+                   "component"               => "Съставна част",
+                   "content"                 => "Съдържание",
+                   "creation_ts"             => "Време на създаване на $terms.abug",
+                   "deadline"                => "Краен срок",
+                   "delta_ts"                => "Средно",
+                   "dependson"               => "Зависи от",
+                   "dup_id"                  => "Повтаря",
+                   "estimated_time"          => "Първоначална оценка",
+                   "everconfirmed"           => "Някога потвърждаван",
+                   "flagtypes.name"          => "Флаг",
+                   "keywords"                => "Ключови думи",
+                   "longdesc"                => "Коментар",
+                   "longdescs.isprivate"     => "Коментара е частен",
+                   "newcc"                   => "Точно Копие",
+                   "op_sys"                  => "ОС",
+                   "opendate"                => "Отворен",
+                   "owner_idle_time"         => "Време от когато наначение е пипал",
+                   "percentage_complete"     => "% завършен",
+                   "priority"                => "Приоритет",
+                   "product_id"              => "Идентификатор на продукт",
+                   "product"                 => "Продукт",
+                   "qa_contact"              => "Качествен контрол",
+                   "remaining_time"          => "Оставащи часове",
+                   "rep_platform"            => "Платформа",
+                   "reporter"                => "Докладчик",
+                   "reporter_accessible"     => "Достъпен докладчик",
+                   "requestees.login_name"   => "Заявител на флаг",
+                   "resolution"              => "Решение",
+                   "setters.login_name"      => "Задаващ на флаг",
+                   "setting"                 => "Настройка",
+                   "settings"                => "Настройки",
+                   "short_desc"              => "Резюме",
+                   "status_whiteboard"       => "Бяла дъска",
+                   "target_milestone"        => "Целево събитие",
+                   "version"                 => "Версия",
+                   "votes"                   => "Гласове",
+                   "work_time"               => "Отработени часове"} %]
 
 [%# Also include any custom fields or fields which don't have a
     Description here, by copying their Description from the
     database. If you want to override this for your language
     or your installation, just use a hook. %]
 
-[% USE Bugzilla %]
-[% FOREACH bz_field = Bugzilla.get_fields() %]
-  [% SET field_descs.${bz_field.name} = bz_field.description
-     IF !field_descs.${bz_field.name}.defined %]
+[% UNLESS Param('shutdownhtml') %]
+  [% USE Bugzilla %]
+  [% FOREACH bz_field = Bugzilla.get_fields() %]
+    [% SET field_descs.${bz_field.name} = bz_field.description
+       IF !field_descs.${bz_field.name}.defined %]
+  [% END %]
 [% END %]
 
 [% field_types = { ${constants.FIELD_TYPE_UNKNOWN}       => "Непознат тип",
                    ${constants.FIELD_TYPE_FREETEXT}      => "Свободен текст",
-                   ${constants.FIELD_TYPE_SINGLE_SELECT} => "Поле за избор" } %]
+                   ${constants.FIELD_TYPE_SINGLE_SELECT} => "Поле за избор"
+                   ${constants.FIELD_TYPE_MULTI_SELECT}  => "Поле за множествен избор",
+                   ${constants.FIELD_TYPE_TEXTAREA}      => "Голямо текстово поле",
+                   ${constants.FIELD_TYPE_DATETIME}      => "Дата/Час",
+                } %]
 
 [% status_descs = { "UNCONFIRMED" => "НЕПОТВЪРДЕН",
                     "NEW"         => "НОВ",
@@ -91,6 +113,8 @@
                     "RESOLVED"    => "РЕШЕН",
                     "VERIFIED"    => "ПРОВЕРЕН",
                     "CLOSED"      => "ЗАТВОРЕН" } %]
+
+[% MACRO get_status(status) GET status_descs.$status || status %]
 
 [% resolution_descs = { "FIXED"      => "ОПРАВЕН",
                         "INVALID"    => "НЕДЕЙСТВИТЕЛЕН",

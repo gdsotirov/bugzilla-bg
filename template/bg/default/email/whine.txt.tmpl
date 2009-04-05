@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -22,17 +21,17 @@
 [% PROCESS "global/field-descs.none.tmpl" %]
 From: [% Param("mailfrom") %]
 To: [% email %][% Param("emailsuffix") %]
-Subject: Вашия [% terms.Bugzilla %] бъг списък изисква внимание.
+Subject: Вашия [% terms.Bugzilla %] [%+ terms.bug %] списък изисква внимание.
 X-Bugzilla-Type: whine
 
 [This e-mail has been automatically generated.]
 
 Имате един или повече [% terms.abug %] назначени в [% terms.Bugzilla %] 
-системата за следена на [% terms.bugs %] ([% Param("urlbase") %]), които изискват
+системата за следена на [% terms.bugs %] ([% urlbase %]), които изискват
 внимание.
 
-Всички тези [% terms.bugs %] са в състояние [% status_descs.NEW %] или 
-[% status_descs.REOPENED %] и не са
+Всички тези [% terms.bugs %] са в състояние [% get_status("NEW") %] или 
+[% get_status("REOPENED") %] и не са
 пипани от [% Param("whinedays") %] или повече дни.
 Тряба да ги прегледате и да решите за първоначално действие.
 
@@ -47,20 +46,20 @@ X-Bugzilla-Type: whine
 (3) Решавате, че [% terms.abug %] ви принадлежи, но не можете да го решите сега.
     Просто използвайте командата "Приемане на [% terms.abug %]".
 
-За списък на всички [% status_descs.NEW %]/[% status_descs.REOPENED %] [%+ terms.bugs %] можете да използвате следния адрес (отметнете
+За списък на всички [% get_status("NEW") %]/[% get_status("REOPENED") %] [%+ terms.bugs %] можете да използвате следния адрес (отметнете
 го ако желаете!):
 
- [% Param("urlbase") %]buglist.cgi?bug_status=NEW&bug_status=REOPENED&assigned_to=[% email %]
+ [% urlbase %]buglist.cgi?bug_status=NEW&bug_status=REOPENED&assigned_to=[% email %]
 
 Или можете да използвате общата страница за търсене на 
-[%+ Param("urlbase") %]query.cgi
+[%+ urlbase %]query.cgi
 
-Прикачени по-долу са отделните адреси за достъп до всичките ви [% status_descs.NEW %] [%+ terms.bugs %],
-които не са пипани от седмица или повече.
+Прикачени по-долу са отделните адреси за достъп до всичките ви [% get_status("NEW") %] [%+ terms.bugs %],
+които не са пипани от [% Param("whinedays") %] или повече дни.
 
 Ще получавате това съобщение веднъж на ден докато не се справите с тези [% terms.bugs %]!
 
 [% FOREACH bug = bugs %]
  [%+ bug.summary %]
-    -> [% Param("urlbase") %]show_bug.cgi?id=[% bug.id %]
+    -> [% urlbase %]show_bug.cgi?id=[% bug.id %]
 [% END %]

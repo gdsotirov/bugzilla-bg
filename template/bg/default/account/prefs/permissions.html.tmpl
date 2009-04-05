@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -36,7 +35,7 @@
   <tr>
     <td>
       [% IF has_bits.size %]
-        Имате следните позволяващи [% terms.bits %] зададени на сметката ви:
+        Имате следните разрешаващи битове зададени на сметката ви:
         <table align="center">
           [% FOREACH bit_description = has_bits %]
             <tr>
@@ -63,16 +62,16 @@
         [% END %]
 
       [% ELSE %]
-        Няма позволяващи [% terms.bits %] зададени на сметката ви.
+        Няма разрешаващи битове зададени на сметката ви.
       [% END %]
 
       [% IF user.groups.editusers %]
         <br>
-        Имате права за редактиране на потребители. Можете да давате или снемате
-        всички позволения на всички потребители.
+        Имате права за редактиране на потребители.  Можете да давате или снемате
+        всички разрешения на всички потребители.
       [% ELSIF set_bits.size %]
         <br>
-        И можете да давате или снемате следните [% terms.bits %] за
+        И можете да давате или снемате следните битове за
         <a href="editusers.cgi">други потребители</a>:
           <table align="center">
           [% FOREACH bit_description = set_bits %]
@@ -86,7 +85,7 @@
 
       [% IF user.groups.bz_sudoers %]
         <br>
-        Член сте на групата <b>bz_sudoers</b>, така че можете да
+        Член сте на групата <b>bz_sudoers</b>, така че можете да 
         <a href="relogin.cgi?action=prepare-sudo">се представяте за някой друг</a>.
       [% END %]
     </td>
