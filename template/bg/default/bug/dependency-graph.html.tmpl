@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -64,42 +63,39 @@
 
 <hr>
 
-<form action="showdependencygraph.cgi">
+<form action="showdependencygraph.cgi" method="GET">
   <table>
     <tr>
+      <th align="left"><label for="id">Номера на [% terms.bugs %]</label>:</th>
+      <td><input id="id" name="id" value="[% bug_id %]"></td>
       <td>
-       Номера на [% terms.bugs %]:
-        <input name="id" value="[% bug_id %]">
+        <input type="checkbox" id="showsummary" name="showsummary" [% " checked" IF showsummary %]>
+        <label for="showsummary">Показване на резюметата не всички показани [% terms.bugs %]</label>
       </td>
     </tr>
 
     <tr>
-      <td>
-        <input type="checkbox" name="doall"
-        [% " checked" IF doall %]>
-        Показване на <b>всеки</b> [% terms.bug %] в системата със зависимости
+      <th align="left"><label for="display">Показване:</label></th>
+      <td colspan="2">
+        <select id="display" name="display">
+          <option value="tree"[% 'selected="selected"' IF (!display || display == "tree") %]>
+            Ограничаване до [% terms.bugs %] имащи пряка връзка с въведените [% terms.bugs %]</option>
+          <option value="web" [% 'selected="selected"' IF display == "web" %]>
+            Показване на всички [% terms.bugs %] имащи връзка с въведените [% terms.bugs %]</option>
+          <option value="doall" [% 'selected="selected"' IF display == "doall" %]>
+            Показване на всеки [% terms.bug %] със зависимости в системата</option>
+        </select>
       </td>
     </tr>
 
     <tr>
-      <td colspan="3">
-        <input type="checkbox" name="showsummary"
-          [% " checked" IF showsummary %]>
-        Показване на резюметата на всички представени [% terms.bugs %]
-      </td>
-    </tr>
-
-    <tr>
-      <td colspan="3">
-        <select name="rankdir">
-          <option value="TB"
-            [% " selected" IF rankdir == "TB" %]>
-            Разполагане отгоре-надолу
-          </option>
-          <option value="LR"
-            [% " selected" IF rankdir == "LR" %]>
-            Разполагане отляво-надясно
-          </option>
+      <th align="left"><label for="rankdir">Разположение:</label></th>
+      <td colspan="2">
+        <select id="rankdir" name="rankdir">
+          <option value="TB"[% " selected" IF rankdir == "TB" %]>От горе на долу</option>
+          <option value="BT"[% " selected" IF rankdir == "BT" %]>От долу на горе</option>
+          <option value="LR"[% " selected" IF rankdir == "LR" %]>От ляво на дясно</option>
+          <option value="RL"[% " selected" IF rankdir == "RL" %]>От дясно на ляво</option>
         </select>
       </td>
     </tr>

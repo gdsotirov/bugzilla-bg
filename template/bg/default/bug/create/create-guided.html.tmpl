@@ -1,4 +1,3 @@
-[%# 1.0@mozilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -210,6 +209,11 @@ function PutDescription() {
           <td valign="top">
             <select name="component" id="component"
                     size="5" onchange="PutDescription()">
+              [% IF NOT default.component_ %]
+                [%# Various b.m.o. products have a "General" component,
+                    which is a useful default. %]
+                [% default.component_ = "Обща" %]
+              [% END %]
               [% FOREACH c = product.components %]
                 <option value="[% c.name FILTER html %]"
                   [% " selected=\"selected\"" IF c.name == default.component_ %]>
@@ -317,7 +321,7 @@ function PutDescription() {
     </td>
     <td valign="top">
       <input type="text" size="80" name="short_desc" id="short_desc" 
-             maxlength="255">
+             maxlength="255" spellcheck="true">
       <p>
         Изречение, което описва накратко проблема.
         Моля, бъдете описателни и използвайте много ключови думи.
@@ -451,7 +455,8 @@ function PutDescription() {
         Добавете всяка допълнителна инофмация, която смятате че е от
         значение за този [% terms.bug %], като използваната <b>тема</b>
         (дали [% terms.abug %] продължава да се случва
-        със стандартната тема?), a <b>Talkback идентификатор на срив</b> или специална
+        със стандартната тема?),
+        <b><a href="http://kb.mozillazine.org/Quality_Feedback_Agent">Talkback идентификатор на срив</b> или специална
         информация относто <b>конфигурацията на вашия компютър</b>. Всяка информация
         по-дълга от няколко реда, като <b>трасиране на стека</b> или <b><abbr lang="en" title="HyperText Markup Language">HTML</abbr>
         опитна постановка</b>, трябва да бъде добавяна с

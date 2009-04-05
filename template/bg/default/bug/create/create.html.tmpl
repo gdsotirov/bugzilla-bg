@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -22,6 +21,7 @@
   #                 Marc Schumann <wurblzap@gmail.com>
   #                 Akamai Technologies <bugzilla-dev@akamai.com>
   #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
   #%]
 
 [% PROCESS "global/field-descs.none.tmpl" %]
@@ -30,8 +30,11 @@
 
 [% PROCESS global/header.html.tmpl
   title = title
-  style_urls = [ 'skins/standard/create_attachment.css' ]
-  javascript_urls = [ "js/attachment.js" ]
+  style_urls = [ 'skins/standard/create_attachment.css',
+                 'skins/standard/yui/calendar.css' ]
+  javascript_urls = [ "js/attachment.js", "js/util.js",
+                      "js/yui/yahoo-dom-event.js", "js/yui/calendar.js",
+                      "js/field.js" ]
 %]
 
 <script type="text/javascript">
@@ -41,6 +44,7 @@ var initialowners = new Array([% product.components.size %]);
 var last_initialowner;
 var initialccs = new Array([% product.components.size %]);
 var components = new Array([% product.components.size %]);
+var comp_desc = new Array([% product.components.size %]);
 var flags = new Array([% product.components.size %]);
 [% IF Param("useqacontact") %]
     var initialqacontacts = new Array([% product.components.size %]);
@@ -49,6 +53,7 @@ var flags = new Array([% product.components.size %]);
 [% count = 0 %]
 [%- FOREACH c = product.components %]
     components[[% count %]] = "[% c.name FILTER js %]";
+    comp_desc[[% count %]] = "[% c.description FILTER html_light FILTER js %]";
     initialowners[[% count %]] = "[% c.default_assignee.login FILTER js %]";
     [% flag_list = [] %]
     [% FOREACH f = c.flag_types.bug %]
@@ -102,6 +107,7 @@ function set_assign_to() {
         }
 
         document.getElementById('initial_cc').innerHTML = initialccs[index];
+        document.getElementById('comp_desc').innerHTML = comp_desc[index];
 
         [% IF Param("useqacontact") %]
             var contact = initialqacontacts[index];
@@ -161,11 +167,10 @@ function handleWantsAttachment(wants_attachment) {
 <input type="hidden" name="product" value="[% product.name FILTER html %]">
 <input type="hidden" name="token" value="[% token FILTER html %]">
 
-<table cellspacing="2" cellpadding="0" border="0">
-
+<table cellspacing="4" cellpadding="2" border="0">
+<tbody>
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="3">
+    <td colspan="4">
     [%# Migration note: The following file corresponds to the old Param
       # 'entryheaderhtml'
       #%]
@@ -174,41 +179,25 @@ function handleWantsAttachment(wants_attachment) {
   </tr>
 
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="3">&nbsp;</td>
+    <td colspan="4">&nbsp;</td>
   </tr>
 
   <tr>
-    <td align="right" valign="top"><strong>Докладчик:</strong></td>
-    <td valign="top">[% user.login FILTER html %]</td>
+    <th>Продукт:</th>
+    <td width="10%">[% product.name FILTER html %]</td>
 
-    <td align="right" valign="top"><strong>Продукт:</strong></td>
-    <td valign="top">[% product.name FILTER html %]</td>
+    <th>Докладчик:</th>
+    <td width="100%">[% user.login FILTER html %]</td>
   </tr>
 
   [%# We can't use the select block in these two cases for various reasons. %]
   <tr>
-    <td align="right" valign="top">
-      <strong>Версия:</strong>
-    </td>
+    <th>
+      <a href="describecomponents.cgi?product=[% product.name FILTER url_quote %]">
+      Съставна част</a>:
+    </th>
     <td>
-      <select name="version" size="5">
-        [%- FOREACH v = version %]
-          <option value="[% v FILTER html %]"
-            [% " selected=\"selected\"" IF v == default.version %]>[% v FILTER html -%]
-          </option>
-        [%- END %]
-      </select>
-    </td>
-
-    <td align="right" valign="top">
-      <strong>
-        <a href="describecomponents.cgi?product=[% product.name FILTER url_quote %]">
-          Съставна част</a>:
-      </strong>
-    </td>
-    <td>
-      <select name="component" onchange="set_assign_to();" size="5">
+      <select name="component" onchange="set_assign_to();" size="7">
         [%- FOREACH c = product.components %]
           <option value="[% c.name FILTER html %]"
             [% " selected=\"selected\"" IF c.name == default.component_ %]>
@@ -217,22 +206,59 @@ function handleWantsAttachment(wants_attachment) {
         [%- END %]
       </select>
     </td>
+
+    <td colspan="2">
+      [%# Enclose the fieldset in a nested table so that its width changes based
+        # on the length on the component description. %]
+      <table>
+        <tr>
+          <td>
+            <fieldset>
+              <legend>Описание на съставна част</legend>
+              <div id="comp_desc" class="comment">Изберете съставна част, за да прочетете описанието ѝ.</div>
+            </fieldset>
+          </td>
+        </tr>
+      </table>
+    </td>
   </tr>
 
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="3">&nbsp;</td>
-  </tr>
+    <th rowspan="3">Версия:</th>
+    <td rowspan="3">
+      <select name="version" size="5">
+        [%- FOREACH v = version %]
+          <option value="[% v FILTER html %]"
+            [% ' selected="selected"' IF v == default.version %]>[% v FILTER html -%]
+          </option>
+        [%- END %]
+      </select>
+    </td>
 
-  <tr>
     [% sel = { description => 'Суровост', name => 'bug_severity' } %]
     [% INCLUDE select %]
+  </tr>
 
+  <tr>
     [% sel = { description => 'Платформа', name => 'rep_platform' } %]
     [% INCLUDE select %]
   </tr>
 
   <tr>
+    [% sel = { description => 'ОС', name => 'op_sys' } %]
+    [% INCLUDE select %]
+  </tr>
+</tbody>
+
+<tbody class="expert_fields">
+  <tr>
+    [% IF Param('usetargetmilestone') && Param('letsubmitterchoosemilestone') %]
+      [% sel = { description => 'Целево събитие', name => 'target_milestone' } %]
+      [% INCLUDE select %]
+    [% ELSE %]
+      <td colspan="2">&nbsp;</td>
+    [% END %]
+
     [% IF Param('letsubmitterchoosepriority') %]
       [% sel = { description => 'Приоритет', name => 'priority' } %]
       [% INCLUDE select %]
@@ -241,41 +267,52 @@ function handleWantsAttachment(wants_attachment) {
         <input type="hidden" name="priority" value="[% default.priority FILTER html %]">
       </td>
     [% END %]
-
-    [% sel = { description => 'OS', name => 'op_sys' } %]
-    [% INCLUDE select %]
   </tr>
+</tbody>
 
-  [% IF Param('usetargetmilestone') && Param('letsubmitterchoosemilestone') %]
+[% IF !Param('defaultplatform') || !Param('defaultopsys') %]
+  <tbody>
     <tr>
-      [% sel = { description => 'Целево събитие', name => 'target_milestone' } %]
-      [% INCLUDE select %]
-      <td colspan="2">&nbsp;</td>
+      <th>&nbsp;</th>
+      <td colspan="3" class="comment">
+        Предположихме вашата
+        [% IF Param('defaultplatform') %]
+          операционна система. Моля, проверете я
+        [% ELSIF Param('defaultopsys') %]
+          платформа. Моля, проверете я
+        [% ELSE %]
+          операционна система и платформа. Моля, проверете ги
+        [% END %]
+        и направете поправки ако е необходимо.
+      </td>
     </tr>
-  [% END %]
+  </tbody>
+[% END %]
 
+<tbody class="expert_fields">
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="3">&nbsp;</td>
+    <td colspan="4">&nbsp;</td>
   </tr>
 
   <tr>
 [% IF bug_status.size <= 1 %]
   <input type="hidden" name="bug_status" 
          value="[% default.bug_status FILTER html %]">
-    <td align="right" valign="top"><strong>Начално състояние:</strong></td>
-    <td valign="top">[% status_descs.${default.bug_status} FILTER html %]</td>
+    <th>Начално състояние:</th>
+    <td>[% get_status(default.bug_status) FILTER html %]</td>
 [% ELSE %]
     [% sel = { description => 'Начално състояние', name => 'bug_status' } %]
     [% INCLUDE select %]
 [% END %]
+
     <td>&nbsp;</td>
     [%# Calculate the number of rows we can use for flags %]
     [% num_rows = 6 + (Param("useqacontact") ? 1 : 0) +
                       (user.in_group(Param('timetrackinggroup')) ? 3 : 0) +
                       (Param("usebugaliases") ? 1 : 0)
     %]
-    <td rowspan="[% num_rows FILTER html %]" valign="top">
+
+    <td rowspan="[% num_rows FILTER html %]">
       [% IF product.flag_types.bug.size > 0 %]
         [% display_flag_headers = 0 %]
         [% any_flags_requesteeble = 0 %]
@@ -297,54 +334,50 @@ function handleWantsAttachment(wants_attachment) {
   </tr>
 
   <tr>
-    <td align="right">
-      <strong>
-        <a href="page.cgi?id=fields.html#assigned_to">Назначи на</a>:
-      </strong>
-    </td>
+    <th><a href="page.cgi?id=fields.html#assigned_to">Назначаване на</a>:</th>
     <td colspan="2">
       [% INCLUDE global/userselect.html.tmpl
          name => "assigned_to"
          value => assigned_to
          disabled => assigned_to_disabled
-         size => 32
+         size => 30
          emptyok => 1
        %]
-      <noscript>(Оставете празно, за да назначите на подразбиращия се назначен за съставната част)</noscript>
+      <noscript>(Оставете празно, за назначаване по подразбиране за съставната част)</noscript>
     </td>
   </tr>
   
 [% IF Param("useqacontact") %]
     <tr>
-      <td align="right"><strong>Качествен контрол:</strong></td>
+      <th>Качествен контрол:</th>
       <td colspan="2">
       [% INCLUDE global/userselect.html.tmpl
          name => "qa_contact"
          value => qa_contact
          disabled => qa_contact_disabled
-         size => 32
+         size => 30
          emptyok => 1
        %]
-        <noscript>(Оставете празно, за да назнaчите на подразбиращия се качествен контрол)</noscript>
+        <noscript>(Оставете празно, за назнaчаване по подразбиране)</noscript>
       </td>
     </tr>
 [% END %]
 
   <tr>
-    <td align="right"><strong><abbr title="Точно Копие">ТК</abbr>:</strong></td>
+    <th><abbr title="Точно Копие">ТК</abbr>:</th>
     <td colspan="2">
       [% INCLUDE global/userselect.html.tmpl
          name => "cc"
          value => cc
          disabled => cc_disabled
-         size => 45
+         size => 30
          multiple => 5
        %]
     </td>
   </tr>
 
   <tr>
-    <th align="right">Първоначален <abbr title="Точно Копие">ТК</abbr>:</th>
+    <th>Подразбиращ се <abbr title="Точно Копие">ТК</abbr>:</th>
     <td colspan="2">
       <div id="initial_cc">
           <!-- This has to happen after everything above renders,
@@ -356,19 +389,18 @@ function handleWantsAttachment(wants_attachment) {
   </tr>
   
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="2"></td>
+    <td colspan="3">&nbsp;</td>
   </tr>
 
 [% IF user.in_group(Param('timetrackinggroup')) %]
   <tr>
-    <td align="right"><strong>Преценени часове:</strong></td>
+    <th>Прогнозирани часове:</th>
     <td colspan="2">
       <input name="estimated_time" size="6" maxlength="6" value="0.0">
     </td>
   </tr>
   <tr>
-    <td align="right"><strong>Краен срок:</strong></td>
+    <th>Краен срок:</th>
     <td colspan="2">
       <input name="deadline" size="10" maxlength="10" value="[% deadline FILTER html %]">
       <small>(ГГГГ-ММ-ДД)</small>
@@ -376,14 +408,13 @@ function handleWantsAttachment(wants_attachment) {
   </tr>
 
   <tr>
-    <td>&nbsp;</td>
-    <td colspan="2"></td>
+    <td colspan="3">&nbsp;</td>
   </tr>
 [% END %]
 
 [% IF Param("usebugaliases") %]
   <tr>
-    <td align="right"><strong>Псевдоним:</strong></td>
+    <th>Псевдоним:</th>
     <td colspan="2">
       <input name="alias" size="20">
     </td>
@@ -391,31 +422,35 @@ function handleWantsAttachment(wants_attachment) {
 [% END %]
 
   <tr>
-    <td align="right"><strong>URL:</strong></td>
+    <th>URL:</th>
     <td colspan="2">
-      <input name="bug_file_loc" size="60"
+      <input name="bug_file_loc" size="40"
              value="[% bug_file_loc FILTER html %]">
     </td>
   </tr>
+</tbody>
 
+<tbody>
   [% USE Bugzilla %]
-  [% FOREACH field = Bugzilla.get_fields({ obsolete => 0, custom => 1, 
-                                           enter_bug => 1 }) %]
+
+  [% FOREACH field = Bugzilla.active_custom_fields %]
+    [% NEXT UNLESS field.enter_bug %]
     [% SET value = ${field.name}.defined ? ${field.name} : "" %]
     <tr>
-      [% PROCESS bug/field.html.tmpl editable=1 value_span=2 %]
+      [% PROCESS bug/field.html.tmpl editable=1 value_span=3 %]
     </tr>
   [% END %]
 
   <tr>
-    <td align="right"><strong>Резюме:</strong></td>
-    <td colspan="2">
-      <input name="short_desc" size="60" value="[% short_desc FILTER html %]"
-             maxlength="255">
+    <th>Резюме:</th>
+    <td colspan="3">
+      <input name="short_desc" size="70" value="[% short_desc FILTER html %]"
+             maxlength="255" spellcheck="true">
     </td>
   </tr>
 
-  <tr><td align="right" valign="top"><strong>Описание:</strong></td>
+  <tr>
+    <th>Описание:</th>
     <td colspan="3">
       [% defaultcontent = BLOCK %]
         [% IF cloned_bug_id %]
@@ -441,7 +476,7 @@ function handleWantsAttachment(wants_attachment) {
 
   [% IF Param("insidergroup") && user.in_group(Param("insidergroup")) %]
     <tr>
-      <td></td>
+      <th>&nbsp;</th>
       <td colspan="3">
         &nbsp;&nbsp;
         <input type="checkbox" id="commentprivacy" name="commentprivacy"
@@ -452,9 +487,11 @@ function handleWantsAttachment(wants_attachment) {
       </td>
     </tr>
   [% END %]
+</tbody>
 
+<tbody class="expert_fields">
   <tr>
-    <th align="right" valign="top">Приставка:</th>
+    <th>Приставка:</th>
     <td colspan="3">
       <script type="text/javascript">
         <!--
@@ -491,38 +528,34 @@ function handleWantsAttachment(wants_attachment) {
   [% IF user.in_group('editbugs', product.id) %]
     [% IF use_keywords %]
       <tr>
-        <td align="right" valign="top">
-          <strong>
-            <a href="describekeywords.cgi">Ключови думи</a>:
-          </strong>
-        </td>
+        <th><a href="describekeywords.cgi">Ключови думи</a>:</th>
         <td colspan="3">
-          <input name="keywords" size="60" value="[% keywords FILTER html %]"> (незадължително)
+          <input id="keywords" name="keywords" size="40"
+                 value="[% keywords FILTER html %]"> (незадължително)
         </td>
       </tr>
     [% END %]
+
     <tr>
-      <td align="right">
-        <strong>Зависи от:</strong>
-      </td>
-      <td>
-        <input name="dependson" accesskey="З" value="[% dependson FILTER html %]">
+      <th>Зависи от:</th>
+      <td colspan="3">
+        <input name="dependson" accesskey="d" value="[% dependson FILTER html %]">
       </td>
     </tr>
     <tr>
-      <td align="right">
-        <strong>Блокира:</strong>
-      </td>
-      <td>
-        <input name="blocked" accesskey="Б" value="[% blocked FILTER html %]">
+      <th>Блокира:</th>
+      <td colspan="3">
+        <input name="blocked" accesskey="b" value="[% blocked FILTER html %]">
       </td>
     </tr>
   [% END %]
+</tbody>
 
+<tbody>
+  [% IF group.size %]
   <tr>
-    <td></td>
+    <th>&nbsp;</th>
     <td colspan="3">
-    [% IF group.size %]
       <br>
         <strong>
           Only users in all of the selected groups can view this [% terms.bug %]:
@@ -542,46 +575,27 @@ function handleWantsAttachment(wants_attachment) {
           [% " checked=\"checked\"" IF g.checked %]>
           <label for="bit-[% g.bit %]">[% g.description FILTER html_light %]</label><br>
       [% END %]
-      <br>
-    [% END %]
     </td>
   </tr>
+  [% END %]
 
   [%# Form controls for entering additional data about the bug being created. %]
   [% Hook.process("form") %]
 
   <tr>
-    <td></td>
+    <th>&nbsp;</th>
     <td colspan="3">
-      <input type="submit" id="commit" value="   Предаване   "
+      <input type="submit" id="commit" value="Предаване"
              onclick="if (this.form.short_desc.value == '')
              { alert('Please enter a summary sentence for this [% terms.bug %].');
                return false; } return true;">
       &nbsp;&nbsp;&nbsp;&nbsp;
       <input type="submit" name="maketemplate" id="maketemplate"
-             value="Запомняне на стойностите като отметваем шаблон">
+             value="Запомняне на стойностите като отметваем шаблон"
+             class="expert_fields">
     </td>
   </tr>
-
-[% UNLESS (Param('defaultplatform') && Param('defaultopsys')) %]
-  <tr>
-    <td></td>
-    <td colspan="3">
-      <br>
-      Предположихме
-  [% IF Param('defaultplatform') %]
-      операционната ви система. Моля, проверете я
-  [% ELSIF Param('defaultopsys') %]
-      платформата ви. Моля, проверете я
-  [% ELSE %]
-      операционната ви система и платформа. Моля, проверете ги
-  [% END %]
-      и ако сме сбъркали пишете
-     на [%+ Param('maintainer') %].
-    </td>
-  </tr>
-[% END %]
-
+</tbody>
   </table>
   <input type="hidden" name="form_name" value="enter_bug">
 </form>
@@ -597,12 +611,9 @@ function handleWantsAttachment(wants_attachment) {
 
 [% BLOCK select %]
   [% IF sel.description %]
-  <td align="right">
-    <strong>
-      <a href="page.cgi?id=fields.html#[% sel.name %]">
-        [% sel.description %]</a>:
-    </strong>
-  </td>
+    <th>
+      <a href="page.cgi?id=fields.html#[% sel.name %]">[% sel.description %]</a>:
+    </th>
   [% END %]
 
   <td>
@@ -611,7 +622,7 @@ function handleWantsAttachment(wants_attachment) {
       <option value="[% x FILTER html %]"
         [% " selected=\"selected\"" IF x == default.${sel.name} %]>
         [% IF sel.name == "bug_status" %]
-          [% status_descs.$x FILTER html %]
+          [% get_status(x) FILTER html %]
         [% ELSE %]
           [% x FILTER html %]
         [% END %]</option>

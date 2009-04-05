@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -18,27 +17,19 @@
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
   #                 Frédéric Buclin <LpSolit@gmail.com>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# INTERFACE:
-  # verify_fields: boolean; whether or not to verify
-  #   the version, component, and target milestone fields
+  # product: object; the new product.
   # versions: array; versions for the new product.
   # components: array; components for the new product.
   # milestones: array; milestones for the new product.
   # defaults: hash; keys are names of fields, values are defaults for
   #   those fields
-  # verify_bug_group: boolean; whether or not to ask the user
-  #   if they want to add the bug to its new product's group
-  # use_target_milestone: boolean; whether or not to use
-  #   the target milestone field
-  # old_groups: a list of group objects which are not available
-  #   for the new product.
+  #
+  # verify_bug_groups: If groups need to be confirmed in addition to fields.
   #%]
-
-[%# The global Bugzilla->cgi object is used to obtain form variable values. %]
-[% USE Bugzilla %]
-[% cgi = Bugzilla.cgi %]
 
 [% PROCESS global/variables.none.tmpl %]
 
@@ -47,92 +38,153 @@
 
 <form action="process_bug.cgi" method="post">
 
+[% SET exclude_items = ['version', 'component', 'target_milestone'] %]
+[% IF verify_bug_groups %]
+  [% exclude_items.push('bit-\d+') %]
+[% END %]
+
 [% PROCESS "global/hidden-fields.html.tmpl"
-     exclude=(verify_fields ? "^version|component|target_milestone$" : "") %]
+     exclude = '^' _ exclude_items.join('|') _ '$' %]
 
 <input type="hidden" name="confirm_product_change" value="1">
+    
 [%# Verify the version, component, and target milestone fields. %]
-[% IF verify_fields %]
-  <h3>Потвърждавне на версия, съставна част [% ", целево събитие" IF use_target_milestone %]</h3>
-
-  <p>
-  [% IF use_target_milestone %]
-    Премествате [% terms.bug %]а(овете) към продукта 
-    <b>[% cgi.param("product") FILTER html %]</b>,
-    и полетата за версия, съставна част и/или целево събитие вече не са
-    правилни. Моля, задайте правилните стойностти: 
-  [% ELSE %]
-    Премествате [% terms.bug %]а(овете) към продукта 
-    <b>[% cgi.param("product") FILTER html %]</b>,
-    и полетата за версия и съставна част вече не са правилни.
-    Моля, поправете версията и съставната част сега:
-  [% END %]
-  </p>
-
-  <table>
-    <tr>
-      <td>
-        <b>Версия:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl" 
-                   name="version"
-                   options=versions
-                   default=defaults.version
-                   size=10 %]
-      </td>
-      <td>
-        <b>Съставна част:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl"
-                   name="component"
-                   options=components
-                   default=defaults.component
-                   size=10 %]
-      </td>
-      [% IF use_target_milestone %]
-        <td>
-          <b>Целево събитие:</b><br>
-        [% PROCESS "global/select-menu.html.tmpl"
-                   name="target_milestone"
-                   options=milestones
-                   default=defaults.target_milestone
-                   size=10 %]
-        </td>
-      [% END %]
-    </tr>
-  </table>
-
-[% END %]
-
-[% IF verify_bug_group %]
-  <h3>Проверка на [% terms.Bug %] група</h3>
-
-  [% IF old_groups.size %]
-    <p>Следните групи не са позволени за продукта <b>[% cgi.param("product") FILTER html %]</b>
-    или не ви е разрешено да ограничавте [% terms.bugs %] до тях:</p>
-    <ul>
-      [% FOREACH group = old_groups %]
-        <li>[% group.name FILTER html %]: [% group.description FILTER html %]</li>
-      [% END %]
-    </ul>
-    <p><b>[%+ terms.Bugs %] няма повече да са ограничени до тези групи и могат да станат
-    публични ако не се приложи друга група.</b></p>
-  [% END %]
-
-  [% IF verify_bug_group %]
-    <p>
-      Новия продукт има зададени подразбиращи се групи. Желаете ли да добавите
-      [%+ terms.abug %] към тях?<br>
-      <input type="radio" id="add_no" name="addtonewgroup" value="no"><label for="add_no">не</label><br>
-      <input type="radio" id="add_yes" name="addtonewgroup" value="yes"><label for="add_yes">да</label><br>
-      <input type="radio" id="add_yesifinold" name="addtonewgroup" value="yesifinold" checked="checked">
-        <label for="add_yesifinold"><b>да, но само ако [% terms.abug %] е бил в няокоя от
-        подразбиращите се групи на стария продукт</label>
-  </p>
-  [% END %]
-[% END %]
+<h3>Проверка на версия, съставна част
+  [%- ", целево събитие" 
+      IF Param("usetargetmilestone")
+         && bug.check_can_change_field('target_milestone', 0, 1) %]</h3>
 
 <p>
-  <input type="submit" id="change_product" value="Преаване">
+[% IF Param("usetargetmilestone") 
+   && bug.check_can_change_field('target_milestone', 0, 1) 
+%]
+  Премествате [% terms.bug %]а(овете) към продукта 
+  <b>[% product.name FILTER html %]</b>,
+  и полетата за версия, съставна част и/или целево събитие вече не са
+  правилни. Моля, задайте правилни версия, съставна част и целево събитие сега:
+[% ELSE %]
+  Премествате [% terms.bug %]а(овете) към продукта 
+  <b>[% product.name FILTER html %]</b>,
+  и полетата за версия и съставна част вече не са правилни.
+  Моля, задайте правилните версия и съставна част сега:
+[% END %]
 </p>
+
+<table>
+  <tr>
+    <td>
+      <b>Версия:</b><br>
+      [% IF versions.size == 1 %]
+        [% SET default_version = versions.0 %]
+      [% ELSE %]
+        [% SET default_version = defaults.version %]
+      [% END %]
+      [% PROCESS "global/select-menu.html.tmpl" 
+                 name="version"
+                 options=versions
+                 default=default_version
+                 size=10 %]
+    </td>
+    <td>
+      <b>Съставна част:</b><br>
+      [% IF components.size == 1 %]
+        [% SET default_component = components.0 %]
+      [% ELSE %]
+        [% SET default_component = defaults.component %]
+      [% END %]
+      [% PROCESS "global/select-menu.html.tmpl"
+                 name="component"
+                 options=components
+                 default=default_component
+                 size=10 %]
+    </td>
+    [% IF Param("usetargetmilestone") 
+          && bug.check_can_change_field('target_milestone', 0, 1) 
+    %]
+      <td>
+        <b>Целево събитие:</b><br>
+      [% PROCESS "global/select-menu.html.tmpl"
+                 name="target_milestone"
+                 options=milestones
+                 default=defaults.milestone
+                 size=10 %]
+      </td>
+    [% END %]
+  </tr>
+</table>
+
+[% IF verify_bug_groups %]
+  <h3>Проверка на [% terms.Bug %] група</h3>
+  
+  [% IF old_groups.size %]
+    <p>Следните групи не са законни за продукта '[% product.name FILTER html %]'
+    или не ви е разрешено да ограничавте [% terms.bugs %] до тях</p>
+    [%+ terms.Bugs %] вече няма да са ограничени до тези групи и може да станат
+    публични ако не се приложи друга група:<br>
+    [% FOREACH group = old_groups %]
+      <input type="checkbox" id="bit-[% group.id FILTER html %]"
+             name="bit-[% group.id FILTER html %]" disabled="disabled" value="1">
+      <label for="bit-[% group.id FILTER html %]">
+        [% group.name FILTER html %]: [% group.description FILTER html %]
+      </label>
+      <br>
+    [% END %]
+    </p>
+  [% END %]
+
+  [% mandatory_groups = [] %]
+  [% optional_groups = [] %]
+
+  [% FOREACH gid = product.group_controls.keys %]
+    [% group = product.group_controls.$gid %]
+    [% NEXT UNLESS group.group.is_active %]
+
+    [% IF group.membercontrol == constants.CONTROLMAPMANDATORY
+          || (group.othercontrol ==  constants.CONTROLMAPMANDATORY && !user.in_group(group.group.name)) %]
+      [% mandatory_groups.push(group) %]
+    [% ELSIF (group.membercontrol != constants.CONTROLMAPNA && user.in_group(group.group.name))
+              || group.othercontrol != constants.CONTROLMAPNA %]
+      [% optional_groups.push(group) %]
+    [% END %]
+  [% END %]
+
+  [% IF optional_groups.size %]
+    <p>Тези групи са незадължителни. Може да решите да ограничите [% terms.bugs %] до
+    една или повече от следните групи:<br>
+    [% FOREACH group = optional_groups %]
+      <input type="hidden" name="defined_bit-[% group.group.id FILTER html %]"
+             value="1">
+      <input type="checkbox" id="bit-[% group.group.id FILTER html %]"
+             name="bit-[% group.group.id FILTER html %]"
+             [%+ ((group.membercontrol == constants.CONTROLMAPDEFAULT && user.in_group(group.group.name))
+                 || (group.othercontrol == constants.CONTROLMAPDEFAULT && !user.in_group(group.group.name))
+                 || cgi.param("bit-$group.group.id") == 1) ?
+                 'checked="checked"' : ''
+             %] value="1">
+      <label for="bit-[% group.group.id FILTER html %]">
+        [% group.group.name FILTER html %]: [% group.group.description FILTER html %]
+      </label>
+      <br>
+    [% END %]
+    </p>
+  [% END %]
+
+  [% IF mandatory_groups.size %]
+    <p>Тези групи са задължителни и [% terms.bugs %] ще бъдат автоматично
+    ограничени до тях:<br>
+    [% FOREACH group = mandatory_groups %]
+      <input type="checkbox" id="bit-[% group.group.id FILTER html %]" checked="checked"
+             name="bit-[% group.group.id FILTER html %]" value="1" disabled="disabled">
+      <label for="bit-[% group.group.id FILTER html %]">
+        [% group.group.name FILTER html %]: [% group.group.description FILTER html %]
+      </label>
+      <br>
+    [% END %]
+    </p>
+  [% END %]
+[% END %]
+
+<input type="submit" id="change_product" value="Предаване">
 
 </form>
 <hr>

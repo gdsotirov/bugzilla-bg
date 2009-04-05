@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -29,7 +28,7 @@
   #   entered a comment along with their change) or a number less than that
   #   (if they didn't), in which case no comments are displayed.
   # comments: array; all the comments on the bug.
-  # bug_id: number; the ID of the bug being changed.
+  # bug: Bugzilla::Bug; the bug being changed.
   #%]
 
 [%# The global Bugzilla->cgi object is used to obtain form variable values. %]
@@ -46,7 +45,7 @@
 
 <p>
   Някой друг е направил промени по този
-  [%+ "$terms.bug $bug_id" FILTER bug_link(bug_id) FILTER none %]
+  [%+ "$terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
   по същото време по което и вие.
   Направените промени са:
 </p>
@@ -59,7 +58,7 @@
 <p>
   Добавен(и) коментар(и):
   <blockquote>
-    [% PROCESS "bug/comments.html.tmpl" bug = { 'bug_id' => bug_id } %]
+    [% PROCESS "bug/comments.html.tmpl" %]
   </blockquote>
 </p>
 [% END %]
@@ -80,7 +79,10 @@
 <ul>
   <li>
     <form method="post" action="process_bug.cgi">
-      [% PROCESS "global/hidden-fields.html.tmpl" exclude="^Bugzilla_(login|password)$" %]
+      <input type="hidden" name="delta_ts" 
+             value="[% bug.delta_ts FILTER html %]">
+      [% PROCESS "global/hidden-fields.html.tmpl" 
+          exclude="^Bugzilla_login|Bugzilla_password|delta_ts$" %]
       <input type="submit" id="process" value="Предаване на промените въпреки това">
         Това ще предизвика презаписването на всички промени по-горе
         [% ", с изключение на добавените коментар(и)" IF comments.size > start_at %].
@@ -88,7 +90,7 @@
   </li>
   <li>
     Отхвърляне на промените и
-    [%+ "връщане към $terms.bug $bug_id" FILTER bug_link(bug_id) FILTER none %]
+    [%+ "връщане към $terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
   </li>
 </ul>
 
