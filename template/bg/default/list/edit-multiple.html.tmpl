@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -18,6 +17,8 @@
   #
   # Contributor(s): Myk Melez <myk@mozilla.org>
   #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #                 Guy Pyrzak <guy.pyrzak@gmail.com>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -130,16 +131,29 @@
       </td>
     [% END %]
   </tr>
-
+  
+  <tr>
+    <th><label for="bug_status">Състояние:</label></th>
+    <td colspan="3">[% PROCESS status_section %]</td>
+  </tr>
   [% IF user.in_group(Param("timetrackinggroup")) %]
     <tr>
-      <th><label for="estimated_time">Оценени часове:</label></th>
+      <th><label for="estimated_time">Преценени часове:</label></th>
       <td>
         <input id="estimated_time"
                name="estimated_time"
                value="[% dontchange FILTER html %]"
                size="6">
       </td>
+      <th><label for="deadline">Краен срок (ГГГГ-ММ-ДД):</label></th>
+      <td>
+        <input id="deadline"
+               name="deadline"
+               value="[% dontchange FILTER html %]"
+               size="10">
+      </td>
+    </tr>
+    <tr>
       <th><label for="remaining_time">Оставащи часове:</label></th>
       <td>
         <input id="remaining_time"
@@ -147,17 +161,39 @@
                value="[% dontchange FILTER html %]"
                size="6">
       </td>
+      <th>&nbsp;</th>
+      <td>&nbsp;</td>
     </tr>
   [% END %]
+
+  <tr>
+    <th><label for="assigned_to">Назначен на:</label></th>
+    <td colspan="3">
+      [% INCLUDE global/userselect.html.tmpl
+           id => "assigned_to"
+           name => "assigned_to"
+           value => dontchange
+           do_not_change => dontchange
+           size => 32
+      %]
+      <input type="checkbox" id="set_default_assignee" name="set_default_assignee" value="1">
+      <label for="set_default_assignee">Задаване на назначения по подразбиране</label>
+    </td>
+  </tr>
 
   [% IF Param("useqacontact") %]
     <tr>
       <th><label for="qa_contact">Качествен контрол:</label></th>
       <td colspan="3">
-        <input id="qa_contact"
-               name="qa_contact"
-               value="[% dontchange FILTER html %]"
-               size="32">
+        [% INCLUDE global/userselect.html.tmpl
+             id => "qa_contact"
+             name => "qa_contact"
+             value => dontchange
+             do_not_change => dontchange
+             size => 32
+        %]
+        <input type="checkbox" id="set_default_qa_contact" name="set_default_qa_contact" value="1">
+        <label for="set_default_qa_contact">Задаване на качествения контрол по подразбиране</label>
       </td>
     </tr>
   [% END %]
@@ -208,7 +244,7 @@
   [% END %]
 
   [% USE Bugzilla %]
-  [% FOREACH field = Bugzilla.get_fields({ obsolete => 0, custom => 1 }) %]
+  [% FOREACH field = Bugzilla.active_custom_fields %]
     <tr>
       [% PROCESS bug/field.html.tmpl value = dontchange
                                      editable = 1
@@ -231,7 +267,7 @@
 
 [% IF groups.size > 0 %]
 
-  <b>Набор групи:</b><br>
+  <b>Групи:</b><br>
   <table border="1">
     <tr>
       <th>Без<br>промяна<br>на ограничението на<br>групата</td>
@@ -248,7 +284,7 @@
       <td align="center">
         <input type="radio" name="bit-[% group.id %]" value="0">
       </td>
-      [% IF group.isactive %]
+      [% IF group.is_active %]
         <td align="center">
           <input type="radio" name="bit-[% group.id %]" value="1">
         </td>
@@ -258,7 +294,7 @@
       [% END %]
 
       <td>
-        [% SET inactive = !group.isactive %]
+        [% SET inactive = !group.is_active %]
         [% group.description FILTER html_light FILTER inactive(inactive) %]
       </td>
 
@@ -273,92 +309,6 @@
   [% END %]
 
 [% END %]
-
-
-
-[% knum = 0 %]
-<input id="knob-none" type="radio" name="knob" value="none" checked="checked">
-<label for="knob-none">Да не се прави нищо друго</label><br>
-
-[% IF bugstatuses.size == 1 && bugstatuses.0 == unconfirmedstate %]
-  [% knum = knum + 1 %]
-  <input id="knob-confirm" type="radio" name="knob" value="confirm">
-  <label for="knob-confirm">
-    Потвърждаване на [% terms.bugs %]те (смяна на състоянието на <b>[% status_descs.NEW FILTER html %]</b>)
-  </label><br>
-[% END %]
-
-[%# If all the bugs being changed are open, allow the user to accept them,
-    clear their resolution or resolve them. %]
-[% IF !bugstatuses.containsany(closedstates) %]
-  [% knum = knum + 1 %]
-  <input id="knob-accept" type="radio" name="knob" value="accept">
-  <label for="knob-accept">
-    Приемане на [% terms.bugs %]те (смяна на състоянието на <b>[% status_descs.ASSIGNED FILTER html %]</b>)
-  </label><br>
-
-  [% knum = knum + 1 %]
-  <input id="knob-clearresolution" type="radio" name="knob" value="clearresolution">
-  <label for="knob-clearresolution">Изчистване на решението</label><br>
-
-  [% knum = knum + 1 %]
-  <input id="knob-resolve" type="radio" name="knob" value="resolve">
-  <label for="knob-resolve">
-    Разрешаване на [% terms.bugs %]те, смяна на <a href="page.cgi?id=fields.html#resolution">решението</a> на
-  </label>
-  <select name="resolution" onchange="document.forms.changeform.knob[[% knum %]].checked=true">
-    [% FOREACH resolution = resolutions %]
-      [% NEXT IF !resolution %]
-      <option value="[% resolution FILTER html %]">
-        [% get_resolution(resolution) FILTER html %]
-      </option>
-    [% END %]
-  </select><br>
-
-[% END %]
-
-[%# If all the bugs are closed, allow the user to reopen them. %]
-[% IF !bugstatuses.containsany(openstates) %]
-  [% knum = knum + 1 %]
-  <input id="knob-reopen" type="radio" name="knob" value="reopen">
-  <label for="knob-reopen">Отваряне отново на [% terms.bugs %]те</label><br>
-[% END %]
-
-[% IF bugstatuses.size == 1 %]
-  [% IF bugstatuses.contains('RESOLVED') %]
-    [% knum = knum + 1 %]
-    <input id="knob-verify" type="radio" name="knob" value="verify">
-    <label for="knob-verify">Отбелязване на [% terms.bugs %]те като <b>[% status_descs.VERIFIED FILTER html %]</b></label><br>
-  [% END %]
-[% END %]
-
-[% IF !bugstatuses.containsany(openstates) AND !bugstatuses.contains('CLOSED') %]
-  [% knum = knum + 1 %]
-  <input id="knob-close" type="radio" name="knob" value="close">
-  <label for="knob-close">Отбелязване на [% terms.bugs %]те като <b>[% status_descs.CLOSED FILTER html %]</b></label><br>
-[% END %]
-
-[% knum = knum + 1 %]
-<input id="knob-reassign" type="radio" name="knob" value="reassign">
-<label for="knob-reassign"><a href="page.cgi?id=fields.html#assigned_to">
-  Преназначаване на </a> [% terms.bugs %]те на
-</label>
-[% INCLUDE global/userselect.html.tmpl
-   name => "assigned_to"
-   value => user.login
-   size => 32
-   onchange => "document.forms.changeform.knob[$knum].checked=true;"
-%]<br>
-
-[% knum = knum + 1 %]
-<input id="knob-reassignbycomponent"
-       type="radio"
-       name="knob"
-       value="reassignbycomponent">
-<label for="knob-reassignbycomponent">
-  Преназначаване на [% terms.bugs %]те на собственика за избраната съставна част
-</label><br>
-
 <input type="submit" id="commit" value="Предаване">
 
 [% IF Param('move-enabled') && user.is_mover %]
@@ -379,4 +329,52 @@
       <option value="[% menuitem FILTER html %]">[% menuitem FILTER html %]</option>
     [% END %]
   </select>
+[% END %]
+
+[%############################################################################%]
+[%# Status Block                                                             #%]
+[%############################################################################%]
+
+[% BLOCK status_section %]
+  [% all_open_bugs = !current_bug_statuses.containsany(closedstates) %]
+  [% all_closed_bugs = !current_bug_statuses.containsany(openstates) %]
+  [% closed_status_array = [] %]
+  
+  <select name="bug_status" id="bug_status"> 
+    <option value="[% dontchange FILTER html %]" selected="selected">[% dontchange FILTER html %]</option>
+  
+    [% FOREACH bug_status = new_bug_statuses %]
+      <option value="[% bug_status.name FILTER html %]">
+        [% get_status(bug_status.name) FILTER html %]
+      </option>
+      [% IF !bug_status.is_open %]
+        [% filtered_status =  bug_status.name FILTER js %]
+        [% closed_status_array.push( filtered_status ) %]
+      [% END %]
+    [% END %]
+  
+  [%# If all the bugs being changed are closed, allow the user to change their resolution. %]
+  [% IF all_closed_bugs %]
+    [% filtered_status = dontchange FILTER js %]
+    [% closed_status_array.push( filtered_status ) %]
+  [% END %]
+  </select>
+  
+  <span id="resolution_settings">
+  <select id="resolution" name="resolution">
+      <option value="[% dontchange FILTER html %]" selected >[% dontchange FILTER html %]</option>
+    [% FOREACH r = resolutions %]
+      [% NEXT IF !r %]
+      [% NEXT IF r == "DUPLICATE" || r == "MOVED" %]
+      <option value="[% r FILTER html %]">[% get_resolution(r) FILTER html %]</option>
+    [% END %]
+  </select>
+  </span>
+
+  <script type="text/javascript">
+  var close_status_array = new Array("[% closed_status_array.join('", "') FILTER none %]");
+    YAHOO.util.Event.addListener('bug_status', "change", showHideStatusItems, '[% "is_duplicate" IF bug.dup_id %]');
+    YAHOO.util.Event.onDOMReady( showHideStatusItems );
+  </script>
+
 [% END %]

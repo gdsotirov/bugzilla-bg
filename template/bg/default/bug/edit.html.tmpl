@@ -552,7 +552,7 @@
             <span>
               <span id="bz_qa_contact_edit_display">
               [% INCLUDE user_identity user=> bug.qa_contact %]</span>
-              (<a href="#" id="bz_qa_contact_edit_action">edit</a>)
+              (<a href="#" id="bz_qa_contact_edit_action">редакция</a>)
             </span>
           </div>
           [% END %]
@@ -750,7 +750,7 @@
                и качественият контрол
             [% END %]
             могат винаги да виждат [% terms.abug %] и тази секция няма ефект освен ако
-            [% terms.abug %] е ограничен до поне една група.)
+            [%+ terms.abug %] е ограничен до поне една група.)
           </small>
         </div>
         <div>
@@ -1011,10 +1011,10 @@
   <table class="bz_time_tracking_table">
     <tr>
       <th>
-        <label for="estimated_time">Първ. оценка</label>
+        <label for="estimated_time">Първ. преценка</label>
       </th>
       <th>
-        Текуща оценка
+        Текуща преценка
       </th>
       <th>
         <label for="work_time">Отработени часове</label>

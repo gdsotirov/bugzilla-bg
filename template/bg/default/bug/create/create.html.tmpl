@@ -394,7 +394,7 @@ function handleWantsAttachment(wants_attachment) {
 
 [% IF user.in_group(Param('timetrackinggroup')) %]
   <tr>
-    <th>Прогнозирани часове:</th>
+    <th>Преценени часове:</th>
     <td colspan="2">
       <input name="estimated_time" size="6" maxlength="6" value="0.0">
     </td>
@@ -558,11 +558,11 @@ function handleWantsAttachment(wants_attachment) {
     <td colspan="3">
       <br>
         <strong>
-          Only users in all of the selected groups can view this [% terms.bug %]:
+          Само потребители във всяка от избраните групи могат да виждат този [% terms.bug %]:
         </strong>
       <br>
       <font size="-1">
-        (Leave all boxes unchecked to make this a public [% terms.bug %].)
+        (Премахването на отметката от всички кутии прави [% terms.abug %] по-публичен.)
       </font>
       <br>
       <br>
