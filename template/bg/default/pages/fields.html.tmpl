@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -55,45 +54,47 @@
     <td>
       <dl>
         <dt>
-          <b>[% status_descs.UNCONFIRMED FILTER html %]</b>
+          <b>[% get_status("UNCONFIRMED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към базата данни. 
           Никой не е потвърдил, че този [% terms.bug %] е истински. Потребителите
           имащи зададено "canconfirm" позволение могат да потвърдят
-          този [% terms.bug %], променяйки неговото състояние на <b>[% status_descs.NEW FILTER html %]</b>. Или той може
-          да бъде направо разрешен и отбелязан като <b>[% status_descs.RESOLVED FILTER html %]</b>.
+          този [% terms.bug %], променяйки неговото състояние на [% get_status("NEW") FILTER html %]. Или той може
+          да бъде направо разрешен и отбелязан като [% get_status("RESOLVED") FILTER html %].
         </dd>
 
         <dt>
-          <b>[% status_descs.NEW FILTER html %]</b>
+          <b>[% get_status("NEW") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към списъка с [% terms.bugs %]
           на назначения и трябва да бъде обработен. [% terms.Bugs %] в
-          това състояние могат да бъдат приети и да станат <b>[% status_descs.ASSIGNED FILTER html %]</b>,
-          предадени на някой друг и да останат <b>[% status_descs.NEW FILTER html %]</b> или разрешени и
-          отбелязани <b>[% status_descs.RESOLVED FILTER html %]</b>.
+          това състояние могат да бъдат приети и да станат <b>[% get_status("ASSIGNED") FILTER html %]</b>,
+          предадени на някой друг и да останат <b>[% get_status("NEW") FILTER html %]</b> или разрешени и
+          отбелязани <b>[% get_status("RESOLVED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% status_descs.ASSIGNED FILTER html %]</b>
+          <b>[% get_status("ASSIGNED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] все още не е разрешен, но е назначен на
           правилния човек. От тук [% terms.bugs %] могат да бъдат дадени на
-          някое друго лице и да станат <b>[% status_descs.NEW FILTER html %]</b> или разрешени ставайки <b>[% status_descs.RESOLVED FILTER html  %]</b>.
+          някое друго лице и да станат <b>[% get_status("NEW") FILTER html %]</b> или
+          разрешени ставайки <b>[% get_status("RESOLVED") FILTER html  %]</b>.
         </dd>
 
         <dt>
-          <b>[% status_descs.REOPENED FILTER html %]</b>
+          <b>[% get_status("REOPENED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е бил разрешен, но решението е било сметнато
           за неправилно. Например [% terms.bug %] със състояние <b>[% get_resolution("WORKSFORME") FILTER html %]</b> е
-          <b>[% status_descs.REOPENED FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
+          <b>[% get_status("REOPENED") FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
           вече възпроизводим. От тук [% terms.bugs %] са отбелязвани или
-          <b>[% status_descs.ASSIGNED FILTER html %]</b> или <b>[% status_descs.RESOLVED FILTER html %]</b>.
+          <b>[% get_status("ASSIGNED") FILTER html %]</b> или
+          <b>[% get_status("RESOLVED") FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -114,33 +115,34 @@
     <td>
       <dl>
         <dt>
-          <b>[% status_descs.RESOLVED FILTER html %]</b>
+          <b>[% get_status("RESOLVED") FILTER html %]</b>
         </dt>
         <dd>
           Взето е решение и то чака проверка от качествения контрол.
           От тук [% terms.bugs %] са или отваряни наново и стават
-          <b>[% status_descs.REOPENED FILTER html %]</b> или <b>[% status_descs.VERIFIED FILTER html %]</b> или биват затворени за
-          добро и отбелязвани <b>[% status_descs.CLOSED FILTER html %]</b>.
+          <b>[% get_status("REOPENED") FILTER html %]</b> или
+          <b>[% get_status("VERIFIED") FILTER html %]</b> или биват затворени за
+          добро и отбелязвани <b>[% get_status("CLOSED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% status_descs.VERIFIED FILTER html %]</b>
+          <b>[% get_status("VERIFIED") FILTER html %]</b>
         </dt>
         <dd>
           Качествения контрол е прегледал [% terms.abug %] и решението и 
           е съгласен, че е взето правилното решение. [% terms.Bugs %] остават
           в това състояние докато продукта, за който са докладвани,
           в действителност бъде пуснат (на пазара, в Интернет), в който момент те стават 
-          <b>[% status_descs.CLOSED FILTER html %]</b>.
+          <b>[% get_status("CLOSED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% status_descs.CLOSED FILTER html %]</b>
+          <b>[% get_status("CLOSED") FILTER html %]</b>
         </dt>
         <dd>
           [% terms.Abug %] се смята за мъртъв, решението е правилно. 
           Някои зомби [% terms.bugs %] които изберат да се разхождат по земята
-          отново, трябва да го направят като станат <b>[% status_descs.REOPENED FILTER html %]</b>.
+          отново, трябва да го направят като станат <b>[% get_status("REOPENED") FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -185,7 +187,7 @@
         </dt>
         <dd>
           Всички опити за възпроизвеждане на този [% terms.bug %] са безуспешни
-          и четенето на кода не е довело до следи, защо си се стигнало до
+          и четенето на кода не е довело до следи, защо се е стигнало до
           описаното поведение. Ако повече информация постъпи по-късно 
           [% terms.abug %] може да бъде отворен отново.
         </dd>
@@ -204,8 +206,20 @@
   </tr>
 </table>
 
+<h2><a name="importance">Значение</h2>
+Значението на [% terms.abug %] се описва като съчетание от
+неговия <a href="#priority">приоритет</a> и <a href="#bug_severity">суровост</a>,
+както следва.
+
+<h2><a name="priority">Приоритет</a></h2>
+Полето описва значимостта и реда, в който [% terms.abug %]
+трябва да бъде оправен. Това поле се използва от
+програмисти/инженери, за да подредят работата, която трябва да се свърши
+Достъпните приоритети са в диапазона от <b>P1</b> (най-важен) до
+<b>P5</b> (най-маловажен).
+
 <h2><a name="bug_severity">Суровост</a></h2>
-Това поле описва влиянието на [% terms.abug %]. 
+Това поле описва въздействието на [% terms.abug %]. 
 
 <table>
   <tr>
@@ -253,14 +267,6 @@
     <td>Заявка за подобрение</td>
 </table>
 
-<h2><a name="priority">Приоритет</a></h2>
-Полето описва важността и реда, в който [% terms.abug %]
-трябва да бъде оправен. Това поле се използва от
-програмисти/инженери, за да приоритизират работата, която трябва да се свърши.
-Достъпните приоритети варират от <b>P1</b> (най-важен) до
-<b>P5</b> (най-маловажен). 
-
-
 <h2><a name="rep_platform">Платформа</a></h2>
 Това е машинната платформа, за която [% terms.abug %] е докладван.
 Позволените платформи включват: 
@@ -273,9 +279,9 @@
   <li>PC</li>
 </ul>
 <b>Забележка:</b> При търсене, избирането на възможността "Всички" не избира 
-[% terms.bugs %] назначени, за която и да е платформа. Избира само 
-[% terms.bugs %] означени като случващи се на всяка платформа, т.е.
-обозначени като "Всички".
+[% terms.bugs %]
+назначени, за която и да е платформа. Избира само [% terms.bugs %] които са
+означени като случващи се на всяка платформа, т.е. обозначени като "Всички".
 
 <h2><a name="op_sys">Операционна система</a></h2>
 Това е операционната система, за която е докладван [% terms.abug %].
@@ -299,12 +305,13 @@
 
 <p>
 Това е лицето натоварено с разрешаването на [% terms.bug %]а. Всеки път когато
-това поле се променя, състоянието се променя на <b>[% status_descs.NEW FILTER html %]</b>, за да бъдат
+това поле се променя, състоянието се променя на <b>[% get_status("NEW") FILTER html %]</b>, за да бъдат
 новите [% terms.bugs %] лесно забележими в списъка на лицето.</p>
 
 <p>
-Подразбиращото се състояние за заявки е зададено като [% status_descs.NEW FILTER html %], [% status_descs.ASSIGNED FILTER html %] и 
-[% status_descs.REOPENED FILTER html %]. Когато търсите за [% terms.bugs %], които са били разрешени или
+Подразбиращото се състояние за заявки е зададено като [% get_status("NEW") FILTER html %],
+[% get_status("ASSIGNED") FILTER html %] и [% get_status("REOPENED") FILTER html %].
+Когато търсите за [% terms.bugs %], които са били разрешени или
 проверени не забравяйте да зададете полето за състояние подходящо.
 </p>
 
