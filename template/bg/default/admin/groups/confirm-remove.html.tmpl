@@ -1,0 +1,66 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@syndicomm.com>
+  #                 Joel Peshkin <bugreport@peshkin.net>
+  #                 Jacob Steenhagen <jake@bugzilla.org>
+  #                 Vlad Dascalu <jocuri@softhome.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[%# INTERFACE:
+  # group: The Bugzilla::Group being changed.
+  # regexp: the regexp according to which the update is performed.
+  #%]
+
+[% IF regexp %]
+  [% title = "Потвърждаване: Премахване на явни членове в регулярния израз?" %]
+[% ELSE %]
+  [% title = "Потвърждаване: Премахване на всички явни членове?" %]
+[% END %]
+
+[% PROCESS global/header.html.tmpl
+  title = title
+  doc_section = "groups.html"
+%]
+
+[% IF regexp %]
+  <p>Тази възможност ще премахне всички потребители от '[% group.name FILTER html %]'
+    чийто входни имена съвпадат с регулярния израз:
+    '[% regexp FILTER html %]'</p>
+[% ELSE %]
+  <p>Тази възможност ще премахне всички явно определени потребители
+    от '[% group.name FILTER html %].'</p>
+[% END %]
+  
+<p>Като цяло, ще имате нужда от това само когато надграждате групи
+  създадени с [% terms.Bugzilla %] версии 2.16 и по-стари. Използвайте
+  тази възможност с <b>повишено внимание</b> и погледнете документацията
+  за повече информация.
+</p>
+    
+<form method="post" action="editgroups.cgi">
+  <input type="hidden" name="group_id" value="[% group.id FILTER html %]">
+  <input type="hidden" name="regexp" value="[% regexp FILTER html %]">
+  <input type="hidden" name="action" value="remove_regexp">
+  
+  <input name="token" type="hidden" value="[% token FILTER html %]">
+  <input name="confirm" type="submit" value="Потвърждаване">
+  <p>Или <a href="editgroups.cgi">връщане към страницата Редактиране на групи</a>.</p>
+</form>
+    
+[% PROCESS global/footer.html.tmpl %] 

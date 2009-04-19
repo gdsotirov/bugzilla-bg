@@ -32,7 +32,7 @@
   <li><a href="#v32_issues">Оставащи проблеми</a></li>
   <li><a href="#v32_upgrading">Как да надградите от по-стара версия</a></li>
   <li><a href="#v32_code_changes">Промени в кода, които могат да засегнат
-    вашите допълнителни промени</a></li>
+    допълнителни промени</a></li>
   <li><a href="#v32_previous">Бележки към версията за предишни версии</a></li>
 </ul>
 
@@ -46,22 +46,22 @@
   надградите от по-стара версия</a>. Ако надграждате от версия
   преди 3.0, наистина прочетете бележките към версиите на всички 
   <a href="#v32_previous">предишни версии</a> между вашата версия
-  и тази, <strong>particularly the "Notes For Upgraders" section of each
-  version's release notes</strong>.</p>
+  и тази, <strong>особено "Бележки за надграждащи" секцията на бележките
+  към всяка версия</strong>.</p>
 
-<h2><a name="v32_req"></a>Minimum Requirements</h2>
+<h2><a name="v32_req"></a>Минимални изисквания</h2>
 
-<p>Any requirements that are new since 3.0.5 will look like
-  <span class="req_new">this</span>.</p>
+<p>Всички изисквания, които са нови спрямо 3.0.5 ще изглеждат
+  <span class="req_new">така</span>.</p>
 
 <ul>
   <li><a href="#v32_req_perl">Perl</a></li>
-  <li><a href="#v32_req_mysql">For MySQL Users</a></li>
-  <li><a href="#v32_req_pg">For PostgreSQL Users</a></li>
-  <li><a href="#v32_req_oracle">For Oracle Users</a></li>
-  <li><a href="#v32_req_modules">Required Perl Modules</a></li>
-  <li><a href="#v32_req_optional_mod">Optional Perl
-    Modules</a></li>
+  <li><a href="#v32_req_mysql">За MySQL потребители</a></li>
+  <li><a href="#v32_req_pg">За PostgreSQL потребители</a></li>
+  <li><a href="#v32_req_oracle">За Oracle потребители</a></li>
+  <li><a href="#v32_req_modules">Задължителни Perl модули</a></li>
+  <li><a href="#v32_req_optional_mod">Незадължителни Perl
+    модули</a></li>
 </ul>
 
 <h3><a name="v32_req_perl"></a>Perl</h3>
@@ -74,411 +74,411 @@
 
 [% INCLUDE db_req db='oracle' %]
 
-<h3><a name="v32_req_modules"></a>Required Perl Modules</h3>
+<h3><a name="v32_req_modules"></a>Задължителни Perl модули</h3>
 
 [% INCLUDE req_table reqs = REQUIRED_MODULES 
                      new = []
                      updated = ['Template-Toolkit', 'Email-MIME',
                                 'Email-MIME-Modifier', 'CGI'] %]
 
-<h3><a name="v32_req_optional_mod"></a>Optional Perl Modules</h3>
+<h3><a name="v32_req_optional_mod"></a>Незадължителни Perl модули</h3>
 
-<p>The following perl modules, if installed, enable various
-  features of [% terms.Bugzilla %]:</p>
+<p>Следни perl модули, ако са инсталирани, разрешават различни
+  възможности на [% terms.Bugzilla %]:</p>
 
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
                      new  = ['SASL-Authen', 'RadiusPerl']
                      updated = []
                      include_feature = 1 %]
 
-<h2><a name="v32_feat"></a>New Features and Improvements</h2>
+<h2><a name="v32_feat"></a>Нови възможности и подобрения</h2>
 
 <ul>
-  <li><a href="#v32_feat_ui">Major UI Improvements</a></li>
-  <li><a href="#v32_feat_skin">New Default Skin: Dusk</a></li>
-  <li><a href="#v32_feat_status">Custom Status Workflow</a></li>
-  <li><a href="#v32_feat_fields">New Custom Field Types</a></li>
-  <li><a href="#v32_feat_install">Easier Installation</a></li>
-  <li><a href="#v32_feat_oracle">Experimental Oracle Support</a></li>
-  <li><a href="#v32_feat_utf8">Improved UTF-8 Support</a></li>
-  <li><a href="#v32_feat_grcons">Group Icons</a></li>
-  <li><a href="#v32_feat_other">Other Enhancements and Changes</a></li>
+  <li><a href="#v32_feat_ui">Големи подобрения на потребителския интерфейс</a></li>
+  <li><a href="#v32_feat_skin">Нова кожа по подразбиране: Dusk</a></li>
+  <li><a href="#v32_feat_status">Потребителски работен поток на състоянието</a></li>
+  <li><a href="#v32_feat_fields">Нови типове потребителски полета</a></li>
+  <li><a href="#v32_feat_install">Улеснена инсталация</a></li>
+  <li><a href="#v32_feat_oracle">Експериментална Oracle поддръжка</a></li>
+  <li><a href="#v32_feat_utf8">Подобрена UTF-8 поддръжка</a></li>
+  <li><a href="#v32_feat_grcons">Групови икони</a></li>
+  <li><a href="#v32_feat_other">Други подобрения и промени</a></li>
 </ul>
 
-<h3><a name="v32_feat_ui"></a>Major UI Improvements</h3>
+<h3><a name="v32_feat_ui"></a>Големи подобрения на потребителския интерфейс</h3>
 
-<p>[% terms.Bugzilla %] 3.2 has had some UI assistance from the NASA
-  Human-Computer Interaction department and the new 
+<p>[% terms.Bugzilla %] 3.2 получи малко помощ за потребителския интерфейс от подразделението
+  Human-Computer Interaction на NASA и новия 
   <a href="http://wiki.mozilla.org/Bugzilla:UE">[% terms.Bugzilla %]
-  User Interface Team</a>.</p>
+  Екип по потребителски интерфейс</a>.</p>
 
-<p>In particular, you will notice a massively redesigned [% terms.bug %]
-  editing form, in addition to our <a href="#v32_feat_skin">new skin</a>.</p>
+<p>В частност, ще забележите масово преработената форма за редактиране
+  на [% terms.bug %], в допълнение към <a href="#v32_feat_skin">новата ни кожа</a>.</p>
 
-<h3><a name="v32_feat_skin"></a>New Default Skin: Dusk</h3>
+<h3><a name="v32_feat_skin"></a>Нова кожа по подразбиране: Dusk</h3>
 
-<p>[% terms.Bugzilla %] 3.2 now ships with a skin called "Dusk" that is
-  a bit more colorful than old default "Classic" skin.</p>
+<p>[% terms.Bugzilla %] 3.2 вече идва с кожа наречена "Dusk", която е
+  малко по-цветна от старата кожа по подразбиране "Classic".</p>
 
-<p>Upgrading installations will still default to the "Classic" 
-  skin--administrators can change the default in the Default Preferences
-  control panel. Users can also choose to use the old skin in their
-  Preferences (or using the View :: Page Style menu in Firefox).</p>
+<p>Надграждащите инсталации ще продължават да ползват по подразбиране "Classic" 
+  skin--administrators могат да променят подразбиращото се в контролния панел
+  Подразбиращи се предпочитания. Потребителите също могат да избират използването на старата кожа в техните
+  Предпочитания (или използвайки менюто Изглед :: Оформление на страницата във Firefox).</p>
 
-<p>The changes that [% terms.Bugzilla %] required for Dusk made
-  [%+ terms.Bugzilla %] much easier to skin. See the
-  <a href="http://wiki.mozilla.org/Bugzilla:Addons#Skins">Addons page</a>
-  for additional skins, or try making your own!</p>
+<p>Необходимите промени по [% terms.Bugzilla %] за Dusk я направиха
+  много по-лесна за оформление. Вижте
+  <a href="http://wiki.mozilla.org/Bugzilla:Addons#Skins">страницата Добавки</a>
+  за допълнителни кожи, или опитайте да направите своя!</p>
 
-<h3><a name="v32_feat_status"></a>Custom Status Workflow</h3>
+<h3><a name="v32_feat_status"></a>Потребителски работен поток на състоянието</h3>
 
-<p>You can now customize the list of statuses in [% terms.Bugzilla %],
-  and transitions between them.</p>
+<p>Можете да нагласите списъка със състояния в [% terms.Bugzilla %],
+  и преминаванията между тях.</p>
 
-<p>You can also specify that a comment must be made on certain transitions.</p>
+<p>Можете също да укажете задаването на коментар при определени преминавания.</p>
 
-<h3><a name="v32_feat_fields"></a>New Custom Field Types</h3>
+<h3><a name="v32_feat_fields"></a>Нови типове потребителски полета</h3>
 
-<p>[% terms.Bugzilla %] 3.2 has support for three new types of
-  custom fields:</p>
+<p>[% terms.Bugzilla %] 3.2 има поддръжка за три нови типове на
+  потребителски полета:</p>
 
 <ul>
-  <li>Large Text: Adds a multi-line textbox to your [% terms.bugs %].</li>
-  <li>Multiple Selection Box: Adds a box that allows you to choose
-    multiple items from a list.</li>
-  <li>Date/Time: Displays a date and time, along with a JavaScript
-    calendar popup to make picking a date easier.</li>
+  <li>Дълъг текст: Добавя многоредово текстово поле към вашите [% terms.bugs %].</li>
+  <li>Кутия за множествен избор: Добавя кутия, която ви позволява да избирате
+    няколко елемента от списък.</li>
+  <li>Дата/Час: Показва дата и час, заедно с изскачащ JavaScript
+    календар за улесняване избирането на дата.</li>
 </ul>
 
-<h3><a name="v32_feat_install"></a>Easier Installation</h3>
+<h3><a name="v32_feat_install"></a>Улеснена инсталация</h3>
 
-<p>[% terms.Bugzilla %] now comes with a script called 
-  <kbd>install-module.pl</kbd> that can automatically download
-  and install all of the required Perl modules for [% terms.Bugzilla %].
-  It stores them in a directory inside your [% terms.Bugzilla %]
-  installation, so you can use it even if you don't have administrator-level
-  access to your machine, and without modifying your main Perl install.</p>
+<p>[% terms.Bugzilla %] вече идва със скрипт наречен 
+  <kbd>install-module.pl</kbd>, който може автоматично да сваля
+  и инсталира всички задължителни Perl модули за [% terms.Bugzilla %].
+  Той ги запазва в папка във вашата [% terms.Bugzilla %]
+  инсталация, така че да можете да я ползвате дори да нямате достъп на
+  административно ниво до вашата машина, и бе промяна на главната ви Perl инсталация.</p>
 
-<p><kbd>checksetup.pl</kbd> will print out instructions for using
-  <kbd>install-module.pl</kbd>, or you can read its
-  <a href="[% docs_urlbase FILTER html %]api/install-module.html">documentation</a>.</p>
+<p><kbd>checksetup.pl</kbd> ще отпечата инструкции за използването на
+  <kbd>install-module.pl</kbd>, или можете да прочетете неговата
+  <a href="[% docs_urlbase FILTER html %]api/install-module.html">документация</a>.</p>
 
-<h3><a name="v32_feat_oracle"></a>Experimental Oracle Support</h3>
+<h3><a name="v32_feat_oracle"></a>Експериментална Oracle поддръжка</h3>
 
-<p>[% terms.Bugzilla %] 3.2 contains experimental support for using 
-  Oracle as its database. Some features of [% terms.Bugzilla %] are known 
-  to be broken on Oracle, but hopefully will be working by our next major
-  release.</p>
+<p>[% terms.Bugzilla %] 3.2 съдържа експериментална поддръжка за използване на 
+  Oracle като база данни. Известно е, че някои възможности на
+  [%+ terms.Bugzilla %] са счупени при Oracle, но да се надяваме ще работят до следващата главна
+  версия.</p>
 
-<p>The [% terms.Bugzilla %] Project, as an open-source project, of course
-  does not recommend the use of proprietary database solutions. However,
-  if your organization requires that you use Oracle, this will allow
-  you to use [% terms.Bugzilla %]!</p>
+<p>Проекта [% terms.Bugzilla %], като проект с отворен код, разбира се
+  не препоръчва използването на собственически решения за бази данни. Обаче,
+  ако организацията ви изисква да използвате Oracle, това ще ви позволи
+  да използвате [% terms.Bugzilla %]!</p>
 
-<p>The [% terms.Bugzilla %] Project thanks Oracle Corp. for their extensive
-  development contributions to [% terms.Bugzilla %] which allowed this to 
-  happen!</p>
+<p>Проекта [% terms.Bugzilla %] благодари на корпорация Oracle за множеството техни
+  участия в разработката на [% terms.Bugzilla %] които позволиха това да 
+  се случи!</p>
 
-<h3><a name="v32_feat_utf8"></a>Improved UTF-8 Support</h3>
+<h3><a name="v32_feat_utf8"></a>Подобрена UTF-8 поддръжка</h3>
 
-<p>[% terms.Bugzilla %] 3.2 now has advanced UTF-8 support in its code,
-  including correct handling for truncating and wrapping multi-byte
-  languages. Major issues with multi-byte or unusual languages
-  are now resolved, and [% terms.Bugzilla %] should now be usable
-  by users in every country with little (or at least much less)
-  customization.</p>
+<p>[% terms.Bugzilla %] 3.2 вече има разширена UTF-8 поддръжка в своя код,
+  включваща правилна обработка на отрязване и пренасяне на многобайтови
+  езици. Главните проблеми с многобайтови или обичайни езици
+  са вече решени и [% terms.Bugzilla %] трябва вече да е използваема
+  от потребители във всяка страна с малки (или поне много по-малко)
+  допълнителни промени.</p>
 
-<h3><a name="v32_feat_grcons"></a>Group Icons</a></h3>
+<h3><a name="v32_feat_grcons"></a>Групови икони</a></h3>
 
-<p>Administrators can now specify that users who are in certain groups
-  should have an icon appear next to their name whenever they comment.
-  This is particularly useful for distinguishing developers from 
-  [%+ terms.bug %] reporters.</p>
+<p>Администраторите вече могат да указват, че потребителите в определени групи
+  трябва да имат икона появяваща се в близост до името им винаги когато коментират.
+  В частност това е полезно за отличаването на разработчици от 
+  докладчици на [%+ terms.bug %].</p>
 
-<h3><a name="v32_feat_other"></a>Other Enhancements and Changes</h3>
+<h3><a name="v32_feat_other"></a>Други подобрения и промени</h3>
 
-<p>These are either minor enhancements, or enhancements that have
-  very short descriptions. Some of these are very useful, though!</p>
+<p>Това са или малки подобрения, или подобрения имащи
+  много кратки описания. Някои от тях са много полезни, въпреки това!</p>
 
-<h4>Enhancements For Users</h4>
+<h4>Подобрения за потребители</h4>
 
 <ul>
-  <li><strong>[% terms.Bugs %]</strong>: You can now reassign
-    [%+ terms.abug %] at the same time as you are changing its status.</li>
-  <li><strong>[% terms.Bugs %]</strong>: When entering [% terms.abug %], 
-    you will now see the description of a component when you select it.</li>
-  <li><strong>[% terms.Bugs %]</strong>: The [% terms.bug %] view now 
-    contains some <a href="http://microformats.org/about/">Microformats</a>,
-    most notably for users' names and email addresses.</li>
-  <li><strong>[% terms.Bugs %]</strong>: You can now remove a QA Contact
-    from [% terms.abug %] simply by clearing the QA Contact field.</li>
-  <li><strong>[% terms.Bugs %]</strong>: There is now a user preference 
-    that will allow you to exclude the quoted text when replying 
-    to comments.</li>
-  <li><strong>[% terms.Bugs %]</strong>: You can now expand or collapse
-    individual comments in the [% terms.bug %] view.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Вече можете да преназначите
+    [%+ terms.bug %] по същото време когато променята състоянието му.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Когато въвеждате [% terms.bug %], 
+    вече ще виждате описанието на съставната част, когато я изберете.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Преглеждането на [% terms.bug %] вече 
+    съдържа някои <a href="http://microformats.org/about/">Microformats</a>,
+    най вече за потребителски имена и е-пощенски адреси.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Вече можете да премахнете качествения контрол
+    от [% terms.abug %] просто като изчистите полето за качествен контрол.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Вече има потребителско предпочитание, 
+    което ви позволява да изключвате цитирания текст когато отговаряте 
+    на коментари.</li>
+  <li><strong>[% terms.Bugs %]</strong>: Вече можете да разширявате и свивате
+    отделни коментари при преглед на [% terms.bug %].</li>
 
-  <li><strong>Attachments</strong>: There is now "mid-air collision" 
-      protection when editing attachments.</li>
-  <li><strong>Attachments</strong>: Patches in the Diff Viewer now show 
-    line numbers (<a href="https://bugzilla.mozilla.org/attachment.cgi?id=327546">Example</a>).</li>
-  <li><strong>Attachments</strong>: After creating or updating an attachment,
-    you will be immediately shown the [% terms.bug %] that the attachment
-    is on.</li>
+  <li><strong>Приставки</strong>: Вече има защита за 
+      "сблъсквания във въздуха" при редактирането на приставки.</li>
+  <li><strong>Приставки</strong>: Кръпките в прегледа на разлики вече се показват 
+    с номера на редове (<a href="https://bugzilla.mozilla.org/attachment.cgi?id=327546">Пример</a>).</li>
+  <li><strong>Приставки</strong>: След създаването или обновяването на приставка,
+    веднага ще ви бъде показан [% terms.abug %] за който е
+    приставката.</li>
 
-  <li><strong>Search</strong>: You can now reverse the sort of 
-    [%+ terms.abug %] list by clicking on a column header again.</li>
-  <li><strong>Search</strong>: Atom feeds of [% terms.bug %] lists now
-    contain more fields.</li>
-  <li><strong>Search</strong>: QuickSearch now supports searching flags
-    and groups. It also now includes the OS field in the list of fields
-    it searches by default.</li>
-  <li><strong>Search</strong>: "Help" text can now appear on query.cgi 
-    for Internet Explorer and other non-Firefox browsers. (It always
-    could appear for Firefox.)</li>
+  <li><strong>Търсене</strong>: Вече можете да обърнете подреждането на 
+    [%+ terms.abug %] списък с повторно щракване върху заглавието на колона.</li>
+  <li><strong>Търсене</strong>: Atom емисиите на [% terms.bug %] списъци вече
+    съдържат повече полета.</li>
+  <li><strong>Търсене</strong>: БързоТърсене вече поддържа търсене на флагове
+    и групи. Също така вече съдържа полето <abbr title="Операционна система">ОС</abbr> в списъка с полета
+    които търси по подразбиране.</li>
+  <li><strong>Търсене</strong>: Текста "Помощ" вече може да се появи на query.cgi 
+    за Internet Explorer и други не-Firefox браузъри. (Винаги
+    може да се появи за Firefox.)</li>
 
-  <li>[% terms.Bugzilla %] now ships with an icon that will show
-    up next to the URL in most browsers. If you want to replace it,
-    it's in <kbd>images/favicon.ico</kbd>.</li>
+  <li>[% terms.Bugzilla %] вече идва с икона, която ще се появява
+    близо до адреса в повечето браузъри. Ако искате да я замените,
+    тя е в <kbd>images/favicon.ico</kbd>.</li>
 
-  <li>You can now set the Deadline when using "Change Several 
-    [%+ terms.Bugs %] At Once"</li>
-  <li><strong>Saved Searches</strong> now save their column list, so if 
-    you customize the list of columns and save your search, it will 
-    always contain those columns.</li>
-  <li><strong>Saved Searches</strong>: When you share a search, you can
-    now see how many users have subscribed to it, on 
+  <li>Вече можете да зададете Краен срок при използването на "Промяна на няколко 
+    [%+ terms.bugs %] едновременно"</li>
+  <li><strong>Съхранените търсения</strong> вече запазват списъка си с колони, така че 
+    ако го настроите допълнително и запазите търсенето си, то ще 
+    съдържа винаги колоните.</li>
+  <li><strong>Съхранени търсения</strong>: Когато споделите търсене, можете
+    вече да виждате колко потребители са се абонирали, на 
     <kbd>userprefs.cgi</kbd>.</li>
-  <li><strong>Saved Searches</strong>: You can now see what group a 
-    shared search was shared to, on the list of available shared searches
-    in <kbd>userprefs.cgi</kbd>.</li>
-  <li><strong>Flags</strong>: If your installation uses drop-down user 
-    lists, the flag requestee box will now contain only users who are 
-    actually allowed to take requests.</li>
-  <li><strong>Flags</strong>: If somebody makes a request to you, and you
-    change the requestee to somebody else, the requester is no longer set
-    to you. In other words, you can "redirect" requests and maintain the
-    original requester.</li>
-  <li><strong>Flags</strong>: Emails about flags now will thread properly
-    in email clients to be a part of [% terms.abug %]'s thread.</li>
-  <li>When using <kbd>email_in.pl</kbd>, you can now add users to the CC
-    list by just using <kbd>@cc</kbd> as the field name.</li>
-  <li>Many pages (particularly administrative pages) now contain links to
-    the relevant section of the [% terms.Bugzilla %] Guide, so you can read 
-    the documentation for that page.</li>
-  <li>Dependency Graphs should render more quickly, as they now (by default)
-    only include the same [% terms.bugs %] that you'd see in the dependency
-    tree.</li>
+  <li><strong>Съхранени търсения</strong>: Вече можете да виждате до кои групи 
+    е споделено търсене, в списъка със достъпни споделени търсения
+    в <kbd>userprefs.cgi</kbd>.</li>
+  <li><strong>Флагове</strong>: Ако инсталацията ви използва потребителски списъци 
+    с възможност за избор, кутията за изискващия флаг вече ще съдържа само потребители които са 
+    действително са упълномощени да приемат заявки.</li>
+  <li><strong>Флагове</strong>: Ако някой отправи заявка към вас и вие
+    смените изпълнителя с някой друг, заявителя вече няма да
+    сте вие. С други думи, можете да "пренасочите" заявки и да запазите
+    първоначалния заявител.</li>
+  <li><strong>Флагове</strong>: Писмата за флагове вече ще се подреждат правилно
+    в пощенските клиенти като като част от дървото на [% terms.abug %].</li>
+  <li>При използването на <kbd>email_in.pl</kbd>, вече можете да добавите потребители към <abbr title="Точно копие">ТК</abbr>
+    списък като просто използвате <kbd>@cc</kbd> за име на поле.</li>
+  <li>Много страници (в частност административни страници) вече съдържат връзки към
+    съответната секция на [% terms.Bugzilla %] Пътеводителя, така че можете да прочетете 
+    документацията за страницата.</li>
+  <li>Графиките на зависимости трябва да се изчертават по-бързо, защото вече (по подразбиране)
+    включват само същите [% terms.bugs %] които сте видели в дървото на
+    зависимостите.</li>
 </ul>
 
-<h4>Enhancements For Administrators</h4>
+<h4>Подобрения за администратори</h4>
 
 <ul>
-  <li><strong>Admin UI</strong>: Instead of having the Administration 
-    Control Panel links in the footer, there is now just one link called 
-   "Administration" that takes you to a page that links to all the
-    administrative controls for [% terms.Bugzilla %].</li>
-  <li><strong>Admin UI</strong>: Administrative pages no longer display
-    confirmation pages, instead they redirect you to some useful page 
-    and display a message about what changed.</li>
-  <li><strong>Admin UI</strong>: The interface for editing group 
-     inheritance in <kbd>editgroups.cgi</kbd> is much clearer now.</li>
-  <li><strong>Admin UI</strong>: When editing a user, you can now see 
-    all the components where that user is the Default Assignee or Default
-    QA Contact.</li>
+  <li><strong>Административен потребителски интерфейс</strong>: Вместо връзки от 
+    Административния Контролен Панел в долния колонтитул, вече има само една връзка наречена 
+   "Администрация", която ви отвежда на страница с връзки към всички
+    административни контроли на [% terms.Bugzilla %].</li>
+  <li><strong>Административен потребителски интерфейс</strong>: Административните страници вече не показват
+    страници с потвърждение, вместо това ви препращат до някоя използваема страница 
+    и показват съобщение за промяната.</li>
+  <li><strong>Административен потребителски интерфейс</strong>: Интерфейса за редакция на наследяване на 
+     групи в <kbd>editgroups.cgi</kbd> вече е много по-чист.</li>
+  <li><strong>Административен потребителски интерфейс</strong>: При редактиране на потребител, вече може да видите 
+    всички съставни части където потребителя е Подразбиращ се назначен или Подразбиращ се
+    Качествен Контрол.</li>
 
-  <li><strong>Email</strong>: For installations that use SMTP to send 
-    mail (as opposed to Sendmail), [%+ terms.Bugzilla %] now supports
-    SMTP Authentication, so that it can log in to your mail server 
-    before sending messages.</li>
-  <li><strong>Email</strong>: Using the "Test" mail delivery method now
-     creates a valid mbox file to make testing easier.</li>
+  <li><strong>Е-поща</strong>: За инсталации използващи <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> за изпращане 
+    на поща (за разлика от Sendmail), [%+ terms.Bugzilla %] вече поддържа
+    SMTP удостоверяване, така че може да влезе в пощенския ви сървър 
+    преди изпращане на съобщения.</li>
+  <li><strong>Е-поща</strong>: Използването на метода за доставка на поща "Проба" вече
+     създава валиден mbox файл, за да направи пробването по-лесно.</li>
 
-  <li><strong>Authentication</strong>: [% terms.Bugzilla %] now correctly 
-    handles LDAP records which contain multiple email addresses. (The first
-    email address in the list that is a valid [% terms.Bugzilla %] account 
-    will be used, or if this is a new user, the first email address in 
-    the list will be used.)</li>
-  <li><strong>Authentication</strong>: [% terms.Bugzilla %] can now take 
-    a list of LDAP servers to try in order until it gets a successful
-    connection.</li>
-  <li><strong>Authentication</strong>: [% terms.Bugzilla %] now supports 
-    RADIUS authentication.</li>
+  <li><strong>Удостоверяване</strong>: [% terms.Bugzilla %] вече правилно 
+    обработва <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> записи, които съдържат множество е-пощенски адреси. (Първия
+    е-пощенски адрес в списъка, който е действителна [% terms.Bugzilla %] сметка 
+    ще бъде използван, или ако това е нов потребител, първия е-пощенски адрес в 
+    списъка ще бъде използван.)</li>
+  <li><strong>Удостоверяване</strong>: [% terms.Bugzilla %] вече може да приеме 
+    списък с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървъри, които да опита подред докато успешно установи
+    връзка.</li>
+  <li><strong>Удостоверяване</strong>: [% terms.Bugzilla %] вече поддържа 
+    <abbr lang="en" title="Remote Authentication Dial In User Service">RADIUS</abbr> удостоверяване.</li>
 
-  <li><strong>Security</strong>: The login cookies is now created as 
-    "HTTPOnly" so that it can't be read by possibly malicious scripts. 
-    Also, if SSL is enabled on your installation, the login cookie is
-    now only sent over SSL connections.</li>
-  <li><strong>Security</strong>: The <code>ssl</code> parameter now protects
-    every page a logged-in user accesses, when set to "authenticated sessions."
-    Also, SSL is now enforced appropriately in the WebServices interface when
-    the parameter is set.</li>
+  <li><strong>Сигурност</strong>: Бисквитките за вход вече се създават като 
+    "Само HTTP", така че да не могат да се четат от вероятно злонамерени скриптове. 
+    Също така, ako <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> разрешен на вашата инсталация, бисквитката за вход се
+    праща вече само по <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> връзки.</li>
+  <li><strong>Сигурност</strong>: Параметъра <code>ssl</code> вече защитава
+    всяка страница, която влезлите потребители посещават, когато е зададен на "удостоверени сесии".
+    Също, SSL вече се налага подходящо в WebServices интерфейса, когато
+    параметъра е зададен.</li>
 
-  <li><strong>Database</strong>: [% terms.Bugzilla %] now uses transactions in 
-    the database instead of table locks. This should generally improve
-    performance with many concurrent users. It also means if there is
-    an unexpected error in the middle of a page, all database changes made
-    during that page will be rolled back.</li>
-  <li><strong>Database</strong>: You no longer have to set 
-    <code>max_packet_size</code> in MySQL to add large attachments. However,
-    you may need to set it manually if you restore a mysqldump into your
-    database.</li>
+  <li><strong>База с данни</strong>: [% terms.Bugzilla %] вече използва транзакции в 
+    базата с данни вместо заключване на таблици. Това като цяло трябва да подобри
+    производителността при много едновременни потребители. Това също значи, че ако има
+    неочаквана грешка по средата на страница, всички промени направени в базата с данни
+    от страницата ще бъдат върнати.</li>
+  <li><strong>База с данни</strong>: Вече не е нужно да задавате 
+    <code>max_packet_size</code> в MySQL за добавянето на големи приставки. However,
+    може да се наложи да го зададете ръчно ако възстановявате резервно копие във
+    базата ви с данни.</li>
 
-  <li>New WebService functions:
+  <li>Нови WebService функции:
     <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Bug.html">B<!-- -->ug.add_comment</a>
-    and <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Bugzilla.html">Bugzilla.extensions</a>.</li>
+    и <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Bugzilla.html">Bugzilla.extensions</a>.</li>
 
-  <li>You can now delete custom fields, but only if they have never been
-    set on any [% terms.bug %].</li>
-  <li>There is now a <kbd>--reset-password</kbd> argument to 
-    <kbd>checksetup.pl</kbd> that allows you to reset a user's password
-    from the command line.</li>
-  <li>There is now a script called <kbd>sanitycheck.pl</kbd> that you can
-    run from the command line. It works just like <kbd>sanitycheck.cgi</kbd>.
-    By default, it only outputs anything if there's an error, so it's
-    ideal for administrators who want to run it nightly in a cron job.</li>
-  <li>The <kbd>strict_isolation</kbd> parameter now prevents you from setting
-    users who cannot see [% terms.abug %] as a CC, Assignee, or QA
-    Contact. Previously it only prevented you from adding users who
-    could not <em>edit</em> the [% terms.bug %].</li>
-  <li>Extensions can now add their own headers to the HTML &lt;head&gt;
-    for things like custom CSS and so on.</li>
-  <li><kbd>sanitycheck.cgi</kbd> has been templatized, meaning that the
-    entire [% terms.Bugzilla %] UI is now contained in templates.</li>
-  <li>When setting the <kbd>sslbase</kbd> parameter, you can now specify
-    a port number in the URL.</li>
-  <li>When importing [% terms.bugs %] using <kbd>importxml.pl</kbd>,
-    attachments will have their actual creator set as their creator,
-    instead of the person who exported the [% terms.bug %] from the other
-    system.</li>
-  <li>The voting system is off by default in new installs. This is to
-    prepare for the fact that it will be moved into an extension at
-    some point in the future.</li>
-  <li>The <code>shutdownhtml</code> parameter now works even when 
-    [% terms.Bugzilla %]'s database server is down.</li>
+  <li>Вече можете да триете потребителски полета, но само ако никога на са били
+    задавани за някой [% terms.bug %].</li>
+  <li>Вече има аргумент <kbd>--reset-password</kbd> на 
+    <kbd>checksetup.pl</kbd>, който ви позволява нулиране на потребителска парола
+    от командния ред.</li>
+  <li>Вече има скрипт наречен <kbd>sanitycheck.pl</kbd>, който можете
+    да пуснете от командния ред. Той работи точно като <kbd>sanitycheck.cgi</kbd>.
+    По подразбиране, той отпечатва нещо само ако има грешка, така че е
+    идеален за администратори, които искат да го пуснат като нощна работа.</li>
+  <li>Параметъра <kbd>strict_isolation</kbd> вече ви предпазва от задаването на
+    потребители които не могат да виждат [% terms.abug %] като CC, Назначения, или Качествения
+    Контрол. Преди, ви предпазваше само от добавяне на потребители които
+    не могат да <em>редактират</em> [% terms.abug %].</li>
+  <li>Разширенията вече могат да добавят свои собствени заглавки към <abbr title="Hyper Text Markup Language">HTML</abbr> &lt;head&gt;
+    за неща като потребителски <abbr title="Cascading Style Sheets">CSS</abbr> и т. н.</li>
+  <li><kbd>sanitycheck.cgi</kbd> беше шаблонизиран, което значи че
+    целия [% terms.Bugzilla %] потребителски интерфейс вече се съдържа в шаблони.</li>
+  <li>При задаването на параметъра <kbd>sslbase</kbd>, вече можете да укажете
+    номер на порт в адреса.</li>
+  <li>При внасянето на [% terms.bugs %] използващи <kbd>importxml.pl</kbd>,
+    приставките ще имат зададен своя действителен създател,
+    вместо лицето, която е изнесло [% terms.abug %] от другата
+    система.</li>
+  <li>Системата за гласуване е изключена по подразбиране в нови инсталации. Целта е
+    подготовка за факта, че тя ще бъде преместена в разширение
+    в някой бъдещ момент.</li>
+  <li>Параметъра <code>shutdownhtml</code> вече работи дори когато 
+    сървъра с бази данни на [% terms.Bugzilla %] не работи.</li>
 </ul>
 
-<h3>Enhancements for Localizers (or Localized Installations)</h3>
+<h3>Подобрения за локализатори (или локализирани инсталации)</h3>
 
 <ul>
-  <li>The documentation can now be localized--in other words, you can have
-    documentation installed for multiple languages at once and
-    [%+ terms.Bugzilla %] will link to the correct language in its internal
-    documentation links.</li>
-  <li>[% terms.Bugzilla %] no longer uses the <kbd>languages</kbd> parameter.
-    Instead it reads the <kbd>template/</kbd> directory to see which
-    languages are available.</li>
-  <li>Some of the messages printed by <kbd>checksetup.pl</kbd> can now
-    be localized. See <kbd>template/en/default/setup/strings.txt.pl</kbd>.
+  <li>Документацията вече може да се локализира--с други думи, можете да имате
+    инсталирана документация за много езици едновременно и
+    [%+ terms.Bugzilla %] ще препраща към правилния език в своите вътрешни
+    връзки към документация.</li>
+  <li>[% terms.Bugzilla %] вече не използва параметъра <kbd>languages</kbd>.
+    Вместо това чете папката <kbd>template/</kbd>, за да провери кои
+    езици са налични.</li>
+  <li>Някои от съобщенията отпечатвани от <kbd>checksetup.pl</kbd> вече могат
+    да бъдат локализирани. Вижте <kbd>template/en/default/setup/strings.txt.pl</kbd>.
 </ul>
 
-<h2><a name="v32_issues"></a>Outstanding Issues</h2>
+<h2><a name="v32_issues"></a>Оставащи проблеми</h2>
 
 <ul>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=423439">
-    [%- terms.Bug %] 423439</a>: Tabs in comments will be converted
-    to four spaces, due to a b<!-- -->ug in Perl as of Perl 5.8.8.</li>
+    [%- terms.Bug %] 423439</a>: Табове в коментари ще бъдат обръщани
+    в четири интервала, поради б<!-- -->ъг в Perl от версия Perl 5.8.8.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=69621">
-    [%- terms.Bug %] 69621</a>: If you rename or remove a keyword that is
-    in use on [% terms.bugs %], you will need to rebuild the "keyword cache"
-    by running <a href="sanitycheck.cgi">sanitycheck.cgi</a> and choosing 
-    the option to rebuild the cache when it asks. Otherwise keywords may 
-    not show up properly in search results.</li>
+    [%- terms.Bug %] 69621</a>: Ако преименувате или премахнете дадена ключова дума,
+    използвана за [% terms.bugs %], ще трябва да изградите наново "наличността с ключови думи"
+    с пускането на <a href="sanitycheck.cgi">sanitycheck.cgi</a> и избирането 
+    на възможността за преизграждане, когато попита. Иначе ключовите думи 
+    няма да се показват правилно в резултати от търсене.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=89822">
-    [%- terms.Bug %] 89822</a>: When changing multiple [% terms.bugs %] at 
-    the same time, there is no "mid-air collision" protection.</li>
+    [%- terms.Bug %] 89822</a>: При промяна на няколко [% terms.bugs %] 
+    едновременно, няма защита от "сблъскване във въздуха".</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276230">
-    [%- terms.Bug %] 276230</a>: The support for restricting access to 
-    particular Categories of New Charts is not complete. You should treat 
-    the 'chartgroup' Param as the only access mechanism available.<br>
-    However, charts migrated from Old Charts will be restricted to 
-    the groups that are marked MANDATORY for the corresponding Product.
-    There is currently no way to change this restriction, and the 
-    groupings will not be updated if the group configuration
-    for the Product changes.</li>
+    [%- terms.Bug %] 276230</a>: Поддръжката за ограничаване на достъпа до 
+    определени Категории на Нови Графики не е завършен. Трябва да смятате 
+    'chartgroup' параметъра като единствения наличен механизъм за достъп.<br>
+    However, графики мигрирани от Стари Графики ще бъдат ограничени до 
+    групите означени като ЗАДЪЛЖИТЕЛНИ за съответния Продукт.
+    В момента няма начин за промяна на това ограничение и 
+    групиранията няма да бъдат обновени ако груповите настройки
+    за Продукта се променят.</li>
   <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=370370">
-    [%- terms.Bug %] 370370</a>: mod_perl support is currently not
-    working on Windows machines.</li>
+    [%- terms.Bug %] 370370</a>: mod_perl поддръжката текущо не
+    работи на Windows машини.</li>
 </ul>
 
-<h2><a name="v32_upgrading"></a>How to Upgrade From An Older Version</h2>
+<h2><a name="v32_upgrading"></a>Как да надградите от по-стари версии</h2>
 
-<h3><a name="v32_upgrading_notes"></a>Notes For Upgraders</h3>
+<h3><a name="v32_upgrading_notes"></a>Бележки за надграждащи</h3>
 
 <ul>
-  <li>If you upgrade by CVS, the <kbd>extensions</kbd> and 
-    <kbd>skins/contrib</kbd> directories are now in CVS instead of
-    being created by <kbd>checksetup.pl</kbd> If you do a <kbd>cvs update</kbd>
-    from 3.0, you will be told that your directories are "in the way" and
-    you should delete (or move) them and then do <kbd>cvs update</kbd>
-    again. Also, the <kbd>docs</kbd> directory has been restructured
-    and after you <kbd>cvs update</kbd> you can delete the <kbd>docs/html</kbd>,
-    <kbd>docs/pdf</kbd>, <kbd>docs/txt</kbd>, and <kbd>docs/xml</kbd>
-    directories.</li>
-  <li>If you are using MySQL, you should know that [% terms.Bugzilla %]
-    now uses InnoDB for all tables. <kbd>checksetup.pl</kbd> will convert
-    your tables automatically, but if you have InnoDB disabled,
-    the upgrade will not be able to complete (and <kbd>checksetup.pl</kbd>
-    will tell you so).</li>
+  <li>Ако надграждате по CVS, папките <kbd>extensions</kbd> и 
+    <kbd>skins/contrib</kbd> са вече в CVS вместо да
+    бъдат създавани от <kbd>checksetup.pl</kbd> Ако изпълните <kbd>cvs update</kbd>
+    от 3.0, ще ви бъде казано че папките ви са "в пътя" и
+    че трябва да ги изтриете (или преместите) и тогава изпълните <kbd>cvs update</kbd>
+    отново. Също така, папката <kbd>docs</kbd> беше преструктурирана
+    и след като <kbd>cvs update</kbd> можете да изтриете <kbd>docs/html</kbd>,
+    <kbd>docs/pdf</kbd>, <kbd>docs/txt</kbd>, и <kbd>docs/xml</kbd>
+    папките.</li>
+  <li>Ако използвате MySQL, трябва да знаете че [% terms.Bugzilla %]
+    вече използва InnoDB за всички таблици. <kbd>checksetup.pl</kbd> ще обърне
+    таблиците ви автоматично, но ако InnoDB ви е забранен,
+    надграждането няма да може да приключи (и <kbd>checksetup.pl</kbd>
+    ще ви каже това).</li>
 
-  <li><strong>You should also read the 
-    <a href="#v30_upgrading_notes">[% terms.Bugzilla %] 3.0 Notes For Upgraders
-    section</a> of the 
-    <a href="#v32_previous">previous release notes</a> if you are upgrading
-    from a version before 3.0.</strong></li>
+  <li><strong>Също така трябва да прочетете секцията 
+    <a href="#v30_upgrading_notes">[% terms.Bugzilla %] 3.0 Бележки за надграждащи
+    section</a> от 
+    <a href="#v32_previous">предишните бележки към версия</a> ако надграждате
+    от версия преди 3.0.</strong></li>
 </ul>
 
-<h3>Steps For Upgrading</h3>
+<h3>Стъпки за надграждане</h3>
 
-<p>Once you have read the notes above, see the
-  <a href="[% docs_urlbase FILTER html %]upgrade.html">Upgrading 
-  documentation</a> for instructions on how to upgrade.</p>
+<p>След като сте прочели бележките отгоре, вижте
+  <a href="[% docs_urlbase FILTER html %]upgrade.html">Документацията 
+  за надграждане</a> за инструкции как да надградите.</p>
 
-<h2><a name="v32_code_changes"></a>Code Changes Which May Affect 
-  Customizations</h2>
+<h2><a name="v32_code_changes"></a>Промени в кода, които могат да засегнат
+  допълнителни промени</h2>
 
 <ul>
-  <li><a href="#v32_code_hooks">More Hooks!</a></li>
-  <li><a href="#v32_code_search">Search.pm Rearchitecture</a></li>
-  <li><a href="#v32_code_lib">lib Directory</a></li>
-  <li><a href="#v32_code_other">Other Changes</a></li>
+  <li><a href="#v32_code_hooks">Повече куки!</a></li>
+  <li><a href="#v32_code_search">Реструкруриране на Search.pm</a></li>
+  <li><a href="#v32_code_lib">Папка lib</a></li>
+  <li><a href="#v32_code_other">Други промени</a></li>
 </ul>
 
-<h3><a name="v32_code_hooks"></a>More Hooks!</h3>
+<h3><a name="v32_code_hooks"></a>Повече куки!</h3>
 
-<p>There are more code hooks in 3.2 than there were in 3.0. See the
-  documentation of <a href="[% docs_urlbase FILTER html %]api/Bugzilla/Hook.html">Bugzilla::Hook</a>
-  for more details.</p>
+<p>Има повече куки в кода на 3.2 отколкото имаше в 3.0. Вижте
+  документацията на <a href="[% docs_urlbase FILTER html %]api/Bugzilla/Hook.html">Bugzilla::Hook</a>
+  за повече подробности.</p>
 
-<h3><a name="v32_code_search"></a>Search.pm Rearchitecture</h3>
+<h3><a name="v32_code_search"></a>Преструктуриране на Search.pm</h3>
 
-<p><kbd>Bugzilla/Search.pm</kbd> has been heavily modified, to be much
-  easier to read and use. It contains mostly the same code as it did in
-  3.0, but it has been moved around and reorganized significantly.</p>
+<p><kbd>Bugzilla/Search.pm</kbd> беше силно променен, за да бъде много
+  по-лесен за четене и ползване. Той съдържа най-вече същия код както в
+  3.0, но беше преместен наоколо и реорганизиран значително.</p>
 
-<h3><a name="v32_code_lib"></a>lib Directory</h3>
+<h3><a name="v32_code_lib"></a>Папка lib</h3>
 
-<p>As part of implementing <a href="#v32_feat_install">install-module.pl</a>,
-  [%+ terms.Bugzilla %] was given a local <kbd>lib</kbd> directory which
-  it searches for modules, in addition to the standard system path.</p>
+<p>Като част от прилагането на <a href="#v32_feat_install">install-module.pl</a>,
+  на [% terms.Bugzilla %] беше дадена локална папка <kbd>lib</kbd>, която
+  тя търси за модули, в допълнение към стандартния системен път.</p>
 
-<p>This means that all [% terms.Bugzilla %] scripts now start with
-  <code>use lib qw(. lib);</code> as one of the first lines.</p>
+<p>Това значи, че всички [% terms.Bugzilla %] скриптове вече започват с
+  <code>use lib qw(. lib);</code> като една от първите линии.</p>
 
-<h3><a name="v32_code_other"></a>Other Changes</h3>
+<h3><a name="v32_code_other"></a>Други промени</h3>
 
 <ul>
-  <li>You should now be using <code>get_status('NEW')</code> instead of
-    <code>status_descs.NEW</code> in templates.</li>
-  <li>The <code>[&#37;# version = 1.0 &#37;]</code> comment at the top of every
-    template file has been removed.</li>
+  <li>Трябва вече да използвате <code>get_status('NEW')</code> вместо
+    <code>status_descs.NEW</code> в шаблони.</li>
+  <li>Коментара <code>[&#37;# version = 1.0 &#37;]</code> в началото на всеки
+    шаблонен файл беше премахнат.</li>
 </ul>
 
-<h2><a name="v32_previous"></a>Release Notes For Previous Versions</h2>
+<h2><a name="v32_previous"></a>Бележки към версията за предишни версии</h2>
 
-<h1>[% terms.Bugzilla %] 3.0.x Release Notes</h1>
+<h1>[% terms.Bugzilla %] 3.0.x Бележки към версията</h1>
 
-<h2>Table of Contents</h2>
+<h2>Съдържание</h2>
 
 
 <ul class="bz_toc">

@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -29,6 +28,7 @@
 [% PROCESS global/header.html.tmpl
   title = "Добавяне на група"
   subheader = "Тази страница ви позволява да определите нова потребителска група."
+  doc_section = "groups.html#create-groups"
 %]
 
 <form method="post" action="editgroups.cgi">
@@ -42,11 +42,20 @@
     <td><input size="40" name="desc"></td>
     <td><input size="30" name="regexp"></td>
     <td><input type="checkbox" name="isactive" value="1" checked></td>
-  </tr></table><hr>
+  </tr>
+  <tr>
+    <th><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на икона:</th>
+    <td colspan="3"><input type="text" size="70" maxlength="255" id="icon_url" name="icon_url"></td>
+  </tr>
+  [% Hook.process('field') %]
+  </table>
 
-  <input type="checkbox" name="insertnew" value="1"
+  <hr>
+
+  <input type="checkbox" id="insertnew" name="insertnew" value="1"
     [% IF Param("makeproductgroups") %] checked[% END %]>
-    Вмъкване на новата група във всички съществуващи продукти.<p>
+  <label for="insertnew">Вмъкване на новата група във всички съществуващи продукти.</label>
+  <p>
   <input type="submit" id="create" value="Добавяне">
   <input type="hidden" name="action" value="new">
   <input type="hidden" name="token" value="[% token FILTER html %]">
@@ -73,6 +82,13 @@
 <p><b>Потребителския регулярен израз</b> е незадължително поле и ако бъде
 попълнено, автоматически ще позволи членство в тази група на всеки чийто
 електронен пощенски адрес съвпада с този регулярен израз.</p>
+
+<p>
+  <b><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на икона</b> е незадължителен, и е адреса сочещ към иконата
+  използвана за идентифициране на групата. Може да бъде относителан адрес към базата
+  на тази инсталация или абсолютен адрес. Иконата ще бъде показвана
+  в коментари в [% terms.bugs %] до името на автора на коментари.
+</p>
 
 <p>По подразбиране новата група ще бъде свързана със съществуващите продукти.
 Премахването на отметката до "Вмъкване на новата група във всички съществуващи

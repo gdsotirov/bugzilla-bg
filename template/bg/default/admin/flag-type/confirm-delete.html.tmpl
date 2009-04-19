@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -23,19 +22,19 @@
 
 [% title = BLOCK %]Потвърждаване на изтриването на тип флаг '[% flag_type.name FILTER html %]'[% END %]
 
-[% PROCESS global/header.html.tmpl title = title %]
+[% PROCESS global/header.html.tmpl
+  title = title
+  doc_section = "flags-overview.html#flags-delete"
+%]
 
 <p>
-  [% IF flag_type.flag_count %]
    Съществуват [% flag_type.flag_count %] флага от тип [% flag_type.name FILTER html %].
-   Ако изтриете този тип, флаговете също ще бъдат изтрити.
-  [% END %]
-
-  Забележете, че вместо да изтривате типа можете да го 
+   Ако изтриете този тип, флаговете също ще бъдат изтрити. Имайте впредвид, че
+   вместо да изтривате типа можете да го 
    <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]&amp;token=
            [%- token FILTER html %]">деактивирате</a>,
-   като в този случай типа [% IF flag_type.flag_count %] и неговите флагове [% END %] ще останат
-   в базата данни, но няма да се появяват в потребителския интерфейс на [% terms.Bugzilla %].
+   като в този случай типа и флагове му ще останат в базата данни,
+   но няма да се появяват в потребителския интерфейс на [% terms.Bugzilla %].
 </p>
 
 <table>
