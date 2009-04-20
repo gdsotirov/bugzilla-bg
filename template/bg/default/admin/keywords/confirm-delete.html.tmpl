@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -32,7 +31,7 @@
 <p>
   [% IF keyword.bug_count == 1 %]
     Съществува един [% terms.bug %], за който тази ключова дума е зададена.
-  [% ELSIF keyword.bug_count > 1 %]
+  [% ELSE %]
     Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %], за които
     тази ключова дума е зададена.
   [% END %]
@@ -44,6 +43,7 @@
 <form method="post" action="editkeywords.cgi">
   <input type="hidden" name="id" value="[% keyword.id FILTER html %]">
   <input type="hidden" name="action" value="delete">
+  <input type="hidden" name="reallydelete" value="1">
   <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type="submit" id="delete"
          value="Да, изтриване на ключовата дума">

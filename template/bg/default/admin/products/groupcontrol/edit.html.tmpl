@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -22,7 +21,7 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% title = BLOCK %]
-    "Редакция на групови контроли за [% product.name FILTER html %]
+    Редакция на групови контроли за [% product.name FILTER html %]
 [% END %]
 [% PROCESS global/header.html.tmpl 
    title = title 
@@ -54,7 +53,7 @@
             [% group.name FILTER html %]
           </td>
           <td align="center" colspan=7>
-            Невъзможно
+            Неразрешено
           </td>
           <td>
             [% group.bugcount %]
@@ -74,22 +73,22 @@
               <option value=[% const.CONTROLMAPNA %]
                 [% " selected=\"selected\""
                   IF group.membercontrol == const.CONTROLMAPNA %]
-                >Неприложимо
+                >Неприложима
               </option>
               <option value=[% const.CONTROLMAPSHOWN %]
                 [% " selected=\"selected\""
                   IF group.membercontrol == const.CONTROLMAPSHOWN %]
-                >Показано
+                >Показвана
               </option>
               <option value=[% const.CONTROLMAPDEFAULT %]
                 [% " selected=\"selected\""
                   IF group.membercontrol == const.CONTROLMAPDEFAULT %]
-                >Подразбрано
+                >Подразбрана
               </option>
               <option value=[% const.CONTROLMAPMANDATORY %]
                 [% " selected=\"selected\""
                   IF group.membercontrol == const.CONTROLMAPMANDATORY %]
-                >Задължително
+                >Задължителна
               </option>
             </select>
           </td>
@@ -98,22 +97,22 @@
               <option value=[% const.CONTROLMAPNA %]
                 [% " selected=\"selected\""
                   IF group.othercontrol == const.CONTROLMAPNA %]
-                >Неприложимо
+                >Неприложима
               </option>
               <option value=[% const.CONTROLMAPSHOWN %]
                 [% " selected=\"selected\""
                   IF group.othercontrol == const.CONTROLMAPSHOWN %]
-                >Показано
+                >Показвана
               </option>
               <option value=[% const.CONTROLMAPDEFAULT %]
                 [% " selected=\"selected\""
                   IF group.othercontrol == const.CONTROLMAPDEFAULT %]
-                >Подразбрано
+                >Подразбрана
               </option>
               <option value=[% const.CONTROLMAPMANDATORY %]
                 [% " selected=\"selected\""
                   IF group.othercontrol == const.CONTROLMAPMANDATORY %]
-                >Задължително
+                >Задължителна
               </option>
             </select>
           </td>
@@ -161,8 +160,8 @@
 ще бъде само за четене за всички потребители, които на са членове на всички
 групи с избрано Редактиране. САМО потребители, които са членове на всички
 групи Редактиране ще имат възможността да редактират. Това е допълнително
-ограничение, което още повече ограничава какво може да бъде редактирано от
-потребителя.</p>
+ограничение, което още повече ограничава какво може да бъде редактирано от потребителя.
+</p>
 <p>
 Следващите настройки позволяват избирането на права на <b>база продукт</b>.
 Това е удобен начин за задаване на права на някои потребители за някои продукти
@@ -202,10 +201,10 @@
   </tr>
   <tr>
     <td>
-      Неприложимо
+      Неприложима
     </td>
     <td>
-      Неприложимо
+      Неприложима
     </td>
     <td>
       [% terms.Bugs %] в този продукт никога не се свързват с тази група.
@@ -213,10 +212,10 @@
   </tr>
   <tr>
     <td>
-      Показано
+      Показвана
     </td>
     <td>
-      Неприложимо
+      Неприложима
     </td>
     <td>
       [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
@@ -226,10 +225,10 @@
   </tr>
   <tr>
     <td>
-      Показано
+      Показвана
     </td>
     <td>
-      Показано
+      Покавана
     </td>
     <td>
       [% terms.Bugs %] в този продукт могат да бъдат поставяни в групата от
@@ -239,10 +238,10 @@
   </tr>
   <tr>
     <td>
-      Показано
+      Показвана
     </td>
     <td>
-      Подразбрано
+      Подразбрана
     </td>
     <td>
       [% terms.Bugs %] в този продукт могат да бъдат поставяни в групата от всеки
@@ -252,10 +251,10 @@
   </tr>
   <tr>
     <td>
-      Показано
+      Показвана
     </td>
     <td>
-      Задължително
+      Задължителна
     </td>
     <td>
       [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
@@ -266,10 +265,10 @@
   </tr>
   <tr>
     <td>
-      Подразбрано
+      Подразбрана
     </td>
     <td>
-      Неприложимо
+      Неприложима
     </td>
     <td>
       [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
@@ -279,10 +278,10 @@
   </tr>
   <tr>
     <td>
-      Подразбрано
+      Подразбрана
     </td>
     <td>
-      Подразбрано
+      Подразбрана
     </td>
     <td>
       [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
@@ -293,10 +292,10 @@
   </tr>
   <tr>
     <td>
-      Подразбрано
+      Подразбрана
     </td>
     <td>
-      Задължително
+      Задължителна
     </td>
     <td>
       [% terms.Bugs %] в този продукт имат разрешение да бъдат ограничени до
@@ -307,10 +306,10 @@
   </tr>
   <tr>
     <td>
-      Задължително
+      Задължителна
     </td>
     <td>
-      Задължително
+      Задължителна
     </td>
     <td>
       [% terms.Bugs %] в този продукт задължително са ограничени до тази
@@ -319,7 +318,7 @@
   </tr>
 </table>
 <p>
-Моля, забележете че таблицата по-горе очертава единствените възможни комбинации
+Моля, имайте в предвид, че таблицата по-горе очертава единствените възможни комбинации
 от стойности за полетата <b>Контрол на членовете</b> и <b>Друг контрол</b>.
 Опитът да се подаде комбинация непосочена в таблицата (напр. Задължително/Неприложимо,
 Подразбрано/Показано, и т.н.) ще произведе съобщение за грешка.

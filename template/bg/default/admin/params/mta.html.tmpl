@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -55,6 +54,12 @@
                  "<b>трябва</b> да го оставят включен или $terms.bug поща няма да бъде изпращана.",
 
   smtpserver => "Адреса на сървъра за изпращане на поща (Ако се използва такъв за доставяне на поща).",
+
+  smtp_username => "Потребителското име което да се подаде на SMTP сървъра за SMTP удостоверяване. " _
+                   "Оставете това поле празно, ако SMTP сървъра ви не изисква удостоверяване.",
+
+  smtp_password => "Паролата която да се подаде на SMTP сървъра за SMTP удостоверяване. " _
+                   "Това поле няма ефект ако параметъра smtp_username е оставен празен.",
 
   smtp_debug => "Ако е разрешено, това ще печата информация за комуникацията " _
                 " на $terms.Bugzilla със SMTP сървъра ви в журнала за грешки на " _

@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -21,16 +20,18 @@
   #%]
 [%
    title = "LDAP"
-   desc = "Тази секция трябва да бъде оформена преди избора на <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr>, като метод за удостоверяване"
+   desc = "Настройте първо това преди избора на <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> като метод за удостоверяване"
 %]
 
 [% param_descs = {
   LDAPserver => "Името (и незадължително порта) на вашия <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър " _
-                "(напр. ldap.company.com или ldap.company.com:<номер на порт>)." _
+                "(напр. ldap.company.com или ldap.company.com:номерпорт). " _
                 "<abbr lang=\"en\" title=\"Uniform Resource Identifier\">URI</abbr> синтаксис също може да се използва, като "_
                 "ldaps://ldap.company.com (за сигурна връзка) или " _
                 "ldapi://%2fvar%2flib%2fldap_sock (за базирана на гнездо " _
-                "локална връзка.",
+                "локална връзка. Множество имена на хостове или адреси могат да бъдат разделени " _
+                "с запетая; всеки ще бъде опитан подред докато бъде установена " _
+                "връзка.",
 
   LDAPstarttls => "Дали да се изисква кодирана комуникация веднъж след като" _
                  "е осъществена <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> връзка със сървъра.",

@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -18,6 +17,7 @@
   #
   # Contributor(s): Dave Miller <justdave@bugzilla.org>
   #                 Frédéric Buclin <LpSolit@gmail.com>
+  #                 Marc Schumann <wurblzap@gmail.com>
   #%]
 [%
    title = "Удостоверяване на потребители"
@@ -67,12 +67,22 @@
                             Вграденото удостоверяване в ${terms.Bugzilla}. Това е най-честия
                             избор.
                           </dd>
+                          <dt><attr lang=\"en\" title=\"Remote Authentication Dial In User Service\">RADIUS</abbr></dt>
+                          <dd>
+                            <attr lang=\"en\" title=\"Remote Authentication Dial In User Service\">RADIUS</abbr> удостоверяване използващо <attr lang=\"en\" title=\"Remote Authentication Dial In User Service\">RADIUS</abbr> сървър.
+                            Този метод е експериментален; моля вижте
+                            документацията на $terms.Bugzilla за повече информация.
+                            Използването на този метод изисква задаването на
+                            <a href=\"?section=radius\">допълнителни
+                            параметри</a>.
+                          </dd>
                           <dt><abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr></dt>
                           <dd>
                             <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> удостоверяване, чрез <abbr lang=\"en\" title=\"Lightweight Directory Access Protocol\">LDAP</abbr> сървър.
                             Моля вижте документацията на $terms.Bugzilla
                             за повече информация. Използването на този метод изисква
-                            задаването на допълнителни параметри по-горе.
+                            задаването на <a href=\"?section=ldap\">допълнителни
+                            параметри</a>.
                           </dd>
                         </dl>",
 

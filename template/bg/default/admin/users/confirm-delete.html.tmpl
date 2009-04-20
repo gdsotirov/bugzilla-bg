@@ -1,4 +1,3 @@
-[%# 1.0@bugzilla.org %]
 [%# The contents of this file are subject to the Mozilla Public
   # License Version 1.1 (the "License"); you may not use this file
   # except in compliance with the License. You may obtain a copy of
@@ -49,16 +48,11 @@
   title = title
   style_urls = ['skins/standard/admin.css',
                 'skins/standard/editusers.css']
+  doc_section = "useradmin.html#user-account-deletion"
 %]
 
 [% PROCESS admin/users/listselectvars.html.tmpl
   listselectionvalues = listselectionvalues
-%]
-
-[% responsibilityterms = {
-  'default_assignee'   => 'Подразбиращо се назначение',
-  'default_qa_contact' => 'Подразбиращ се качествен контрол'
-  }
 %]
 
 <table class="main">
@@ -71,9 +65,9 @@
     <td>[% otheruser.name FILTER html %]</td>
   </tr>
   <tr>
-    <th>Групи:</th>
+    <th>Набор групи:</th>
     <td>
-      [% IF groups.size %]
+      [% IF otheruser.groups.size %]
         <ul>
           [% FOREACH group = otheruser.groups.keys %]
             <li>[% group FILTER html %]</li>
@@ -88,30 +82,7 @@
     <tr>
       <th>Отговорности по продукти:</th>
       <td>
-        <ul>
-          [% FOREACH component = otheruser.product_responsibilities %]
-            <li>
-              [% andstring = '' %]
-              [% FOREACH responsibility = ['default_assignee', 'default_qa_contact'] %]
-                [% IF component.${responsibility}.id == otheruser.id %]
-                  [% andstring %] [% responsibilityterms.$responsibility %]
-                  [% andstring = ' and ' %]
-                [% END %]
-              [% END %]
-              за
-              [% IF user.in_group("editcomponents", component.product_id) %]
-                <a href="editcomponents.cgi?action=edit&amp;product=
-                         [% component.product.name FILTER url_quote %]&amp;component=
-                         [% component.name FILTER url_quote %]">
-              [% END %]
-                [%+ component.product.name FILTER html %]:
-                [% component.name FILTER html %]
-              [% IF user.in_group("editcomponents", component.product_id) %]
-                </a>
-              [% END %]
-            </li>
-          [% END %]
-        </ul>
+        [% PROCESS admin/users/responsibilities.html.tmpl otheruser = otheruser %]
       </td>
     </tr>
   [% END %]
@@ -130,17 +101,34 @@
       За сега можете
     [% END %]
 [% ELSE %]
+  [% accept_deletion = 1 %]
 
-  <h2>Потвърждаване</h2>
-
-  [% display_warning = 0 %]
-
-  [% IF reporter || bugs_activity || flags.setter || longdescs || profiles_activity %]
+  [% IF attachments || reporter || bugs_activity || flags.setter || longdescs || profiles_activity %]
     <div class="criticalmessages">
       <p>Следващите изтривания са <b>силно непрепоръчителни</b> и
       ще създадат непълноти в цялостта на връзките!</p>
 
       <ul>
+        [% IF attachments %]
+          <li>
+            [% otheruser.login FILTER html %]
+            <a href="buglist.cgi?field0-0-0=attachments.submitter&type0-0-0=equals&value0-0-0=
+               [%- otheruser.login FILTER url_quote %]">е подал
+            [% IF attachments == 1 %]
+              една приставка
+            [% ELSE %]
+              [%+ attachments %] приставки
+            [% END %]</a>.
+            Ако изтриете потребителската сметка, записите в базата с данни ще бъдат
+            несъгласувани, което ще довде до това
+            [% IF attachments == 1 %]
+              тази приставка
+            [% ELSE %]
+              тези приставки
+            [% END %]
+            да не се показва(т) повече в [% terms.bugs %]те.
+          </li>
+        [% END %]
         [% IF reporter %]
           <li>
             [% otheruser.login FILTER html %]
@@ -151,7 +139,7 @@
             [% ELSE %]
               [%+ reporter %] [%+ terms.abug %]
             [% END %]</a>.
-            Ако изтриете потребителя, записите в базата данни ще бъдат
+            Ако изтриете потребителската сметка, записите в базата данни ще бъдат
             несъгласувани, което ще доведе то това
             [% IF reporter == 1 %]
               този [% terms.bug %] да не се показва
@@ -169,7 +157,7 @@
             [% ELSE %]
               промени по [% terms.bugs %]
             [% END %].
-            Ако изтриете потребителя, таблицата с дейността по [% terms.bugs %]те в
+            Ако изтриете потребителската сметка, таблицата с дейността по [% terms.bugs %]те в
             базата данни ще бъде несъгласувана, което ще доведе до това
             [% IF bugs_activity == 1 %]
               тази промяна да не се показва
@@ -190,7 +178,7 @@
             [% ELSE %]
               [%+ flags.setter %] флага
             [% END %]</a>.
-            Ако изтриете потребителя таблицата с флагове в базата данни
+            Ако изтриете потребителската сметка, таблицата с флагове в базата данни
             ще бъде несъгласувана, което ще доведе до това
             [% IF flags.setter == 1 %]
               този флаг
@@ -210,7 +198,7 @@
             [% ELSE %]
               [%+ longdescs %] пъти по [% terms.bugs %]
             [% END %]</a>.
-            Ако изтриете потребителя таблицата с коментари в базата данни
+            Ако изтриете потребителската сметка, таблицата с коментари в базата данни
             ще бъде несъгласувана, което ще доведе до това
             [% IF longdescs == 1 %]
               този коментар да не се вижда
@@ -228,17 +216,17 @@
             [% ELSE %]
               промени по профила на други потребители
             [% END %].
-            Ако изтриете потребителя таблицата с дейността по профилите на потребителите в
+            Ако изтриете потребителската сметка, таблицата с дейността по профилите на потребителите в
             базата данни ще бъде несъгласувана.
           </li>
         [% END %]
       </ul>
     </div>
-    [% display_warning = 1 %]
+    [% accept_deletion = 0 %]
   [% END %]
 
-  [% IF assignee_or_qa || cc || email_setting || flags.requestee ||
-        namedqueries || profile_setting || series || votes || watch.watched ||
+  [% IF assignee_or_qa || cc || component_cc || email_setting || flags.requestee ||
+        namedqueries || profile_setting || quips || series || votes || watch.watched ||
         watch.watcher || whine_events || whine_schedules %]
     <div class="warningmessages">
       <p>Следващите изтривания са <b>безопасни</b> и няма да създадат
@@ -249,14 +237,14 @@
           <li>
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailassigned_to1=1&amp;emailqa_contact1=1&amp;emailtype1=exact&amp;email1=
-               [%- otheruser.login FILTER url_quote %]">има
-            назначен или е качествен контрол по
+               [%- otheruser.login FILTER url_quote %]">е
+            назначен или качествен контрол по
             [% IF assignee_or_qa == 1 %]
               един [% terms.bug %]
             [% ELSE %]
               [%+ assignee_or_qa %] [%+ terms.abug %]
             [% END %]</a>.
-            Ако изтриете потребителя, ролите му ще бъдат прехвърлени на
+            Ако изтриете потребителската сметка, ролите му ще бъдат прехвърлени на
             подразбиращия се назначен или подразбиращия се качествен контрол.
           </li>
         [% END %]
@@ -265,13 +253,24 @@
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailcc1=1&amp;emailtype1=exact&amp;email1=
                [%- otheruser.login FILTER url_quote %]">е
-            в списъка Точно Копие на
+            в <abbr title="Точно Копие">CC</abbr> списъка на
             [% IF cc == 1 %]
               [%+ terms.bug %]
             [% ELSE %]
               [%+ cc %] [%+ terms.abug %]
             [% END %]</a>.
-            Ако изтриете потребителя той ще бъде премахнат от тези списъци.
+            Ако изтриете потребителската сметка, той ще бъде премахнат от списъците.
+          </li>
+        [% END %]
+        [% IF component_cc %]
+          <li>
+            [% otheruser.login FILTER html %] е в подразбиращия се <abbr title="Точно Копие">CC</abbr> списък на
+            [% IF component_cc == 1 %]
+              една съставна част
+            [% ELSE %]
+              [%+ component_cc %] съставни части
+            [% END %]</a>.
+            Ако изтриете потребителската сметка, той ще бъде премахнат от списъците.
           </li>
         [% END %]
         [% IF email_setting %]
@@ -291,7 +290,7 @@
             [% ELSE %]
               [% flags.requestee %] флага
             [% END %]</a>.
-            Ако изтриете потребителя,
+            Ако изтриете потребителската сметка,
             [% IF flags.requestee == 1 %]
               този флаг ще стане
             [% ELSE %]
@@ -313,7 +312,7 @@
             [% ELSE %]
               Тези именовани заявки ще бъдат изтрити
             [% END %]
-            заедно с него.
+            заедно потребителската сметка.
             [% IF namedquery_group_map %]
               [% IF namedqueries > 1 %]
                 От тях,
@@ -353,24 +352,41 @@
             [% ELSE %]
               Тези редици ще бъдат изтрити
             [% END %]
-            заедно с него.
+            заедно с потребителската сметка.
+          </li>
+        [% END %]
+        [% IF quips %]
+          <li>
+            [% otheruser.login FILTER html %] е подал
+            [% IF quip == 1 %]
+              едно остроумие
+            [% ELSE %]
+              [%+ quips %] остроумия
+            [% END %].
+            Ако изтриете потребителската сметка,
+            [% IF votes == 1 %]
+              това остроумие
+            [% ELSE %]
+              тези остроумия
+            [% END %]
+            вече няма да имат автор, но ще останат достъпни.
           </li>
         [% END %]
         [% IF votes %]
           <li>
             [% otheruser.login FILTER html %] е гласувал по
             [% IF votes == 1 %]
-              [%+ terms.bug %]
+              един [% terms.bug %]
             [% ELSE %]
-              [%+ votes %] [%+ terms.abugs %]
+              [%+ votes %] [%+ terms.abug %]
             [% END %].
-            Ако изтриете потребителя,
+            Ако изтриете потребителската сметка,
             [% IF votes == 1 %]
               този глас ще бъде изтрит
             [% ELSE %]
               тези гласове ще бъдат изтрити
             [% END %]
-            заедно с него.
+            заедно с нея.
           </li>
         [% END %]
         [% IF watch.watched || watch.watcher %]
@@ -390,7 +406,7 @@
               [% IF watch.watcher == 1 %]
                 друг потребител
               [% ELSE %]
-                [%+ watch.watcher %] потребителя
+                [%+ watch.watcher %] потребители
               [% END %]
             [% END %].
             [% IF watch.watched + watch.watcher == 1 %]
@@ -398,7 +414,7 @@
             [% ELSE %]
               Наблюденията ще бъдат прекратени
             [% END %]
-            заедно с изтриването му.
+            заедно с изтриването на потребителската сметка.
           </li>
         [% END %]
         [% IF whine_events %]
@@ -431,40 +447,40 @@
         [% END %]
       </ul>
     </div>
-    [% display_warning = 1 %]
+
+    [% IF accept_deletion %]
+      <p class="areyoureallyreallysure">
+        Моля, имайте в предвид последиците преди да продължите.
+      </p>
+      <p>Наистина ли желаете да изтриете този потребител?</p>
+
+      <form method="post" action="editusers.cgi">
+        <p>
+          <input type="submit" id="delete" value="Да, изтриване" />
+          <input type="hidden" name="action" value="delete" />
+          <input type="hidden" name="userid" value="[% otheruser.id %]" />
+          <input type="hidden" name="token" value="[% token FILTER html %]">
+          [% INCLUDE listselectionhiddenfields %]
+        </p>
+      </form>
+      <p>Ако не желаете да изтриете потребителската сметка в този момент, можете да
+    [% ELSE %]
+      <p><b>Не можете да изтриете потребителската сметка</b> поради несигурни действия докладвани отгоре. Можете да
+    [% END %]
+
   [% END %]
-
-  [% IF display_warning %]
-    <p class="areyoureallyreallysure">
-      Моля, имайте в предвид последиците преди да продължите.
-    </p>
-  [% END %]
-
-  <p>Наистина ли желаете да изтриете този потребител?</p>
-
-  <form method="post" action="editusers.cgi">
-    <p>
-      <input type="submit" id="delete" value="Да, изтриване" />
-      <input type="hidden" name="action" value="delete" />
-      <input type="hidden" name="userid" value="[% otheruser.id %]" />
-      <input type="hidden" name="token" value="[% token FILTER html %]">
-      [% INCLUDE listselectionhiddenfields %]
-    </p>
-  </form>
-
-  <p>Ако не желаете да изтриете потребителя сега,
 [% END %]
 
   <a href="editusers.cgi?action=edit&amp;userid=[% otheruser.id %]
-           [% INCLUDE listselectionurlparams %]">редактиране на потребителя</a>,
-  връщане
+           [% INCLUDE listselectionurlparams %]">редактирате потребителя</a>,
+  отидете
  <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">обратно
   към списъка с потребители</a>,
   [% IF editusers %]
-    <a href="editusers.cgi?action=add[% INCLUDE listselectionurlparams %]">добавяне
-    на нов потребител</a>,
+    <a href="editusers.cgi?action=add[% INCLUDE listselectionurlparams %]">добавите
+    нов потребител</a>,
   [% END %]
-  или <a href="editusers.cgi">търсене на други потребители</a>.
+  или <a href="editusers.cgi">търсите други потребители</a>.
 </p>
 
 [% PROCESS global/footer.html.tmpl %]
