@@ -67,11 +67,11 @@
     <tr>
       <th>Описание:</th>
       <td>
-        [% IF isbuggroup %]
-          <input type="hidden" name="olddesc" value="[% description FILTER html %]">
-          <input type="text" name="desc" size="70" value="[% description FILTER html %]">
+        [% IF group.is_bug_group %]
+          <input type="text" name="desc" size="70" 
+                 value="[% group.description FILTER html %]">
         [% ELSE %]
-          [% description FILTER html %]
+          [% group.description FILTER html %]
         [% END %]
       </td>
     </tr>
