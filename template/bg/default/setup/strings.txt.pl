@@ -30,7 +30,7 @@
     any  => 'всяка',
     blacklisted => '(в черния списък)',
     checking_for => 'Проверка за',
-    checking_dbd      => 'Проверка на наличните Perl DBD moduli...',
+    checking_dbd      => 'Проверка на наличните Perl DBD модули...',
     checking_optional => 'Следните Perl модули са незадължителни:',
     checking_modules  => 'Проверка на Perl модули...',
     done => 'готово.',

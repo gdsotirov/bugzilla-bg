@@ -56,9 +56,9 @@
    Приоритет: [%+ bug.priority -%]
     Суровост: [%+ bug.bug_severity -%]
    Платформа: [%+ bug.rep_platform %]
-  Назначение: [%+ bug.$assignee_login_string %]
+ Назначен на: [%+ bug.$assignee_login_string %]
    Състояние: [%+ get_status(bug.bug_status) %]
-              [%- IF bug.resolution -%] Resolution: [% get_resolution(bug.resolution) -%]
+            [%- IF bug.resolution -%]    Решение: [% get_resolution(bug.resolution) -%]
                                 [%- END %]
       Резюме: [% bug.short_desc %]
 

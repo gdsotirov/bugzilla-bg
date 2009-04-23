@@ -26,6 +26,8 @@
 [% attidsummary = attachment.id _ ': ' _ attachment.description %]
 [% statuses = { '+' => "разреши" , '-' => 'отказа' , 'X' => "отхвърли" ,
                 '?' => "заяви на" } %]
+[% statuses_sbj = { '+' => "разрешен" , '-' => 'отказан' , 'X' => "отхвърлен" ,
+                '?' => "заявен" } %]
 
 [% to_identity = "" %]
 [% on_behalf_of = 0 %]
@@ -41,11 +43,11 @@
   [% IF flag.requester %]
     [% to_identity = "заявката на " _ flag.requester.identity _ " за" %]
   [% END %]
-  [% subject_status = statuses.${flag.status} %]
+  [% subject_status = statuses_sbj.${flag.status} %]
 [% END %]
 From: [% Param('mailfrom') %]
 To: [% to %]
-Subject: [% flag.type.name %] [%+ subject_status %]: [[% terms.Bug %] [%+ bug.bug_id %]] [% bug.short_desc %]
+Subject: [%+ subject_status %] [% flag.type.name %]: [[% terms.Bug %] [%+ bug.bug_id %]] [% bug.short_desc %]
 [%- IF attachment %] :
   [Приставка [% attachment.id %]] [% attachment.description %][% END %]
 X-Bugzilla-Type: request
@@ -58,7 +60,7 @@ X-Bugzilla-Type: request
 [% user.identity %] преназначи заявката на [% flag.setter.identity %] за [% flag.type.name %]
 [% to_identity %]:
 [% ELSE %]
-[% user.identity %] има [% statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
+[% user.identity %] [% statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
 [% END %]
 
 [% terms.Bug %] [%+ bugidsummary %]

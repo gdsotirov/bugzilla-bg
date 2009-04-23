@@ -28,7 +28,7 @@ Subject: [[% terms.Bugzilla %]] Вашата сметка [% user.login -%]
 X-Bugzilla-Type: admin
 
     [%+ sudoer.identity %] използва възможноста 'sudo' за достъп
-до [%+ terms.Bugzilla %] използвайки сметкат ви.
+до [%+ terms.Bugzilla %] използвайки сметката ви.
 
 [% IF reason %]
     [%+ sudoer.identity %] даде следната причина за това:
@@ -39,5 +39,5 @@ X-Bugzilla-Type: admin
 [% END %]
 
     Ако смятате, че това действие е неуместно, моля свържете се с
-[%+ Param("maintainer") %].  За повече информация отностно тази възможност, 
+[%+ Param("maintainer") %].  За повече информация относно тази възможност, 
 посетете <[% urlbase %]page.cgi?id=sudo.html>.

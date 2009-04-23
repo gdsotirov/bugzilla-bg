@@ -214,11 +214,6 @@
   'bug.bug_id', 
 ],
 
-'global/help.html.tmpl' => [
-  'h.id', 
-  'h.html', 
-],
-
 'global/choose-product.html.tmpl' => [
   'target',
 ],
@@ -279,8 +274,7 @@
 ],
 
 'bug/comments.html.tmpl' => [
-  'comment.isprivate', 
-  'comment.time', 
+  'comment.id',
   'bug.bug_id',
 ],
 
@@ -319,10 +313,7 @@
   '" size=\"$size\"" IF size',
   '" maxlength=\"$maxlength\"" IF maxlength',
   'flag.status',
-],
-
-'bug/knob.html.tmpl' => [
-  'knum', 
+  '" spellcheck=\"$spellcheck\"" IF spellcheck',
 ],
 
 'bug/navigate.html.tmpl' => [

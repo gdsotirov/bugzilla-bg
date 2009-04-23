@@ -77,7 +77,7 @@
   [% ELSIF error == "bug_error" %]
     Опитът за получаване на [% terms.bug %] [%+ bug.bug_id FILTER html %] върна
     грешката [% bug.error FILTER html %].
-
+    
   [% ELSIF error == "chart_data_not_generated" %]
     [% admindocslinks = {'extraconfig.html' => 'Настройване на графики'} %]
     [% IF product %]
@@ -94,14 +94,14 @@
 
   [% ELSIF error == "chart_datafile_corrupt" %]
     Файла с данни за графиката [% file FILTER html %] е повреден.
-
+        
   [% ELSIF error == "chart_dir_nonexistent" %]
     Една от директориите <tt>[% dir FILTER html %]</tt> и
     <tt>[% graph_dir FILTER html %]</tt> не съществуват.
-
+  
   [% ELSIF error == "chart_file_open_fail" %]
     Не може да бъде отворен файла с данни за графиката <tt>[% filename FILTER html %]</tt>.
-
+  
   [% ELSIF error == "chart_lines_not_installed" %]
     [% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули необходими за Графики'} %]
     Графиките няма да работят без Chart::Lines Perl модула да бъде инсталиран.
@@ -175,13 +175,13 @@
   [% ELSIF error == "invalid_attach_id_to_obsolete" %]
      Номера на една от приставките които желахте да извадите от употреба,
      [% attach_id FILTER html %], е недействителен.
-
+          
   [% ELSIF error == "invalid_column_name_cookie" %]
     [% title = "Недействително име не колона" %]
      Потребителския начин на подреждане указан във вашата бисквитка съдържа недействително
      име на колона <em>[% fragment FILTER html %]</em>.
      Бисквитката бе изчистена.
-
+         
   [% ELSIF error == "invalid_column_name_form" %]
     [% title = "Недействително има не колона" %]
      Потребителския начин на подреждане указан в подадените от вас данни съдържа
@@ -227,13 +227,13 @@
     [% ELSE %]
       Обръщения към съществуващи флагове, при създаване
       на нова приставка са недействителни.
-    [% END %]
+    [% END %] 
 
   [% ELSIF error == "flag_requestee_disabled" %]
     [% title = "Флага не е изискуем от определен човек" %]
-    Не можете да искате <em>[% type.name FILTER html %]</em>
-    от определен човек.
-
+    Не можете да искате
+    <em>[% type.name FILTER html %]</em> от определен човек.
+  
   [% ELSIF error == "flag_status_invalid" %]
     Състоянието на флага <em>[% status FILTER html %]</em>
     [% IF id %]
@@ -252,7 +252,7 @@
   [% ELSIF error == "flag_type_target_type_invalid" %]
     Целевия тип не е нито <em>[% terms.bug %]</em> нито <em>приставка</em>,
     а вместо това <em>[% target_type FILTER html %]</em>.
-
+  
   [% ELSIF error == "invalid_field_name" %]
     [% field FILTER html %] не може да бъде използвано като име на поле.
 
@@ -272,20 +272,20 @@
     [% END %]
 
   [% ELSIF error == "ldap_bind_failed" %]
-    Свързването с LDAP сървър се провали. Съобщението за грешка беше:
+    Свързването с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър се провали. Съобщението за грешка беше:
     <code>[% errstr FILTER html %]</code>
 
   [% ELSIF error == "ldap_cannot_retreive_attr" %]
-    Указания LDAP атрибут [% attr FILTER html %] не бе намерен.
+    Указания <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> атрибут [% attr FILTER html %] не бе намерен.
 
   [% ELSIF error == "ldap_connect_failed" %]
-    Не може да бъде установена връзка с LDAP сървър(и) <code>[% server FILTER html %]</code>.
+    Не може да бъде установена връзка с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър(и) <code>[% server FILTER html %]</code>.
 
   [% ELSIF error == "ldap_start_tls_failed" %]
-    Не може да бъде започната защитена връзка с LDAP сървъра: <code>[% error FILTER html %]</code>.
+    Не може да бъде започната защитена връзка с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървъра: <code>[% error FILTER html %]</code>.
 
   [% ELSIF error == "ldap_search_error" %]
-    Възникна грешка при търсене в LDAP за
+    Възникна грешка при търсене в <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> за
     &quot;[% username FILTER html %]&quot;:
    <code>[% errstr FILTER html %]</code>
 
@@ -299,13 +299,13 @@
 
   [% ELSIF error == "missing_bug_id" %]
     Липсва номер на [% terms.bug %].
-
+    
   [% ELSIF error == "missing_series_id" %]
     След вмъкването на колона в базата данни не беше върнат идентификатор за
-    нея. Колони: [% series.category FILTER html %] /
-    [%+ series.subcategory FILTER html %] /
+    нея. Колони: [% series.category FILTER html %] / 
+    [%+ series.subcategory FILTER html %] / 
     [%+ series.name FILTER html %].
-
+    
   [% ELSIF error == "need_quipid" %]
     Необходим е действителен идентификатор на остроумие.
 
@@ -332,7 +332,7 @@
     [% END %]
 
     от
-
+   
     [% IF caller %]
         <code>[%+ caller FILTER html %]</code>, който е
     [% END %]

@@ -279,7 +279,7 @@
    "Администрация", която ви отвежда на страница с връзки към всички
     административни контроли на [% terms.Bugzilla %].</li>
   <li><strong>Административен потребителски интерфейс</strong>: Административните страници вече не показват
-    страници с потвърждение, вместо това ви препращат до някоя използваема страница 
+    страници за потвърждаване, вместо това ви препращат до някоя използваема страница 
     и показват съобщение за промяната.</li>
   <li><strong>Административен потребителски интерфейс</strong>: Интерфейса за редакция на наследяване на 
      групи в <kbd>editgroups.cgi</kbd> вече е много по-чист.</li>
@@ -341,8 +341,8 @@
     потребители които не могат да виждат [% terms.abug %] като CC, Назначения, или Качествения
     Контрол. Преди, ви предпазваше само от добавяне на потребители които
     не могат да <em>редактират</em> [% terms.abug %].</li>
-  <li>Разширенията вече могат да добавят свои собствени заглавки към <abbr title="Hyper Text Markup Language">HTML</abbr> &lt;head&gt;
-    за неща като потребителски <abbr title="Cascading Style Sheets">CSS</abbr> и т. н.</li>
+  <li>Разширенията вече могат да добавят свои собствени заглавки към <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> &lt;head&gt;
+    за неща като потребителски <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> и т. н.</li>
   <li><kbd>sanitycheck.cgi</kbd> беше шаблонизиран, което значи че
     целия [% terms.Bugzilla %] потребителски интерфейс вече се съдържа в шаблони.</li>
   <li>При задаването на параметъра <kbd>sslbase</kbd>, вече можете да укажете
@@ -615,7 +615,7 @@
     е избрал език за е-писма.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=405946">[% terms.Bug %] 405946</a>)
 
-  <li>При Windows, временните файлове създавани при качване на притурки са вече
+  <li>При Windows, временните файлове създавани при качване на приставки са вече
     правилно изтривани, когато качването завърши.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=414002">[% terms.Bug %] 414002</a>)</li>
 
@@ -872,7 +872,7 @@
   <tr>
     <td>Net::LDAP</td> 
     <td>(Всяка)</td> 
-    <td><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abr> удостоверяване</td>
+    <td><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> удостоверяване</td>
   </tr>
   <tr>
     <td>HTML::Parser</td> 
@@ -902,7 +902,7 @@
   <tr>
     <td>Image::Magick</td> 
     <td>(Всяка)</td> 
-    <td>Обръщане на <acronym lang="en" title="Bitmap">BMP</acronym> притурки в <abbr lang="en" title="Portable Network Graphics">PNG</abbr></td>
+    <td>Обръщане на <acronym lang="en" title="Bitmap">BMP</acronym> приставки в <abbr lang="en" title="Portable Network Graphics">PNG</abbr></td>
   </tr>
   <tr>
     <td>PatchReader</td> 
@@ -936,7 +936,7 @@
     <a href="#v30_feat_afn">Приставки и флагове на нови [% terms.bugs %]</a>
   </li>
   <li><a href="#v30_feat_cr">Потребителски решения</a></li>
-  <li><a href="#v30_feat_ppp">Позволения на база продукт</a></li>
+  <li><a href="#v30_feat_ppp">Разрешения на база продукт</a></li>
   <li><a href="#v30_feat_ui">Подобрения в потребителския интерфейс</a></li>
   <li><a href="#v30_feat_xml">XML-RPC интерфейс</a></li>
   <li><a href="#v30_feat_skin">Кожи</a></li>
@@ -1020,10 +1020,10 @@
   и <code>ПРЕМЕСТЕН</code> имат специално значение за [% terms.Bugzilla %],
   въпреки това и не могат да бъдат премахвани или изтривани.</p>
 
-<h3><a name="v30_feat_ppp"></a>Позволения на база продукт</h3>
+<h3><a name="v30_feat_ppp"></a>Разрешения на база продукт</h3>
 
-<p>Вече можете да позволите на потребителите <kbd>editbugs</kbd> и <kbd>canconfirm</kbd>
-  само за определени продукти. Също така можете да дадете на потребителите <kbd>editcomponents</kbd>
+<p>Вече можете да разрешите на потребителите групите <kbd>editbugs</kbd> и <kbd>canconfirm</kbd>
+  само за определени продукти. Също така можете да дадете на потребителите група <kbd>editcomponents</kbd>
   за продукт, което означава, че те ще могат да го редактират
   включително добавяне/премахване на съставни части и други специфични за продуктите
   действия.</p>
@@ -1056,7 +1056,7 @@
 
 <p>[% terms.Bugzilla %] може да има няколко инсталирани &quot;кожи&quot;,
   като потребителите могат да избират от тях. За да създадете кожа, трябва просто да
-  напишете няколко <abbr title="Cascading Style Sheets">CSS</abbr> файла. Вижте <a lang="en" href="[% docs_urlbase FILTER html %]cust-skins.html">Custom
+  напишете няколко <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> файла. Вижте <a lang="en" href="[% docs_urlbase FILTER html %]cust-skins.html">Custom
   Skins Documentation</a> за подробности.</p>
 
 <p>В момента не разпространяваме други кожи с

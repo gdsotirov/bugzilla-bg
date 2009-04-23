@@ -71,7 +71,7 @@ function addSidebar() {
       <a href="[% release.data.url FILTER html %]">[% release.data.url FILTER html %]</a>.<br>
       Дата на пускане: [% release.data.date FILTER html %]</p>
 
-      <p class="notice">Това съобщение е показвано само на влезлите потребители с административни привилегии.
+      <p class="notice">Това съобщение се показва само на влезлите потребители с административни права.
       Можете да настроите уведомяването от
       страницата <a href="editparams.cgi?section=core#upgrade_notification">Параметри</a>.</p>
     [% ELSIF release.error == "missing_package" %]
@@ -92,8 +92,8 @@ function addSidebar() {
       <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% release.xml_file FILTER html %]' има неправилен XML формат.
       Моля, изтрийте го и опитайте да отворите страницата отново.</p>
     [% ELSIF release.error == "unknown_parameter" %]
-      <p>'[% Param("upgrade_notification") FILTER html %]' не е действителен уведомителен
-      параметър. Моля, проверете го в страницата
+      <p>'[% Param("upgrade_notification") FILTER html %]' не е действителен параметър за
+      уведомяване. Моля, проверете го в страницата
       <a href="editparams.cgi?section=core#upgrade_notification">Параметри</a>.</p>
     [% END %]
   </div>
@@ -105,12 +105,12 @@ function addSidebar() {
   <p>Добре дошли в [% terms.Bugzilla %]. За да видите какво ново в тази версия
     на [% terms.Bugzilla %] погледнете
     <a href="page.cgi?id=release-notes.html">бележките</a>!
-    Може също така да желаете да прочетете 
+    Може също да искате да прочетете 
     <a href="[% docs_urlbase FILTER html %]using.html">
-    Пътеводител на потребителя на [%- terms.Bugzilla %]</a>, за да научите повече за
+    Пътеводител на потребителя на [%- terms.Bugzilla %]</a>, за да разберете повече за
     [%+ terms.Bugzilla %] и как да я използвате.</p>
 
-  <p>Най-общите действия:</p>
+  <p>Най-общи действия:</p>
   <ul>
     <li id="query"><a href="query.cgi">Търсене на съществуващи [% terms.bug %] доклади</a></li>
     <li id="enter-bug"><a href="enter_bug.cgi">Въвеждане на нов [% terms.bug %] доклад</a></li>

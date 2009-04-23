@@ -36,7 +36,7 @@
    "Reuse same sort as last time" => "Използване на същата подредба като последния път",
    "Bug Number"   => "$terms.Bug №",
    "Importance"   => "Важност",
-   "Assignee"     => "Назначение",
+   "Assignee"     => "Назначен на",
    "Last Changed" => "Послена промяна" } %]
 
 <input type="hidden" name="cmdtype" value="doit">
@@ -69,13 +69,13 @@
   <input type="checkbox" id="remasdefault"
          name="remtype" value="asdefault">
   <label for="remasdefault">
-    и запомняне като подразбиращи ми се критрии за търсене
+    и запомняне като мои подразбирани критрии за търсене
   </label>
 </p>
         
 [% IF userdefaultquery %]
   <p>
     <a href="query.cgi?nukedefaultquery=1">
-      Смяна на подразбиращото ми се търсене със системното такова.</a>.
+      Смяна на моето подразбирано търсене със системното такова.</a>.
   </p>
 [% END %]

@@ -268,9 +268,9 @@ function doOnSelectProduct(selectmode) {
     { name => "long_desc", description => "Ко<u>м</u>ентар",
       accesskey => 'м' },
     { name => "bug_file_loc", description => "<u>U</u>RL",
-      accesskey => 'U' },
-    { name => "status_whiteboard", description => "<u>Б</u>яла дъска",
-      accesskey => 'б' } ] %]
+      accesskey => 'u' },
+    { name => "status_whiteboard", description => "Б<u>я</u>ла дъска",
+      accesskey => 'я' } ] %]
 
     [% UNLESS field.name == 'status_whiteboard' AND NOT Param('usestatuswhiteboard') %]
     <tr>
@@ -297,7 +297,7 @@ function doOnSelectProduct(selectmode) {
   [% IF have_keywords %]
     <tr>
       <th align="right">
-        <label for="keywords" accesskey="ю"><a href="describekeywords.cgi">Кл<u>ю</u>чови думи</a></label>:
+        <label for="keywords" accesskey="д"><a href="describekeywords.cgi">Ключови <u>д</u>уми</a></label>:
       </th>
       <td>
         <select name="keywords_type">
@@ -401,7 +401,7 @@ function doOnSelectProduct(selectmode) {
       <table>
         <tr>
           <th align="left">
-            <label for="rep_platform" accesskey="л">П<u>л</u>атформа</label>:
+            <label for="rep_platform" accesskey="ф">П<u>л</u>атформа</label>:
           </th>
         </tr>
         <tr valign="top">

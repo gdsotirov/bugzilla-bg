@@ -50,7 +50,7 @@
 
     <p align="left">
       [% IF author.login == recipient.login %]
-        <a href="[%+ urlbase FILTER html FILTER html %]editwhines.cgi">Щракнете
+        <a href="[%+ urlbase FILTER html %]editwhines.cgi">Щракнете
             тук, за да редактирате хленч разписанието си</a>
       [% ELSE %]
         Търсенето беше насрочено от [% author.login FILTER html %].
@@ -68,7 +68,7 @@
       <th align="left"><acronym title="Суровост">Сур</acronym></th>
       <th align="left"><acronym title="Приоритет">При</acronym></th>
       <th align="left"><acronym title="Платформа">Плт</acronym></th>
-      <th align="left">Назначение</th>
+      <th align="left">Назначен на</th>
       <th align="left">Състояние</th>
       <th align="left">Решение</th>
       <th align="left">Резюме</th>

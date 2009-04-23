@@ -226,7 +226,7 @@
     За да видите този [% terms.bug %] първо
     трябва <a href="show_bug.cgi?id=
                    [% bug_id FILTER url_quote %]&amp;GoAheadAndLogIn=1">влезете
-    като потребител</a> с подходящите позволения.
+    в сметка</a> с подходящите разрешения.
 
   [% ELSIF error == "buglist_parameters_required" %]
     [% title = "Необходими са параметри" %]
@@ -380,8 +380,8 @@
     Промяната на е-пощенски адрес се обработва; моля, проверете пощата си.
 
   [% ELSIF error == "email_confirmation_failed" %]
-    [% title = "Потвърждението на е-пощенски адрес пропадна" %]
-    Потвърждението на е-пощенски адрес пропадна.
+    [% title = "Потвърждаването на е-пощенски адрес пропадна" %]
+    Потвърждаването на е-пощенски адрес пропадна.
 
   [% ELSIF error == "email_no_text_plain" %]
     Съобщението ви не съдържа никакъв текст. [% terms.Bugzilla %] не
@@ -394,7 +394,7 @@
   [% ELSIF error == "empty_group_name" %]
     [% title = "Името на група на може да е празно" %]
     Трябва да въведете име за групата.
-
+  
   [% ELSIF error == "entry_access_denied" %]
     [% title = "Достъпът отказан" %]
 [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
@@ -460,7 +460,7 @@
     '[% value FILTER html %]' е твърде дълга ([% value.length %] символа).
 
   [% ELSIF error == "fieldvalue_not_editable" %]
-    [% title = "Стойност на поле не може да се променя" %]
+    [% title = "Стойност на поле несменяема" %]
     Стойността '[% old_value FILTER html %]' не може да бъде преименуване, защото
     тя играе някаква специална роля за полето '[% field.description FILTER html %]'.
 
@@ -488,7 +488,7 @@
     [% title = "Не можете да изтриете тази стойност на полето" %]
     Не можете да изтриете стойността '[% value FILTER html %]' от полето 
     '[% field FILTER html %]', защото все още има
-    [%+ count FILTER html %] [% terms.bug %](а) използващ(ия) я.
+    [%+ count FILTER html %] [%+ terms.bug %](а) използващ(ия) я.
 
   [% ELSIF error == "fieldvalue_undefined" %]
     [% title = "Не се позволява неопределена стойност" %]
@@ -505,7 +505,7 @@
     [%+ Param('maxattachmentsize') %] <abbr title="Кило Байта">КБ</abbr>. <br>
     Препоръчваме Ви да съхраните приставката си някъде другаде
     [% IF Param("allow_attach_url") %]
-      и да укажете URL към него на страницата за
+      и да укажете <abbr lang="en" title="Uniform Resource Locator">URL</abbr> към него на страницата за
       създаване на кръпки в полето <b>AttachURL</b>.
     [% ELSE %]
       и да вмъкнете URL към него в коментар или в полето URL
@@ -536,12 +536,12 @@
     Пискахте от [% requestee.identity FILTER html %]
     задаване на флага <code>[% flag_type.name FILTER html %]</code> върху [% terms.bug %] 
     [%+ bug_id FILTER html -%]
-    [% IF attach_id && attach_id > 0 %], приставката [% attach_id FILTER html %][% END %], 
+    [% IF attach_id && attach_id > 0 %], приставката [% attach_id FILTER html %][% END %],
     но този [% terms.bug %] е ограничен до потребители в определни групи, а
-    потребителя, от който сте пискали не е във всички групи до които
+    потребителя, от който сте пoискали не е във всички групи до които
     [% terms.abug %] е ограничен.
     Моля, изберете някой друг от когото да поискате или направете [% terms.abug %]
-    достъпен за потребителите в неговия <abbr title=\"Точно Копие\">ТК</abbr>: списък и добавете потребителя към него.
+    достъпен за потребителите в неговия <abbr title="Точно Копие">ТК</abbr>: списък и добавете потребителя към него.
 
   [% ELSIF error == "flag_requestee_unauthorized_attachment" %]
     [% title = "Изпълнителя на заявката за флаг не е упълномощен" %]
@@ -1121,18 +1121,18 @@
     Възникна грешка при отварянето на файла с днешните двойници: [% error_msg FILTER html %].
 
   [% ELSIF error == "no_dupe_stats_error_whenever" %]
-    [% title = "Грешка при четене на предишен файл с измамници" %]
+    [% title = "Грешка при четене на предишен файл с двойници" %]
     [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Възникна грешка при отварянето на [% whenever FILTER html %]'s файл с
+    Възникна грешка при отварянето на файла [% whenever FILTER html %] с
     двойниците от преди [% changedsince FILTER html %] дни:
     [% error_msg FILTER html %].
 
   [% ELSIF error == "no_dupe_stats_error_yesterday" %]
     [% title = "Грешка при четене на файла с двойниците от вчера" %]
     [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Няма статистика на двойниците за днес ([% today FILTER html %]), а
-    възникна грешка при отварянето на файла от вчера:
-    [% error_msg FILTER html %].
+    Няма статистика на двойниците за днес ([% today FILTER html %]), 
+    а възникна
+    грешка при отварянето на файла от вчера:  [% error_msg FILTER html %].
 
   [% ELSIF error == "no_initial_bug_status" %]
     [% title = "Няма първоначален статус на $terms.bug" %]
@@ -1246,7 +1246,7 @@
 
   [% ELSIF error == "product_votes_per_user_must_be_nonnegative" %]
     [% title = "Гласове за потребител трябва да са положителни" %]
-    [% admindocslinks = {'voting.html' => 'Настройване на възможноста за гласуване'} %]
+    [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
     '[% votesperuser FILTER html %]' е неправилна стойност за 
     полето <em>'Гласове за потребител'</em>, което трябва да съдържа
     положително число.
@@ -1315,7 +1315,7 @@
     [% admindocslinks = {'products.html' => 'Администриране на продукти',
                          'groups.html'   => 'Групова сигурност'} %]
     Не ви е разрешено да редактирате [% terms.bugs %] в продукта 
-    [%+ product.name FILTER html %].
+    [%+ product FILTER html %].
 
   [% ELSIF error == "product_has_bugs" %]
     [% title = BLOCK %]Продукта има [% terms.bugs %][% END %]
@@ -1405,7 +1405,7 @@
     [% title = "Съхраненото търсене се използва" %]
     [% docslinks = {'whining.html' => 'За хленча'} %]
     Съхраненото търсене <em>[% search_name FILTER html %]</em> се използва 
-    от <a href="editwhines.cgi">Whining събития</a> със следните теми:
+    от <a href="editwhines.cgi">Хленч събития</a> със следните теми:
     [%+ subjects FILTER html %]
 
   [% ELSIF error == "search_content_without_matches" %]
@@ -1493,13 +1493,13 @@
     [%+ max FILTER html %] гласа за него.
 
   [% ELSIF error == "token_does_not_exist" %]
-    [% title = "Белега не съществува" %]
-    Белега, който предадохте, не съществува, изтекъл е или е
+    [% title = "Признака не съществува" %]
+    Признака, който предадохте, не съществува, изтекъл е или е
     бил отхвърлен.
 
   [% ELSIF error == "too_soon_for_new_token" %]
-    [% title = "Твърде рано за нов белег" %]
-    Заявихте белег
+    [% title = "Твърде рано за нов признак" %]
+    Заявихте признак
     [% IF type == "password" %]
       за парола
     [% ELSIF type == "account" %]
@@ -1544,7 +1544,7 @@
   [% ELSIF error == "user_has_responsibility" %]
     [% title = "Изтриването на потребителя невъзможно" %]
     [% admindocslinks = {'useradmin.html' => 'Администриране на потребители'} %]
-    Потребителя, който искате да изтриете, е зададен като подразбиращо се назначение
+    Потребителя, който искате да изтриете, е зададен като подразбиращ се назначен
     за [% terms.bugs %]
     [% IF Param('useqacontact') %]
       или качествен контрол
@@ -1568,20 +1568,20 @@
     Използвайте отрицателни числа само за гласове по вашия [% terms.bug %].
 
   [% ELSIF error == "wrong_token_for_cancelling_email_change" %]
-    [% title = "Грешен белег" %]
-    Белега не може да бъде използван за отхвърляне на промяна на е-пощенски адрес.
+    [% title = "Грешен признак" %]
+    Признака не може да бъде използван за отхвърляне на промяна на е-пощенски адрес.
 
   [% ELSIF error == "wrong_token_for_changing_passwd" %]
-    [% title = "Грешен белег" %]
-    Белега не може да бъде използван за смяна на паролата ви.
+    [% title = "Грешен признак" %]
+    Признака не може да бъде използван за смяна на паролата ви.
 
   [% ELSIF error == "wrong_token_for_confirming_email_change" %]
-    [% title = "Грешен белег" %]
-    Белега не може да бъде използван за смяна на е-пощенския ви адрес.
+    [% title = "Грешен признак" %]
+    Признака не може да бъде използван за смяна на е-пощенския ви адрес.
 
   [% ELSIF error == "wrong_token_for_creating_account" %]
-    [% title = "Грешен белег" %]
-    Белега не може да бъде използван за създаване на сметка.
+    [% title = "Грешен признак" %]
+    Признака не може да бъде използван за създаване на сметка.
 
   [% ELSIF error == "zero_length_file" %]
     [% title = "Файлът е празен" %]

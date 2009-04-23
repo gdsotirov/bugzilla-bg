@@ -47,7 +47,7 @@
   <td valign="top">[% comp.description FILTER html_light %]</td>
 </tr>
 <tr>
-  <td valign="top">Подразбиращо се назначение:</td>
+  <td valign="top">Подразбиращ се назначен:</td>
   <td valign="top">[% comp.default_assignee.login FILTER html %]</td>
   
 [% IF Param('useqacontact') %]
@@ -72,7 +72,7 @@
 [% IF Param('usetargetmilestone') %]
 </tr>
 <tr>
-  <td valign="top"><abbr title="Uniform Resource Locator" lang="en">URL</abbr> на важно събитите за продукта:</td>
+  <td valign="top"><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на важно събитите за продукта:</td>
   <td valign="top">
     <a href="[% product.milestone_url FILTER html %]">
       [% product.milestone_url FILTER html %]
@@ -99,7 +99,7 @@
 </tr>
 </table>
 
-<h2>Потвърждение</h2>
+<h2>Потвърждаване</h2>
   
 [% IF comp.bug_count %]
 
