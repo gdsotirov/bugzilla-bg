@@ -1,0 +1,63 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Frédéric Buclin.
+  # Portions created by Frédéric Buclin are Copyright (C) 2008
+  # Frédéric Buclin. All Rights Reserved.
+  #
+  # Contributor(s): Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[%# INTERFACE:
+  # script_name: the script generating this warning.
+  # token: a valid token for the current action.
+  # reason: reason of the failure.
+  #%]
+
+[% PROCESS global/header.html.tmpl title = "Подозрително действие"
+                                   style_urls = ['skins/standard/global.css'] %]
+
+<div class="throw_error">
+  [% IF reason == "expired_token" %]
+    Промените ви бяха отхвърлени, защото надхвърлихте времевото ограничение
+    от [% constants.MAX_TOKEN_AGE FILTER html %] дни придеи да ги подадете
+    на [% script_name FILTER html %]. Страницата може би е била отворена
+    твърде дълго или стари промени биват случайно предавани отново.
+
+  [% ELSIF reason == "missing_token" %]
+    Изглежда не сте дошли от правилната страница.
+    Една от причините може да е, че сте въвели <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-то в адресната лента на вашия
+    web браузър директно, което трябва да е безопасно. Друга причина може да е, че
+    сте щракнали върху <abbr lang="en" title="Uniform Resource Locator">URL</abbr>, което ви е прехвърлило тук <b>без ваше съгласие</b>.
+
+  [% ELSIF reason == "invalid_token" %]
+    Подадохте промени към [% script_name FILTER html %] с недействителен
+    признак, което може да означава, че някой се е опитал да злоупотреби с вас, като например
+    ви е накрал да щракнете върху <abbr lang="en" title="Uniform Resource Locator">URL</abbr>, което ви е прехвърлило тук <b>без ваше
+    съгласие</b>.
+  [% END %]
+  <p>
+    Сигурни ли сте, че искате да подадете тези промени?
+  </p>
+</div>
+
+<form name="check" id="check" method="post" action="[% script_name FILTER html %]">
+  [% PROCESS "global/hidden-fields.html.tmpl"
+             exclude="^(Bugzilla_login|Bugzilla_password|token)$" %]
+  <input type="hidden" name="token" value="[% token FILTER html %]">
+  <input type="submit" id="confirm" value="Да, потвърждаване на промените">
+</form>
+
+<p><a href="index.cgi">Не, отхвърляне на промените</a> (ще бъдете пренасочени
+към началната страница).</p>
+
+[% PROCESS global/footer.html.tmpl %]

@@ -19,7 +19,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.2 Бележки към версията" 
+  title = "$terms.Bugzilla 3.2.1 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -27,6 +27,8 @@
 
 <ul class="bz_toc">
   <li><a href="#v32_introduction">Въведение</a></li>
+  <li><a href="#v32_point">Обновления в тази 3.2.x версия</a></li>
+  <li><a href="#v32_security">Поправки по сигурността в тази 3.2.x версия</a></li>
   <li><a href="#v32_req">Минимални изисквания</a></li>
   <li><a href="#v32_feat">Нови възможности и подобрения</a></li>
   <li><a href="#v32_issues">Оставащи проблеми</a></li>
@@ -48,6 +50,73 @@
   <a href="#v32_previous">предишни версии</a> между вашата версия
   и тази, <strong>особено "Бележки за надграждащи" секцията на бележките
   към всяка версия</strong>.</p>
+
+<h2><a name="v32_point">Обновления в тази 3.2.x версия</a></h2>
+
+<p>Тази секция описа какво е променено в най-новите поправящи
+  версии на [% terms.Bugzilla %] след 3.2. Включваме само
+  най-важните поправки във всяка версия. Ако търсите подробен списък с
+  <em>всичко</em> което е променено във всяка версия трябва да използвате нашата
+  <a href="http://www.bugzilla.org/status/changes.html">Страница с журнал
+  на промените</a>.</p>
+
+<h3>3.2.2</h3>
+
+<p>Тази версия оправя един проблем със сигурността, който е критичен за инсталации
+  работещи с 3.2.1 под mod_perl. Вижте 
+  <a href="http://www.bugzilla.org/security/3.0.7/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<h3>3.2.1</h3>
+
+<ul>
+  <li>Приставки, диаграми и графики понякога биват представяни неточно под Windows.
+  (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=464992">[% terms.Bug %] 464992</a>)</li>
+
+  <li>Съхраняване на промени по параметри понякога пропада тихомълком (в частност
+    под Windows когато web сървъра няма правилните разрешения да
+    обновява файла <code>params</code>). [% terms.Bugzilla %] вече ще
+    изхвърля грешка в този случай, казвайки ви какъв е проблема.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=347707">[% terms.Bug %] 347707</a>)</li>
+
+  <li>Ако използвате параметъра <code>usemenuforusers</code>,
+    и [% terms.bug %] е бил назначен на (или е имал Качествен контрол) неспособен
+    потребител, това поле ще бъде нулирано до първия потребител в списъка при
+    обновяване на [% terms.bug %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=465589">[% terms.Bug %] 465589</a>)</li>
+
+  <li>Ако сте използвали променливата на средата <code>PROJECT</code>
+    за да имате няколко [% terms.Bugzilla %] инсталации използващи един код,
+    специфични за проекта шаблони са били пренебрегвани. 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=467324">[% terms.Bug %] 467324</a>)</li>
+
+  <li>Някои версии на SOAP::Lite Perl модула имаха б[% %]ъг, който причиняваше
+    срив в <abbr lang="en" title="eXtensible Markup Language Remote Procedure Call">XML-RPC</abbr> услугата на [% terms.Bugzilla %]. 
+    <code>checksetup.pl</code> вече проверява за тези лоши версии и 
+    ще ги отхвърли.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=468009">[% terms.Bug %] 468009</a>)</li>
+
+  <li>Размерите на шрифта на различни места са били много малки при използване на
+    кожата Classic.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=469136">[% terms.Bug %] 469136</a>)</li>
+</ul>
+
+<h2><a name="v32_security">Поправки по сигурността в тази 3.2.x версия</a></h2>
+
+<h3>3.2.2</h3>
+
+<p>Тази версия оправя един проблем със сигурността, който е критичен за инсталации
+  работещи с 3.2.1 под mod_perl. Вижте 
+  <a href="http://www.bugzilla.org/security/3.0.7/">Бюлетина по сигурността</a> 
+  за подробности.</p>
+
+<h3>3.2.1</h3>
+
+<p>Тази версия съдържа няколко поправки по сигурността. Една от поправките може да счупи всеки
+  автоматизиран скрипт който имате и който зарежда <kbd>process_bug.cgi</kbd>
+  директно. Препоръчваме ви да прочетете целия 
+  <a href="http://www.bugzilla.org/security/2.22.6/">Бюлетин по сигурността</a>
+  за тази версия.</p>
 
 <h2><a name="v32_req"></a>Минимални изисквания</h2>
 
@@ -79,7 +148,7 @@
 [% INCLUDE req_table reqs = REQUIRED_MODULES 
                      new = []
                      updated = ['Template-Toolkit', 'Email-MIME',
-                                'Email-MIME-Modifier', 'CGI'] %]
+                                'Email-MIME-Modifier', 'CGI.pm'] %]
 
 <h3><a name="v32_req_optional_mod"></a>Незадължителни Perl модули</h3>
 
@@ -87,7 +156,7 @@
   възможности на [% terms.Bugzilla %]:</p>
 
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
-                     new  = ['SASL-Authen', 'RadiusPerl']
+                     new  = ['Authen-SASL', 'RadiusPerl']
                      updated = []
                      include_feature = 1 %]
 

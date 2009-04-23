@@ -255,6 +255,8 @@
 
 [% END %]
 
+[% Hook.process("confirmation") %]
+
 [% IF product.bug_count == 0 || Param('allowbugdeletion') %]
 
   <p>Наистина ли желаете да изтриете този продукт?</p>
