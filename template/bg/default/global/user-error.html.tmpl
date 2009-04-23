@@ -231,7 +231,7 @@
   [% ELSIF error == "buglist_parameters_required" %]
     [% title = "Необходими са параметри" %]
     [% docslinks = {'query.html' => "Търсене за $terms.bugs",
-                    'query.html#list'  => "$terms.Bug lists"} %]
+                    'query.html#list'  => "$terms.Bug списъци"} %]
     Не можете да търсите или да създавате съхранени търсения без никакви термини за търсене.
 
   [% ELSIF error == "chart_too_large" %]
@@ -260,7 +260,7 @@
 
   [% ELSIF error == "auth_classification_not_enabled" %]
     [% title = "Класификацията не е позволена" %]
-    Съжалявам, класофикацията не е позволена.
+    Съжалявам, класификацията не е позволена.
 
   [% ELSIF error == "classification_not_specified" %]
     [% title = "Трябва да предоставите име на класификацията" %]
@@ -281,8 +281,8 @@
 
   [% ELSIF error == "classification_invalid_sortkey" %]
     [% title = "Недействителен ключ за подреждане на класификация" %]
-    Ключа за пдреждане <em>[% sortkey FILTER html %]</em> за класификацията '[% name FILTER html %]'
-    е недействителен. Трябва да бъде положително цяло цисло.
+    Ключа за подреждане <em>[% sortkey FILTER html %]</em> за класификацията '[% name FILTER html %]'
+    е недействителен. Трябва да бъде положително цяло число.
 
   [% ELSIF error == "classification_not_deletable" %]
     [% title = "Подразбиращата се класификация не може да бъде изтрита" %]
@@ -351,7 +351,7 @@
     Това би създало циклична зависимост, което не е позволено.
 
   [% ELSIF error == "dependency_loop_single" %]
-    [% title = "Установено зацикляне на зависимост" %]
+    [% title = "Установена циклична зависимост" %]
     Не можете да направите [% terms.abug %] да блокира себе си или да зависи от самия себе си.
 
   [% ELSIF error == "dupe_id_required" %]
@@ -365,7 +365,7 @@
     променяте няколко [% terms.abug %] наведнъж.
 
   [% ELSIF error == "dupe_loop_detected" %]
-    [% title = "Установено зацикляне между двойници" %]
+    [% title = "Установена циклична зависимост между двойници" %]
     Не можете да отбележите [% terms.bug %] [%+ bug_id FILTER html %] като
     двойник на
     [% IF dupe_of == bug_id %]
@@ -411,7 +411,7 @@
   [% ELSIF error == "field_invalid_name" %]
     [% title = "Недействително име на поле" %]
     '[% name FILTER html %]' не е действително име за поле.
-    Името може да съдържа само букви, цифри и знака за подчертване.
+    Името може да съдържа само букви, цифри и знака за подчертаване.
 
   [% ELSIF error == "field_invalid_sortkey" %]
     [% title = "Недействителен ключ за подреждане на поле" %]
@@ -477,7 +477,7 @@
     [% title = "Не се позволява запазена дума" %]
     Не можете да използвате стойността '[% value FILTER html %]' за полето
     '[% field.description FILTER html %]'. Тази стойност се ползва вътрешно.
-    Моля, изберете дргуа.
+    Моля, изберете друга.
 
   [% ELSIF error == "fieldvalue_sortkey_invalid" %]
     [% title = "Недействителен ключ за подредба за стойност на поле" %]
@@ -537,8 +537,8 @@
     задаване на флага <code>[% flag_type.name FILTER html %]</code> върху [% terms.bug %] 
     [%+ bug_id FILTER html -%]
     [% IF attach_id && attach_id > 0 %], приставката [% attach_id FILTER html %][% END %],
-    но този [% terms.bug %] е ограничен до потребители в определни групи, а
-    потребителя, от който сте пoискали не е във всички групи до които
+    но този [% terms.bug %] е ограничен до потребители в определени групи, а
+    потребителя, от който сте поискали не е във всички групи до които
     [% terms.abug %] е ограничен.
     Моля, изберете някой друг от когото да поискате или направете [% terms.abug %]
     достъпен за потребителите в неговия <abbr title="Точно Копие">ТК</abbr>: списък и добавете потребителя към него.
@@ -1034,7 +1034,7 @@
     [% title = "Липсващо търсене" %]
     [% docslinks = {'query.html' => "Търсене на $terms.bugs",
                     'query.html#list'  => "$terms.Bug списъци"} %]
-    Търсенето именовано <em>[% queryname FILTER html %]</em>
+    Търсенето именувано <em>[% queryname FILTER html %]</em>
     [% IF sharer_id && sharer_id != user.id %]
       не е направено видимо за вас.
     [% ELSE %]
@@ -1307,7 +1307,7 @@
   [% ELSIF error == "product_disabled" %]
     [% title = BLOCK %]Продукта е затворен за въвеждане на [% terms.bugs %][% END %]
     [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
-    Съжалявам, въвежданетно на [% terms.bugs %] в
+    Съжалявам, въвеждането на [% terms.bugs %] в
     продукта <em>[% product.name FILTER html %]</em> беше забранено.
 
   [% ELSIF error == "product_edit_denied" %]
@@ -1417,7 +1417,7 @@
   [% ELSIF error == "series_already_exists" %]
     [% title = "Редиците вече съществуват" %]
     [% docslinks = {'reporting.html' => 'Доклади'} %]
-      Редиците именовани <em>[% series.category FILTER html %] /
+      Редиците именувани <em>[% series.category FILTER html %] /
       [%+ series.subcategory FILTER html %] / 
       [%+ series.name FILTER html %]</em>
       вече съществуват.

@@ -38,8 +38,8 @@
 
 [% error_message = BLOCK %]
   [% IF    error == "action_unrecognized" %]
-    [% docslinks = {'query.html' => "Searching for $terms.bugs",
-                    'query.html#list' => "$terms.Bug lists"} %]
+    [% docslinks = {'query.html' => "Търсене на $terms.bugs",
+                    'query.html#list' => "$terms.Bug списъци"} %]
     Не разпознавам стойността (<em>[% action FILTER html %]</em>)
     на променливата <em>action</em>.
 
@@ -115,7 +115,7 @@
   [% ELSIF error == "column_not_null_no_default_alter" %]
     Не можете да промените колоната [% name FILTER html %], да бъде NOT NULL
     без да укажете стойност по подразбиране или нещо за $set_nulls_to, защото
-    в момента тя съдържа  NULL стойности в себе си.
+    в момента тя съдържа NULL стойности в себе си.
 
   [% ELSIF error == "db_rename_conflict" %]
     Конфликт с името: Не можете да преименувате [% old FILTER html %] на
@@ -129,7 +129,7 @@
     средата.
     [% IF Param("auth_env_email") %]
       Това значи, че параметъра '[% Param("auth_env_email") FILTER html %]'
-      е празна или не същестува.
+      е празна или не съществува.
     [% ELSE %]
       Необходимо е да зададете параметъра "auth_env_email" с
       името на променливата на средата, която ще съдържа
@@ -141,7 +141,7 @@
     разширението [% extension FILTER html %]: [% errstr FILTER html %]
 
   [% ELSIF error == "extern_id_conflict" %]
-    Външния идентификатор '[% extern_id FILTER html %]' вече същестува
+    Външния идентификатор '[% extern_id FILTER html %]' вече съществува
     в базата данни за '[% username FILTER html %]', но вашия
     източник на сметка казва, че '[% extern_user FILTER html %]' го притежава.
 
@@ -290,10 +290,10 @@
    <code>[% errstr FILTER html %]</code>
 
   [% ELSIF error == "ldap_server_not_defined" %]
-    LDAP сървъра за удостоверяване не е определен.
+    Не е определен <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър за удостоверяване.
 
   [% ELSIF error == "mail_send_error" %]
-    Получи се грешка при изпращне на поща от '[% mail.header('From') FILTER html %]'
+    Получи се грешка при изпращане на поща от '[% mail.header('From') FILTER html %]'
     до '[% mail.header('To') FILTER html %]':
     [% msg FILTER html %]
 
@@ -310,7 +310,7 @@
     Необходим е действителен идентификатор на остроумие.
 
   [% ELSIF error == "no_manual_moved" %]
-    Не можете да зададете решениeто на [% terms.abug %] като ПРЕМЕСТЕН, без
+    Не можете да зададете решението на [% terms.abug %] като ПРЕМЕСТЕН, без
     да преместите [% terms.abug %].
 
   [% ELSIF error == "param_must_be_numeric" %]
@@ -337,11 +337,11 @@
         <code>[%+ caller FILTER html %]</code>, който е
     [% END %]
 
-    извън пакета. Тази функция може да бъе извикна само от
+    извън пакета. Тази функция може да бъде извикана само от
     подклас на <code>[% superclass FILTER html %]</code>.
 
   [% ELSIF error == "radius_preparation_error" %]
-    Възникна грешка при подготовката за RADIUS удостоверителна заявка:
+    Възникна грешка при подготовката за <abbr lang="en" title="Remote Authentication Dial In User Service">RADIUS</abbr> заявка за удостоверяване:
     <code>[% errstr FILTER html %]</code>.
 
   [% ELSIF error == "unknown_comparison_type" %]
@@ -375,8 +375,8 @@
     възможни стойности за настройката <em>[% name FILTER html %]</em>.
 
   [% ELSIF error == "soap_not_installed" %]
-    [% admindocslinks = {'installation.html#install-perlmodules' => 'ИНсталиране на Perl модули'} %]
-    XMLRPC интерфейса няма да работи без SOAP::Lite Perl модула да бъде
+    [% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули'} %]
+    <abbr lang="en" title="Extensible Markup Language Remote Procedure Call">XMLRPC</abbr> интерфейса няма да работи без SOAP::Lite Perl модула да бъде
     инсталиран.
     Пуснете checksetup.pl за инструкции по инсталацията.
 
@@ -414,7 +414,7 @@
 
   [% ELSIF error == "comma_operator_deprecated" %]
     [% title = "Вътрешна грешка на създателя на SQL заявки" %]
-    Има вътрешна грешка в кода на създателя на SQL заявки,
+    Има вътрешна грешка в кода на създателя на <abbr lang="en" title="Structured Query Language">SQL</abbr> заявки,
     създаващ заявки без явен JOIN.
 
   [% ELSIF error == "invalid_post_bug_submit_action" %]
