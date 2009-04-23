@@ -19,7 +19,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.2.1 Бележки към версията" 
+  title = "$terms.Bugzilla 3.2.3 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -59,6 +59,35 @@
   <em>всичко</em> което е променено във всяка версия трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">Страница с журнал
   на промените</a>.</p>
+
+<h3>3.2.3</h3>
+
+<ul>
+  <li>[% terms.Bugzilla %] вече е съвместима с MySQL 5.1.x версия 5.1.31
+    и по-висока.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=480001">[% terms.Bug %] 480001</a>)</li>
+  <li>Под Windows, [% terms.Bugzilla %] понякога изпращаше развалени писма 
+    (чието изпращане често пропада).
+  (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=467920">[% terms.Bug %] 467920</a>)</li>
+  <li><code>recode.pl</code> понякога се чупи, при опит за обръщане на
+    бази с данни от стари версии на [% terms.Bugzilla %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=431201">[% terms.Bug %] 431201</a>)</li>
+  <li>Пускане на съхранено търсене с Unicode символи в името му, ще
+    предизвика срив в [% terms.Bugzilla %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=477513">[% terms.Bug %] 477513</a>)</li>
+  <li>[% terms.Bugzilla %] клиенти като Mylyn могат отново да обновяват [% terms.bugs %]
+    (<abbr lang="en" title="eXtensible Markup Language">XML</abbr> формата на [% terms.bug %] вече съдържа елемент "token", който
+    може да бъде използван при обновяването му).
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=476678">[% terms.Bug %] 476678</a>)</li>
+  <li>За инсталации използващи параметъра <code>shadowdb</code>, 
+    [% terms.Bugzilla %] случайно пишеше в таблицата "tokens"
+    на базата данни в сянка (вместо в главната база с данни) при използване на
+    страницата "Промяна на няколко [% terms.bugs %] едновременно".
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=476943">[% terms.Bug  %] 476943</a>)</li>
+</ul>
+
+<p>Тази версия също съдържа поправка по сигурността. Вижте
+  <a href="#v32_security">Секцията поправки по сигурността</a> за подробности.</p>
 
 <h3>3.2.2</h3>
 
@@ -102,6 +131,12 @@
 </ul>
 
 <h2><a name="v32_security">Поправки по сигурността в тази 3.2.x версия</a></h2>
+
+<h3>3.2.3</h3>
+
+<p>Тази версия оправя един проблем със сигурността свързан с приставки. Вижте
+  <a href="http://www.bugzilla.org/security/3.2.2/">Бюлетина по сигурността</a>
+  за подробности.</p>
 
 <h3>3.2.2</h3>
 
@@ -1189,7 +1224,7 @@
   е разделен със запетайки списък на [% terms.Bugzilla %] потребители които
   получават всички [% terms.bug %] уведомления създавани от [% terms.Bugzilla %].</p>
 
-<p>Груповите контроли продължават да се прилагат, въпреки това, така че потребителите които не могат да виждат [% terms.bug %]
+<p>Груповите контроли продължават да се прилагат, въпреки това, така че потребителите които не могат да виждат [% terms.bug %]а
   продължават да не получават уведомления за него.</p>
 
 <h3><a name="v30_feat_utf8"></a>Подобрена UTF-8 поддръжка</h3>

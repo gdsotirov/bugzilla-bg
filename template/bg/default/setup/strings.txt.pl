@@ -52,6 +52,12 @@ EOT
 
 EOT
     install_module => 'Инсталиране на ##module## версия ##version##...',
+    max_allowed_packet => <<EOT,
+ВНИМАНИЕ: Трябва да зададете параметъра max_allowed_packet в MySQL
+настройката си до поне ##needed##. В момента той е зададен на ##current##.
+Можете да зададете параметъра в секцията [mysqld] на вашия MySQL
+файл с настройки.
+EOT
     module_found => "открита v##ver##",
     module_not_found => "не е открит",
     module_ok => 'ok',
