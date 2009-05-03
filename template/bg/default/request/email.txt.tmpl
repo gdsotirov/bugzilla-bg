@@ -47,7 +47,7 @@
 [% END %]
 From: [% Param('mailfrom') %]
 To: [% to %]
-Subject: [%+ subject_status %] [% flag.type.name %]: [[% terms.Bug %] [%+ bug.bug_id %]] [% bug.short_desc %]
+Subject: [%+ subject_status %] [%+ flag.type.name %]: [[% terms.Bug %] [%+ bug.bug_id %]] [% bug.short_desc %]
 [%- IF attachment %] :
   [Приставка [% attachment.id %]] [% attachment.description %][% END %]
 X-Bugzilla-Type: request
@@ -60,7 +60,7 @@ X-Bugzilla-Type: request
 [% user.identity %] преназначи заявката на [% flag.setter.identity %] за [% flag.type.name %]
 [% to_identity %]:
 [% ELSE %]
-[% user.identity %] [% statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
+[% user.identity %] [%+ statuses.${flag.status} %] [%+ to_identity %] [%+ flag.type.name %]:
 [% END %]
 
 [% terms.Bug %] [%+ bugidsummary %]
