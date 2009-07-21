@@ -21,7 +21,7 @@
 [% PROCESS global/variables.none.tmpl %]
 
 [% title = BLOCK %]
-  Изтриване на приставка [% a.id FILTER html %] на [% "$terms.bug %] [%+ a.bug_id FILTER html %]
+  Изтриване на приставка [% a.id FILTER html %] на [% terms.bug %] [%+ a.bug_id FILTER html %]
 [% END %]
 
 [% PROCESS global/header.html.tmpl
