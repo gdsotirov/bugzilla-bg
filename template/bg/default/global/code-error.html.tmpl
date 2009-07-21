@@ -32,7 +32,7 @@
   # in this file; if you do not wish to change it, use the "none" filter.
   #%]
 
-[% PROCESS global/variables.none.tmpl %]
+[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% DEFAULT title = "Вътрешна грешка" %]
 
@@ -312,6 +312,11 @@
   [% ELSIF error == "no_manual_moved" %]
     Не можете да зададете решението на [% terms.abug %] като ПРЕМЕСТЕН, без
     да преместите [% terms.abug %].
+
+  [% ELSIF error == "no_open_bug_status" %]
+    [% title = "$terms.Bug Cannot Be Confirmed" %]
+    Няма действително преминаване от
+    [%+ get_status("UNCONFIRMED") FILTER html %] към отворено състояние.
 
   [% ELSIF error == "param_must_be_numeric" %]
     [% title = "Неправилен параметър" %]

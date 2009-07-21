@@ -19,7 +19,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.2.3 Бележки към версията" 
+  title = "$terms.Bugzilla 3.2.4 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -59,6 +59,30 @@
   <em>всичко</em> което е променено във всяка версия трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">Страница с журнал
   на промените</a>.</p>
+
+<h3>3.2.4</h3>
+
+<ul>
+  <li>Вече изискваме определена версия на Email::MIME::Encodings Perl
+    модула, за да решим проблем при който някои писма имат твърде много символи за нов ред
+    в тях.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=486206">[% terms.Bug %] 486206</a>)</li>
+  <li>JavaScript и <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> на [% terms.Bugzilla %] вече трябва да са напълно съвместими
+    в Internet Explorer 8.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=483150">[% terms.Bug %] 483150</a>)</li>
+  <li>Пускането на съхранено търсене със съхранен ред за подреждане вече няма да
+    презаписва пордарзбрания ви ред за търсения.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=491679">[% terms.Bug %] 491679</a>)</li>
+  <li>Вече можете да потвърдите [% terms.bug %] с глас народен дори ако няма
+    състояние наречено "NEW" във вашата [% terms.Bugzilla %].
+   (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=500900">[% terms.Bug %] 500900</a>)</li>
+  <li>Показването на [% terms.bug %] с много коментари вече трябва да е
+    значително по-бързо.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=498318">[% terms.Bug %] 498318</a>)</li>
+</ul>
+
+<p>Тази версия също съдържа поправка по сигурността. Вижте
+  <a href="#v32_security">Секцията поправки по сигурността</a> за подробности.</p>
 
 <h3>3.2.3</h3>
 
@@ -132,6 +156,12 @@
 
 <h2><a name="v32_security">Поправки по сигурността в тази 3.2.x версия</a></h2>
 
+<h3>3.2.4</h3>
+
+<p>Тази версия оправя един проблем със сигурността свързан с редактиране на
+  [% terms.bug %]. Вижте <a href="http://www.bugzilla.org/security/3.2.3/">Бюлетина
+  по сигурността</a> за подробности.</p>
+
 <h3>3.2.3</h3>
 
 <p>Тази версия оправя един проблем със сигурността свързан с приставки. Вижте
@@ -181,7 +211,7 @@
 <h3><a name="v32_req_modules"></a>Задължителни Perl модули</h3>
 
 [% INCLUDE req_table reqs = REQUIRED_MODULES 
-                     new = []
+                     new = ['Email-MIME-Encodings']
                      updated = ['Template-Toolkit', 'Email-MIME',
                                 'Email-MIME-Modifier', 'CGI.pm'] %]
 
