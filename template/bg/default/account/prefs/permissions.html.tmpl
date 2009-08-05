@@ -65,7 +65,7 @@
         Няма разрешаващи битове зададени на сметката ви.
       [% END %]
 
-      [% IF user.groups.editusers %]
+      [% IF user.in_group('editusers') %]
         <br>
         Имате права за редактиране на потребители.  Можете да давате или снемате
         всички разрешения на всички потребители.
@@ -83,7 +83,7 @@
           </table>
       [% END %]
 
-      [% IF user.groups.bz_sudoers %]
+      [% IF user.in_group('bz_sudoers') %]
         <br>
         Член сте на групата <b>bz_sudoers</b>, така че можете да се 
         <a href="relogin.cgi?action=prepare-sudo">представите за някой друг</a>.

@@ -230,6 +230,36 @@
     </tr>
   [% END %]
 
+  <tr>
+    <th>
+      <label for="dependson">
+          Зависи от:
+      </label>
+    </th>
+    <td colspan="3">
+      <input id="dependson" name="dependson" size="32">
+      <select name="dependson_action">
+          <option value="add">Добавяне на тези номера</option>
+          <option value="remove">Изтриване на тези номера</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <th>
+      <label for="blocked">
+          Блокира:
+      </label>
+    </th>
+    <td colspan="3">
+      <input id="blocked" name="blocked" size="32">
+      <select name="blocked_action">
+          <option value="add">Добавяне на тези номера</option>
+          <option value="remove">Изтриване на тези номера</option>
+      </select>
+    </td>
+  </tr>
+
   [% IF Param('usestatuswhiteboard') %]
     <tr>
       <td align="right">
@@ -255,7 +285,14 @@
 
 </table>
 
-<b><label for="comment">Допълнителни коментари:</label></b><br>
+<b><label for="comment">Допълнителни коментари:</label></b>
+[% IF user.is_insider %]
+  <input type="checkbox" name="commentprivacy" value="1"
+         id="newcommentprivacy"
+         onClick="updateCommentTagControl(this, form)"/>
+  <label for="newcommentprivacy">Частен</label>
+[% END %]
+<br>
 [% INCLUDE global/textarea.html.tmpl
   name    = 'comment'
   id      = 'comment'

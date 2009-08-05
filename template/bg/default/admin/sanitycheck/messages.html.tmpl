@@ -169,6 +169,12 @@
       [% END %]
     [% END %]
 
+  [% ELSIF san_tag == "everconfirmed_start" %]
+    OK, поправяне на някога потвърждаван.
+
+  [% ELSIF san_tag == "everconfirmed_end" %]
+    някога потвърждаван оправено.
+
   [% ELSIF san_tag == "flag_check_start" %]
     Проверка за флагове в неправилен продукт/съставна част.
 
@@ -310,8 +316,13 @@
   [% END %]
 [% END %]
 
-[% san_message FILTER html %]
-
+[% USE Bugzilla %]
+[% IF Bugzilla.usage_mode == constants.USAGE_MODE_CMDLINE %]
+  [% san_message FILTER none %]
+[% ELSE %]
+  [%# Avoid the txt filter in message.txt.tmpl. %]
+  [% san_message FILTER html %]
+[% END %]
 
 [% BLOCK bug_list %]
   [% FOREACH bug_id = badbugs %]

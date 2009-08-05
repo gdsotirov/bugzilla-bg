@@ -20,7 +20,6 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% expiration_ts = token_ts + (max_token_age * 86400) %]
 From: [% Param('mailfrom') %]
 To: [% emailaddress %]
 Subject: [% terms.Bugzilla %] Заявка за смяна на електронен пощенски адрес
@@ -38,5 +37,5 @@ X-Bugzilla-Type: admin
 
 [%+ urlbase %]token.cgi?t=[% token FILTER url_quote %]&a=cxlem
 
-Ако не направите нищо заявката ще изтече след [%+ max_token_age %] дни
-(на [%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]).
+Ако не направите нищо, заявката ще изтече след [% constants.MAX_TOKEN_AGE %] дни
+(на [% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]).

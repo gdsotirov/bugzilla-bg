@@ -37,7 +37,7 @@
   <p>
     <font color="red">
       Вашето остроумие '<tt>[% added_quip FILTER html %]</tt>' беше добавено.
-      [% IF Param("quip_list_entry_control") == "moderated" AND !user.groups.admin %]
+      [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('admin') %]
         То ще бъде използвано веднага след като бъде одобрено.
       [% END %]
     </font>
@@ -66,7 +66,7 @@
   <p>
     Можете да разширите списъка с остроумия. Напишете нещо умно и забавно или отегчаващо
     (но не неприлично или противно, моля) и натиснете бутона.
-    [% IF Param("quip_list_entry_control") == "moderated" AND !user.groups.admin %]
+    [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('admin') %]
       Имайте в предвид, че остроумието Ви първо трябва да бъде одобрено преди да се използва.
     [% END %]
   </p>

@@ -157,7 +157,8 @@
 [% PROCESS global/footer.html.tmpl %]
 
 [% BLOCK start_new_table %]
-  <h3>[% column_headers.$group_field %]: [% (request.$group_field || "Няма") FILTER html %]</h3>
+  <h3>[% column_headers.$group_field %]: 
+    [%+ (request.$group_field || "Няма") FILTER email FILTER html %]</h3>
   <table class="requests" cellspacing="0" cellpadding="4" border="1">
     <tr>
       [% FOREACH column = display_columns %]
@@ -190,11 +191,11 @@
 [% END %]
 
 [% BLOCK display_requestee %]
-  [% request.requestee FILTER html %]
+  [% request.requestee FILTER email FILTER html %]
 [% END %]
 
 [% BLOCK display_requester %]
-  [% request.requester FILTER html %]
+  [% request.requester FILTER email FILTER html %]
 [% END %]
 
 [% BLOCK display_created %]

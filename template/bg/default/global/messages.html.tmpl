@@ -76,7 +76,7 @@
         [% END %]
         [% IF groups_added_to.size %]
           <li>
-            Сметката беше добавена към
+            Сметката беше добавена към 
             груп[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %]
             [%+ groups_added_to.join(', ') FILTER html %].
           </li>
@@ -111,8 +111,12 @@
 
   [% ELSIF message_tag == "account_deleted" %]
     [% title = "Сметката $otheruser.login е изтрита" %]
-    The user account [% otheruser.login FILTER html %] has been deleted
-    successfully.
+    Сметката [% otheruser.login FILTER html %] беше изтрита
+    успешно.
+
+  [% ELSIF message_tag == "account_disabled" %]
+    Потребителската сметка [% account FILTER html %] е спряна, така че
+    не можете да смените паролата ѝ.
 
   [% ELSIF message_tag == "attachment_creation_failed" %]
     [% terms.Abug %] беше създаден успешно, но създаването на приставката
@@ -120,27 +124,15 @@
     Моля, добавете приставката си чрез щракване върху връзката "Добавяне на приставка"
     отдолу.
 
-  [% ELSIF message_tag == "bug_confirmed_by_votes" %]
-    *** [% terms.Abug %] бе потвърден чрез преки избори. ***
-
-  [% ELSIF message_tag == "bug_duplicate_of" %]
-    *** [% terms.Abug %] бе означен като двойник на [% terms.bug %] [%+ dupe_of FILTER html %] ***
-
-  [% ELSIF message_tag == "bug_has_duplicate" %]
-    *** [% terms.Bug %] [%+ dupe FILTER html %] бе означен като двойник на този [% terms.bug %]. ***
-
-  [% ELSIF message_tag == "bug_moved_to" %]
-    <p>[% terms.ABug %] е преместен на [% Param("move-to-url") FILTER html %].</p>
-    <p>Ако преместването е успешно, [% login FILTER html %] ще получи поща
-    съдържаща номера на новия [% terms.bug %] в другата база данни.
-    Ако всичко мине добре, моля означете [% terms.abug %] като проверен и пуснете
-    връзка към новия [% terms.bug %]. В противен случай, отворете отново [% terms.abug %].
+  [% ELSIF message_tag == "bug_group_description" %]
+    Достъп до [% terms.bugs %] в продукта [% product.name FILTER html %]
 
   [% ELSIF message_tag == "buglist_adding_field" %]
     [% title = "Добавяне на поле към страницата за търсене..." %]
     [% link  = "Щракнете тук ако страницата не се презареди автоматично." %]
 
   [% ELSIF message_tag == "buglist_updated_named_query" %]
+    [% title = "Търсене обновено" %]
     Търсенето ви, именувано <code><a 
      href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
     >[% queryname FILTER html %]</a></code>, беше обновено.
@@ -150,6 +142,7 @@
     да отметнете резултата от всяко търсене.
 
   [% ELSIF message_tag == "buglist_new_named_query" %]
+    [% title = "Търсене създадено" %]
     OK, имате ново търсене именувано <code><a
      href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
     >[% queryname FILTER html %]</a></code>.
@@ -179,26 +172,30 @@
 
   [% ELSIF message_tag == "classification_deleted" %]
     [% title = "Изтрита класификация" %]
-    Класификацията <em>[% classification FILTER html %]</em> беше изтрита.
+    Класификацията <em>[% classification.name FILTER html %]</em> беше изтрита.
 
   [% ELSIF message_tag == "classification_updated" %]
-    [% IF updated_classification || updated_description || updated_sortkey %]
-      [% title = "Обновена класификация" %]
-      Промените по класификацията <em>[% classification FILTER html %]</em>
+    [% title = "Класификация обновена" %]
+    [% IF changes.keys.size %]
+      Промените по класификацията <em>[% classification.name FILTER html %]</em>
       бяха съхранени:
       <ul>
-        [% IF updated_classification %]
-          <li>Името на касификацията е обновено</li>
+        [% IF changes.name.defined %]
+          <li>Име е обновено на '[% classification.name FILTER html %]'</li>
         [% END %]
-        [% IF updated_description %]
-          <li>Описанието е обновено</li>
+        [% IF changes.description.defined %]
+          [% IF classification.description %]
+            <li>Описание е обновено на '[% classification.description FILTER html %]'</li>
+          [% ELSE %]
+            <li>Описание премахнато</li>
+          [% END %]
         [% END %]
-        [% IF updated_sortkey %]
-          <li>Ключа за подреждане е обновен</li>
+        [% IF changes.sortkey.defined %]
+          <li>Ключ за подреждане е обновен на '[% classification.sortkey FILTER html %]'</li>
         [% END %]
       </ul>
     [% ELSE %]
-      Не са направени промени по <em>[% classification FILTER html %]</em>.
+      Не са направени промени по <em>[% classification.name FILTER html %]</em>.
     [% END %]
 
   [% ELSIF message_tag == "component_created" %]
@@ -214,24 +211,24 @@
     [% END %]
 
   [% ELSIF message_tag == "component_updated" %]
-    [% title = "Обновена съставна част" %]
+    [% title = "Съставна част обновена" %]
     [% IF changes.keys.size %]
       Промените по съставната част <em>[% comp.name FILTER html %]</em> бяха съхранени:
       <ul>
       [% IF changes.name.defined %]
-        <li>Името е обновено на '[% comp.name FILTER html %]'</li>
+        <li>Име е обновено на '[% comp.name FILTER html %]'</li>
       [% END %]
       [% IF changes.description.defined %]
-        <li>Описанието е обновено на '[% comp.description FILTER html_light %]'</li>
+        <li>Описани е обновено на '[% comp.description FILTER html_light %]'</li>
       [% END %]
       [% IF changes.initialowner.defined %]
-        <li>Подразбиращия се назначен е обновен на '[% comp.default_assignee.login FILTER html %]'</li>
+        <li>Подразбиращ се назначен е обновен на '[% comp.default_assignee.login FILTER html %]'</li>
       [% END %]
       [% IF changes.initialqacontact.defined %]
         [% IF comp.default_qa_contact.id %]
-          <li>Подразбиращия се качествен контрол е обновен на '[% comp.default_qa_contact.login FILTER html %]'</li>
+          <li>Подразбиращ се качествен контрол е обновен на '[% comp.default_qa_contact.login FILTER html %]'</li>
         [% ELSE %]
-          <li>Подразбиращия се качествен контрол е изтрит</li>
+          <li>Подразбиращ се качествен контрол е изтрит</li>
         [% END %]
       [% END %]
       [% IF changes.cc_list.defined %]
@@ -240,9 +237,9 @@
           [% FOREACH cc_user = comp.initial_cc %]
             [% cc_list.push(cc_user.login) %]
           [% END %]
-          <li>Подразбиращия се ТК списък е обновен на [% cc_list.join(", ") FILTER html %]</li>
+          <li>Подразбиращ ТК списък е обновен на [% cc_list.join(", ") FILTER html %]</li>
         [% ELSE %]
-          <li>Подразбиращия се ТК списък е изтрит</li>
+          <li>Подразбиращ ТК списък е изтрит</li>
         [% END %]
       [% END %]
     [% ELSE %]
@@ -291,7 +288,7 @@
 
   [% ELSIF message_tag == "field_value_created" %]
     [% title = "Създадена нова стойност на поле" %]
-    Стойността <em>[% value FILTER html %]</em> беше добавена като възможен избор
+    Стойността <em>[% value.name FILTER html %]</em> беше добавена като възможен избор
     за полето <em>[% field.description FILTER html %]</em>
     (<em>[% field.name FILTER html %]</em>).
     [% IF field.name == "bug_status" %]
@@ -301,30 +298,44 @@
 
   [% ELSIF message_tag == "field_value_deleted" %]
     [% title = "Изтрита стойност на поле" %]
-    Стойността <em>[% value FILTER html %]</em> на полето
+    Стойността <em>[% value.name FILTER html %]</em> на полето
     <em>[% field.description FILTER html %]</em>
     (<em>[% field.name FILTER html %]</em>) беше изтрита.
 
   [% ELSIF message_tag == "field_value_updated" %]
     [% title = "Обновена стойност на поле" %]
-    [% IF updated_value || updated_sortkey %]
-      Промените по стойността <em>[% value FILTER html %]</em> на полето
+    [% IF changes.keys.size %]
+      Стойността <em>[% value_old FILTER html %]</em> на полето
       <em>[% field.description FILTER html %]</em>
-      (<em>[% field.name FILTER html %]</em>) бяха променени:
+      (<em>[% field.name FILTER html %]</em>) беше променена:
       <ul>
-        [% IF updated_value %]
-          <li>Стойността на полето е обновена на <em>[% value FILTER html %]</em></li>
-          [% IF default_value_updated %]
-            (забележете, че тази стойност е подразбиращата се за полето. Всички
-            обръщения към нея вече ще сочат към новата стойност)
-          [% END %]
+        [% IF changes.value %]
+          <li>Стойността на полето е обновена на 
+            <em>[% changes.value.1 FILTER html %]</em>.
+            [% IF value.is_default %]
+              (Имайте предвид, че тази стойност е подразбираща се за полето. Всички
+              обръщения към стойността по подразбиране вече ще сочат към новата стойност.)
+            [% END %]
+          </li>
         [% END %]
-        [% IF updated_sortkey %]
-          <li>Ключа за подреждане на стойността е обновен на <em>[% sortkey FILTER html %]</em></li>
+        [% IF changes.sortkey %]
+          <li>Ключ за подреждане обновен на 
+            <em>[% changes.sortkey.1 FILTER html %]</em>.</li>
+        [% END %]
+        [% IF changes.visibility_value_id %]
+          [% IF value.visibility_value.defined %]
+            <li>Ще се появява само когато 
+              [%+ value.field.value_field.description FILTER html %] е зададено на
+              '[%+ value.visibility_value.name FILTER html %]'.</li>
+          [% ELSE %]
+            <li>Ще се появява винаги, без значение на какво  
+              [%+ value.field.value_field.description FILTER html %] е зададено.
+            </li>
+          [% END %]
         [% END %]
       </ul>
     [% ELSE %]
-      Не са направени промени по стойността на полето <em>[% value FILTER html %]</em>.
+      Не са направени промени по стойността на полето <em>[% value_old FILTER html %]</em>.
     [% END %]
 
   [% ELSIF message_tag == "flag_cleared" %]
@@ -429,6 +440,9 @@
       Не сте поискали никаква промяна за групата '[% group.name FILTER html %]'.
 
     [% END %]
+
+  [% ELSIF message_tag == "job_queue_depth" %]
+    [% count FILTER html %] задания в опашката.
 
   [% ELSIF message_tag == "keyword_created" %]
     [% title = "Създадена нова ключова дума" %]
@@ -539,20 +553,20 @@
     Парола ви беше сменена.
 
   [% ELSIF message_tag == "flag_type_created" %]
-    [% title = "Създаден тип флаг" %]
+    [% title = BLOCK %]Тип флаг '[% name FILTER html %]' създаден[% END %]
     Типа флаг <em>[% name FILTER html %]</em> беше създаден.
 
   [% ELSIF message_tag == "flag_type_changes_saved" %]
-    [% title = "Съхранени промените по тип флаг" %]
+    [% title = BLOCK %]Промените по тип флаг '[% name FILTER html %]' съхранени[% END %]
     Промените ви по типа флаг <em>[% name FILTER html %]</em>
-    бяха запазени.<br />
+    бяха запазени.
 
   [% ELSIF message_tag == "flag_type_deleted" %]
-    [% title = "Изтрит типа флаг" %]
+    [% title = BLOCK %]Тип флаг '[% name FILTER html %]' изтрит[% END %]
     Типа флаг <em>[% name FILTER html %]</em> беше изтрит.
 
   [% ELSIF message_tag == "flag_type_deactivated" %]
-    [% title = "Недействуващ тип флаг" %]
+    [% title = BLOCK %]Тип флаг '[% flag_type.name FILTER html %]' изваден от употреба[% END %]
     Типа флаг <em>[% flag_type.name FILTER html %]</em> беше изваден от употреба.
 
   [% ELSIF message_tag == "install_admin_get_email" %]
@@ -598,6 +612,23 @@
 
   [% ELSIF message_tag == "install_fk_drop" %]
     Премахване на външен ключ: [% table FILTER html %].[% column FILTER html %] -&gt; [% fk.TABLE FILTER html %].[% fk.COLUMN FILTER html %]...
+
+  [% ELSIF message_tag == "install_fk_invalid" %]
+    ГРЕШКА: Има неправилни стойности за колоната [% column FILTER html %] в таблицата [% table FILTER html %]
+    . (Те не съществуват в таблицата [% foreign_table FILTER html %], в колоната 
+    [% foreign_column FILTER html %].)
+
+    Преди да продължите с checksetup, ще трябва да оправите тези стойности,
+    или чрез изтриването на редовете от базата данни, или чрез смяна на стойностите
+    на [% column FILTER html %] в [% table FILTER html %] така че да сочат към правилни стойности в [% foreign_table FILTER html %].[% foreign_column FILTER html %].
+
+    Лошите стойности от колоната [% table FILTER html %].[% column FILTER html %] са:
+    [%+ values.join(', ') FILTER html %]
+
+  [% ELSIF message_tag == "install_fk_invalid_fixed" %]
+    ВНИМАНИЕ: Имаше неправилни стойности в [% table FILTER html %].[% column FILTER html %]
+    които бяха [% IF action == 'delete' %]изтрити[% ELSE %]зададени на NULL[% END %]:
+    [%+ values.join(', ') FILTER html %]
 
   [% ELSIF message_tag == "install_group_create" %]
     Създаване на група [% name FILTER html %]...
@@ -688,6 +719,9 @@
 
   [% ELSIF message_tag == "series_all_closed" %]
     Всички затворени
+
+  [% ELSIF message_tag == "series_subcategory" %]
+    -Всички-
 
   [% ELSIF message_tag == "sudo_started" %]
     [% title = "Започната е сесия като друг потребител" %]

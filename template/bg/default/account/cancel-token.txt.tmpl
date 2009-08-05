@@ -37,7 +37,7 @@ X-Bugzilla-Type: admin
           Признак: [% token %]
   Тип на признака: [% tokentype %]
        Потребител: [% emailaddress %]
- Дата на издаване: [% issuedate %]
+ Дата на издаване: [% issuedate FILTER time("%Y-%m-%d %H:%M:%S %Z", timezone) %]
 Дата на събитието: [% eventdata %]
   Отказано поради: [% PROCESS cancelactionmessage %]
 

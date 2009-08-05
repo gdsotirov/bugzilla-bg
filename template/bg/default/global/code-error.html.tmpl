@@ -145,6 +145,12 @@
     в базата данни за '[% username FILTER html %]', но вашия
     източник на сметка казва, че '[% extern_user FILTER html %]' го притежава.
 
+  [% ELSIF error == "field_choice_must_use_type" %]
+    Когато викате клас метод на <code>Bugzilla::Field::Choice</code>,
+    трябва да извикате <code>Bugzilla::Field::Choice-&gt;type('some_field')</code>
+    за създаване на правилния клас (не можете да викате клас методи директно
+    от Bugzilla::Field::Choice).
+
   [% ELSIF error == "field_type_mismatch" %]
     Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
     и <code>[% type FILTER html %]</code> заедно.
@@ -271,6 +277,21 @@
       Не е дадена потребителска сметка.
     [% END %]
 
+  [% ELSIF error == "jobqueue_insert_failed" %]
+   [% title = "Провал в Работната Опашка" %]
+    Вмъкването на задание <code>[% job FILTER html %]</code> в работната 
+    Опашка пропадна със следната грешка: [% errmsg FILTER html %]
+
+  [% ELSIF error == "jobqueue_not_configured" %]
+    Използването на системата работна опашка изисква определени Perl модули
+    да са инсталирани. Пуснете <code>checksetup.pl</code>, за да видите кои модули
+    ви липсват.
+
+  [% ELSIF error == "jobqueue_no_job_mapping" %]
+    <code>Bugzilla::JobQueue</code> не бил конфигуриран за справяне
+    с работата "[% job FILTER html %]".  Трябва да добавите този тип работа
+    към <code>JOB_MAP</code> константата в <code>Bugzilla::JobQueue</code>.
+
   [% ELSIF error == "ldap_bind_failed" %]
     Свързването с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър се провали. Съобщението за грешка беше:
     <code>[% errstr FILTER html %]</code>
@@ -328,6 +349,22 @@
     Функцията <code>[% function FILTER html %]</code> изисква
     аргумента <code>[% param FILTER html %]</code>, а
     той не е бил зададен.
+
+  [% ELSIF error == "params_required" %]
+    [% title = "Липсващ параметър" %]
+    Функцията <code>[% function FILTER html %]</code> изисква
+    да зададете един от следните параметри:
+    <code>[% params.join(', ') FILTER html %]</code>
+
+  [% ELSIF error == "product_empty_group_controls" %]
+    [% title = "Липсващи групови контроли" %]
+    Трябва да се определят нови настройки за редактиране на групови контроли на
+    групата [% group.name FILTER html %].
+
+  [% ELSIF error == "product_illegal_group_control" %]
+    [% title = "Неправилен групов контрол" %]
+    '[% value FILTER html %]' не е правилна стойност за
+    полето '[% field FILTER html %]'.
 
   [% ELSIF error == "protection_violation" %]
     Функцията <code>[% function FILTER html %]</code> беше извикана

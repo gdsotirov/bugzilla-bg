@@ -16,6 +16,7 @@
   # Rights Reserved.
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Elliotte Martin <elliotte_martin@yahoo.com>
   #%]
 
 [%# Remember to PROCESS rather than INCLUDE this template. %]
@@ -75,6 +76,7 @@
                    "reporter_accessible"     => "Достъпен докладчик",
                    "requestees.login_name"   => "Заявител на флаг",
                    "resolution"              => "Решение",
+                   "see_also"                => "Виж още",
                    "setters.login_name"      => "Задаващ на флаг",
                    "setting"                 => "Настройка",
                    "settings"                => "Настройки",
@@ -89,14 +91,40 @@
     Description here, by copying their Description from the
     database. If you want to override this for your language
     or your installation, just use a hook. %]
-
 [% UNLESS Param('shutdownhtml') %]
-  [% USE Bugzilla %]
   [% FOREACH bz_field = bug_fields.values %]
     [% SET field_descs.${bz_field.name} = bz_field.description
        IF !field_descs.${bz_field.name}.defined %]
   [% END %]
 [% END %]
+
+[% SET search_descs = {
+  "noop"           => "---",
+  "equals"         => "е равно на",
+  "notequals"      => "не е равно на",
+  "anyexact"       => "е равно на някой от низовете",
+  "substring"      => "съдържа низа",
+  "casesubstring"  => "съдържа низа (същия регистър)",
+  "notsubstring"   => "не съдържа низа",
+  "anywordssubstr" => "съдържа някой от низовете",
+  "allwordssubstr" => "съдържа всеки от низовете",
+  "nowordssubstr"  => "не съдържа низовете",
+  "regexp"         => "съвпада с регулярен израз",
+  "notregexp"      => "не съвпада с регулярен израз",
+  "lessthan"       => "е по-малко от",
+  "lessthaneq"     => "е по-малко или равно на",
+  "greaterthan"    => "е по-голямо от",
+  "greaterthaneq"  => "е по-голямо или равно на",
+  "anywords"       => "съдържа някоя от думите",
+  "allwords"       => "съдържа всяка от думите",
+  "nowords"        => "не съдържа думите",
+  "changedbefore"  => "променен преди",
+  "changedafter"   => "променен след",
+  "changedfrom"    => "променен от",
+  "changedto"      => "променен на",
+  "changedby"      => "променен от протребител",
+  "matches"        => "съвпада",
+} %]
 
 [% field_types = { ${constants.FIELD_TYPE_UNKNOWN}       => "Непознат тип",
                    ${constants.FIELD_TYPE_FREETEXT}      => "Свободен текст",
@@ -104,6 +132,7 @@
                    ${constants.FIELD_TYPE_MULTI_SELECT}  => "Поле за множествен избор",
                    ${constants.FIELD_TYPE_TEXTAREA}      => "Голямо текстово поле",
                    ${constants.FIELD_TYPE_DATETIME}      => "Дата/Час",
+                   ${constants.FIELD_TYPE_BUG_ID}        => "$terms.Bug №",
                 } %]
 
 [% status_descs = { "UNCONFIRMED" => "НЕПОТВЪРДЕН",

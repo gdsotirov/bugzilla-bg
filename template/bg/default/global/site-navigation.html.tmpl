@@ -108,20 +108,20 @@
   [%# *** Bugzilla Administration Tools *** %]
   [% IF user.login %] 
     [% '<link rel="Администрация" title="Параметри"    
-              href="editparams.cgi">' IF user.groups.tweakparams %]
+              href="editparams.cgi">' IF user.in_group('tweakparams') %]
     [% '<link rel="Администрация" title="Потребители"    
-              href="editusers.cgi">' IF user.groups.editusers %]
-    [% '<link rel="Администрация" title="Продукти"  href="editproducts.cgi">'
-       IF user.groups.editcomponents || user.get_products_by_permission("editcomponents").size %]
+              href="editusers.cgi">' IF user.in_group('editusers') %]
+    [% '<link rel="Администрация" title="Продукти" href="editproducts.cgi">'
+       IF user.in_group('editcomponents') || user.get_products_by_permission("editcomponents").size %]
     [% '<link rel="Администрация" title="Типове флагове"   
-              href="editflagtypes.cgi">' IF user.groups.editcomponents %]
+              href="editflagtypes.cgi">' IF user.in_group('editcomponents') %]
     [% '<link rel="Администрация" title="Групи"        
-              href="editgroups.cgi">' IF user.groups.creategroups %]
+              href="editgroups.cgi">' IF user.in_group('creategroups') %]
     [% '<link rel="Администрация" title="Ключови думи"      
-              href="editkeywords.cgi">' IF user.groups.editkeywords %]
+              href="editkeywords.cgi">' IF user.in_group('editkeywords') %]
     [% '<link rel="Администрация" title="Хленч"       
-              href="editwhines.cgi">' IF user.groups.bz_canusewhines %]
+              href="editwhines.cgi">' IF user.in_group('bz_canusewhines') %]
     [% '<link rel="Администрация" title="Санитарна проверка"  
-              href="sanitycheck.cgi">' IF user.groups.editcomponents %]
+              href="sanitycheck.cgi">' IF user.in_group('editcomponents') %]
   [% END %]  
 [% END %]

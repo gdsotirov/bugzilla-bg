@@ -33,19 +33,19 @@
   </td>
 </tr>
 [% IF Param("maxlocalattachment") %]
-<tr>
+<tr class="expert_fields">
   <th>Голям файл:</th>
   <td>
     <input type="checkbox" id="bigfile"
            name="bigfile" value="bigfile">
     <label for="bigfile">
-      Голям файл - Съхраняван локално и може да бъде очистен
+      Голям файл - Съхраняван локално и може да бъде изчистен
     </label>
   </td>
 </tr>
 [% END %]
 [% IF Param("allow_attach_url") %]
-<tr>
+<tr class="expert_fields">
   <th><label for="attachurl"><abbr lang="en" title="Uniform Resource Locator">URL</abbr> за прикачване</label>:</th>
   <td>
     <em><abbr lang="en" title="Uniform Resource Locator">URL</abbr> за прикачване.</em><br>
@@ -54,6 +54,7 @@
            onkeyup="URLFieldHandler()" onblur="URLFieldHandler()">
   </td>
 </tr>
+</tbody>
 [% END %]
 <tr>
   <th><label for="description">Описание</label>:</th>
@@ -62,13 +63,19 @@
     <input type="text" id="description" name="description" size="60" maxlength="200">
   </td>
 </tr>
-<tr>
+<tr class="expert_fields">
   <th>Тип на съдържанието:</th>
   <td>
     <em>Ако приставката е кръпка, отметнете кутията по-долу.</em><br>
     <input type="checkbox" id="ispatch" name="ispatch" value="1"
            onchange="setContentTypeDisabledState(this.form);">
     <label for="ispatch">patch</label><br><br>
+    [%# Reset this whenever the page loads so that the JS state is up to date %]
+    <script type="text/javascript">
+      YAHOO.util.Event.onDOMReady(function() {
+          bz_fireEvent(document.getElementById('ispatch'), 'change');
+      });
+    </script>
 
     <em>Иначе, изберете метод за определяне на типа на съдържанието.</em><br>
     <input type="radio" id="autodetect"
@@ -89,7 +96,7 @@
              onchange="if (this.value) this.form.contenttypemethod[2].checked = true;">
   </td>
 </tr>
-<tr>
+<tr class="expert_fields">
   <td> </td>
   <td>
     [% IF flag_types && flag_types.size > 0 %]

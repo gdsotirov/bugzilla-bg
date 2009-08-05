@@ -19,6 +19,7 @@
   # Contributor(s): Terry Weissman <terry@mozilla.org>
   #                 Jacob Steenhagen <jake@bugzilla.org>
   #                 Vitaly Harisov  <vitaly@rathedg.com>
+  #                 Guy Pyrzak <guy.pyrzak@gmail.com>
   #%]
 
 [%# INTERFACE:
@@ -33,27 +34,49 @@
    header = "Главна страница" 
    header_addl_info = "версия $constants.BUGZILLA_VERSION"
    style_urls = [ 'skins/standard/index.css' ]
-   onload = 'document.forms[\'f\'].quicksearch.focus();'
 %]
 
 
 <script type="text/javascript">
 <!--
-function addSidebar() {
-  if ((typeof window.sidebar == "object") && (typeof window.sidebar.addPanel == "function"))
-  {
-    var sidebarname=window.location.host;
-    if (!/bug/i.test(sidebarname))
-      sidebarname="[% terms.Bugzilla %] "+sidebarname;
-    window.sidebar.addPanel (sidebarname, "[% urlbase FILTER html %]sidebar.cgi", "");
+function onLoadActions() {
+  quicksearchHelpText('quicksearch_main', 'show');
+  if( window.external.AddSearchProvider ){
+    YAHOO.util.Dom.removeClass('quicksearch_plugin', 'bz_default_hidden');
   }
-  else
-  {
-    var rv = window.confirm ("Вашият браузър не поддържа разширението странична лента.  " + "Желаете ли да обновите сега?");
-    if (rv)
-      document.location.href = "http://www.mozilla.org/";
+  document.getElementById('quicksearch_top').focus();
+}
+function addSidebar() {
+  var sidebarname=window.location.host;
+  if (!/bug/i.test(sidebarname))
+    sidebarname="[% terms.Bugzilla %] "+sidebarname;
+  window.sidebar.addPanel (sidebarname, "[% urlbase FILTER html %]sidebar.cgi", "");
+}
+var quicksearch_message = "Въведете [% terms.bug %] № или термини за търсене";
+
+function checkQuicksearch( form ) {
+  if (form.quicksearch.value == '' || form.quicksearch.value == quicksearch_message ) { 
+    alert('Моля, първо въведете един или повече термина за търсене.');
+    return false; 
+  }
+  return true;         
+}
+
+function quicksearchHelpText(el_id, action){
+  var el = document.getElementById(el_id);
+  if ( action == "show") {
+    if( el.value == "" ) {
+      el.value = quicksearch_message
+      YAHOO.util.Dom.addClass(el, "quicksearch_help_text");
+    }
+  } else {
+    if( el.value == quicksearch_message ) {
+      el.value = "";
+      YAHOO.util.Dom.removeClass(el, "quicksearch_help_text");
+    }
   }
 }
+YAHOO.util.Event.onDOMReady(onLoadActions);
 //-->
 </script>
 
@@ -101,57 +124,62 @@ function addSidebar() {
 
 <div id="page-index">
   <div class="intro"></div>
+  <table>
+    <tr>
+      <td>
+        <h1 id="welcome"> Добре дошли в [% terms.Bugzilla %]</h1>
+        <a id="enter_bug" class="bz_common_actions"
+           href="enter_bug.cgi"><span>Въвеждане на [% terms.bug %]</span></a>
+      
+        <a id="query" class="bz_common_actions" 
+           href="query.cgi"><span>Търсене</span></a>
+      
+        <a id="account" class="bz_common_actions"
+          [% IF user.id %]
+            href="userprefs.cgi"><span>Потребителски предпочитания</span></a>
+          [% ELSIF Param('createemailregexp')
+                   && user.authorizer.user_can_create_account 
+          %]
+            href="createaccount.cgi"><span>Отваряне на нова сметка</span></a>
+          [% ELSE %]
+            href="?GoAheadAndLogIn=1"><span>Вход</span></a>
+          [% END %]
 
-  <p>Добре дошли в [% terms.Bugzilla %]. За да видите какво ново в тази версия
-    на [% terms.Bugzilla %] погледнете
-    <a href="page.cgi?id=release-notes.html">бележките</a>!
-    Може също да искате да прочетете 
-    <a href="[% docs_urlbase FILTER html %]using.html">
-    Пътеводител на потребителя на [%- terms.Bugzilla %]</a>, за да разберете повече за
-    [%+ terms.Bugzilla %] и как да я използвате.</p>
-
-  <p>Най-общи действия:</p>
-  <ul>
-    <li id="query"><a href="query.cgi">Търсене на съществуващи [% terms.bug %] доклади</a></li>
-    <li id="enter-bug"><a href="enter_bug.cgi">Въвеждане на нов [% terms.bug %] доклад</a></li>
-    <li id="report"><a href="report.cgi">Обобщени доклади и графики</a></li>
-[% IF user.id %]
-    <li id="userprefs"><a href="userprefs.cgi">Смяна на парола или предпочитания на потребител</a></li>
-  [% IF user.authorizer.can_logout %]
-    <li id="logout"><a href="relogin.cgi">Изход [% user.login FILTER html %]</a></li>
-  [% END %]
-[% ELSIF user.authorizer.can_login %]
-  </ul>
-    [% PROCESS "account/auth/login-small.html.tmpl" %]
-  <ul>
-  [% IF Param('createemailregexp') && user.authorizer.user_can_create_account %]
-    <li id="account"><a href="createaccount.cgi">Отваряне на нова [% terms.Bugzilla %] сметка</a></li>
-  [% END %]
-[% END %]
-    <li id="sidebar"><a href="javascript:addSidebar()">Добавяне към страничната лента</a> (изисква Mozilla браузър като Mozilla Firefox)</li>
-    <li id="quick_search_plugin">
-      <a href="javascript:window.external.AddSearchProvider('[% urlbase FILTER html %]search_plugin.cgi')">Инсталиране
-      на приставка Бързо Търсене</a> (изисква Firefox 2 или Internet Explorer 7)
-    </li>
-
-
-    [%# List items of links to more things users can do on this installation. %]
-    [% Hook.process("links") %]
-
-  </ul>
-
-  <form id="f" name="f" action="buglist.cgi" method="get"
-        onsubmit="if (this.quicksearch.value == '')
-                  { alert('Моля, първо въведете една или повече думи за търсене.');
-                    return false; } return true;">
-  <div>
-    <p>Въведете номер на [% terms.bug %] или думи за търсене:</p>
-    <input id="quicksearch" type="text" name="quicksearch">
-    <input id="find" type="submit" value="Търсене">
-    <a href="page.cgi?id=quicksearch.html">[Помощ]</a>
-  </div>
-  </form>
-
+        <form id="quicksearchForm" name="quicksearchForm" action="buglist.cgi"
+              onsubmit="return checkQuicksearch(this);">
+          <div>
+            <input id="quicksearch_main" type="text" name="quicksearch"
+              onfocus="quicksearchHelpText(this.id, 'hide');"
+              onblur="quicksearchHelpText(this.id, 'show');"
+            >
+            <input id="find" type="submit" value="Бързо търсене">
+            <ul class="additional_links" id="quicksearch_links">
+              <li>
+                <a href="page.cgi?id=quicksearch.html">Помощ за бързо търсене</a>
+              </li>
+              <li class="bz_default_hidden" id="quicksearch_plugin">
+                |
+                <a href="javascript:window.external.AddSearchProvider('[% urlbase FILTER html %]search_plugin.cgi')">
+                 Инсталиране на добавка Бързо Търсене
+                </a>
+              </li>
+            </ul>
+            <ul class="additional_links">
+              <li>
+                <a href="[% docs_urlbase FILTER html %]using.html">
+                  [%- terms.Bugzilla %] Ръководство на потребителя
+                </a>
+                &nbsp;|
+              </li>
+              <li>
+                <a href="page.cgi?id=release-notes.html" > Бележки към версията</a>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </td>
+    </tr>
+  </table>
   <div class="outro"></div>
 </div>
 

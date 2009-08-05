@@ -16,7 +16,7 @@
 [%# INTERFACE:
   # token: string. The token to be used in the user account creation.
   # email: email address of the user account.
-  # date: creation date of the token.
+  # expiration_ts: expiration date of the token.
   #%]
 
 [% title = BLOCK %]Създаване на нова сметка за '[% email FILTER html %]'[% END %]
@@ -24,7 +24,6 @@
            title = title
            onload = "document.forms['confirm_account_form'].realname.focus();" %]
 
-[% expiration_ts = date + (constants.MAX_TOKEN_AGE * 86400) %]
 <div>
   За да създадете сметката си, трябва да въведете парола във формуляра отдолу.
   Пощенския ви адрес и Истинско име (ако е указано) ще бъдат показвани с
@@ -60,7 +59,7 @@
 
 <p>
   Сметката няма да бъде създадена ако този формуляр не е попълнен до
-  <u>[%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]</u>.
+  <u>[% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]</u>.
 </p>
 
 <p>

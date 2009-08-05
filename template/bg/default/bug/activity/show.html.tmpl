@@ -31,7 +31,7 @@
 [% filtered_desc = bug.short_desc FILTER html %]
 [% PROCESS global/header.html.tmpl
   title = "Промени направени по $terms.bug $bug.bug_id"
-  header = "Журнал на дейността по $terms.bug $bug.bug_id:  $filtered_desc"
+  header = "Журнал на дейността по $terms.bug $bug.bug_id: $filtered_desc"
  %]
 
 <p>

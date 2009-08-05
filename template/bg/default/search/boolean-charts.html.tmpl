@@ -17,31 +17,34 @@
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #%]
+
+[% PROCESS "global/field-descs.none.tmpl" %]
   
 [% types = [
-  { name => "noop", description => "---" },
-  { name => "equals", description => "е равно на" },
-  { name => "notequals", description => "не е равно на" },
-  { name => "anyexact", description => "е еднакъв с всеки от низовете" },
-  { name => "substring", description => "съдържа низа" },
-  { name => "casesubstring", description => "съдържа низа (в същия регистър)" },
-  { name => "notsubstring", description => "не съдържа низа" },
-  { name => "anywordssubstr", description => "съдържа някой от низовете" },
-  { name => "allwordssubstr", description => "съдържа всички низове" },
-  { name => "nowordssubstr", description => "не съдържа никой от низовете" },
-  { name => "regexp", description => "съдържа регулярния израз" },
-  { name => "notregexp", description => "не съдържа регулярния израз" },
-  { name => "lessthan", description => "е по-малко от" },
-  { name => "greaterthan", description => "е по-голямо от" },
-  { name => "anywords", description => "съдържа която и да е от думите" },
-  { name => "allwords", description => "съдържа всички думи" },
-  { name => "nowords", description => "не съдържа нито една от думите" },
-  { name => "changedbefore", description => "променено преди" },
-  { name => "changedafter", description => "променено след" },
-  { name => "changedfrom", description => "променено от (къде)" },
-  { name => "changedto", description => "променено на" },
-  { name => "changedby", description => "променено от" },
-  { name => "matches", description => "съвпада с" } ] %]
+  "noop",
+  "equals",
+  "notequals",
+  "anyexact",
+  "substring",
+  "casesubstring",
+  "notsubstring",
+  "anywordssubstr",
+  "allwordssubstr",
+  "nowordssubstr",
+  "regexp",
+  "notregexp",
+  "lessthan",
+  "greaterthan",
+  "anywords",
+  "allwords",
+  "nowords",
+  "changedbefore",
+  "changedafter",
+  "changedfrom",
+  "changedto",
+  "changedby",
+  "matches",
+] %]
 
   <p>
     <strong>
@@ -80,12 +83,9 @@
           [% END %]
         </select>
 
-        <select name="[% "type${chartnum}-${rownum}-${colnum}" %]">
-          [% FOREACH type = types %]
-            <option value="[% type.name %]"
-              [%- " selected" IF type.name == col.type %]>[% type.description %]</option>
-          [% END %]
-        </select>
+        [% INCLUDE "search/type-select.html.tmpl"
+           name = "type${chartnum}-${rownum}-${colnum}",
+           types = types, selected = col.type %]
 
         <input name="[% "value${chartnum}-${rownum}-${colnum}" %]" 
                value="[% col.value FILTER html %]"> 

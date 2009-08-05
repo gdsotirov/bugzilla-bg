@@ -14,18 +14,14 @@
   #%]
 
 [%# INTERFACE:
-  # value: string; The field value being deleted.
-  # bug_count: number; The number of bugs that have this field value.
-  # value_count: number; The number of values left for this field, including
-  #              this value.
+  # value: Bugzilla::Field::Choice; The field value being deleted.
+  # value_count: number; The number of values available for this field.
   # field: object; the field the value is being deleted from.
-  # param_name: string; The name of the parameter (defaultxxx) associated
-  #             with the field.
   #%]
 
 [% title = BLOCK %]
-  Изтриване на стойност '[% value FILTER html %]' от полето '[% field.description FILTER html %]'
-  ([% field.name FILTER html %])
+  Изтриване на стойност '[% value.name FILTER html %]' от полето
+ '[% field.description FILTER html %]' ([% field.name FILTER html %])
 [% END %]
 
 [% PROCESS global/header.html.tmpl
@@ -49,10 +45,13 @@
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
   <td valign="top">
-[% IF bug_count %]
-  <a title="Списък на [% terms.bugs %], където '[% field.description FILTER html %]' е '
-            [% value FILTER html %]'"
-     href="buglist.cgi?[% field.name FILTER url_quote %]=[%- value FILTER url_quote %]">[% bug_count FILTER html %]</a>
+[% IF value.bug_count %]
+  <a title="Списък на [% terms.bugs %] където '
+            [%- field.description FILTER html %]' е '
+            [%- value.name FILTER html %]'"
+     href="buglist.cgi?[% field.name FILTER url_quote %]=
+           [%- value.name FILTER url_quote %]">
+   [%- value.bug_count FILTER html %]</a>
 [% ELSE %]
   Няма
 [% END %]
@@ -62,44 +61,82 @@
 
 <h2>Потвърждаване</h2>
 
-[% IF (param_name.defined && Param(param_name) == value) || bug_count || (value_count == 1) %]
+[% IF value.is_default || value.bug_count || (value_count == 1)
+      || value.controls_visibility_of_fields.size
+      || value.controlled_values.size 
+%]
 
-  <p>Съжалявам, но стойността '[% value FILTER html %]' не може да бъде изтрита
-  от полето '[% field.description FILTER html %]' поради следната(ите) причина(и):</p>
+  <p>Съжалявам, но стойността '[% value.name FILTER html %]' не може да бъде изтрита
+    от полето '[% field.description FILTER html %]' поради следната(ите)
+    причина(и):</p>
 
   <ul class="warningmessages">
-    [% IF param_name.defined && Param(param_name) == value %]
-      <li>'[% value FILTER html %]' е стойността по подразбиране за
-          полето '[% field.description FILTER html %]'.
-          [% IF user.groups.tweakparams %]
-            Трябва първо да <a href="editparams.cgi?section=bugfields#
-            [%- param_name FILTER url_quote %]">смените стойността по подразбиране</a> за
-            полето преди да можете да я изтриете.
-          [% END %]
+    [% IF value.is_default %]
+      <li>'[% value.name FILTER html %]' е стойността по подразбиране за
+        полето '[% field.description FILTER html %]'.
+        [% IF user.in_group('tweakparams') %]
+          Трябва първо да <a href="editparams.cgi?section=bugfields">смените
+          стойността по подразбиране</a> за него преди да можете да
+          я изтриете.
+        [% END %]
+      </li>
     [% END %]
 
-    [% IF bug_count %]
-      <li>Има
-          [% IF bug_count > 1 %] 
-             [% bug_count FILTER html %] [%+ terms.abug %] 
-          [% ELSE %]
-             1 [% terms.bug %] 
-          [% END %]
-          с тази стойност. Трябва да смените стойността на
-          <a title="Списък на [% terms.bugs %], където '[% field.description FILTER html %]' е '[% value FILTER html %]'"
-             href="buglist.cgi?[% field.name FILTER url_quote %]=[% value FILTER url_quote %]">
-            [% IF bug_count > 1 %]
+    [% IF value.bug_count %]
+      <li>
+        [% IF value.bug_count > 1 %]
+          Съществуват [% value.bug_count FILTER html %] [%+ terms.abug %] 
+          с тази стойност.
+        [% ELSE %]
+          Съществува 1 [% terms.bug %] с тази стойност.
+        [% END %]
+        Трябва да смените стойността на полето на
+          <a title="Списък на [% terms.bugs %] където '
+                    [%- field.description FILTER html %]' е '
+                    [%- value.name FILTER html %]'"
+             href="buglist.cgi?[% field.name FILTER url_quote %]=
+                   [%- value.name FILTER url_quote %]">
+            [% IF value.bug_count > 1 %]
               тези [% terms.bugs %] 
             [% ELSE %]
               този [% terms.bug %]
             [% END %]
           </a>
           с друга преди да можете да я изтриете.
+      </li>
     [% END %]
 
     [% IF value_count == 1 %]
-      <li>'[% value FILTER html %]' е последната стойност за
-          '[%- field.description FILTER html %]', така че не може да бъде изтрита.
+      <li>'[% value.name FILTER html %]' е последната стойност за
+        '[%- field.description FILTER html %]', така че не може да бъде изтрита.
+      </li>
+    [% END %]
+
+    [% IF value.controls_visibility_of_fields.size %]
+      <li>Тази стойност контролира видимостта на следните полета:<br>
+        [% FOREACH field = value.controls_visibility_of_fields %]
+          <a href="editfields.cgi?action=edit&name=
+                   [%- field.name FILTER url_quote %]">
+            [%- field.description FILTER html %] 
+            ([% field.name FILTER html %])</a><br>
+        [% END %]
+      </li>
+    [% END %]
+
+    [% IF value.controlled_values.size %]
+      <li>Тази стойност контролира видимостта на следните стойности в
+        други полета:<br>
+       [% FOREACH field_name = value.controlled_values.keys %]
+         [% FOREACH controlled = value.controlled_values.${field_name} %]
+           <a href="editvalues.cgi?action=edit&field=
+                    [%- controlled.field.name FILTER url_quote %]&value=
+                    [%- controlled.name FILTER url_quote %]">
+             [% controlled.field.description FILTER html %]
+             ([% controlled.field.name FILTER html %]):
+             [%+ controlled.name FILTER html %]</a><br>
+         [% END %]
+       [% END %]
+      </li>
     [% END %]
   </ul>
 
@@ -111,7 +148,7 @@
     <input type="submit" value="Да, изтриване" id="delete">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="field" value="[% field.name FILTER html %]">
-    <input type="hidden" name="value" value="[% value FILTER html %]">
+    <input type="hidden" name="value" value="[% value.name FILTER html %]">
     <input type="hidden" name="token" value="[% token FILTER html %]">
   </form>
 

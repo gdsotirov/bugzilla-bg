@@ -30,18 +30,19 @@
 <p>
 
 [% UNLESS no_add_link %]
-  <a title="Добавяне на стойност за полето '[% field FILTER html %]'."
+  <a title="Добавяне на стойност за полето '[% field.description FILTER html %]'."
      href="editvalues.cgi?action=add&amp;field=
           [%- field.name FILTER url_quote %]">Добавяне</a> на стойност.
 [% END %]
 
-[% IF value && !no_edit_link %]
+[% IF value.defined && !no_edit_link %]
   Редакция на стойност <a 
-  title="Редактиране на стойност '[% value FILTER html %]' за полето '
+  title="Редактиране на стойност '[% value.name FILTER html %]' за полето '
          [%- field.name FILTER html %]'"
   href="editvalues.cgi?action=edit&amp;field=
-        [%- field.name FILTER url_quote %]&amp;value=[% value FILTER url_quote %]">
-        '[% value FILTER html %]'</a>.
+        [%- field.name FILTER url_quote %]&amp;value=
+        [%- value.name FILTER url_quote %]">
+        '[% value.name FILTER html %]'</a>.
 [% END %]
 
 [% UNLESS no_edit_other_link %]

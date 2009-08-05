@@ -44,8 +44,7 @@
     subheader = filtered_desc
     header_addl_info = "Последно променян: $filtered_timestamp"
     bodyclasses = bodyclasses
-    javascript_urls = [ "js/util.js", "js/field.js",
-                        "js/yui/yahoo-dom-event.js", "js/yui/calendar.js" ]
+    javascript_urls = [ "js/util.js", "js/field.js", "js/yui/calendar.js" ]
     style_urls = [ "skins/standard/yui/calendar.css", "skins/standard/show_bug.css" ]
     doc_section = "bug_page.html"
   %]
@@ -54,7 +53,7 @@
 [% IF nextbug %]
   <hr>
   <p>
-    Следващия [% terms.bug %] в списъка Ви е [% terms.bug %]
+    Следващия [% terms.bug %] в списъка ви е [% terms.bug %]
     <a href="show_bug.cgi?id=[% bug.bug_id %]">[% bug.bug_id %]</a>:
   </p>
   <hr>

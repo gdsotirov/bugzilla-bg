@@ -51,14 +51,14 @@
 </p>
 
 <p id="message">
-  [% IF user.groups.bz_sudoers %]
+  [% IF user.in_group('bz_sudoers') %]
     Вие сте член на групата <b>bz_sudoers</b>.  Можете да използвате тази 
     възможност, за да представлявате други.
   [% ELSE %]
     Не сте член на подходящата група.  Не можете да използвате тази 
     възможност.
   [% END %]
-  [% IF user.groups.bz_sudo_protect %]
+  [% IF user.in_group('bz_sudo_protect') %]
     <br>
     Вие сте член на групата <b>bz_sudo_protect</b>.  Други хора няма  
     да могат да използват тази възможност, за да ви представляват.

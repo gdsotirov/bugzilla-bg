@@ -15,13 +15,12 @@
 
 [%# INTERFACE:
   # token: random string used to authenticate the transaction.
-  # token_ts: creation date of the token.
+  # expiration_ts: expiration date of the token.
   # email: email address of the new account.
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% expiration_ts = token_ts + (constants.MAX_TOKEN_AGE * 86400) %]
 From: [% Param('mailfrom') %]
 To: [% email %]
 Subject: [% terms.Bugzilla %]: потвърждаване създаването на сметка
@@ -31,11 +30,11 @@ X-Bugzilla-Type: admin
 използваща вашия е-пощенския адрес ([% email %]).
 
 За да продължите създаването на сметка, използвайки този е-пощенски адрес, посетете
-следващата препратка до [%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %]:
+следващата препратка до [%expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]:
 
 [%+ urlbase %]token.cgi?t=[% token FILTER url_quote %]&a=request_new_account
 
-Ако не сте получили това писмо преди [%+ time2str("%e %B %Y в %H:%M %Z", expiration_ts) %] или
+Ако не сте получили това писмо преди [% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %] или
 ако желаете да създадете сметка използвайки различен е-пощенски адрес можете да започнете
 отново, като отидете на:
 

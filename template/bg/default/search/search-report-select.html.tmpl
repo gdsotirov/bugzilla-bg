@@ -32,7 +32,7 @@
                    "reporter", "qa_contact", "votes" ] %]
 
   <select name="[% name FILTER html %]">
-    <option value="">&lt;none&gt;</option>
+    <option value="">&lt;няма&gt;</option>
     
     [% FOREACH field = rep_fields %]
       [% NEXT IF field == "classification" AND !Param('useclassification') %]
@@ -42,6 +42,13 @@
       <option value="[% field FILTER html %]" 
         [% " selected" IF default.$name.0 == field %]>
         [% field_descs.$field || field FILTER html %]</option>
+    [% END %]
+
+    [%# Single-select fields are also valid column names. %]
+    [% FOREACH field = custom_fields %]
+      <option value="[% field.name FILTER html %]"
+        [% " selected" IF default.$name.0 == field.name %]>
+        [% field.description FILTER html %]</option>
     [% END %]
   </select>
 [% END %]
