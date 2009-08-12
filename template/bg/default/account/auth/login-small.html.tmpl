@@ -55,7 +55,7 @@
            type="password"
     >
     <input class="bz_password bz_default_hidden bz_mini_login_help" type="text" 
-           id="Bugzilla_password_dummy[% qs_suffix %]" value="password"
+           id="Bugzilla_password_dummy[% qs_suffix %]" value="парола"
            onfocus="mini_login_on_focus('[% qs_suffix FILTER js %]')"
     >
     [% IF Param('rememberlogin') == 'defaulton' ||
@@ -70,7 +70,7 @@
             id="log_in[% qs_suffix %]">
     <script type="text/javascript">
       mini_login_constants = {
-          "login" : "login",
+          "login" : "име",
           "warning" : "Трябва да зададете име и парола преди влизане."
       };
       [%# We need this event to fire after autocomplete, because it does
@@ -112,7 +112,7 @@
      onclick="return show_forgot_form('[% qs_suffix %]')">Забравена парола</a>
   <form action="token.cgi" method="post" id="forgot_form[% qs_suffix %]"
         class="mini_forgot bz_default_hidden">
-    <label>Login: <input type="text" name="loginname" size="20"></label>
+    <label>Име: <input type="text" name="loginname" size="20"></label>
     <input id="forgot_button[% qs_suffix %]" value="Нулиране на парола" 
            type="submit">
     <input type="hidden" name="a" value="reqpw">
