@@ -339,6 +339,11 @@
     Няма действително преминаване от
     [%+ get_status("UNCONFIRMED") FILTER html %] към отворено състояние.
 
+  [% ELSIF error == "param_invalid" %]
+    [% title = "Недействителен параметър" %]
+    <code>[% param FILTER html %]</code> не е действителен параметър
+    за функцията [% function FILTER html %].
+
   [% ELSIF error == "param_must_be_numeric" %]
     [% title = "Неправилен параметър" %]
     Подаден е неправилен параметър на [% function FILTER html %].
