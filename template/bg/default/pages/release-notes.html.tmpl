@@ -20,7 +20,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.0.7 Бележки към версията" 
+  title = "$terms.Bugzilla 3.0.9 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -60,6 +60,12 @@
   най-важните поправки на бъгове във всяка версия. Ако желаете подробен списък на
   <em>всичко</em>, което е променено във всяка версия, трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">страница Журнал на промените</a>.</p>
+
+<h3>3.0.9</h3>
+
+<p>This release fixes a critical security issue. See the
+  <a href="http://www.bugzilla.org/security/3.0.8/">Security Advisory</a>
+  for details.</p>
 
 <h3>3.0.8</h3>
 
@@ -320,9 +326,9 @@
   <li>Perl v<strong>5.8.1</strong> (Windows платформи)</li>
 </ul>
 
-[% PROCESS db_req db='mysql' %]
+[% INCLUDE db_req db='mysql' db_new = 1 %]
 
-[% PROCESS db_req db='pg' %]
+[% INCLUDE db_req db='pg' %]
 
 <h3><a name="v30_req_modules"></a>Задължителни Perl модули</h3>
 
@@ -723,6 +729,12 @@
 
 <h2><a name="v30_security"></a>Обновления по сигурността в тази версия</h2>
 
+<h3>3.0.9</h3>
+
+<p>This release fixes a critical security issue. See the
+  <a href="http://www.bugzilla.org/security/3.0.8/">Security Advisory</a>
+  for details.</p
+
 <h3>3.0.8</h3>
 
 <p>Тази версия оправя един проблем със сигурността, който е критичен за инсталации
@@ -982,7 +994,10 @@ sub y { $var++ }</pre>
     потребители</h3>
 
   <ul>
-    <li>[% m.name FILTER html %] v[% m.db_version FILTER html %]</li>
+    <li>[% m.name FILTER html %]
+       [%+ '<span class="req_new">' IF db_new %]v[% m.db_version FILTER html %]
+       [% '</span>' IF db_new %]
+    </li>
     <li><strong>perl module:</strong>
       [%+ m.dbd.module FILTER html %] v[% m.dbd.version FILTER html %]</li>
   </ul>
