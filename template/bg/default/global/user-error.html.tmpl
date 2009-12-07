@@ -1101,9 +1101,11 @@
   [% ELSIF error == "no_bugs_in_list" %]
     [% title = "Изтриване на етикета?" %]
     Ще премахнете всички [% terms.bugs %] от етикета
-    [% tag FILTER html %]. Това ще го изтрие напълно. Щракнете
+    <em>[% name FILTER html %]</em>. Това ще го изтрие напълно. Щракнете
     <a href="buglist.cgi?cmdtype=dorem&amp;remaction=forget&amp;namedcmd=
-    [%- tag FILTER url_quote %]">тук</a> ако наистина желаете да го премахнете.
+    [%- name FILTER url_quote %]&amp;token=
+    [%- issue_hash_token([query_id, name]) FILTER url_quote %]">тук</a>
+    ако наистина желаете да го премахнете.
 
   [% ELSIF error == "no_bugs_to_remove" %]
     [% title = "Не е избран етикет" %]

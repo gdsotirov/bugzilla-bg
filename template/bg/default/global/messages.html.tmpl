@@ -141,6 +141,7 @@
     [% link  = "Щракнете тук ако страницата не се презареди автоматично." %]
 
   [% ELSIF message_tag == "buglist_updated_named_query" %]
+    [% title = "Търсенето обновено" %]
     Търсенето ви, именувано <code><a 
      href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
     >[% queryname FILTER html %]</a></code>, беше обновено.
@@ -150,6 +151,7 @@
     да отметнете резултата от всяко търсене.
 
   [% ELSIF message_tag == "buglist_new_named_query" %]
+    [% title = "Търсенето създадено" %]
     OK, имате ново търсене именувано <code><a
      href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
     >[% queryname FILTER html %]</a></code>.

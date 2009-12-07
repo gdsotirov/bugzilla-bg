@@ -19,7 +19,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.2.4 Бележки към версията" 
+  title = "$terms.Bugzilla 3.2.5 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -59,6 +59,16 @@
   <em>всичко</em> което е променено във всяка версия трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">Страница с журнал
   на промените</a>.</p>
+
+<h3>3.2.5</h3>
+
+<ul>
+  <li>CSV [% terms.bug %] списъците бяха счупени поради излишни нови редове.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=469794">[% terms.Bug %] 469794</a>)</li>
+</ul>
+
+<p>Тази версия също съдържа много важна поправка по сигурността. Вижте
+  <a href="#v32_security">Раздела Поправки по сигурността</a> за подробности.</p>
 
 <h3>3.2.4</h3>
 
@@ -155,6 +165,12 @@
 </ul>
 
 <h2><a name="v32_security">Поправки по сигурността в тази 3.2.x версия</a></h2>
+
+<h3>3.2.5</h3>
+
+<p>Тази версия поправя един критичен проблем по сигурността. Моля вижте
+  <a href="http://www.bugzilla.org/security/3.0.8/">Бюлетина по сигурността</a>
+  за подробности.</p>
 
 <h3>3.2.4</h3>
 
@@ -912,7 +928,7 @@
 <h3><a name="v30_req_mysql"></a>За MySQL потребители</h3>
 
 <ul>
-  <li>MySQL v4.1.2</li>
+  <li>MySQL <span class="req_new">v4.1.2</span></li>
   <li><strong>perl module:</strong> DBD::mysql v2.9003</li>
 </ul>
 

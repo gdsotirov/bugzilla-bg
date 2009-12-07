@@ -169,6 +169,12 @@
       [% END %]
     [% END %]
 
+  [% ELSIF san_tag == "everconfirmed_start" %]
+    OK, оправяне на някога потвърждавани.
+
+  [% ELSIF san_tag == "everconfirmed_end" %]
+    някога потвърждавани оправено.
+
   [% ELSIF san_tag == "flag_check_start" %]
     Проверка за флагове в неправилен продукт/съставна част.
 
