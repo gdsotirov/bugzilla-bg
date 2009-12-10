@@ -20,7 +20,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.0.9 Бележки към версията" 
+  title = "$terms.Bugzilla 3.0.10 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -60,6 +60,12 @@
   най-важните поправки на бъгове във всяка версия. Ако желаете подробен списък на
   <em>всичко</em>, което е променено във всяка версия, трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">страница Журнал на промените</a>.</p>
+
+<h3>3.0.10</h3>
+
+<p>The security fix in 3.0.9 broke the <code>B[% %]ug.create</code> WebService
+  function for certain input parameters. It is fixed in this release.
+  (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=517502">[% terms.Bug %] 517502</a>)</p>
 
 <h3>3.0.9</h3>
 
