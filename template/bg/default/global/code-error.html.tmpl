@@ -449,6 +449,9 @@
        Не можах да определя какво искахте да направите.
     [% END %]
 
+  [% ELSIF error == "unknown_method" %]
+    Поискания метод '[% method FILTER html %]' не беше намерен.
+
   [% ELSIF error == "usage_mode_invalid" %]
     '[% invalid_usage_mode FILTER html %]' не е действителен потребителски режим.
 

@@ -72,6 +72,9 @@
       изчертава всяко произволно търсене във времето. Много по-мощно.
     </li>
   [% END %]
+  [% Hook.process('current_state') %]
 </ul>
+
+[% Hook.process('end') %]
 
 [% PROCESS global/footer.html.tmpl %]
