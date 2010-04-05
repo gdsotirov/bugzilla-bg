@@ -20,7 +20,7 @@
 
 [% PROCESS global/variables.none.tmpl %]
 [% INCLUDE global/header.html.tmpl 
-  title = "$terms.Bugzilla 3.0.10 Бележки към версията" 
+  title = "$terms.Bugzilla 3.0.11 Бележки към версията" 
   style_urls = ['skins/standard/release-notes.css'] 
 %]
 
@@ -61,10 +61,16 @@
   <em>всичко</em>, което е променено във всяка версия, трябва да използвате нашата
   <a href="http://www.bugzilla.org/status/changes.html">страница Журнал на промените</a>.</p>
 
+<h3>3.0.11</h3>
+
+<p>Тази версия съдържа една незначителна поправка по сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.0.10/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
 <h3>3.0.10</h3>
 
-<p>The security fix in 3.0.9 broke the <code>B[% %]ug.create</code> WebService
-  function for certain input parameters. It is fixed in this release.
+<p>Поправката по сигурността в 3.0.9 счупи <code>B[% %]ug.create</code> WebService
+  функцията за определени входни параметри. Тя е поправена в тази версия.
   (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=517502">[% terms.Bug %] 517502</a>)</p>
 
 <h3>3.0.9</h3>
@@ -734,6 +740,12 @@
 </ul>
 
 <h2><a name="v30_security"></a>Обновления по сигурността в тази версия</h2>
+
+<h3>3.0.11</h3>
+
+<p>Тази версия съдържа една незначителна поправка по сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.0.10/">Security Advisory</a>
+  за подробности.</p>
 
 <h3>3.0.9</h3>
 
