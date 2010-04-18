@@ -17,6 +17,7 @@
   #
   # Contributor(s): Gervase Markham <gerv@gerv.net>
   #                 Frédéric Buclin <LpSolit@gmail.com>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# INTERFACE:
@@ -32,10 +33,10 @@
   # in this file; if you do not wish to change it, use the "none" filter.
   #
   # Extension- or custom-specific error handling  can be easily added 
-  # via hooks: just place your <extension>-errors.html.tmpl into 
-  # template/en/extension/hook/global/user-error.html.tmpl/errors/
-  # Note: be aware of uniqueness of error string parameter value, since 
-  # nobody can guarantee the hook files processing order in the future
+  # via hooks: just place additional code into
+  # template/en/hook/global/user-error-errors.html.tmpl
+  # Note: be aware of uniqueness of error string parameter value, since
+  # nobody can guarantee the hook files processing order in the future.
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -75,6 +76,12 @@
     [% ELSE %]
       това потребителско име.
     [% END %]
+
+  [% ELSIF error == "account_locked" %]
+    [% title = "Заключена сметка" %]
+    Вашия адрес ([% ip_addr FILTER html %]) беше заключен за тази
+    сметка до [% unlock_at FILTER time %], тъй като
+    превишихте максималния брой опити за вход.
 
   [% ELSIF error == "alias_has_comma_or_space" %]
     [% title = "Неправилни символи в псевдоним" %]
@@ -153,7 +160,11 @@
     [% IF object == "administrative_pages" %]
       административни страници
     [% ELSIF object == "attachment" %]
-      тази приставка
+      [% IF attach_id %]
+        приставка №[% attach_id FILTER html %]
+      [% ELSE %]
+        тази приставка
+      [% END %]
     [% ELSIF object == "bugs" %]
       [%+ terms.bugs %]
     [% ELSIF object == "charts" %]
@@ -211,6 +222,11 @@
     [% title = "Изтриването на приставки е забранено" %]
     Изтриването на приставки е забранено на тази инсталация.
 
+  [% ELSIF error == "attachment_illegal_url" %]
+    [% title = "Недействителен URL за приставка" %]
+    <em>[% url FILTER html %]</em> не е действителен URL за приставка.
+    Трябва да започва с http://, https:// или ftp://.
+
   [% ELSIF error == "attachment_removed" %]
     [% title = "Приставката е премахната" %]
     Приставката, която се опитвате да достъпите беше премахната.
@@ -250,7 +266,7 @@
   [% ELSIF error == "buglist_parameters_required" %]
     [% title = "Необходими са параметри" %]
     [% docslinks = {'query.html' => "Търсене за $terms.bugs",
-                    'query.html#list'  => "$terms.Bug списъци"} %]
+                    'query.html#list' => "$terms.Bug списъци"} %]
     Не можете да търсите или да създавате съхранени търсения без никакви термини за търсене.
 
   [% ELSIF error == "chart_too_large" %]
@@ -281,7 +297,8 @@
 
   [% ELSIF error == "comment_too_long" %]
     [% title = "Коментарът твърде дълъг" %]
-    Коментарите не могат да бъдат по-дълги от 65,535 символа.
+    Коментарите не могат да бъдат по-дълги от 
+    [%+ constants.MAX_COMMENT_LENGTH FILTER html %] символа.
 
   [% ELSIF error == "auth_classification_not_enabled" %]
     [% title = "Класификацията не е позволена" %]
@@ -292,7 +309,7 @@
     Името на класификация е ограничено до [% constants.MAX_CLASSIFICATION_SIZE FILTER html %]
     символа. '[% name FILTER html %]' е твърде дълго ([% name.length %] символа).
 
-  [% ELSIF error == "classification_not_specified" %]
+[% ELSIF error == "classification_not_specified" %]
     [% title = "Трябва да предоставите име на класификацията" %]
     Трябва да въведете име на класификация.
 
@@ -422,6 +439,13 @@
     Съжалявам, или продукта <em>[% product FILTER html %]</em>
     не съществува или не сте упълномощен да
     въвеждате [% terms.bug %] за него.
+
+  [% ELSIF error == "extension_create_no_name" %]
+    Трябва да укажете име за разширението ви, като аргумент на този скрипт.
+
+  [% ELSIF error == "extension_first_letter_caps" %]
+    Първата буква от името на разширението ви трябва да бъде главна.
+    (Указали сте '[% name FILTER html %]'.)
 
   [% ELSIF error == "field_already_exists" %]
     [% title = "Полето вече съществува" %]
@@ -563,12 +587,6 @@
     <br>Вместо това, ако приставката е изображение, можете да я обърнете
     в сбит формат, като <abbr lang="en" title="Joint Photographic Experts Group">JPG</abbr> или <abbr lang="en" title="Portable Network Graphics">PNG</abbr> и опитайте отново.
 
-  [% ELSIF error == "flag_not_multiplicable" %]
-    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
-                    'flags.html' => 'Използване на флагове'} %]
-    Не можете да искате от повече от един човек едновременно за
-    <em>[% type.name FILTER html %]</em>.
-
   [% ELSIF error == "flag_requestee_needs_privs" %]
     [% title = "Даващия флаг има нужда от права" %]
     [% requestee.identity FILTER html %] няма права за задаване на
@@ -627,6 +645,12 @@
     Името <em>[% name FILTER html %]</em> трябва да бъде дълго между 1 и 50
     символа и не трябва да съдържа запетайки или интервали.
 
+  [% ELSIF error == "flag_type_not_multiplicable" %]
+    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
+                    'flags.html' => 'Използване на флагове'} %]
+    Не можете да имате няколко флага <em>[% type.name FILTER html %]</em>
+    за [% IF attachment %] тази приставка [% ELSE %] този [% terms.bug %] [% END %].
+
   [% ELSIF error == "flag_update_denied" %]
     [% title = "Забранена промяна на флаг" %]
     [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове',
@@ -659,9 +683,10 @@
 
   [% ELSIF error == "group_cannot_delete" %]
     [% title = "Изтриването на група е невъзможно" %]
-    Групата <em>[% name FILTER html %]</em> не може да бъде изтрита, защото
+    Групата <em>[% group.name FILTER html %]</em> не може да бъде изтрита, защото
     съществуват
-    <a href="editgroups.cgi?action=del&amp;group=[% gid FILTER url_quote %]">записи</a>
+    <a href="editgroups.cgi?action=del&amp;group=
+             [%- group.id FILTER url_quote %]">записи</a>
     в базата данни обръщащи се към нея. Всички обръщения към групата трябва
     да бъдат премахнати преди изтриването и.
 
@@ -877,8 +902,7 @@
     [% title = "Неправилен тип на съдържанието" %]
     Типа на съдържанието <em>[% contenttype FILTER html %]</em> е неправилен.
     Правилните типове трябва да са във формат <em>foo/bar</em> където <em>foo</em>
-    е едно от <em>application, audio, image, message, model, multipart,
-    text,</em> или <em>video</em>.
+    е едно от <em>[% constants.LEGAL_CONTENT_TYPES.join(', ') FILTER html %]</em>.
     
   [% ELSIF error == "invalid_context" %]
     [% title = "Неправилен контекст" %]
@@ -948,8 +972,21 @@
     [% terms.Bugzilla %].
 
   [% ELSIF error == "invalid_username_or_password" %]
-    [% title = "Невалидно потребителско име или парола" %]
+    [% title = "Недействително потребителско име или парола" %]
     Потребителското име или паролата, които въведохте са непознати.
+    [%# People get two login attempts before being warned about
+      # being locked out.
+      #%]
+    [% IF remaining <=  2 %]
+      Ако не въведете правилна парола след 
+      още [% remaining FILTER html %] опит(а), ще бъдете
+      заключени от тази сметка за 
+      [%+ constants.LOGIN_LOCKOUT_INTERVAL FILTER html %] минути.
+    [% END %]
+
+  [% ELSIF error == "json_rpc_post_only" %]
+    Поради съображения за сигурност, можете да използвате JSON-RPC само с POST
+    HTTP метод.
 
   [% ELSIF error == "keyword_already_exists" %]
     [% title = "Ключовата дума вече съществува" %]
@@ -980,6 +1017,19 @@
     [% title = "Необходимо е име за вход" %]
     Не можете да използвате %user% без да сте влезли, защото %user% отговаря
     на името ви за вход, което не е известно.
+
+  [% ELSIF error == "login_required" %]
+    [%# Used for non-web-based LOGIN_REQUIRED situations. %]
+    Трябва да влезете, преди да можете да използвате тази част от [% terms.Bugzilla %].
+
+  [% ELSIF error == "migrate_config_created" %]
+    Файла <kbd>[% file FILTER html %]</kbd> съдържа конфигурационни
+    променливи които трябва да бъдат зададени преди да продължаване с миграцията.
+
+  [% ELSIF error == "migrate_from_invalid" %]
+    '[% from FILTER html %]' не е действителен тип на система за следене на [% terms.bugs %]
+    от която да мигрирате. Проверете съдържанието на папка <kbd>B[% %]ugzilla/Migrate/</kbd>
+    за списък на действителните системи за следене на [% terms.bugs %].
 
   [% ELSIF error == "milestone_already_exists" %]
     [% title = "Целевото събитие вече съществува" %]
@@ -1160,31 +1210,6 @@
     [% title = "Не е избран етикет" %]
     Не сте избрали етикет, от който да премахвате [% terms.bugs %].
 
-  [% ELSIF error == "no_dupe_stats" %]
-    [% title = "Не са открити статистики на двойниците" %]
-    [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Няма статистика на двойниците за днес ([% today FILTER html %]) 
-    или вчера.
-
-  [% ELSIF error == "no_dupe_stats_error_today" %]
-    [% title = "Грешка при четене на файла с днешните двойници" %]
-    [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Възникна грешка при отварянето на файла с днешните двойници: [% error_msg FILTER html %].
-
-  [% ELSIF error == "no_dupe_stats_error_whenever" %]
-    [% title = "Грешка при четене на предишен файл с двойници" %]
-    [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Възникна грешка при отварянето на файла [% whenever FILTER html %] с
-    двойниците от преди [% changedsince FILTER html %] дни:
-    [% error_msg FILTER html %].
-
-  [% ELSIF error == "no_dupe_stats_error_yesterday" %]
-    [% title = "Грешка при четене на файла с двойниците от вчера" %]
-    [% admindocslinks = {'extraconfig.html' => 'Настройване работата на collecstats.pl'} %]
-    Няма статистика на двойниците за днес ([% today FILTER html %]), 
-    а възникна
-    грешка при отварянето на файла от вчера:  [% error_msg FILTER html %].
-
   [% ELSIF error == "no_initial_bug_status" %]
     [% title = "Няма първоначален статус на $terms.bug" %]
     Не е наличен статус на [% terms.bug %] при създаване.
@@ -1268,11 +1293,6 @@
     [% title = "Паролите не съвпадат" %]
     Двете пароли които въведохте не съвпадат.
 
-  [% ELSIF error == "password_too_long" %]
-    [% title = "Твърде дълга парола" %]
-    Паролата трябва да бъде дълга не повече от
-    [%+ constants.USER_PASSWORD_MAX_LENGTH FILTER html %] символа.
-
   [% ELSIF error == "password_too_short" %]
     [% title = "Твърде къса парола" %]
     Паролата трябва да бъде най-малко
@@ -1286,8 +1306,13 @@
     Опитайте да разделите кръпката на няколко части.
 
   [% ELSIF error == "product_access_denied" %]
-    Или продукта '[% product FILTER html %]' не съществува или
-    нямате достъп до него.
+    Или продукта
+    [%+ IF id.defined %]
+      с идентификатор [% id FILTER html %]
+    [% ELSE %]
+      '[% name FILTER html %]'
+    [% END %]
+    не съществува или нямате достъп до него.
 
   [% ELSIF error == "product_doesnt_exist" %]
     [% title = "Указаният продукт не съществува" %]
@@ -1313,7 +1338,7 @@
     </em>, което трябва да съдържа неотрицателно число.
 
   [% ELSIF error == "product_name_already_in_use" %]
-    [% title = "Името на продукта вече се използва" %]
+    [% title = "Името на продукта вече съществува" %]
     [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
     Името '[% product FILTER html %]' вече съществува.
   
@@ -1405,18 +1430,20 @@
     символа.
 
   [% ELSIF error == "quicksearch_unknown_field" %]
-    [% title = "Непознато поле за бързо търсене" %]
-    [% IF fields.unique.size == 1 %]
-      Полето <code>[% fields.first FILTER html %]</code> не е познато.
-    [% ELSE %]
-      Полетата
-      [% FOREACH field = fields.unique.sort %]
-         <code>[% field FILTER html %]</code>
-         [% ', ' UNLESS loop.last() %]
-      [% END %]
-      не са познати.
+    [% title = "Грешка на бързо търсене" %]
+    Има проблем с търсенто ви:
+    [% FOREACH field = unknown %]
+      <p><code>[% field FILTER html %]</code> не е действително име на поле.</p>
     [% END %]
-    Правилните имена на полета са <a href="page.cgi?id=quicksearchhack.html">описани тук</a>.
+    [% FOREACH field = ambiguous.keys %]
+      <p><code>[% field FILTER html %]</code> съвпада с повече от едно поле:
+        [%+ ambiguous.${field}.join(', ') FILTER html %]</p>
+    [% END %]
+
+    [% IF unknown.size %]
+      <p>Действителните имена на полета са 
+        <a href="page.cgi?id=quicksearch.html#fields">описани тук</a>.</p>
+    [% END %]
 
   [% ELSIF error == "reassign_to_empty" %]
     [% title = "Незаконно преназначаване" %]
@@ -1575,10 +1602,6 @@
     версията! Трябва да преназначите тези [% terms.bugs %] на друга версия
     преди да можете да изтриете тази.
 
-  [% ELSIF error == "version_not_specified" %]
-    [% title = "Не е указана версия" %]
-    Не е указана версия при опит за редакция на версиите.
-
   [% ELSIF error == "users_deletion_disabled" %]
     [% title = "Изтриването не действа" %]
     [% admindocslinks = {'useradmin.html' => 'Администриране на потребители'} %]
@@ -1614,6 +1637,12 @@
     [% title = "Сравнението пропадна" %]
     <tt>[% name FILTER html %]</tt> не съществува или не ви е позволено 
     да виждате потребителя.
+
+  [% ELSIF error == "user_match_too_many" %]
+    [% title = "Няма окончателно съвпадение" %]
+    [% terms.Bugzilla %] не може да направи окончателно съвпадение за едно или повече
+    от имената и/или е-пощенските адреси които въведохте за
+    полетата [% fields.join(', ') FILTER html %].
 
   [% ELSIF error == "user_not_insider" %]
     [% title = "Потребител не е в Insidergroup" %]
@@ -1730,7 +1759,9 @@
 [% PROCESS global/footer.html.tmpl %]
 
 [% BLOCK object_name %]
-  [% IF class == "Bugzilla::User" %]
+  [% IF class == "Bugzilla::Attachment" %]
+    приставка
+  [% ELSIF class == "Bugzilla::User" %]
     потребител
   [% ELSIF class == "Bugzilla::Component" %]
     съставна част
@@ -1740,8 +1771,18 @@
     важно събитие
   [% ELSIF class == "Bugzilla::Status" %]
     състояние
+  [% ELSIF class == "Bugzilla::Flag" %]
+    флаг
+  [% ELSIF class == "Bugzilla::FlagType" %]
+    флаг тип
   [% ELSIF class == "Bugzilla::Field" %]
     поле
+  [% ELSIF class == "Bugzilla::Group" %]
+    група
+  [% ELSIF class == "Bugzilla::Product" %]
+    продукт
+  [% ELSIF class == "Bugzilla::Search::Saved" %]
+    съхранено търсене
   [% ELSIF ( matches = class.match('^Bugzilla::Field::Choice::(.+)') ) %]
     [% SET field_name = matches.0 %]
     [% field_descs.$field_name FILTER html %]

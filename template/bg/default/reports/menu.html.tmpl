@@ -28,6 +28,7 @@
 [% PROCESS global/header.html.tmpl
   title = "Кухнята на докладите и графиките"
   doc_section = "reporting.html"
+  style_urls = ['skins/standard/reports.css']
 %]
 
 <p>
@@ -38,11 +39,11 @@
 <h2>Текущо състояние</h2>
 
 <ul>
-  <li>
+  <li id="report_search">
     <strong><a href="query.cgi">Търсене</a></strong> -
     прави списък на множество от [% terms.bugs %].
   </li>
-  <li>
+  <li id="report_tabular">
     <strong>
       <a href="query.cgi?format=report-table">Табулирани доклади</a>
     </strong> -
@@ -50,30 +51,36 @@
     lang="en" title="Hyper Text Markup Language">HTML</abbr> или <abbr
     lang="en" title="Comma Separated Values">CSV</abbr>.
   </li>
-  <li>
-    <strong>
-      <a href="query.cgi?format=report-graph">Графични доклади</a>
-    </strong> -
-    графики "линия", "лента" и "пита".
-  </li>
-</ul>
-
-<h2>Промяна във времето</h2>
-
-<ul>
-  <li>
-    <strong><a href="reports.cgi">Стари графики</a></strong> -
-    изчертава състоянието и/или решението на [% terms.bugs %] във
-    времето, за всеки продукт във вашата база данни.
-  </li>
-  [% IF user.in_group(Param("chartgroup")) %]
-    <li>
-      <strong><a href="chart.cgi">Нови графики</a></strong> - 
-      изчертава всяко произволно търсене във времето. Много по-мощно.
+  [% IF feature_enabled('graphical_reports') %]
+    <li id="report_graphical">
+      <strong>
+        <a href="query.cgi?format=report-graph">Графични доклади</a>
+      </strong> -
+      графики "линия", "лента" и "пита".
     </li>
   [% END %]
   [% Hook.process('current_state') %]
 </ul>
+
+[% IF feature_enabled('new_charts') OR feature_enabled('old_charts') %]
+  <h2>Промяна във времето</h2>
+
+  <ul>
+    [% IF feature_enabled('old_charts') %]
+      <li id="old_charts">
+        <strong><a href="reports.cgi">Стари графики</a></strong> - 
+        изчертава състоянието и/или решението на [% terms.bugs %] във
+        времето, за всеки продукт във вашата база данни.
+      </li>
+    [% END %]
+    [% IF feature_enabled('new_charts') AND user.in_group(Param("chartgroup")) %]
+      <li id="new_charts">
+        <strong><a href="chart.cgi">Нови графики</a></strong> - 
+        изчертава всяко произволно търсене във времето. Много по-мощно.
+      </li>
+    [% END %]
+  </ul>
+[% END %]
 
 [% Hook.process('end') %]
 

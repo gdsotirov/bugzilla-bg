@@ -83,7 +83,7 @@
   'notequals', 'regexp', 'notregexp', 'lessthan', 'lessthaneq', 
   'greaterthan', 'greaterthaneq', 'changedbefore', 'changedafter', 
   'changedfrom', 'changedto', 'changedby', 'notsubstring', 'nowords',
-  'nowordssubstr',
+  'nowordssubstr', 'notmatches',
 ] %]
 <ul class="search_description">
 [% FOREACH desc_item = search_description %]
@@ -92,16 +92,8 @@
     [% IF shown_types.contains(desc_item.type) || debug %]
       ([% search_descs.${desc_item.type} FILTER html %])
     [% END %]
-    [% IF desc_item.field == 'bug_status' %]
-      [% FOREACH status IN desc_item.value.split(',') %]
-        [%+ get_status(status) FILTER html %][% ',' UNLESS loop.last %]
-      [% END %]
-    [% ELSIF desc_item.field == 'resolution' %]
-      [% FOREACH resolution IN desc_item.value.split(',') %]
-        [%+ get_resolution(resolution) FILTER html %][% ',' UNLESS loop.last %]
-      [% END %]
-    [% ELSE %]
-      [%+ desc_item.value FILTER html %]
+    [% FOREACH val IN desc_item.value.split(',') %]
+      [%+ display_value(desc_item.field, val) FILTER html %][% ',' UNLESS loop.last %]
     [% END %]
     [% IF debug %]
       (<code>[% desc_item.term FILTER html %]</code>)
@@ -143,13 +135,25 @@
 
 <span class="bz_result_count">
   [% IF bugs.size == 0 %]
-    [% terms.zeroSearchResults %].
+    <span class="zero_results">[% terms.zeroSearchResults %].</span>
   [% ELSIF bugs.size == 1 %]
     Намерен е един [% terms.bug %].
   [% ELSE %]
     Намерени са [% bugs.size %] [%+ terms.abug %].
   [% END %]
 </span>
+
+[% IF bugs.size == 0 %]
+  <ul class="zero_result_links">
+    <li>[% PROCESS enter_bug_link %]</li>
+    [% IF one_product.defined %]
+      <li><a href="enter_bug.cgi">Въвеждане на нов [% terms.bug %] в
+        различен продукт</a></li>
+    [% END %]
+    <li><a href="[% PROCESS edit_search_url %]">Промяна на търсенето</a></li>
+    <li><a href="query.cgi">Започване на ново търсене</a></li>
+  </ul>
+[% END %]
 
 <br>
 
@@ -187,7 +191,7 @@
             <input type="submit" value="XML" id="xml">
         </form>
 
-        [% IF user.in_group(Param('timetrackinggroup')) %]
+        [% IF user.is_timetracker %]
           <form method="post" action="summarize_time.cgi">
             <input type="hidden" name="id" value="[% buglist_joined FILTER html %]">
             <input type="submit" id="timesummary" value="Сборно време">
@@ -227,11 +231,7 @@
     [% END %]
     
     <td valign="middle" class="bz_query_edit">
-      [% editqueryname = searchname OR defaultsavename OR '' %]
-      <a href="query.cgi?[% urlquerypart FILTER html %]
-      [% IF editqueryname != '' %]&amp;known_name=
-        [% editqueryname FILTER url_quote %]
-      [% END %]">Редактиране&nbsp;на&nbsp;търсенето</a>
+      <a href="[% PROCESS edit_search_url %]">Промяна&nbsp;на&nbsp;търсенето</a>
     </td>
       
     [% IF searchtype == "saved" %]
@@ -260,10 +260,9 @@
   </tr>
 </table>
 
-[% IF cgi.param('product').size == 1 && cgi.param('product') != "" %]
+[% IF one_product.defined %]
   <p class="bz_query_single_product">
-    <a href="enter_bug.cgi?product=[% cgi.param('product') FILTER url_quote %]">Въвеждане
-      на нов [% terms.bug %] в продукта "[% cgi.param('product') FILTER html %]"</a>
+    [% PROCESS enter_bug_link %]
   </p>
 [% END %]
 
@@ -272,3 +271,21 @@
 [%############################################################################%]
 
 [% PROCESS global/footer.html.tmpl %]
+
+[% BLOCK edit_search_url %]
+  [% editqueryname = searchname OR defaultsavename OR '' %]
+  query.cgi?[% urlquerypart FILTER html %]
+    [%- IF editqueryname != '' %]&amp;known_name=
+      [%- editqueryname FILTER url_quote %]
+    [% END %]
+[% END %]
+
+[% BLOCK enter_bug_link %]
+  <a href="enter_bug.cgi
+           [%- IF one_product.defined %]?product=
+             [%- one_product.name FILTER url_quote %][% END %]">Въвеждане
+    на нов [% terms.bug %]
+   [% IF one_product.defined %]
+     в продукт "[% one_product.name FILTER html %]"
+   [% END %]</a>
+[% END %]

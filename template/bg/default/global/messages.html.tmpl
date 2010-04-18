@@ -31,15 +31,10 @@
 
 [% message = BLOCK %]
   [% IF    message_tag == "account_created" %]
-    [% title = "Потребителя $otheruser.login е създаден" %]
-    Новата сметка [% otheruser.login FILTER html %] беше създадена
+    Потребителската сметка [% otheruser.login FILTER html %] беше създадена
     успешно.
     [% IF groups.size %]
       Може да искате да редактирате груповите настройки сега, използвайки формата отдолу.
-    [% END %]
-    [% IF login_info %]
-      Можете да отидете на <a href="index.cgi">Входната</a> страница, за да влезете в
-      тази [% terms.Bugzilla %] инсталация.
     [% END %]
 
   [% ELSIF message_tag == "account_creation_canceled" %]
@@ -193,6 +188,7 @@
         [% IF changes.sortkey.defined %]
           <li>Ключ за подреждане е обновен на '[% classification.sortkey FILTER html %]'</li>
         [% END %]
+        [% Hook.process('classification_updated_fields') %]
       </ul>
     [% ELSE %]
       Не са направени промени по <em>[% classification.name FILTER html %]</em>.
@@ -242,6 +238,8 @@
           <li>Подразбиращ ТК списък е изтрит</li>
         [% END %]
       [% END %]
+      [% Hook.process('component_updated_fields') %]
+      </ul>
     [% ELSE %]
       Не са направени промени по <em>[% comp.name FILTER html %]</em>.
     [% END %]
@@ -285,6 +283,11 @@
     сметката  [%+ old_email FILTER html %] на
     [%+ new_email FILTER html %] бе отхвърлена.
    Старите ви настройки са възстановени.
+
+  [% ELSIF message_tag == "extension_created" %]
+    Разширение именовано [% name FILTER html %] беше създадено
+    в [% path FILTER html %]. Обезателно сменете "YOUR NAME" и 
+    "YOUR EMAIL ADDRESS" в кода с вашите име и е-пощенски адрес.
 
   [% ELSIF message_tag == "field_value_created" %]
     [% title = "Създадена нова стойност на поле" %]
@@ -351,10 +354,10 @@
     [% field_descs.$field_name FILTER html %]
 
   [% ELSIF message_tag == "get_resolution" %]
-    [% get_resolution(resolution) FILTER html %]
+    [% display_value("resolution", resolution) FILTER html %]
 
   [% ELSIF message_tag == "get_status" %]
-    [% get_status(status) FILTER html %]
+    [% display_value("bug_status", status) FILTER html %]
 
   [% ELSIF message_tag == "group_created" %]
     [% title = "Създадена нов група" %]
@@ -441,6 +444,11 @@
 
     [% END %]
 
+  [% ELSIF message_tag == "invalid_column_name" %]
+    Указания потребителски ред за подреждане съдържа една или повече недействителни
+    имена на колони: <em>[% invalid_fragments.join(', ') FILTER html %]</em>.
+    Те бяха премахнати от списъка за сортиране.
+
   [% ELSIF message_tag == "job_queue_depth" %]
     [% count FILTER html %] задания в опашката.
 
@@ -490,6 +498,44 @@
   [% ELSIF message_tag == "login_changed" %]
     [% title = "Промяна на $terms.Bugzilla сметка" %]
     Вашия [% terms.Bugzilla %] потребител беше променен.
+
+  [% ELSIF message_tag == "migrate_component_created" %]
+    Създадена съставна част: [% comp.name FILTER html %]
+    (in [% product.name FILTER html %])
+
+  [% ELSIF message_tag == "migrate_creating_bugs" %]
+    Създаване на [% terms.bugs %]...
+
+  [% ELSIF message_tag == "migrate_field_created" %]
+    Нов потребителско поле: [% field.description FILTER html %]
+    ([% field.name FILTER html %])
+
+  [% ELSIF message_tag == "migrate_product_created" %]
+    Създаден продукт: [% created.name FILTER html %]
+
+  [% ELSIF message_tag == "migrate_reading_bugs" %]
+    Четене на [% terms.bugs %]...
+
+  [% ELSIF message_tag == "migrate_reading_products" %]
+    Четене на продукти...
+
+  [% ELSIF message_tag == "migrate_reading_users" %]
+    Четене на потребители...
+
+  [% ELSIF message_tag == "migrate_translating_bugs" %]
+    Превръщане на стойности на [% terms.bug %] за да бъдат подходящи за 
+    [%+ terms.Bugzilla %]...
+
+  [% ELSIF message_tag == "migrate_user_created" %]
+    Създаден потребител: [% created.email FILTER html %]
+    [% IF password %] Парола: [% password FILTER html %][% END %]
+
+  [% ELSIF message_tag == "migrate_value_created" %]
+    [% IF product.defined %]
+      [% product.name FILTER html %]
+    [% END %]
+    Създадена стойност на [%+ field_descs.${field.name} FILTER html %]
+    : [% value FILTER html %]
 
   [% ELSIF message_tag == "milestone_created" %]
     [% title = "Създадено важно събитие" %]
@@ -673,7 +719,7 @@
     localconfig, но не сте a) пуснали този скрипт като [% constants.ROOT_USER FILTER html %]; 
     или b) член на тази група. Това може да предизвика проблеми с правата и
     намалена сигурност.  Ако изпитвате затруднения с пускането на [% terms.Bugzilla %]
-    скриптове, влезте като [% constants.ROOT_USER FILTER html %] и пуснете отново скрипта, станете
+    скриптове, влезте като [% constants.ROOT_USER FILTER html %] и пуснете отново скрипта, станете 
     член на групата или премахнете стойността на "webservergroup" параметъра.
 
   [% ELSIF message_tag == "install_webservergroup_windows" %]
@@ -737,15 +783,19 @@
   [% ELSIF message_tag == "series_created" %]
     [% title = "Редицата създадена" %]
       Редицата <em>[% series.category FILTER html %] /
-      [%+ series.subcategory FILTER html %] /
+      [%+ series.subcategory FILTER html %] / 
       [%+ series.name FILTER html %]</em>
       беше създадена. Имайте предвид, че може да се наложи да изчакате до
       [%+ series.frequency * 2 %] дни преди да има достатъчно данни за
       произвеждането на графика от тази редица.
-      <br><br>
-      Връщане или
-      <a href="query.cgi?format=create-series">създаване на още една редица</a>.
-    
+
+  [% ELSIF message_tag == "series_deleted" %]
+    [% title = "Изтрита редица" %]
+    Редицата <em>[% series.category FILTER html %] /
+      [%+ series.subcategory FILTER html %] /
+      [%+ series.name FILTER html %]</em>
+      беше изтрита.
+
   [% ELSIF message_tag == "shutdown" %]
     [% title = "$terms.Bugzilla е спряна" %]
     [% Param("shutdownhtml") %]
@@ -761,7 +811,7 @@
     Някои флагове не могат да бъдат зададени. Моля, проверете промените си.
 
   [% ELSIF message_tag == "user_match_failed" %]
-    Въведохте потребителско име, което не съвпадна с никой познат
+    Въведохте потребителско име, което не съвпадна с никой познат 
     на [% terms.Bugzilla %] потребител, затова нарочно оставихме
     полето [% match_field FILTER html %] празно.
 
@@ -782,20 +832,31 @@
 
   [% ELSIF message_tag == "version_updated" %]
     [% title = "Обновена версия" %]
-    Версията беше преименувана на <em>[% version.name FILTER html %]</em>.
+    [% IF changes.size %]
+      [% IF changes.value.defined %]
+        Версията беше преименувана на <em>[% version.name FILTER html %]</em>.
+      [% END %]
+    [% ELSE %]
+      Не бяха направени промени по версия <em>[% version.name FILTER html %]</em>.
+    [% END %]
 
   [% ELSIF message_tag == "workflow_updated" %]
     Работния поток беше обновен.
+  [% END %]
+[% END %]
 
-  [% ELSE %]
-    [%# Give sensible error if error functions are used incorrectly.
-      #%]
+[% IF !message %]
+  [% message = Hook.process('messages') %]
+[% END %]
+
+[%# Give sensible error if the message function is used incorrectly. #%]
+[% IF !message %]
+  [% message = BLOCK %]
     Използвате функцияиите за съобщения на [% terms.Bugzilla %] неправилно.
     Подадохте низа '[% message_tag %]'. Правилното използване е чрез подаване на
     таг и описването му във файла messages.html.tmpl.<br>
     <br>
     Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля
     съхранете тази страница и я изпратете на [% Param('maintainer') %].
-    
   [% END %]
 [% END %]

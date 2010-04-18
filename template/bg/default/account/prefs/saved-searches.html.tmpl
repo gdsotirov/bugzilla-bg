@@ -155,9 +155,9 @@
 [% END %]
 </blockquote>
 
+[% IF user.queries_available.size %]
 <p>Можете да използвате следните търсения съхранени и споделени от други:</p>
 
-<blockquote>
   <table border="1" cellpadding="3">  
     <tr>
       <th>
@@ -180,9 +180,7 @@
         дъното
       </th>
     </tr>
-    [% found_shared_query = 0 %]
     [% FOREACH q = user.queries_available %]
-      [% found_shared_query = 1 %]
       <tr>
         <td>[% q.name FILTER html %]</td>
         <td>[% q.user.identity FILTER html %]</td>
@@ -205,12 +203,7 @@
         </td>
       </tr>
     [% END %]
-    [% IF !found_shared_query %]
-      <tr>
-        <td colspan="6" style="text-align: center">
-          &lt;Няма&gt;
-        </td>
-      </tr>
-    [% END %]
   </table>
-</blockquote>
+[% ELSE %]
+  <p>Няма търсения споделени с вас от други потребители.</p>
+[% END %]

@@ -48,9 +48,9 @@
 
 <p>
   <b>Създател</b>: 
-  [% IF creator.email %]
-    <a href="mailto:[% creator.email FILTER html %]">
-    [% creator.email FILTER html %]</a>
+  [% IF default.creator %]
+    <a href="mailto:[% default.creator.email FILTER html %]">
+    [% default.creator.email FILTER html %]</a>
   [% ELSE %]
     (автоматично създадена от [% terms.Bugzilla %])
   [% END %]
@@ -67,7 +67,7 @@
     [% default.category FILTER url_quote %]-
     [% default.subcategory FILTER url_quote %]-
     [% default.name FILTER url_quote %]&amp;remaction=runseries&amp;series_id=
-    [% default.series_id %]">Пускане на търсенето за редицата</a>
+    [% default.series_id %]">Пускане на търсенето на редицата</a>
 </p>
 
 [% PROCESS global/footer.html.tmpl %]

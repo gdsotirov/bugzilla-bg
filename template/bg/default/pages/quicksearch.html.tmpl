@@ -10,29 +10,25 @@
   #
   # The Original Code is the Bugzilla Bug Tracking System.
   #
-  # Contributor(s): N.N.
-  #                 Marc Schumann <wurblzap@gmail.com>
+  # The Initial Developer of the Original Code is Everything Solved, Inc.
+  # Portions created by the Initial Developer are Copyright (C) 2009
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s):
+  #   Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
-[% PROCESS global/variables.none.tmpl %]
+[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% INCLUDE global/header.html.tmpl
-   title  = "$terms.Bugzilla БързоТърсене",
-   style  = 'ul {margin-bottom: 2ex}
-             ul li {margin-top: 2ex}
-             ul li ul li {margin-top: 0}'
+   title  = "$terms.Bugzilla Бързо Търсене",
+   style_urls = ['skins/standard/page.css']         
    onload = 'document.forms[\'f\'].quicksearch.focus()'
  %]
 
-<p style="font-size: 80%">
-  Ако сте вече запознат с първоначалната
-  <a href="query.cgi">[% terms.Bugzilla %] Форма за Търсене</a>,
-  може да предпочетете <a href="page.cgi?id=quicksearchhack.html">тази</a>.
-</p>
+[% USE Bugzilla %]
 
-<p>
-  Въведете една или повече думи (или части от думи) за търсене:
-</p>
+<p>Въведете една или повече думи (или части от думи) за търсене:</p>
 
 <form name="f" action="buglist.cgi" method="get"
       onsubmit="if (this.quicksearch.value == '')
@@ -42,148 +38,237 @@
   <input type="submit" value="Търсене" id="find">
 </form>
 
-<h2>Да започнем</h2>
+<h2>Основите</h2>
 
-<ul>
-  <li>
-    Това е <strong>нечувствително към регистъра</strong> търсене:<br />
-    <ul>
-      <li><tt>таблица</tt>, <tt>Таблица</tt> и <tt>ТАБЛИЦА</tt> са едно и също.</li>
-    </ul>
+<ul class="qs_help">
+  <li>Ако просто поставите дума или няколко думи в кутията за търсене, 
+    [%+ terms.Bugzilla %] ще търси в полета 
+    [%+ field_descs.product FILTER html %],
+    [%+ field_descs.component FILTER html %], 
+    [%+ IF use_keywords %][%+ field_descs.keywords FILTER html %],[% END %]
+    [%+ IF Param('usebugaliases') %][% field_descs.alias FILTER html %],[% END %]
+    [%+ field_descs.short_desc FILTER html %], 
+    [%+ IF Param('usestatuswhiteboard') %][% field_descs.status_whiteboard FILTER html %],[% END %]
+    и [% field_descs.longdesc FILTER html %] за думата или думите ви.</li>
+
+  <li>Въвеждането просто на <strong>номер</strong> в кутията за търсене ще ви
+    отведе право до [% terms.abug %] с този номер. 
+    [% IF Param('usebugaliases') %]
+      Също така, просто въвеждането на <strong>псевдоним</strong> на [% terms.bug %]
+      ще ви отведе до него.
+    [% END %]
   </li>
-  <li>
-    Това е търсене, в което <strong>всички думи са поднизове</strong>
-    <br />
-    Затова трябва да <strong>използвате основи на думи</strong> за по-добри резултати:
+
+  <li>Добавянето на повече термини <strong>свежда</strong> търсенето, а не го
+     разширява. (С други думи, [% terms.Bugzilla %] търси за 
+     [%+ terms.bugs %] които отговарят на <em>всичките</em> ви условия, а не
+     [%+ terms.bugs %] които отговарят на <em>което и да е</em> от условията ви.)</li>
+
+  <li>Търсенето е <strong>нечувствително към регистъра</strong>. Така че <kbd>таблица</kbd>,
+    <kbd>Таблица</kbd> и <kbd>ТАБЛИЦА</kbd> са едно и също.</li>
+
+  <li>[% terms.Bugzilla %] не просто търси за точната дума, въведена от вас,
+    но също за всяка дума която я <strong>съдържа</strong>.
+    Така например, търсенето за "кат" ще намери също [% terms.bugs %]
+    които я съдържат като част от други думи&mdash;например, [% terms.bug %]
+    споменаващ "<strong>кат</strong>о" или "сертифи<strong>кат</strong>и". Няма
+    да бъдат открити частични думи в полетата [% field_descs.longdesc FILTER html %]
+    или [% field_descs.keywords FILTER html %],
+    въпреки това&mdash;само пълни думи съвпадат, там.</li>
+
+  <li>По подразбиране, се търсят само <strong>отворени</strong>
+    [%+ terms.bugs %]. Ако искате да разберете как също да търсите затворени [% terms.bugs %],
+    вижте раздела <a href="#shortcuts">Advanced Shortcuts</a>.</li>
+
+  <li>If you want to search <strong>specific fields</strong>, you do it like
+    <kbd>field:value</kbd>, where <kbd>field</kbd> is one of the 
+    <a href="#fields">field names</a> lower down in this
+    document, and <kbd>value</kbd> is the value you want to search for
+    in that field. If put commas in the <kbd>value</kbd>, then it is
+    interpreted as a list of values, and [% terms.bugs %] that match
+    <em>any</em> of those values will be searched for.</li>
+</ul>
+
+<p>Може също да искате да прочетете on the <a href="#advanced">Advanced
+  Features</a>.</p>
+
+<h2><a name="fields"></a>Полета по които можете да търсите</h2>
+
+<p>Можете да укажете всяко от тези полета като <kbd>field:value</kbd>
+  в кутията за търсене, за да търсите по тях. Можете също да съкратите
+  името на полето, докъто съкращението съвпада само с едно име на поле.
+  Така например, търсенето на <kbd>stat:NEW</kbd> ще открие всички
+  [%+ terms.bugs %] в състояние <kbd>НОВ</kbd>. Някои полета имат
+  няколко имена и можете да използвате вяко от имената, за да търсите в тях.</p>
+
+[% IF Bugzilla.active_custom_fields.size %]
+  [% SET first_field = Bugzilla.active_custom_fields.0 %]
+  <p>Относно потребителски полета, те могат да бъдат ползвани и съкращавани
+    въз основа на частта от името им <em>след</em> представката <kbd>cf_</kbd>
+    ако желаете, в допълнение към установеното име започващо с
+    <kbd>cf_</kbd>. Така например, 
+    <kbd>[% first_field.name FILTER html %]</kbd> може да
+    се назове така 
+    <kbd>[% first_field.name.replace('^cf_') FILTER html %]</kbd>,
+    също. Обаче, ако това предизвика противоречие между установените
+    имена на полета на [%+ terms.Bugzilla %] и имената на потребителското поле,
+    установените имена на полета винаги имат предимство.</p>
+[% END %]
+
+[% SET field_table = {} %]
+[% FOREACH field = quicksearch_field_names.keys %]
+  [% description = field_descs.$field %]
+  [% field_table.$description = quicksearch_field_names.${field} %]
+[% END %]
+
+
+<table cellspacing="0" cellpadding="0" border="0" class="qs_fields">
+  <thead>
+    <tr>
+      <th class="field_name">Поле</th>
+      <th class="field_nickname">Имена на полето за търсене</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% FOREACH desc = field_table.keys.sort %]
+      <tr>
+        <td class="field_name">[% desc FILTER html %]</td>
+        <td class="field_nickname">
+          [% FOREACH nickname = field_table.$desc %]
+            <kbd>[% nickname FILTER html %]</kbd>
+            [% ",&nbsp; " UNLESS loop.last %]
+          [% END %]
+      </tr>
+    [% END %]
+  </tbody>
+</table>
+
+<h2><a name="advanced"></a>Разширени възможности</h2>
+
+<ul class="qs_help">
+  <li>Ако желаете да търсите за <strong>израз</strong> или нещо което
+    съдържа празни пространства, можете да го поставите между кавички, like:
+    <kbd>"това е израз"</kbd>. Можете също да ползвате кавички, за да търсите за
+    символи които иначе биха били възприети особенно от търсенето.
+    Например, <kbd>"това|нещо"</kbd> би търсило за буквалния израз
+    <em>това|нещо</em>.</li>
+
+  <li>Можете да ползвате <strong>AND</strong>, <strong>NOT</strong>,
+    и <strong>OR</strong> в търсения. 
+
+    Можете също да ползвате <kbd>-</kbd> в смисъл "NOT" и <kbd>|</kbd> в смисъл "OR".
+    Няма нарочен символ за "AND", защото по подразбиране всички търсени
+    термини, разделени от празно пространство, се свързват с "AND".
+    Примери:
     <ul>
       <li>
-        Използвайте <tt>локал</tt> вместо <tt>локализиране</tt> или
-        <tt>локализация</tt>.
+        <strong>NOT</strong>:<br>
+        Използвайте <kbd><strong>-</strong><em>summary:foo</em></kbd>, за да изключите 
+        [%+ terms.bugs %] съдържащи <kbd>foo</kbd> в резюмето си.<br>
+        <kbd><em>NOT summary:foo</em></kbd> би имало същия ефект.
       </li>
-     <li>
-       Използвайте <tt>отметка</tt> вместо <tt>отметки</tt> или
-       <tt>отмятане</tt>.
-     </li>
-   </ul>
+      <li>
+        <strong>AND</strong>:<br>
+        <kbd><em>foo bar</em></kbd> търси за [% terms.bugs %] съдържащи
+        и <kbd>foo</kbd> и <kbd>bar</kbd>.<br>
+        <kbd><em>foo AND bar</em></kbd> би имало същия ефект.
+      </li>
+      <li>
+        <strong>OR</strong>:<br>
+        <kbd><em>foo<strong>|</strong>bar</em></kbd> ще търси
+        за [% terms.bugs %] съдържащи <kbd>foo</kbd> ИЛИ <kbd>bar</kbd>.<br>
+        <kbd><em>foo OR bar</em></kbd> би имало същия ефект.<br>
+      </li>
+    </ul>
+
+    <p>OR има по-голямо предимство от AND; AND е операция от най-високо ниво.
+      Например:</p>
+    <p>Търсене за <em><kbd>url|location bar|field -focus</kbd></em> означава
+      (<kbd>url</kbd> OR <kbd>location</kbd>) AND (<kbd>bar</kbd> OR 
+      <kbd>field</kbd>) AND (NOT <kbd>focus</kbd>)</p>
   </li>
 </ul>
 
-<h2><a name="features">Особености</a></h2>
+<h2><a name="shortcuts"></a>Разширени преки пътища</h2>
 
-<ul>
-  <li>
-    Двоични операции: &ldquo;<tt>-foo</tt>&rdquo;&nbsp;(NOT),
-    &ldquo;<tt>foo&nbsp;bar</tt>&rdquo;&nbsp;(AND),
-    &ldquo;<tt>foo|bar</tt>&rdquo;&nbsp;(OR).
-    <ul>
-      <li>
-        <strong>NOT</strong>:<br />
-        Използвайте <tt><b>-</b><i>foo</i></tt> за да изключите [% terms.bugs %]
-        съдържащи <tt><i>foo</i></tt> в резюмето си.
-      </li>
-      <li>
-        <strong>AND</strong>:<br />
-        Разделени с интервал думи се обработват като съюз.
-      </li>
-      <li>
-        <strong>OR</strong>:<br />
-        В дума, разделени с "|" части означават алтернатива.
-      </li>
-      <li>
-        Освен с "|", може да се използва запетайка за отделяне на алтернативи.
-      </li>
-      <li>
-        OR име по-висок приоритет от AND; AND е операцията с най-висок приоритет.
-      </li>
-    </ul>
-    <i>Например:</i>
-    <tt>url,location bar,field -focus</tt> значи
-    (<tt>url</tt> OR <tt>location</tt>) AND (<tt>bar</tt> OR <tt>field</tt>)
-    AND (NOT <tt>focus</tt>)
-  </li>
-  <li>
-    Използвайте <tt>+foo</tt>, за да търсите за [% terms.bugs %], където
-    <strong>резюмето</strong> съдържа <tt>foo</tt> като
-    <strong>подниз</strong>.<br/>
-    Използвайте <tt>#foo</tt>, за да търсите за [% terms.bugs %], където
-    <strong>резюмето</strong> съдържа <strong>думата</strong> <tt>foo</tt>.
-    <ul>
-      <li>
-        <tt>+brow</tt> не намира всички [% terms.bugs %] в
-        продукта <tt>Browser</tt>.
-      </li>
-      <li>
-        <tt>#title</tt> не намира [% terms.bugs %] в <tt>titlebar</tt>
-        или <tt>titled</tt>.
-      </li>
-    </ul>
-    Изрази със специални символи (space, comma, +, -, #, &hellip;) могат да
-    <strong>бъдат поставяни в кавички</strong>:
-    <ul>
-      <li>
-        <tt>"lock icon"</tt>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <strong>Отворени срещу Разрешени [% terms.Bugs %]</strong>:<br />
-    По подразбиране, се показват само отворени (т.е. неразрешени) [% terms.bugs %].
-    Използвайте <tt>+DUP</tt> като първа дума в търсенето си, за да включите
-    [%+ terms.bugs %] двойници,
-    <tt>FIXED</tt>, за да търсите само за оправени [%+ terms.bugs %],
-    или <tt>ALL</tt>, за да търсите всички [% terms.bugs %],
-    без значение на състояние или решение.
-    Търсенето за двойници се препоръчва ако не можете да намерите отворен
-    [%+ terms.bug %] направо.
-    <ul>
-      <li>
-        <tt>+DUP,FIXED таблица кант</tt>
-      </li>
-      <li>
-        <tt>ALL мишка колелце</tt>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <strong>Насочване на търсенето в продукти &amp;
-    съставни части</strong>:<br />
-    За да търсите за [% terms.bugs %] само в продукта "Foo Bar", добавете
-    <tt>:foo</tt> или <tt>:bar</tt> или и двете към вашето търсене.
-    Можете да направите това с всеки  подниз от
-    <a href="describecomponents.cgi">продукт или компонент</a> за да концентрирате
-    търсенето.
-  </li>
-</ul>
+<p>В допълнение към ползването на <a href="#fields">имена</a> за търсене
+  по определени полета, има известни символи или думи които можете
+  да ползвате като "преки пътища" за търсене по определени полета:</p>
 
-<h2>Още съвети</h2>
-
-<ul>
-  <li>
-    Можете също така да използвате инструмента за <strong>откриване</strong> на [% terms.bug %] по
-    неговия номер:<br />
-    <ul>
-      <li><tt>12345</tt></li>
-    </ul>
-  </li>
-  <li>
-    Разделен със запетайки списък от номера на [% terms.bug %] ви дава списък от тях
-    :<br />
-    <ul>
-      <li><tt>12345,23456,34567</tt></li>
-    </ul>
-  </li>
-</ul>
-
-<p>
-  По подразбиране, се търси в следните полета: Резюме, Ключови думи, Продукт,
-  Съставна част, Бяла дъска. Ако дума изглежда като част от <abbr lang="en" title="Uniform Resource Locator">URL</abbr>, това поле
-  също се включва в търсенето.
-</p>
-<hr>
-
-<p>
-  Използвайте мощната <a href="query.cgi">[% terms.Bugzilla %] Форма за Търсене</a>
-  за разширени запитвания.
-</p>
+<table cellspacing="0" cellpadding="0" border="0" class="qs_fields">
+  <thead>
+    <tr>
+      <th class="field_name">Поле</th>
+      <th class="field_nickname">Преки пътища</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="field_name">[% field_descs.bug_status FILTER html %]</td>
+      <td class="field_nickname">
+        Направете <strong>първата дума</strong> от търсенето ви името на което и да е
+        състояние, или дори съкращение на което и да е състояние, и ще бъдат
+        търсени [% terms.bugs %] в това състояние. <strong><kbd>ALL</kbd></strong>
+        е особена дума която значи "всички състояния".
+        <strong><kbd>OPEN</kbd></strong> е особена дума която значи
+        "всички отворени състояния".
+      </td>
+    </tr>
+    <tr>
+      <td class="field_name">[% field_descs.resolution FILTER html %]</td>
+      <td class="field_nickname">
+        Направете <strong>първата дума</strong> от търсенетео ви името на което и да е
+        решение, или дори съкращение на което и да е решение, и ще бъдат 
+        търсени [% terms.bugs %] с това решение. Например,
+        правейки <kbd>FIX</kbd> първата дума от търсенето ви ще открие
+        [%+ terms.bugs %] с решение <kbd>ОПРАВЕН</kbd> .
+    </tr>
+    <tr>
+      <td class="field_name">[% field_descs.priority FILTER html %]</td>
+      <td class="field_nickname">"<strong>P1</strong>" (като дума където и да е
+        в търсенето) означава "открий [% terms.bugs %] с най-високия приоритет. 
+        "P2" означава втория най-висок приоритет, и т.н.
+        <p>Търсене за "<strong>P1-P3</strong>" ще открие [% terms.bugs %] с
+        с който и да е от трите най-високи приоритета, и т.н.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="field_name">[% field_descs.assigned_to FILTER html %]</td>
+      <td class="field_nickname"><strong>@</strong><em>стойност</em></td>
+    </tr>
+    <tr>
+      <td class="field_name">[% field_descs.product FILTER html %] или
+        [%+ field_descs.component FILTER html %]</td>
+      <td class="field_nickname"><strong>:</strong><em>стойност</em></td>
+    </tr>
+    [% IF use_keywords %]
+      <tr>
+        <td class="field_name">[% field_descs.keywords FILTER html %]</td>
+        <td class="field_nickname"><strong>!</strong><em>стойност</em></td>
+      </tr>
+    [% END %]
+    <tr>
+      [% SET key = "flagtypes.name" %]
+      <td class="field_name">[% field_descs.$key FILTER html %]</td>
+      <td class="field_nickname">
+        <em>flag</em><strong>?</strong><em>изпълнител</em>
+      </td>
+    </tr>
+    <tr>
+      <td class="field_name">[% field_descs.longdesc FILTER html %]
+        или [% field_descs.short_desc FILTER html %]</td>
+      <td class="field_nickname">
+        <strong>#</strong><em>стойност</em>
+      </td>
+    </tr>
+    [% IF Param('usestatuswhiteboard') %]
+      <tr>
+        <td class="field_name">[% field_descs.short_desc FILTER html %]
+          или [% field_descs.status_whiteboard FILTER html %]</td>
+        <td class="field_nickname"><strong>[</strong><em>стойност</em></td>
+      </tr>
+    [% END %]
+  </tbody>
+</table>
 
 [% PROCESS global/footer.html.tmpl %]

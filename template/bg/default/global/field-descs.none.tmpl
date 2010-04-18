@@ -23,81 +23,6 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
-[% field_descs = { "[Bug creation]"          => "[$terms.Bug creation]",
-                   "actual_time"             => "Действителни часове"
-                   "alias"                   => "Псевдоним",
-                   "assigned_to"             => "Назначен на",
-                   "attach_data.thedata"     => "Данни на приставка",
-                   "attachments.description" => "Описание на приставка",
-                   "attachments.filename"    => "Име на файл на приставка",
-                   "attachments.mimetype"    => "Тип на приставка",
-                   "attachments.ispatch"     => "Приставката е кръпка",
-                   "attachments.isobsolete"  => "Приставката е остаряла",
-                   "attachments.isprivate"   => "Приставката е частна",
-                   "attachments.isurl"       => "Приставката е URL",
-                   "attachments.submitter"   => "Създател на приставка",
-                   "blocked"                 => "Блокира",
-                   "bug_file_loc"            => "URL",
-                   "bug_group"               => "Група",
-                   "bug_id"                  => "$terms.Bug №",
-                   "bug_severity"            => "Суровост",
-                   "bug_status"              => "Състояние",
-                   "changeddate"             => "Променен",
-                   "cc"                      => "ТК",
-                   "classification"          => "Класификация",
-                   "cclist_accessible"       => "Достъпен ТК списък",
-                   "commenter"               => "Коментатор",
-                   "component_id"            => "Идентификатор на съставна част",
-                   "component"               => "Съставна част",
-                   "content"                 => "Съдържание",
-                   "creation_ts"             => "Време на създаване на $terms.abug",
-                   "deadline"                => "Краен срок",
-                   "delta_ts"                => "Средно",
-                   "dependson"               => "Зависи от",
-                   "dup_id"                  => "Повтаря",
-                   "estimated_time"          => "Преценено време",
-                   "everconfirmed"           => "Някога потвърждаван",
-                   "flagtypes.name"          => "Флаг",
-                   "keywords"                => "Ключови думи",
-                   "longdesc"                => "Коментар",
-                   "longdescs.isprivate"     => "Коментара е частен",
-                   "newcc"                   => "Точно Копие",
-                   "op_sys"                  => "ОС",
-                   "opendate"                => "Отворен",
-                   "owner_idle_time"         => "Време от когато наначение е пипал",
-                   "percentage_complete"     => "% завършен",
-                   "priority"                => "Приоритет",
-                   "product_id"              => "Идентификатор на продукт",
-                   "product"                 => "Продукт",
-                   "qa_contact"              => "Качествен контрол",
-                   "remaining_time"          => "Оставащи часове",
-                   "rep_platform"            => "Платформа",
-                   "reporter"                => "Докладчик",
-                   "reporter_accessible"     => "Достъпен докладчик",
-                   "requestees.login_name"   => "Заявител на флаг",
-                   "resolution"              => "Решение",
-                   "see_also"                => "Виж още",
-                   "setters.login_name"      => "Задаващ на флаг",
-                   "setting"                 => "Настройка",
-                   "settings"                => "Настройки",
-                   "short_desc"              => "Резюме",
-                   "status_whiteboard"       => "Бяла дъска",
-                   "target_milestone"        => "Целево събитие",
-                   "version"                 => "Версия",
-                   "votes"                   => "Гласове",
-                   "work_time"               => "Отработени часове"} %]
-
-[%# Also include any custom fields or fields which don't have a
-    Description here, by copying their Description from the
-    database. If you want to override this for your language
-    or your installation, just use a hook. %]
-[% UNLESS Param('shutdownhtml') %]
-  [% FOREACH bz_field = bug_fields.values %]
-    [% SET field_descs.${bz_field.name} = bz_field.description
-       IF !field_descs.${bz_field.name}.defined %]
-  [% END %]
-[% END %]
-
 [% SET search_descs = {
   "noop"           => "---",
   "equals"         => "е равно на",
@@ -124,6 +49,7 @@
   "changedto"      => "променен на",
   "changedby"      => "променен от протребител",
   "matches"        => "съвпада",
+  "notmatches"      => "не съвпада",
 } %]
 
 [% field_types = { ${constants.FIELD_TYPE_UNKNOWN}       => "Непознат тип",
@@ -135,25 +61,129 @@
                    ${constants.FIELD_TYPE_BUG_ID}        => "$terms.Bug №",
                 } %]
 
-[% status_descs = { "UNCONFIRMED" => "НЕПОТВЪРДЕН",
-                    "NEW"         => "НОВ",
-                    "ASSIGNED"    => "НАЗНАЧЕН",
-                    "REOPENED"    => "ОТВОРЕН ОТНОВО",
-                    "RESOLVED"    => "РЕШЕН",
-                    "VERIFIED"    => "ПРОВЕРЕН",
-                    "CLOSED"      => "ЗАТВОРЕН" } %]
+[%# You can use this hash to localize (translate) the values displayed
+  # for drop-down and multiple-select fields. Lines starting with "#"
+  # are comments.
+  #%]
+[% value_descs = {
+  "bug_status" => {
+    "UNCONFIRMED" => "НЕПОТВЪРДЕН",
+    "NEW"         => "НОВ",
+    "ASSIGNED"    => "НАЗНАЧЕН",
+    "REOPENED"    => "ОТВОРЕН ОТНОВО",
+    "RESOLVED"    => "РЕШЕН",
+    "VERIFIED"    => "ПРОВЕРЕН",
+    "CLOSED"      => "ЗАТВОРЕН",
+  },
 
-[% MACRO get_status(status) GET status_descs.$status || status %]
+  "resolution" => {
+    ""           => "---",
+    "FIXED"      => "ОПРАВЕН",
+    "INVALID"    => "НЕДЕЙСТВИТЕЛЕН",
+    "WONTFIX"    => "ПРЕНЕБРЕГНАТ",
+    "DUPLICATE"  => "ДВОЙНИК",
+    "WORKSFORME" => "НЕВЪЗПРОИЗВОДИМ",
+    "MOVED"      => "ПРЕМЕСТЕН",
+    "REMIND"     => "НАПОМНЯНЕ",
+    "LATER"      => "ПО-КЪСНО",
+    "---"        => "---",
+    " "          => " ",
+  },
+} %]
 
-[% resolution_descs = { "FIXED"      => "ОПРАВЕН",
-                        "INVALID"    => "НЕДЕЙСТВИТЕЛЕН",
-                        "WONTFIX"    => "НЯМА ДА БЪДЕ ОПРАВЕН",
-                        "DUPLICATE"  => "ДВОЙНИК",
-                        "WORKSFORME" => "РАБОТИ ЗА МЕН",
-                        "MOVED"      => "ПРЕМЕСТЕН",
-                        "---"        => "---",
-                        " "          => " " } %]
+[%# We use "FILTER none" here because only the caller can know how to
+  # filter the result appropriately. 
+  #%]
+[% MACRO display_value(field_name, value_name) BLOCK %][% FILTER trim %]
+  [% IF value_descs.${field_name}.${value_name}.defined %]
+    [% value_descs.${field_name}.${value_name} FILTER none %]
+  [% ELSE %]
+    [% value_name FILTER none %]
+  [% END %]
+[% END %][% END %]
 
-[% MACRO get_resolution(res) GET resolution_descs.$res || res %]
+[% IF in_template_var %]
+  [% vars.terms = terms %]
+
+  [%# field_descs is loaded as a global template variable and cached
+    # across all templates--see VARIABLES in Bugzilla/Template.pm.
+    #%]
+  [% vars.field_descs = {
+    "[Bug creation]"          => "[$terms.Bug creation]",
+     "actual_time"             => "Действителни часове",
+     "alias"                   => "Псевдоним",
+     "assigned_to"             => "Назначен на",
+     "attach_data.thedata"     => "Данни на приставка",
+     "attachments.description" => "Описание на приставка",
+     "attachments.filename"    => "Име на файл на приставка",
+     "attachments.mimetype"    => "Тип на приставка",
+     "attachments.ispatch"     => "Приставката е кръпка",
+     "attachments.isobsolete"  => "Приставката е остаряла",
+     "attachments.isprivate"   => "Приставката е частна",
+     "attachments.isurl"       => "Приставката е URL",
+     "attachments.submitter"   => "Създател на приставка",
+     "blocked"                 => "Блокира",
+     "bug_file_loc"            => "URL",
+     "bug_group"               => "Група",
+     "bug_id"                  => "$terms.Bug №",
+     "bug_severity"            => "Суровост",
+     "bug_status"              => "Състояние",
+     "changeddate"             => "Променен",
+     "cc"                      => "ТК",
+     "classification"          => "Класификация",
+     "cclist_accessible"       => "Достъпен ТК списък",
+     "commenter"               => "Коментатор",
+     "component_id"            => "Идентификатор на съставна част",
+     "component"               => "Съставна част",
+     "content"                 => "Съдържание",
+     "creation_ts"             => "Време на създаване на $terms.abug",
+     "deadline"                => "Краен срок",
+     "delta_ts"                => "Средно",
+     "dependson"               => "Зависи от",
+     "dup_id"                  => "Повтаря",
+     "estimated_time"          => "Преценено време",
+     "everconfirmed"           => "Някога потвърждаван",
+     "flagtypes.name"          => "Флагове",
+     "keywords"                => "Ключови думи",
+     "longdesc"                => "Коментар",
+     "longdescs.isprivate"     => "Коментара е частен",
+     "newcc"                   => "Точно Копие",
+     "op_sys"                  => "ОС",
+     "opendate"                => "Отворен",
+     "owner_idle_time"         => "Време от когато наначение е пипал",
+     "percentage_complete"     => "% завършен",
+     "priority"                => "Приоритет",
+     "product_id"              => "Идентификатор на продукт",
+     "product"                 => "Продукт",
+     "qa_contact"              => "Качествен контрол",
+     "remaining_time"          => "Оставащи часове",
+     "rep_platform"            => "Платформа",
+     "reporter"                => "Докладчик",
+     "reporter_accessible"     => "Достъпен докладчик",
+     "requestees.login_name"   => "Заявител на флаг",
+     "resolution"              => "Решение",
+     "see_also"                => "Виж още",
+     "setters.login_name"      => "Задаващ на флаг",
+     "setting"                 => "Настройка",
+     "settings"                => "Настройки",
+     "short_desc"              => "Резюме",
+     "status_whiteboard"       => "Бяла дъска",
+     "target_milestone"        => "Целево събитие",
+     "version"                 => "Версия",
+     "votes"                   => "Гласове",
+     "work_time"               => "Отработени часове",
+  } %]
+
+  [%# Also include any custom fields or fields which don't have a
+      Description here, by copying their Description from the
+      database. If you want to override this for your language
+      or your installation, just use a hook. %]
+  [% UNLESS Param('shutdownhtml') %]
+    [% FOREACH bz_field = bug_fields.values %]
+      [% SET vars.field_descs.${bz_field.name} = bz_field.description
+         IF !vars.field_descs.${bz_field.name}.defined %]
+    [% END %]
+  [% END %]
+[% END %]
 
 [% Hook.process("end") %]

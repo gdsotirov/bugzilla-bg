@@ -19,7 +19,6 @@
   #                 Gervase Markham <gerv@gerv.net>
   #%]
 
-[% PROCESS global/variables.none.tmpl %]
 [% PROCESS "global/field-descs.none.tmpl" %]
 [% INCLUDE global/header.html.tmpl title = "Жизнен цикъл на $terms.abug" %]
 
@@ -54,47 +53,47 @@
     <td>
       <dl>
         <dt>
-          <b>[% get_status("UNCONFIRMED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "UNCONFIRMED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към базата данни. 
           Никой не е потвърдил, че този [% terms.bug %] е истински. Потребителите
           имащи зададено "canconfirm" позволение могат да потвърдят
-          този [% terms.bug %], променяйки неговото състояние на [% get_status("NEW") FILTER html %]. Или той може
-          да бъде направо разрешен и отбелязан като [% get_status("RESOLVED") FILTER html %].
+          този [% terms.bug %], променяйки неговото състояние на [% display_value("bug_status", "NEW") FILTER html %]. Или той може
+          да бъде направо разрешен и отбелязан като [% display_value("bug_status", "RESOLVED") FILTER html %].
         </dd>
 
         <dt>
-          <b>[% get_status("NEW") FILTER html %]</b>
+          <b>[% display_value("bug_status", "NEW") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към списъка с [% terms.bugs %]
           на назначения и трябва да бъде обработен. [% terms.Bugs %] в
-          това състояние могат да бъдат приети и да станат <b>[% get_status("ASSIGNED") FILTER html %]</b>,
-          предадени на някой друг и да останат <b>[% get_status("NEW") FILTER html %]</b> или разрешени и
-          отбелязани <b>[% get_status("RESOLVED") FILTER html %]</b>.
+          това състояние могат да бъдат приети и да станат <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b>,
+          предадени на някой друг и да останат <b>[% display_value("bug_status", "NEW") FILTER html %]</b> или разрешени и
+          отбелязани [% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% get_status("ASSIGNED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] все още не е разрешен, но е назначен на
           правилния човек. От тук [% terms.bugs %] могат да бъдат дадени на
-          някое друго лице и да станат <b>[% get_status("NEW") FILTER html %]</b> или
-          разрешени ставайки <b>[% get_status("RESOLVED") FILTER html  %]</b>.
+          някое друго лице и да станат <b>[% display_value("bug_status", "NEW") FILTER html %]</b> или
+          разрешени ставайки <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% get_status("REOPENED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>
         </dt>
         <dd>
           Този [% terms.bug %] е бил разрешен, но решението е било сметнато
-          за неправилно. Например [% terms.bug %] със състояние <b>[% get_resolution("WORKSFORME") FILTER html %]</b> е
-          <b>[% get_status("REOPENED") FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
+          за неправилно. Например [% terms.bug %] със състояние <b>[% display_value("resolution", "WORKSFORME") FILTER html %]</b> е
+          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
           вече възпроизводим. От тук [% terms.bugs %] са отбелязвани или
-          <b>[% get_status("ASSIGNED") FILTER html %]</b> или
-          <b>[% get_status("RESOLVED") FILTER html %]</b>.
+          <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b> или
+          <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -115,34 +114,34 @@
     <td>
       <dl>
         <dt>
-          <b>[% get_status("RESOLVED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>
         </dt>
         <dd>
           Взето е решение и то чака проверка от качествения контрол.
           От тук [% terms.bugs %] са или отваряни наново и стават
-          <b>[% get_status("REOPENED") FILTER html %]</b> или
-          <b>[% get_status("VERIFIED") FILTER html %]</b> или биват затворени за
-          добро и отбелязвани <b>[% get_status("CLOSED") FILTER html %]</b>.
+          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b> или
+          <b>[% display_value("bug_status", "VERIFIED") FILTER html %]</b> или биват затворени за
+          добро и отбелязвани <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% get_status("VERIFIED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "VERIFIED") FILTER html %]</b>
         </dt>
         <dd>
           Качествения контрол е прегледал [% terms.abug %] и решението и 
           е съгласен, че е взето правилното решение. [% terms.Bugs %] остават
           в това състояние докато продукта, за който са докладвани,
           в действителност бъде пуснат (на пазара, в Интернет), в който момент те стават 
-          <b>[% get_status("CLOSED") FILTER html %]</b>.
+          <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% get_status("CLOSED") FILTER html %]</b>
+          <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>
         </dt>
         <dd>
           [% terms.Abug %] се смята за мъртъв, решението е правилно. 
           Някои зомби [% terms.bugs %] които изберат да се разхождат по земята
-          отново, трябва да го направят като станат <b>[% get_status("REOPENED") FILTER html %]</b>.
+          отново, трябва да го направят като станат <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>.
         </dd>
       </dl>
     </td>
@@ -150,7 +149,7 @@
     <td>
       <dl>
         <dt>
-          <b>[% get_resolution("FIXED") FILTER html %]</b>
+          <b>[% display_value("resolution", "FIXED") FILTER html %]</b>
         </dt>
         <dd>
           Поправка за този [% terms.bug %] е влязла в дървото и е
@@ -158,14 +157,14 @@
         </dd>
 
         <dt>
-          <b>[% get_resolution("INVALID") FILTER html %]</b>
+          <b>[% display_value("resolution", "INVALID") FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем не е [% terms.bug %].
         </dd>
 
         <dt>
-          <b>[% get_resolution("WONTFIX") FILTER html %]</b>
+          <b>[% display_value("resolution", "WONTFIX") FILTER html %]</b>
         </dt>
         <dd>
           Описания проблем е [% terms.bug %], който никога няма да бъде 
@@ -173,7 +172,7 @@
         </dd>
 
         <dt>
-         <b>[% get_resolution("DUPLICATE") FILTER html %]</b>
+         <b>[% display_value("resolution", "DUPLICATE") FILTER html %]</b>
         </dt>
         <dd>
           Проблема е двойник на съществуващ [% terms.bug %].
@@ -183,7 +182,7 @@
         </dd>
 
         <dt>
-          <b>[% get_resolution("WORKSFORME") FILTER html %]</b>
+          <b>[% display_value("resolution", "WORKSFORME") FILTER html %]</b>
         </dt>
         <dd>
           Всички опити за възпроизвеждане на този [% terms.bug %] са безуспешни
@@ -193,7 +192,7 @@
         </dd>
 
         <dt>
-          <b>[% get_resolution("MOVED") FILTER html %]</b>
+          <b>[% display_value("resolution", "MOVED") FILTER html %]</b>
         </dt>
         <dd>
           Проблема е характерен за свързан продукт
@@ -215,54 +214,52 @@
 Полето описва значимостта и реда, в който [% terms.abug %]
 трябва да бъде оправен. Това поле се използва от
 програмисти/инженери, за да подредят работата, която трябва да се свърши
-Достъпните приоритети са в диапазона от <b>P1</b> (най-важен) до
-<b>P5</b> (най-маловажен).
 
 <h2><a name="bug_severity">Суровост</a></h2>
 Това поле описва въздействието на [% terms.abug %]. 
 
 <table>
   <tr>
-    <th>Блокиращ</th>
+    <th>[% display_value("bug_severity", "blocker") FILTER html %]</th>
 
     <td>Блокира разработката и/или работата по изпитването</td>
   </tr>
 
   <tr>
-    <th>Критичен</th>
+    <th>[% display_value("bug_severity", "critical") FILTER html %]</th>
 
     <td>сривове, загуба на данни, тежки течове на памет</td>
   </tr>
 
   <tr>
-    <th>Важен</th>
+    <th>[% display_value("bug_severity", "major") FILTER html %]</th>
 
     <td>Важна загуба на функционалност</td>
   </tr>
 
   <tr>
-    <th>Нормален</th>
+    <th>[% display_value("bug_severity", "normal") FILTER html %]</th>
 
     <td>нормален пропуск, малка загуба на функционалност при определени обстоятелства</td>
   </tr>
 
 
   <tr>
-    <th>Маловажен</th>
+    <th>[% display_value("bug_severity", "minor") FILTER html %]</th>
 
     <td>незначителна загуба на функционалност или друг проблем, за който
     съществува лесен начин за заобикаляне</td>
   </tr>
 
   <tr>
-    <th>Несъществен</th>
+    <th>[% display_value("bug_severity", "trivial") FILTER html %]</th>
 
     <td>козметичен проблем като сгрешен правопис или неподравнен
     текст</td>
   </tr>
 
   <tr>
-    <th>Подобрение</th>
+    <th>[% display_value("bug_severity", "enhancement") FILTER html %]</th>
 
     <td>Заявка за подобрение</td>
 </table>
@@ -272,23 +269,25 @@
 Позволените платформи включват: 
 
 <ul>
-  <li>Всички (случва се на всички платформи; междуплатформен [% terms.bug %])</li>
+  <li>[% display_value("rep_platform", "All") FILTER html %] (случва се на всички платформи; междуплатформен [% terms.bug %])</li>
 
-  <li>Macintosh</li>
+  <li>[% display_value("rep_platform", "Macintosh") FILTER html %]</li>
 
-  <li>PC</li>
+  <li>[% display_value("rep_platform", "PC") FILTER html %]</li>
 </ul>
-<b>Забележка:</b> При търсене, избирането на възможността "Всички" не избира 
+<b>Забележка:</b> При търсене, избирането на 
+<em>[% display_value("rep_platform", "All") FILTER html %]</em>"Всички" не избира 
 [% terms.bugs %]
 назначени, за която и да е платформа. Избира само [% terms.bugs %] които са
-означени като случващи се на всяка платформа, т.е. обозначени като "Всички".
+означени като случващи се на всяка платформа, т.е. обозначени като
+<em>[% display_value("rep_platform", "All") FILTER html %]</em>. 
 
 <h2><a name="op_sys">Операционна система</a></h2>
 Това е операционната система, за която е докладван [% terms.abug %].
 Позволените операционни системи включват: 
 
 <ul>
-  <li>Всички (случва се на всички операционни системи; междуплатформен 
+  <li>[% display_value("op_sys", "All") FILTER html %] (случва се на всички операционни системи; междуплатформен
   [% terms.bug %])</li>
 
   <li>Windows</li>
@@ -305,12 +304,12 @@
 
 <p>
 Това е лицето натоварено с разрешаването на [% terms.bug %]а. Всеки път когато
-това поле се променя, състоянието се променя на <b>[% get_status("NEW") FILTER html %]</b>, за да бъдат
+това поле се променя, състоянието се променя на <b>[% display_value("bug_status", "NEW") FILTER html %]</b>, за да бъдат
 новите [% terms.bugs %] лесно забележими в списъка на лицето.</p>
 
 <p>
-Подразбиращото се състояние за заявки е зададено като [% get_status("NEW") FILTER html %],
-[% get_status("ASSIGNED") FILTER html %] и [% get_status("REOPENED") FILTER html %].
+Подразбиращото се състояние за заявки е зададено като [% display_value("bug_status", "NEW") FILTER html %],
+[%+ display_value("bug_status", "ASSIGNED") FILTER html %] и [% display_value("bug_status", "REOPENED") FILTER html %].
 Когато търсите за [% terms.bugs %], които са били разрешени или
 проверени не забравяйте да зададете полето за състояние подходящо.
 </p>

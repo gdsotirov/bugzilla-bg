@@ -58,7 +58,6 @@
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 
-<p>Обратно към <a href="./">главната страница с [% terms.bugs %]</a>
-или <a href="editclassifications.cgi">редактиране</a> на други класификации.</p>
+[% PROCESS admin/classifications/footer.html.tmpl %] 
 
 [% PROCESS global/footer.html.tmpl %] 

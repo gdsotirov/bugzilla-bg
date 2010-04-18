@@ -31,14 +31,16 @@
 
 [% IF target == "enter_bug.cgi" %]
   [% title = "Въвеждане на $terms.Bug" %]
-  [% subheader = BLOCK %]Първо, трябва да изберете продукт, за който да въведете [% terms.bug %]. [% END %]
+  [% h2 = BLOCK %]Първо, трябва да изберете продукт, за който да въведете [% terms.bug %]: [% END %]
 [% ELSIF target == "describecomponents.cgi" %]
-  [% title = "Описания на съставни части в $terms.Bugzilla" %]
-  [% subheader = "Моля, укажете продукта за чиито съставни части желеате описание." %]
+  [% title = "$terms.Bugzilla: Прелистване" %]
+  [% h2 = "Изберете категория на продукт за прелистване:" %]
 [% END %]
 
 [% DEFAULT title = "Изберете продукт" %]
 [% PROCESS global/header.html.tmpl %]
+
+<h2>[% h2 FILTER html %]</h2>
 
 <table>
 

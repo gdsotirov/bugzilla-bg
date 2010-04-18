@@ -25,6 +25,7 @@
 <ul class="links">
   <li><a href="./">Начало</a></li>
   <li><span class="separator">| </span><a href="enter_bug.cgi">Нов</a></li>
+  <li><span class="separator">| </span><a href="describecomponents.cgi">Прелистване</a></li>
   <li><span class="separator">| </span><a href="query.cgi">Търсене</a></li>
 
   <li class="form">
@@ -34,8 +35,10 @@
                   { alert('Моля, първо въведете една или повече търсени думи.');
                     return false; } return true;">
     <input class="txt" type="text" id="quicksearch[% qs_suffix FILTER html %]" name="quicksearch">
-    <input class="btn" type="submit" value="Търсене" id="find[% qs_suffix FILTER html %]">
-    [%-# Work around FF bug: keep this on one line %]</form></li>
+    <input class="btn" type="submit" value="Търсене"
+           id="find[% qs_suffix FILTER html %]">
+    [%-# Work around FF bug: keep this on one line %]</form>
+  <a href="page.cgi?id=quicksearch.html" title="Помощ за бързо търсене">[?]</a></li>
 
   <li><span class="separator">| </span><a href="report.cgi">Доклади</a></li>
 
@@ -50,10 +53,6 @@
       [% END %]
     [% END %]
   [%-# Work around FF bug: keep this on one line %]</li>
-
-  [% IF user.id && Param('usevotes') %]
-    <li><span class="separator">| </span><a href="votes.cgi?action=show_user">Мои&nbsp;гласове</a></li>
-  [% END %]
 
   [% IF user.login %]
     <li><span class="separator">| </span><a href="userprefs.cgi">Предпочитания</a></li>

@@ -1,0 +1,59 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Frédéric Buclin.
+  # Portions created by the Initial Developer are Copyright (C) 2009
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s):
+  #  Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[% series_name = BLOCK %]
+  [% series.category FILTER html %] /
+  [%+ series.subcategory FILTER html %] /
+  [%+ series.name FILTER html %]
+[% END %]
+
+[% PROCESS global/header.html.tmpl title = "Изтриване на редица"
+                                   style_urls = ['skins/standard/admin.css'] %]
+
+<p>
+  Ще премахнете напълно редица <b>[% series_name FILTER none %]</b>
+  от базата с данни. Всички данни свързани с тази редица ще бъдат безвъзвратно изтрити.
+</p>
+<p>
+  [% IF series.creator %]
+    Редицата е била създадена от <a href="mailto:[% series.creator.email FILTER html %]">
+    [% series.creator.email FILTER html %]</a>
+  [% ELSE %]
+    Редицата е била създадена автоматично от [% terms.Bugzilla %]
+  [% END %]
+
+  [% IF series.public %]
+    и е общодостъпна.
+  [% ELSIF series.creator %]
+    и е видима само от него.
+  [% ELSE %]
+    и не може да бъде преглеждана от всеки.
+  [% END %]
+</p>
+
+<p class="areyoureallyreallysure">Сигурни ли сте, че искате да изтриете редицата?</p>
+
+<p>
+  <a href="chart.cgi?action=delete&amp;series_id=[% series.series_id FILTER html %]&amp;token=
+           [%- issue_hash_token([series.id, series.name]) FILTER url_quote %]">Да, изтриване</a> |
+  <a href="chart.cgi">Не, връщане към страницата с графики</a>
+</p>
+
+[% PROCESS global/footer.html.tmpl %]

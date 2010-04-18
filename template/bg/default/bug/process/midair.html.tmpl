@@ -45,7 +45,7 @@
 
 <p>
   Някой друг е направил промени по този
-  [%+ "$terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
+  [%+ "$terms.bug $bug.id" FILTER bug_link(bug) FILTER none %]
   по същото време по което и вие.
   Направените промени са:
 </p>
@@ -102,7 +102,7 @@
   [% END %]
   <li>
     Отхвърляне на промените ми и
-    [%+ "връщане към $terms.bug $bug.id" FILTER bug_link(bug.id) FILTER none %]
+    [%+ "връщане към $terms.bug $bug.id" FILTER bug_link(bug) FILTER none %]
   </li>
 </ul>
 

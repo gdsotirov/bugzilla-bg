@@ -82,8 +82,8 @@
 
 </tr>
 <tr>
-  <TD VALIGN="top">Затворенa за [% terms.bugs %]:</TD>
-  <TD VALIGN="top">[% IF product.disallow_new %]Да[% ELSE %]Не[% END %]</td>
+  <TD VALIGN="top">Отворен за [% terms.bugs %]:</TD>
+  <TD VALIGN="top">[% IF product.is_active %]Да[% ELSE %]Не[% END %]</td>
 </tr>
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
@@ -143,7 +143,7 @@
 
 [% IF comp.bug_count == 0 || Param('allowbugdeletion') %]
 
-  <p>Наистина ли желаете да изтриете тази съставна част?<p>
+  <p>Наистина ли желаете да изтриете тази съставна част?</p>
   
   <form method="post" action="editcomponents.cgi">
   <input type="submit" id="delete" value="Да, изтриване">

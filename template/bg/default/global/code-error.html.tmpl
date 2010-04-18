@@ -42,10 +42,18 @@
                     'query.html#list' => "$terms.Bug списъци"} %]
     Не разпознавам стойността (<em>[% action FILTER html %]</em>)
     на променливата <em>action</em>.
-
+  
   [% ELSIF error == "attachment_already_obsolete" %]
     Приставка №[% attach_id FILTER html %] ([% description FILTER html %])
     е вече стара.
+
+  [% ELSIF error == "attachment_local_storage_disabled" %]
+    [% title = "Местно съхранение забранено" %]
+    Не можете да сърханявате приставки местно. Тази възможност е забранена.
+
+  [% ELSIF error == "attachment_url_disabled" %]
+    [% title = "Закачане на URL забранено" %]
+    Не можете да закачите <abbr lang="en" title="Uniform Resource Locator">URL</abbr>. Тази възможност в момента е забранена.
 
   [% ELSIF error == "auth_invalid_email" %]
     [% title = "Недействителен е-пощенски адрес" %]
@@ -102,11 +110,6 @@
   [% ELSIF error == "chart_file_open_fail" %]
     Не може да бъде отворен файла с данни за графиката <tt>[% filename FILTER html %]</tt>.
   
-  [% ELSIF error == "chart_lines_not_installed" %]
-    [% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули необходими за Графики'} %]
-    Графиките няма да работят без Chart::Lines Perl модула да бъде инсталиран.
-    Пуснете checksetup.pl за инструкции по инсталацията.
-
   [% ELSIF error == "column_not_null_without_default" %]
     Провалено добавянето на колона [% name FILTER html %]:
     Не можете да добавите NOT NULL колона, без стойност по подразбиране, към съществуваща таблица
@@ -116,6 +119,23 @@
     Не можете да промените колоната [% name FILTER html %], да бъде NOT NULL
     без да укажете стойност по подразбиране или нещо за $set_nulls_to, защото
     в момента тя съдържа NULL стойности в себе си.
+
+  [% ELSIF error == "comment_extra_data_not_allowed" %]
+    Опитахте се да зададете полето <code>extra_data</code> на 
+    '[% extra_data FILTER html %]', но коментари от тип [% type FILTER html %]
+    не приемат аргумент <code>extra_data</code>.
+
+  [% ELSIF error == "comment_extra_data_required" %]
+    Коменатир от тип [% type FILTER html %] изискват задаването на
+    аргумент <code>extra_data</code>.
+
+  [% ELSIF error == "comment_extra_data_not_numeric" %]
+    Опитахте се да зададете полето <code>extra_data</code> на
+    '[% extra_data FILTER html %]', но коментари от тип [% type FILTER html %]
+    изискват числов <code>extra_data</code> аргумент.
+
+  [% ELSIF error == "comment_type_invalid" %]
+    '[% type FILTER html %]' не е действителен тип на коментар.
 
   [% ELSIF error == "db_rename_conflict" %]
     Конфликт с името: Не можете да преименувате [% old FILTER html %] на
@@ -136,9 +156,32 @@
       е-пощенския адрес на потребителя.
     [% END %]
 
-  [% ELSIF error == "extension_invalid" %]
-    Възникна грешка при обработването на куката [% name FILTER html %] в
-    разширението [% extension FILTER html %]: [% errstr FILTER html %]
+  [% ELSIF error == "extension_must_be_subclass" %]
+    <code>[% package FILTER html %]</code> от 
+    <code>[% filename FILTER html %]</code> не е подклас на
+    <code>[% class FILTER html %]</code>.
+
+  [% ELSIF error == "extension_must_return_name" %]
+    <code>[% extension FILTER html %]</code> върна
+    <code>[% returned FILTER html %]</code>, което не е правилно име
+    за едно разширение. Разширенията трябва да върнат своето име, а не <code>1</code>
+    или друго число. Вижте документацията на
+    <a href="[% docs_urlbase FILTER html %]api/Bugzilla/Extension.html">Bugzilla::Extension</a>
+    за подробности.
+
+  [% ELSIF error == "extension_no_name" %]
+    Не беше открит метод <code>NAME</code> в 
+    <code>[% package FILTER html %]</code> (зареден от
+    <code>[% filename FILTER html %]</code>). Това значи, че
+    разширението има един или повече от следните проблеми:
+
+    <ul>
+      <li><code>[% filename FILTER html %]</code> не определя
+        пакет <code>[% package FILTER html %]</code>.</li>
+      <li><code>[% package FILTER html %]</code> не определя
+        метод <code>NAME</code> (или метод <code>NAME</code>
+        е върнал празен низ).</li>
+    </ul>
 
   [% ELSIF error == "extern_id_conflict" %]
     Външния идентификатор '[% extern_id FILTER html %]' вече съществува
@@ -151,18 +194,17 @@
     за създаване на правилния клас (не можете да викате клас методи директно
     от Bugzilla::Field::Choice).
 
-  [% ELSIF error == "field_type_mismatch" %]
-    Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
-    и <code>[% type FILTER html %]</code> заедно.
-
   [% ELSIF error == "field_not_custom" %]
     '[% field.description FILTER html %]' ([% field.name FILTER html %])
     не е потребителско поле.
 
-  [% ELSIF error == "gd_not_installed" %]
-[% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули необходими за Графики'} %]
-    Графиките няма да работят без GD Perl модула да бъде инсталиран.
-    Пуснете checksetup.pl за инструкции по инсталацията.
+  [% ELSIF error == "field_type_mismatch" %]
+    Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
+    и <code>[% type FILTER html %]</code> заедно.
+
+  [% ELSIF error == "field_type_not_specified" %]
+    [% title = "Не е указан тип на поле" %]
+    Трябва да укажете тип при създаването на потребителско поле.
 
   [% ELSIF error == "illegal_content_type_method" %]
     Данните ви са се повредили при предаването по някакъв начин. Полето <em>content
@@ -182,17 +224,6 @@
      Номера на една от приставките които желахте да извадите от употреба,
      [% attach_id FILTER html %], е недействителен.
           
-  [% ELSIF error == "invalid_column_name_cookie" %]
-    [% title = "Недействително име не колона" %]
-     Потребителския начин на подреждане указан във вашата бисквитка съдържа недействително
-     име на колона <em>[% fragment FILTER html %]</em>.
-     Бисквитката бе изчистена.
-         
-  [% ELSIF error == "invalid_column_name_form" %]
-    [% title = "Недействително има не колона" %]
-     Потребителския начин на подреждане указан в подадените от вас данни съдържа
-     недействително име на колона <em>[% fragment FILTER html %]</em>.
-
   [% ELSIF error == "invalid_customfield_type" %]
     [% title = "Недействителен тип на поле" %]
     Типа <em>[% type FILTER html %]</em> не е действителен тип на поле.
@@ -200,6 +231,12 @@
   [% ELSIF error == "invalid_dimensions" %]
     [% title = "Недействителни измерения" %]
     Указаната дължина или височина не е положително цяло число.
+
+  [% ELSIF error == "invalid_feature" %]
+    [% title = "Недействително име на функционалност" %]
+    [% feature FILTER html %] не е действително име на функционалност. Вижте
+    <code>OPTIONAL_MODULES</code> в 
+    <code>Bugzilla::Install::Requirements</code> за действителни имена.
 
   [% ELSIF error == "invalid_flag_association" %]
     [% title = "Недействително свързване на флаг" %]
@@ -225,15 +262,19 @@
     но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
     [% terms.bug %] [%+ my_bug_id FILTER html %].
 
-  [% ELSIF error == "flags_not_available" %]
-    [% title = "Редактирането на флаг не е разрешено" %]
-    [% IF type == "b" %]
-      Флагове не могат да бъдат задавани или променяни при
-      промяната на няколко [% terms.abug %] наведнъж.
-    [% ELSE %]
-      Обръщения към съществуващи флагове, при създаване
-      на нова приставка са недействителни.
-    [% END %] 
+  [% ELSIF error == "feature_disabled" %]
+    Функционалността [% install_string("feature_$feature") FILTER html %] не е
+    налична в тази [% terms.Bugzilla %] инсталация. 
+    [% IF user.in_group('admin') %]
+      Ако желаете да разрешите тази функционалност, моля пуснете 
+      <kbd>checksetup.pl</kbd>, за да видите как да инсталирате необходимите
+      изисквания за нея.
+    [% END %]
+
+  [% ELSIF error == "flag_unexpected_object" %]
+    [% title = "Неразпознат обект" %]
+    Не могат да бъдат задавани флагове от тип [% caller FILTER html %].
+    Те могат да бъдат задавни само за [% terms.bugs %] и приставки.
 
   [% ELSIF error == "flag_requestee_disabled" %]
     [% title = "Флага не е изискуем от определен човек" %]
@@ -282,11 +323,6 @@
     Вмъкването на задание <code>[% job FILTER html %]</code> в работната 
     Опашка пропадна със следната грешка: [% errmsg FILTER html %]
 
-  [% ELSIF error == "jobqueue_not_configured" %]
-    Използването на системата работна опашка изисква определени Perl модули
-    да са инсталирани. Пуснете <code>checksetup.pl</code>, за да видите кои модули
-    ви липсват.
-
   [% ELSIF error == "jobqueue_no_job_mapping" %]
     <code>Bugzilla::JobQueue</code> не бил конфигуриран за справяне
     с работата "[% job FILTER html %]".  Трябва да добавите този тип работа
@@ -308,7 +344,11 @@
   [% ELSIF error == "ldap_search_error" %]
     Възникна грешка при търсене в <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> за
     &quot;[% username FILTER html %]&quot;:
-   <code>[% errstr FILTER html %]</code>
+    [% IF errstr %]
+      <code>[% errstr FILTER html %]</code>
+    [% ELSE %]
+      Потребителя не е намерен в LDAP
+    [% END %]
 
   [% ELSIF error == "ldap_server_not_defined" %]
     Не е определен <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър за удостоверяване.
@@ -331,13 +371,13 @@
     Необходим е действителен идентификатор на остроумие.
 
   [% ELSIF error == "no_manual_moved" %]
-    Не можете да зададете решението на [% terms.abug %] като ПРЕМЕСТЕН, без
+    Не можете да зададете решението на [% terms.abug %] като [% display_value("resolution", "MOVED") FILTER html %], без
     да преместите [% terms.abug %].
 
   [% ELSIF error == "no_open_bug_status" %]
     [% title = "$terms.Bug Cannot Be Confirmed" %]
     Няма действително преминаване от
-    [%+ get_status("UNCONFIRMED") FILTER html %] към отворено състояние.
+    [%+ display_value("bug_status", "UNCONFIRMED") FILTER html %] към отворено състояние.
 
   [% ELSIF error == "param_invalid" %]
     [% title = "Недействителен параметър" %]
@@ -346,8 +386,8 @@
 
   [% ELSIF error == "param_must_be_numeric" %]
     [% title = "Неправилен параметър" %]
-    Подаден е неправилен параметър на [% function FILTER html %].
-    Необходимо е да бъде числов.
+    Подаден е неправилен параметър <code>[% param FILTER html %]</code> на.
+    <code>[% function FILTER html %]</code>: Необходимо е да бъде числов.
 
   [% ELSIF error == "param_required" %]
     [% title = "Липсващ параметър" %]
@@ -391,9 +431,6 @@
     Възникна грешка при подготовката за <abbr lang="en" title="Remote Authentication Dial In User Service">RADIUS</abbr> заявка за удостоверяване:
     <code>[% errstr FILTER html %]</code>.
 
-  [% ELSIF error == "unknown_comparison_type" %]
-    Указаният тип за сравнение не се поддържа.
-
   [% ELSIF error == "request_queue_group_invalid" %]
     Полето за група <em>[% group FILTER html %]</em> е недействително.
 
@@ -420,12 +457,6 @@
   [% ELSIF error == "setting_value_invalid" %]
     Стойността "<code>[% value FILTER html %]</code>" не е в списъка с
     възможни стойности за настройката <em>[% name FILTER html %]</em>.
-
-  [% ELSIF error == "soap_not_installed" %]
-    [% admindocslinks = {'installation.html#install-perlmodules' => 'Инсталиране на Perl модули'} %]
-    <abbr lang="en" title="Extensible Markup Language Remote Procedure Call">XMLRPC</abbr> интерфейса няма да работи без SOAP::Lite Perl модула да бъде
-    инсталиран.
-    Пуснете checksetup.pl за инструкции по инсталацията.
 
   [% ELSIF error == "token_generation_error" %]
     Нещо е наистина грешно в системата за създаване на признаци.

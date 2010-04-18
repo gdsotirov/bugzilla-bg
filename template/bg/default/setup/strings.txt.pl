@@ -33,16 +33,39 @@
     checking_dbd      => 'Проверка на наличните Perl DBD модули...',
     checking_optional => 'Следните Perl модули са незадължителни:',
     checking_modules  => 'Проверка на Perl модули...',
+    chmod_failed      => '##path##: Пропадна смяна на права: ##error##',
+    chown_failed      => '##path##: Пропадна смяна на собственост: ##error##',
     commands_dbd      => <<EOT,
 ТРЯБЯА ДА ПУСНЕТЕ ЕДНА ОТ СЛЕДНИТЕ КОМАНДИ (в зависимост от това коя база данни
 използвате):
 EOT
     commands_optional => 'КОМАНДИ ЗА ИНСТАЛИРАНЕ НА НЕЗАДЪЛЖИТЕЛНИ МОДУЛИ:',
     commands_required => <<EOT,
-COMMANDS TO INSTALL REQUIRED MODULES (You *must* run all these commands
-and then re-run checksetup.pl):
+КОМАНДИ ЗА ИНСТАЛИРАНЕ НА ЗАДЪЛЖИТЕЛНИ МОДУЛИ (*Трябва да* пуснете всички тези команди
+и пуснете отново този скрипт):
 EOT
     done => 'готово.',
+    extension_must_return_name => <<END,
+##file## върна ##returned##, което не е правилно име на разширение.
+Разширенията трябва да върнат името си, а не <code>1</code> или друго число. Вижте
+документацията на Bugzilla::Extension за подробности.
+END
+    feature_auth_ldap         => 'LDAP удостоверяване',
+    feature_auth_radius       => 'RADIUS удостоверяване',
+    feature_graphical_reports => 'Графични доклади',
+    feature_html_desc         => 'Повече HTML в описанията на Продукт/Група',
+    feature_inbound_email     => 'Входяща е-поща',
+    feature_jobqueue          => 'Поща във фонов режим',
+    feature_jsonrpc           => 'JSON-RPC Interface',
+    feature_new_charts        => 'Нови графики',
+    feature_old_charts        => 'Стари графики',
+    feature_mod_perl          => 'mod_perl',
+    feature_moving            => 'Преместване на бъгове между инсталации',
+    feature_patch_viewer      => 'Преглед на кръпки',
+    feature_smtp_auth         => 'SMTP удостоверяване',
+    feature_updates           => 'Автоматични уведомления за обновяване',
+    feature_xmlrpc            => 'XML-RPC Interface',
+
     header => "* Това е Bugzilla ##bz_ver## на perl ##perl_ver##\n"
             . "* Работеща на ##os_name## ##os_ver##",
     install_all => <<EOT,
@@ -61,6 +84,7 @@ EOT
 
 EOT
     install_module => 'Инсталиране на ##module## версия ##version##...',
+    installation_failed => '*** Провалена инсталация. Прочетете предходното съобщение. ***',
     max_allowed_packet => <<EOT,
 ВНИМАНИЕ: Трябва да зададете параметъра max_allowed_packet в MySQL
 настройката си до поне ##needed##. В момента той е зададен на ##current##.
@@ -125,6 +149,11 @@ EOT
 * "theory58S" в началото на показания списък.                         *
 EOT
     template_precompile   => "Предварителна компилация на шаблони...",
+    template_removal_failed => <<END,
+ВНИМАНИЕ: Папката '##datadir##/template' не може да бъде премахната.
+         Тя беше преместена в '##datadir##/deleteme', като трябва да бъде
+         изтрита ръчно за икономия на дисково пространство.
+END
     template_removing_dir => "Премахване на съществуващите компилирани шаблони...",
 );
 
