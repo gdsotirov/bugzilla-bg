@@ -29,7 +29,7 @@
     table.requests th { text-align: left; }
     table#filtering th { text-align: right; }
   "
-  onload="var f = document.request_form; selectProduct(f.product, f.component, null, null, 'Any');"
+  onload="var f = document.request_form; selectProduct(f.product, f.component, null, null, 'Всяка');"
   javascript_urls=["js/productform.js"]
 %]
 
@@ -75,8 +75,8 @@
            title="Е-пощенски адрес на заявителя"></td>
       <th>Продукт:</th>
       <td>
-        <select name="product" onchange="selectProduct(this, this.form.component, null, null, 'Any');">
-          <option value="">Който и да е</option>
+        <select name="product" onchange="selectProduct(this, this.form.component, null, null, 'Всеки');">
+          <option value="">Всеки</option>
           [% IF Param('useclassification') %]
             [% FOREACH c = user.get_selectable_classifications %]
               <optgroup label="[% c.name FILTER html %]">
@@ -105,9 +105,6 @@
                     options=types
                     default=cgi.param('type') %]
       </td>
-
-      [%# We could let people see a "queue" of non-pending requests. %]
-      <!--
       <th>Състояние:</th>
       <td>
         [%# PROCESS "global/select-menu.html.tmpl"
@@ -115,8 +112,6 @@
                     options=["all", "?", "+-", "+", "-"]
                     default=cgi.param('status') %]
       </td>
-      -->
-
     </tr>
     <tr>
       <th>Изпълнител:</th>
@@ -125,7 +120,7 @@
       <th>Съставна част:</th>
       <td>
         <select name="component">
-          <option value="">Която и да е</option>
+          <option value="">Всяка</option>
           [% FOREACH comp = components %]
             <option value="[% comp FILTER html %]" [% "selected" IF cgi.param('component') == comp %]>
               [% comp FILTER html %]</option>
@@ -135,10 +130,10 @@
       <th>Групирай по:</th>
       <td>
         [% groups = {
-            "Requester" => 'requester' ,
-            "Requestee" => 'requestee',
-            "Flag" => 'type' ,
-            "Product/Component" => 'category'
+            "Заявител" => 'requester' ,
+            "Изпълнител" => 'requestee',
+            "Флаг" => 'type' ,
+            "Продукт/Съставна част" => 'category'
           } %]
         [% PROCESS "global/select-menu.html.tmpl" name="group" options=groups default=cgi.param('group') %]
       </td>
