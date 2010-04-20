@@ -1,0 +1,86 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[% 
+   title = "Общи"
+   desc = "Разнообразни общи настройки, които са незадължителни." 
+%]
+
+[% param_descs = {
+  maintainer => 
+    "Електронния пощенски адрес на лицето, което поддържа тази инсталация "
+    _ " на ${terms.Bugzilla}.",
+
+  docs_urlbase =>
+    "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички"
+    _ " $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та към документация. Може да бъде абсолютен <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>"
+    _ " или относителен към параметъра <tt>urlbase</tt>. Оставете"
+    _ " празно за подтискане на връзките към документацията."
+    _ "'%lang%' ще бъде заменено с предпочитания език на потребителя (ако"
+    _ " е налична документация на този език.",
+
+  utf8 => 
+    "Използване на UTF-8 (Уникод) кодиране за всичкия текст в ${terms.Bugzilla}. Новите"
+    _ " инсталации трябва да разрешат този параметър, за да предотвратят проблеми с кодирането на"
+    _ " знаците. <strong>Съществуващите бази данни трябва да разрешат параметъра"
+    _ " само след като данните бъдат обърнати от съществуващи наследствени"
+    _ " кодирания към UTF-8 с използването на"
+    _ " скрипта <kbd>contrib/recode.pl</kbd></strong>."
+    _ " <p>Обърнете внимание, че ако включите параметъра от &quot;off&quot; на"
+    _ " трябва да пуснете отново checksetup.pl непосредствено"
+    _ " след това.</p>",
+
+  shutdownhtml => 
+    "Ако това поле не е празно, тогава $terms.Bugzilla ще бъде напълно"
+    _ " забранена и този текст ще бъде показван вместо всички"
+    _ " $terms.Bugzilla страници.",
+
+  announcehtml => 
+    "Ако полето не е празно, $terms.Bugzilla ще"
+    _ " показва това което е в него отгоре на всяка"
+    _ " <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> страница. <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> кода, който поставите в това поле, не е обвит или"
+    _ " вмъкнат в нищо. Може да желате да го обвиете вътре в"
+    _ "<tt>&lt;div&gt;</tt>. Дайте на div <em>id=\"message\"</em>, за да получите"
+    _ " зелен текст вътре в червена кутия или <em>class=\"bz_private\"</em> за"
+    _ " тъмно червено на червен фон.  Всичко зададено в "
+    _ " <tt>skins/standard/global.css</tt> или <tt>skins/custom/global.css</tt>"
+    _ " ще работи.  За да получите центриран текст, използвайте <em>style=\"text-align: "
+    _  " center;\"</em>.",
+
+  upgrade_notification => 
+    "$terms.Bugzilla може да ви уведоми когато е налична нова версия."
+    _ " Уведомлението ще се появи на началната страница на $terms.Bugzilla,"
+    _ " само за администратори."
+    _ " <ul><li>'development_snapshot' уведомява ви за последната "
+    _ " версия в ствола (т.е. версия за разработчици), която е пусната.</li>"
+    _ " <li>'latest_stable_release' уведомява ви за най-скорошната"
+    _ "  версия налична от най-последния стабилен клон. Клона"
+    _ " може да бъде различен от клона на който е основана инсталацията ви.</li>"
+    _ " <li>'stable_branch_release' уведомява ви само за нови версии"
+    _ " отговарящи на клона на който е основана инсталацията ви."
+    _ " Ако ползвате кандидат версия, ще получите уведомление"
+    _ " също така за по-нови кандидат версии.</li>"
+    _ " <li>'disabled' никога няма да ви уведомява за нови версии и няма"
+    _ " да осъществава връзка към отдалечен сървър.</li></ul>"
+    _ " <p>Имайтре в предвид, че ако $terms.Bugzilla сървъра ви изисква прокси за"
+    _ " достъп до Интернет, може също да ви се наложи да зададете параметъра <tt>proxy_url</tt>"
+    _ " в раздела За напреднали.</p>",
+} %]

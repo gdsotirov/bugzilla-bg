@@ -1,0 +1,50 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+
+[% 
+   title = "За напреднали"
+   desc = "Настройки за разширени конфигурации."
+%]
+
+[% param_descs = {
+  cookiedomain => 
+    "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като"
+    _ " '.foo.com' ще позволи достъп също и на 'bar.foo.com' до"
+    _ " бисквитките на ${terms.Bugzilla}. Това е полезно ако имате повече от"
+    _ " едно име на хост сочещо към един и същи web сървър и желаете те"
+    _ " да споделят бисквитките на ${terms.Bugzilla}.",
+
+  inbound_proxies =>
+    "Когато входящия към $terms.Bugzilla трафик минава през прокси,"
+    _ " $terms.Bugzilla приема, че <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреса на всеки отделен"
+    _ " потребител е <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреса на проксито. Ако въведете разделен със запетаи"
+    _ " списък от <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреси в този параметър, тогава $terms.Bugzilla ще вярва на всяка"
+    _ " <code>X-Forwarded-For</code> заглавка изпратена от тези <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреси,"
+    _ " и ще използва стойността на заглавката като крайния <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адрес на потребителя.",
+
+  proxy_url => 
+    "$terms.Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за"
+    _ " нови версии (виж параметъра <tt>upgrade_notification</tt>)."
+    _ " Ако $terms.Bugzilla сървъра ви е зад прокси, може да е"
+    _ " необходимо да въведете неговия <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> ако web сървъра няма достъп до"
+    _ " променливата на средата HTTP_PROXY. Ако трябва да се удостоверите,"
+    _ " използвайте синтаксиса <code>http://user:pass@proxy_url/</code>.",
+} %]
