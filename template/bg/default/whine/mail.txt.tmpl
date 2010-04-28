@@ -54,7 +54,7 @@
    Платформа: [%+ display_value("rep_platform", bug.rep_platform) %]
  Назначен на: [%+ bug.assigned_to %]
    Състояние: [%+ display_value("bug_status", bug.bug_status) %]
-            [%- IF bug.resolution -%]    Решение: [% display_value("resolution", bug.resolution) -%
+            [%- IF bug.resolution -%]    Решение: [% display_value("resolution", bug.resolution) -%]
                                 [%- END %]
       Резюме: [% bug.short_desc %]
 
