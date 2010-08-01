@@ -59,6 +59,40 @@
 
 <h2><a name="v34_point"></a>Обновления в тази 3.4.x версия</h2>
 
+<h3>3.4.7</h3>
+
+<p>Тази версия поправя едни проблем по сигурността свързан с време следене.
+  Вижте <a href="http://www.bugzilla.org/security/3.2.6/">Бюлетина по
+  сигурността</a> за подробности.</p>
+
+<p>В допълнение, следните важни поправки/промени бяха направени в
+  тази версия:</p>
+
+<ul>
+  <li><kbd>show_bug.cgi</kbd> (страницата за преглед/промяна на [% terms.bug %])
+    вече трябва да е значително по-бърза когато имате много коментари към
+    [%+ terms.abug %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=498309">[% terms.Bug %] 498309</a>)
+  </li>
+  <li><kbd>jobqueue.pl</kbd> би загубил връзката си с базата данни и
+    би спрял изпращането на поща ако е работил дълго време.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=538705">[% terms.Bug %] 538705</a>)
+  </li>
+  <li>Когато зареждате <kbd>config.cgi</kbd>, вече можете да укажете 
+    <kbd>?flags=0</kbd> в URL, за да заявите, че не искате
+    данни за флаговете. Това ускорява config.cgi значително.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=553267">[% terms.Bug %] 553267</a>)
+  </li>
+  <li>Влизането след смяна на парола ще изведе объркваща грешка.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=549814">[% terms.Bug %] 549814</a>)
+  </li>
+  <li>Някои сривове които се случват при ползването на PostgreSQL когато се опитва
+    изтриване на потребителско поле са вече оправени. 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=557495">[% terms.Bug %] 557495</a>
+    и <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=557686">[% terms.Bug %] 557686</a>)
+  </li>
+</ul>
+
 <h3>3.4.6</h3>
 
 <ul>

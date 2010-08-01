@@ -36,7 +36,7 @@
   #              already_wrapped: Determines whether the comment is pre-wrapped
   #%]
 
-[% PROCESS 'global/field-descs.none.tmpl' %]
+[% PROCESS 'global/variables.none.tmpl' %]
 
 [%- IF comment.type == constants.CMT_DUPE_OF -%]
 X[% comment.body %]
@@ -52,8 +52,7 @@ X[% comment.body %]
 [%+ terms.ABug %] е преместен в [% Param("move-to-url") %].
 Ако преместването е успяло, [% comment.extra_data %] ще получи поща съдържаща
 номера на новия [% terms.bug %] в другата база данни.
-Ако всичко е минало добре, моля означете този [% terms.bug %]
-[%+ get_status('VERIFIED') %], и го пуснете във връзка към новия [% terms.bug %].
+Ако всичко е минало добре, моля пуснете връзка към новия [% terms.bug %].
 Иначе, отворете наново [% terms.abug %].
 [%- ELSE -%]
 X[%- comment.body %]
