@@ -27,6 +27,7 @@
 
 <ul class="bz_toc">
   <li><a href="#v36_introduction">Въведение</a></li>
+  <li><a href="#v36_point">Обновления в тази 3.6.x версия</a></li>
   <li><a href="#v36_req">Минимални изисквания</a></li>
   <li><a href="#v36_feat">Нови възможности и подобрения</a></li>
   <li><a href="#v36_issues">Оставащи проблеми</a></li>
@@ -57,6 +58,49 @@
   <a href="http://www.novell.com/">Novell</a> за финансиране разработката
   на различни възможности и подобрения в тази версия на
   [%+ terms.Bugzilla %].</p>
+
+<h2 id="v36_point">Обновления в тази 3.6.x версия</h2>
+
+<h3>3.6.1</h3>
+
+<p>Тази версия поправя два пропуска по сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.2.6/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>В допълнение, следните важни поправки/промени бяха направени в
+  тази версия:</p>
+
+<ul>
+  <li>Използването на страницата "Промяна на колони" понякога води до
+    чист текст вместо <abbr lang="en" title="HyperText Markup Language">HTML</abbr>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=376044">[% terms.Bug %] 376044</a>)
+  </li>
+  <li>Разширения имащи само шаблони и без код вече работят.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=562551">[% terms.Bug %] 562551</a>)
+  </li>
+  <li><kbd>install-module.pl</kbd> беше оправен, така че да инсталира
+    модули правилно едновременно на нови и стари версии на Perl.
+     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=560318">[% terms.Bug %] 560318</a>
+     и <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=560330">[% terms.Bug %] 560330</a>)
+  </li>
+  <li>Вече е възможно да надградите от 3.4 до 3.6 ако използвате Oracle.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=561379">[% terms.Bug %] 561379</a>)
+  </li>
+  <li>Промяната на име на стойност на поле (с използването на администраторския панел Стойности
+    на полета) не работеше ако стойността беше зададена като подразбираща се за
+    полето.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=561296">[% terms.Bug %] 561296</a>)
+  </li>
+  <li>Ако имате параметъра <kbd>noresolveonopenblockers</kbd> зададен,
+    [%+ terms.bugs %] не могат да бъдат променяни въобще ако са отбелязани ОПРАВЕН
+    и имат някакви отворени зависимости. (Предназначението на параметъра е само да предотвратява
+    <em>отбелязването</em> на [% terms.bugs %] като ОПРАВЕН, не промяна на вече ОПРАВЕНИ
+    [%+ terms.bugs %].)
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=565314">[% terms.Bug %] 565314</a>)
+  </li>
+  <li>Някои дребни проблеми с Perl 5.12 бяха оправени (най-вече предупреждения които Perl
+    5.12 извеждаше). [% terms.Bugzilla %] вече поддържа Perl 5.12.</li>
+</ul>
 
 <h2 id="v36_req">Минимални изисквания</h2>
 
