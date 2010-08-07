@@ -61,6 +61,63 @@
 
 <h2 id="v36_point">Обновления в тази 3.6.x версия</h2>
 
+<h3>3.6.2</h3>
+
+<p>Тази версия поправя различни проблеми със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.2.7/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>В допълнение, следните важни поправки/промени бяха направени в
+  тази версия:</p>
+
+<ul>
+  <li>[% terms.Bugzilla %] инсталации вървящи под стари версии на IIS
+    вече няма да изпитват "Undef to trick_taint" грешки, които се
+    случват понякога.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=521416">[% terms.Bug %] 521416</a>)
+  </li>
+  <li>На уведомленията по е-поща им липсваха датите на които са направени коментарите.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=578003">[% terms.Bug %] 578003</a>)
+  </li>
+  <li>Поставянето на израз в кавички в кутията Quicksearch отново работи правилно.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=578494">[% terms.Bug %] 578494</a>
+    and <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=553884">[% terms.Bug %] 553884</a>)
+  </li>
+  <li>Quicksearch беше обикновенно (неправилно) ограничаван до 200 резултата.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=581622">[% terms.Bug %] 581622</a>)
+  </li>
+  <li>Под Windows, <kbd>install-module.pl</kbd> вече може правилно да инсталира
+    DateTime и определени други Perl модули, които не се инсталираха правилно
+    преди.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=576105">[% terms.Bug %] 576105</a>)
+  </li>
+  <li>Търсенето по "ключови думи" за "не съдържа никоя от думите" или "не
+    съвпада с регулярен израз" вече работи правилно.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=562014">[% terms.Bug %] 562014</a>)
+  </li>
+  <li>Пускането на <kbd>collectstats.pl --regenerate</kbd> вече работи на инсталации
+    ползващи PostgreSQL.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=577058">[% terms.Bug %] 577058</a>)
+  </li>
+  <li>Административния контролен панел "Стойности на полета" понякога отказваше на
+    администратори възможността да изтриват стойности, когато нямаше причина за
+    отказване на изтриването.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=577054">[% terms.Bug %] 577054</a>)
+  </li>
+  <li>Премахване на предупреженията "uninitialized value" които се случваха, когато
+    се редактират съставните части на продукт.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=576911">[% terms.Bug %] 576911</a>)
+  </li>
+  <li>Обновяването на bugs_fulltext, което се случва по вереме на 
+    <kbd>checksetup.pl</kbd> при надграждане до 3.6 вече трябва да е МНОГО по-бързо.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=577754">[% terms.Bug %] 577754</a>)
+  </li>
+  <li><kbd>email_in.pl</kbd> не позволяваше задаването на полета за
+    времеследене чрез входяща поща.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=583622">[% terms.Bug %] 583622</a>)
+  </li>
+</ul>
+
 <h3>3.6.1</h3>
 
 <p>Тази версия поправя два пропуска по сигурността. Вижте

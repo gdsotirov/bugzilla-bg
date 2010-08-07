@@ -150,10 +150,6 @@
   [% ELSIF message_tag == "buglist_sorted_by_relevance" %]
     [% terms.Bugs %]те в този списък са подредени по значение, като
     най-значимите [% terms.bugs %] са най-отгоре.
-    [% IF bugs.size == constants.FULLTEXT_BUGLIST_LIMIT %]
-      Показани са само [% constants.FULLTEXT_BUGLIST_LIMIT FILTER html %]
-      най-значими [% terms.bugs %].
-    [% END %]
 
   [% ELSIF message_tag == "change_columns" %]
     [% title = "Промяна на колони" %]

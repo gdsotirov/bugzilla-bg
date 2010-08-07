@@ -1524,6 +1524,22 @@
       [% END %]
     [% END %]
 
+  [% ELSIF error == "sudo_invalid_cookie" %]
+    [% title = "Недействителна Sudo бисквитка" %]
+    Бисквитката ви sudo е недействителна. Или е изтекла или не сте започнали
+    sudo сесия правилно. Опреснете страницата или заредете друга страница,
+    за да продължите това което правите от свое име.
+
+  [% ELSIF error == "sudo_illegal_action" %]
+    [% title = "Неупълномощено представляване" %]
+    [% IF NOT sudoer.in_group("bz_sudoers") %]
+      Не ви е позволено да представлявате потребители.
+    [% ELSIF target_user AND target_user.in_group("bz_sudo_protect") %]
+      Не ви е позволено да представлявате [% target_user.identity FILTER html %].
+    [% ELSE %]
+      Потребителя, който се опитахте да представлявате, не съществува.
+    [% END %]
+
   [% ELSIF error == "sudo_in_progress" %]
     [% title = "Сесия като друг потребител в действие" %]
     В ход е сесия като друг потребител (представляван е [% target FILTER html %]). 
