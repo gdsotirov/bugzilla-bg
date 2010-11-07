@@ -887,7 +887,7 @@
 
   [% ELSIF error == "invalid_datasets" %]
     [% title = "Недействителни набори данни" %]
-    Недействителни набори данни <em>[% datasets FILTER html %]</em>. Позволени са,
+    Недействителни набори данни <em>[% datasets.join(":") FILTER html %]</em>. Позволени са,
     само числа, букви и двоеточие.
 
   [% ELSIF error == "invalid_format" %]
