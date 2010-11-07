@@ -130,6 +130,7 @@ EOT
     module_not_found => "не е открит",
     module_ok => 'ok',
     module_unknown_version => "открита непозната версия",
+    no_such_module => "Не съществува Perl модул в CPAN с име ##module##.",
     ppm_repo_add => <<EOT,
 ***********************************************************************
 * Забележка за Windows потребители                                    *

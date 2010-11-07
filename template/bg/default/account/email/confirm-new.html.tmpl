@@ -24,11 +24,11 @@
            title = title
            onload = "document.forms['confirm_account_form'].realname.focus();" %]
 
-<div>
+<p>
   За да създадете сметката си, трябва да въведете парола във формуляра отдолу.
   Пощенския ви адрес и Истинско име (ако е указано) ще бъдат показвани с
   промените, които правите.
-</div>
+</p>
 
 <form id="confirm_account_form" method="post" action="token.cgi">
   <input type="hidden" name="t" value="[% token FILTER html %]">
@@ -44,7 +44,10 @@
     </tr>
     <tr>
       <th align="right"><label for="passwd1">Въвеждане на парола</label>:</th>
-      <td><input type="password" id="passwd1" name="passwd1" value=""></td>
+      <td>
+        <input type="password" id="passwd1" name="passwd1" value="">
+        (минимум [% constants.USER_PASSWORD_MIN_LENGTH FILTER none %] символа)
+      </td>
     </tr>
     <tr>
       <th align="right"><label for="passwd2">Повторно въвеждане на парола</label>:</th>

@@ -56,7 +56,7 @@
 
 [% IF comments.size > start_at %]
 <p>
-  Добавен(и) коментар(и):
+  Добавени мнения:
   <blockquote>
     [% PROCESS "bug/comments.html.tmpl" %]
   </blockquote>
@@ -65,7 +65,7 @@
 
 [% IF cgi.param("comment") %]
 <p>
-  Вашия коментар беше:<br>
+  Мнението ви беше:<br>
   <blockquote><pre class="bz_comment_text">
     [% cgi.param("comment") FILTER wrap_comment FILTER html %]
   </pre></blockquote>
@@ -85,7 +85,7 @@
           exclude="^Bugzilla_login|Bugzilla_password|delta_ts$" %]
       <input type="submit" id="process" value="Предаване на промените ми въпреки това">
         Това ще предизвика презаписването на всички промени по-горе
-        [% ", с изключение на добавените коментар(и)" IF comments.size > start_at %].
+        [% ", с изключение на добавените мнения" IF comments.size > start_at %].
     </form>
   </li>
   [% IF cgi.param("comment") %]
@@ -95,8 +95,9 @@
         <input type="hidden" name="delta_ts" value="[% bug.delta_ts FILTER html %]">
         <input type="hidden" name="comment" value="[% cgi.param("comment") FILTER html %]">
         <input type="hidden" name="commentprivacy" value="[% cgi.param("commentprivacy") FILTER html %]">
+        <input type="hidden" name="longdesclength" value="[% bug.comments.size %]">
         <input type="hidden" name="token" value="[% cgi.param("token") FILTER html %]">
-        <input type="submit" id="process_comment" value="Предаване само на новия ми коментар">
+        <input type="submit" id="process_comment" value="Предаване само на новото ми мнение">
       </form>
     </li>
   [% END %]

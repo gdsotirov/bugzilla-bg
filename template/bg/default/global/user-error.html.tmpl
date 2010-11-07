@@ -250,9 +250,17 @@
     <code>[% url FILTER html %]</code> не е действителен URL към [% terms.bug %].
     [% IF reason == 'http' %]
       <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да започват с "http" или "https".
+    [% ELSIF reason == 'path_only' %]
+      Трябва да укажете пълен <abbr lang="en" title="Uniform Resource Locator">URL</abbr>.
     [% ELSIF reason == 'show_bug' %]
-      [%+ terms.Bug %] <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да сочат към <code>show_bug.cgi</code>
-      в [% terms.Bugzilla %] инсталация.
+      [%+ field_descs.see_also FILTER html %] <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да сочат към някое от:
+      <ul>
+        <li><code>show_bug.cgi</code> в [% terms.Bugzilla %]
+          инсталация.</li>
+        <li>Б[% %]ъг в launchpad.net</li>
+        <li>Б[% %]ъг в code.google.com.</li>
+        <li>Б[% %]ъг в b[% %]ugs.debian.org.</li>
+      </ul>
     [% ELSIF reason == 'id' %]
       Няма действителен идентификатор на [% terms.bug %] в този <abbr lang="en" title="Uniform Resource Locator">URL</abbr>.
     [% END %]
@@ -574,7 +582,7 @@
   [% ELSIF error == "file_too_large" %]
     [% title = "Файлът е твърде голям" %]
     Файлът, който се опитвате да прикачите, е с размер [% filesize FILTER html %]
-    килобайта (КБ). Приставки, които не са кръпки, не могат да бъдат по-големи от
+    килобайта (КБ). Приставки не могат да бъдат по-големи от
     [%+ Param('maxattachmentsize') %] <abbr title="Кило Байта">КБ</abbr>. <br>
     Препоръчваме Ви да съхраните приставката си някъде другаде
     [% IF Param("allow_attach_url") %]
@@ -911,7 +919,7 @@
 
   [% ELSIF error == "invalid_datasets" %]
     [% title = "Недействителни набори данни" %]
-    Недействителни набори данни <em>[% datasets FILTER html %]</em>. Позволени са,
+    Недействителни набори данни <em>[% datasets.join(":") FILTER html %]</em>. Позволени са,
     само числа, букви и двоеточие.
 
   [% ELSIF error == "invalid_format" %]
@@ -1292,6 +1300,14 @@
   [% ELSIF error == "passwords_dont_match" %]
     [% title = "Паролите не съвпадат" %]
     Двете пароли които въведохте не съвпадат.
+
+  [% ELSIF error == "password_current_too_short" %]
+    [% title = "Изисква се нова парола" %]
+    Паролата ви текущо е дълга по-малко от
+    [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа,
+    което е новата минимална дължина изисквана за пароли.
+    Трябва да <a href="token.cgi?a=reqpw&loginname=[% locked_user.email FILTER html %]">
+    поискате нова парола</a>, за да влезете отново.
 
   [% ELSIF error == "password_too_short" %]
     [% title = "Твърде къса парола" %]
