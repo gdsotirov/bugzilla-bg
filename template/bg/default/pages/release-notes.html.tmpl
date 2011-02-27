@@ -281,7 +281,8 @@
   възможности на [% terms.Bugzilla %]:</p>
 
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
-                     new  = ['Authen-SASL', 'RadiusPerl']
+                     new  = ['Authen-SASL', 'RadiusPerl', 'CGI.pm',
+                             'Math-Random-Secure']
                      updated = []
                      include_feature = 1 %]
 
@@ -673,7 +674,6 @@
 <h1>[% terms.Bugzilla %] 3.0.x Бележки към версията</h1>
 
 <h2>Съдържание</h2>
-
 
 <ul class="bz_toc">
   <li><a href="#v30_introduction">Въведение</a></li>
