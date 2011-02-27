@@ -59,6 +59,13 @@
 
 <h2><a name="v34_point"></a>Обновления в тази 3.4.x версия</h2>
 
+<h3>3.4.10</h3>
+
+<p>Тази версия поправя няколко проблема със сигурността, някои от които са
+  <strong>много критични</strong>. Вижте
+  <a href="http://www.bugzilla.org/security/3.2.9/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
 <h3>3.4.9></h3>
 
 <p>Тази версия поправя някои важни проблеми със сигурността. Вижте
@@ -327,7 +334,8 @@
   възможности на [% terms.Bugzilla %]:</p>
 
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
-                     new  = ['TheSchwartz', 'Daemon-Generic']
+                     new  = ['TheSchwartz', 'Daemon-Generic', 'CGI.pm',
+                             'Math-Random-Secure']
                      updated = []
                      include_feature = 1 %]
 

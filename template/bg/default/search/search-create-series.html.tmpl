@@ -47,11 +47,12 @@
   за да се види кои [% terms.bugs %] ще бъдат включени в набора данни.
 </p>
     
-<h3>Data Set Parameters</h3>
+<h3>Параметри на набора данни</h3>
       
 [% PROCESS reports/series.html.tmpl 
    button_name = "Създаване на набор данни" %]
   <input type="hidden" name="action" value="create">
+  <input type="hidden" name="token" value="[% issue_hash_token(['create-series']) FILTER html %]">
 
 <script type="text/javascript">
   document.chartform.category[0].selected = true;
