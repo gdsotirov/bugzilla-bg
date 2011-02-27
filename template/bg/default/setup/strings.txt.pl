@@ -62,6 +62,7 @@ END
     feature_mod_perl          => 'mod_perl',
     feature_moving            => 'Преместване на бъгове между инсталации',
     feature_patch_viewer      => 'Преглед на кръпки',
+    feature_rand_security     => 'Подобряване на сигурността на бисквитки и белези',
     feature_smtp_auth         => 'SMTP удостоверяване',
     feature_updates           => 'Автоматични уведомления за обновяване',
     feature_xmlrpc            => 'XML-RPC Interface',

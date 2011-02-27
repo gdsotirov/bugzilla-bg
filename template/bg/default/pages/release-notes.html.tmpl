@@ -61,6 +61,41 @@
 
 <h2 id="v36_point">Обновления в тази 3.6.x версия</h2>
 
+<h3>3.6.4</h3>
+
+<p>Тази версия оправя няколко проблема със сигурността, някои от които са
+  <strong>много критични</strong>. Вижте
+  <a href="http://www.bugzilla.org/security/3.2.9/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>В допълнение, следните важни поправки/промени бяха направени в
+  тази версия:</p>
+
+<ul>
+  <li>Поради една от поправките по сигурността, [% terms.Bugzilla %] 3.6.4 вече
+    изисква по-нова версия на CGI.pm Perl модула отколкото предишни
+    версии на [% terms.Bugzilla %]. Когто пуснете 
+    <kbd>checksetup.pl</kbd>, той ще ви уведоми как да надградите вашия CGI.pm
+    модул.
+  </li>
+  <li>Когато отговаряте на мнение с връзка като "приставка 1234 [подробности]",
+    връзката "[подробности]" вече няма да бъде повтаряна в отговора ви.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=474766">[% terms.Bug %] 474766</a>)
+  </li>
+  <li>Използването на Quicksearch повече не изисква модула <kbd>List::MoreUtils</kbd>
+    да е инсталиран.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=611129">[% terms.Bug %] 611129</a>)
+  </li>
+  <li>Когато използвате <a href="config.cgi?ctype=rdf">config.cgi?ctype=rdf</a>,
+    информацията за продукти вече включва <kbd>allows_unconfirmed</kbd>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=610217">[% terms.Bug %] 610217</a>)
+  </li>
+  <li>Когато използвате табулирани доклади, всяка стойност чието има започваше с интервал
+    или долно тире не беше показвана.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=617684">[% terms.Bug %] 617684</a>)
+  </li>
+</ul>
+
 <h3>3.6.3</h3>
 
 <p>Тази версия поправя различни важни проблеми със сигурността. Вижте
@@ -71,8 +106,9 @@
   тази версия:</p>
 
 <ul>
-  <li>Вече не е възможно да получите сблъскване във въздуха <em>отново</em> след
-    избиране на "Предаване само на мнението ми" на страницата за сблъсквания във въздуха.
+  <li>Clicking the "Submit only my new comment" button on the mid-air
+    collision page will no longer result in a "Form field longdesclength
+    was not defined" error.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=591218">[% terms.Bug %] 591218</a>)
   </li>
   <li>Съхранението на търсене с някое от полетата за краен срок зададено на "Сега"
@@ -232,7 +268,7 @@
 <h3 id="v36_req_modules">Задължителни Perl модули</h3>
 
 [% INCLUDE req_table reqs = REQUIRED_MODULES
-                     new = [] updated = [] %]
+                     new = [] updated = ['CGI.pm'] %]
 
 <h3 id="v36_req_optional_mod">Незадължителни Perl модули</h3>
 
@@ -240,7 +276,7 @@
   възможности на [% terms.Bugzilla %]:</p>
 
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
-                     new  = ['JSON-RPC', 'Test-Taint']
+                     new  = ['JSON-RPC', 'Test-Taint', 'Math-Random-Secure']
                      updated = ['Chart']
                      include_feature = 1 %]
 
