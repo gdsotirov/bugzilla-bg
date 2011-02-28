@@ -248,6 +248,11 @@
   <p>Наистина ли желаете да изтриете този продукт?</p>
 
   <form method="post" action="editproducts.cgi">
+    <input type="checkbox" id="delete_series" name="delete_series" value=1>
+    <label for="delete_series">
+      Изтриване на всички свързани редици (можете също така да ги изтриете по-късно, посещавайки
+      <a href="chart.cgi?category=[% product.name FILTER html %]">страницата Нови Графики</a>.)
+    </label><p>
     <input type="submit" id="delete" value="Да, изтриване">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="product" value="[% product.name FILTER html %]">

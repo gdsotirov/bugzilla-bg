@@ -31,7 +31,7 @@
 <p>
   [% IF keyword.bug_count == 1 %]
     Съществува един [% terms.bug %], за който тази ключова дума е зададена.
-[% ELSIF keyword.bug_count > 1 %]
+  [% ELSIF keyword.bug_count > 1 %]
     Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %], за които
     тази ключова дума е зададена.
   [% END %]

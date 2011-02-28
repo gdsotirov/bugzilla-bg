@@ -19,18 +19,14 @@
   #                 Joel Peshkin <bugreport@peshkin.net>
   #                 Jacob Steenhagen <jake@bugzilla.org>
   #                 Vlad Dascalu <jocuri@softhome.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #%]
 
 [%# INTERFACE:
-  # gid: number. The group ID.
-  # name: string. The name of the group.
-  # description: string. The description of the group.
-  # hasusers: boolean int. True if the group includes users in it.
-  # hasbugs: boolean int. True if the group includes bugs in it.
-  # hasproduct: boolean int. True if the group is binded to a product.
-  # hasflags: boolean int. True if the group is used by a flag type.
-  # shared_queries: int. Number of saved searches being shared with this group.
-  # buglist: string. The list of bugs included in this group.
+  # group: A Bugzilla::Group object representing the group that is
+  #        about to be deleted.
+  # shared_queries: int; The number of queries being shared with this
+  #                 group.
   #%]
 
 
@@ -46,29 +42,43 @@
     <th>Описание</th>
   </tr>
   <tr>
-    <td>[% gid FILTER html %]</td>
-    <td>[% name FILTER html %]</td>
-    <td>[% description FILTER html_light %]</td>
+    <td>[% group.id FILTER html %]</td>
+    <td>[% group.name FILTER html %]</td>
+    <td>[% group.description FILTER html_light %]</td>
   </tr>
 </table>
 
 <form method="post" action="editgroups.cgi">
-  [% IF hasusers %]
-    <p><b>Един или повече потребители принадлежат към тази група. Не можете да я
-    изтриете докато има потребители в нея.</b>
+  [% IF group.members_non_inherited.size %]
+    <p><b>[% group.members_non_inherited.size FILTER html %] потребители принадлежат
+      направо към тази група. Не можете да я изтриете докато има
+      потребители в нея.</b>
 
-    <br><a href="editusers.cgi?action=list&groupid=[% gid FILTER html %]&grouprestrict=1">Показване
-    на потребителите</a> - <input type="checkbox" name="removeusers">Премахване на всички
-    потребители от групата.</p>
+    <br><a href="editusers.cgi?action=list&amp;groupid=
+                 [%- group.id FILTER url_quote %]&amp;grouprestrict=1">Показване
+    на потребителите</a> - <label><input type="checkbox" name="removeusers">Премахване
+    на всички потребители от групата.</label></p>
   [% END %]
 
-  [% IF hasbugs %]
-    <p><b>Един или повече [% terms.bug %] доклада са видими само за тази група.
-    Не можете да я изтриете докато някои [% terms.bugs %] я използват.</b>
+  [% IF group.granted_by_direct(constants.GROUP_MEMBERSHIP).size %]
+    <p><b>Членове на групата наследяват членство в следните групи:</b></p>
+    <ul>
+      [% FOREACH grantor = group.granted_by_direct(constants.GROUP_MEMBERSHIP) %]
+        <li>[% grantor.name FILTER html %]</li>
+      [% END %]
+    </ul>
+  [% END %]
 
-    <br><a href="buglist.cgi?bug_id=[% buglist FILTER html %]">Показване на
-    [% terms.bugs %]те</a> - <input type="checkbox" name="removebugs">Премахване
-    на всички [% terms.bugs %] от това групово ограничение.</p>
+  [% IF group.bugs.size %]
+    <p><b>[% group.bugs.size FILTER html %] [%+ terms.bug %] доклада са
+     видими само за тази група. Не можете да я изтриете докато някои
+     [%+ terms.bugs %] я използват.</b>
+
+    <br><a href="buglist.cgi?field0-0-0=bug_group&amp;type0-0-0=equals&amp;value0-0-0=
+                 [%- group.name FILTER url_quote %]">Показване на
+    [% terms.bugs %]те</a> - 
+    <label><input type="checkbox" name="removebugs">Премахване
+    на всички [% terms.bugs %] от това групово ограничение.</label></p>
 
     <p><b>БЕЛЕЖКА:</b> Напълно е възможно да направите поверителни [% terms.bugs %]
     публични, отмятайки това поле. <B>Горещо</B> се препоръчва
@@ -76,21 +86,63 @@
     отметнете.</p>
   [% END %]
 
-  [% IF hasproduct %]
-    <p><b>Тази група е вързана към продукта <U>[% name FILTER html %]</U>.
-    Не можете да я изтриете докато е вързна към продукт.</b>
+  [% IF group.products.size %]
+    <p><b>Тази група е обвързана със следните продукти:</b></p>
+    [% SET any_hidden = 0 %]
+    <ul>
+      [% FOREACH data = group.products %]
 
-    <br><input type="checkbox" name="unbind">Изтриване на групата въпреки това
-    и направата на продукта <U>[% name FILTER html %]</U> видим за всички.</p>
+        [% SET active = [] %]
+        [% FOREACH control = data.controls.keys.sort %]
+          [% NEXT IF !data.controls.$control %]
+          [% IF control == 'othercontrol' OR control == 'membercontrol' %]
+            [% SWITCH data.controls.$control %]
+              [% CASE constants.CONTROLMAPMANDATORY %]
+                [% SET type = "Задължителна" %]
+              [% CASE constants.CONTROLMAPSHOWN %]
+                [% SET type = "Показвана" %]
+              [% CASE constants.CONTROLMAPDEFAULT %]
+                [% SET type = "Подразбрана" %]
+            [% END %]
+            [% active.push("$control: $type") %]
+          [% ELSE %]
+            [% active.push(control) %]
+          [% END %]
+        [% END %]
+
+        [% SET hidden = 0 %]
+        [% IF data.controls.othercontrol == constants.CONTROLMAPMANDATORY
+              AND data.controls.membercontrol == constants.CONTROLMAPMANDATORY
+              AND data.controls.entry 
+        %]
+          [% SET hidden = 1 %]
+        [% END %]
+
+        <li><a href="editproducts.cgi?action=editgroupcontrols&amp;product=
+                    [%- data.product.name FILTER url_quote %]">
+          [%- data.product.name FILTER html %]</a>
+          ([% active.join(', ') FILTER html %])
+          [% IF hidden %]
+            <strong>ВНИМАНИЕ: Този продукт текущо е скрит.
+            Изтриването на групата ще го направи публично видим.
+            </strong>
+          [% END %]</li>
+      [% END %]
+    </ul>
+
+    <p><label><input type="checkbox" name="unbind">Изтриване на групата въпреки това
+    и премахване на тези контроли.</label></p>
   [% END %]
   
-  [% IF hasflags %]
+  [% IF group.flag_types.size %]
     <p><b>Тази група ограничава кой може да прави промени по флагове от определни типове.
-    Не можете да я изтриете докато има използващи я флаг типове .</b>
+    Не можете да я изтриете докато има флаг типове използващи я .</b>
 
-    <br><a href="editflagtypes.cgi?action=list&group=[% gid FILTER html %]">Показване
-    на типовете флагове</a> - <input type="checkbox" name="removeflags">Премахване
-    на всички типове флагове от групата.</p>
+    <br><a href="editflagtypes.cgi?action=list&amp;group=
+                 [%- group.id FILTER url_quote %]">Показване
+    на флаг типовете</a> -
+    <label><input type="checkbox" name="removeflags">Премахване на всички
+    флаг типове от групата.</p>
   [% END %]
 
   [% IF shared_queries %]
@@ -112,10 +164,12 @@
     </p>
   [% END %]
 
-  <h2>Потвърждаване</h2>
+  <h2>Потвърждение</h2>
 
   <p>Наистина ли искате да изтриете групата?</p>
-  [% IF (hasusers || hasbugs || hasproduct || hasflags) %]
+  [% IF group.users.size || group.bugs.size || group.products.size 
+        || group.flags.size
+  %]
     <p><b>Трябва да отметнете всички полета по-горе или да поправите
           посочените проблеми преди да можете да продължите.</b></p>
   [% END %]
@@ -123,7 +177,7 @@
   <p>
     <input type="submit" id="delete" value="Да, изтриване">
     <input type="hidden" name="action" value="delete">
-    <input type="hidden" name="group" value="[% gid FILTER html %]">
+    <input type="hidden" name="group" value="[% group.id FILTER html %]">
     <input type="hidden" name="token" value="[% token FILTER html %]">
   </p>
 </form>

@@ -105,6 +105,9 @@
                     options=types
                     default=cgi.param('type') %]
       </td>
+
+      [%# We could let people see a "queue" of non-pending requests. %]
+      <!--
       <th>Състояние:</th>
       <td>
         [%# PROCESS "global/select-menu.html.tmpl"
@@ -112,6 +115,8 @@
                     options=["all", "?", "+-", "+", "-"]
                     default=cgi.param('status') %]
       </td>
+      -->
+
     </tr>
     <tr>
       <th>Изпълнител:</th>

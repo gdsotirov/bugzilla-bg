@@ -25,32 +25,18 @@
 %]
 
 [% param_descs = {
-  maintainer => "Електронния пощенски адрес на лицето, което поддържа тази инсталация " _
-                "на ${terms.Bugzilla}.",
-
   urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички $terms.Bugzilla " _
              "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
-
-  docs_urlbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички " _
-                  "$terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та за документация. " _
-                  "Може да бъде абсолютен <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> или относителен към urlbase " _
-                  "по-горе. " _
-                  "Оставете празно за подтискане на връзките към документацията." _
-                  "'%lang%' ще бъде заменено с предпочитания език на потребителя " _
-                  "(ако е достъпен).",
 
   sslbase => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то, което е обща първоначална водеща част на всички <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abbr> " _
              "(<abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>) $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
-  ssl => "Управлява, кога $terms.Bugzilla трябва да налага използването на <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol over Secure Socet Layer\">HTTPS</abbr> в сесиите " _
-         "чрез използването на <tt>sslbase</tt>.",
-
-  cookiedomain => "Областта за бисквитките на ${terms.Bugzilla}. Нормално празно. " _
-                  "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като " _
-                  "'.foo.com' ще позволи достъп също и на 'bar.foo.com' до " _
-                  "бисквитките на ${terms.Bugzilla}. Това е полезно ако имате повече от " _
-                  "едно име на хост сочещо към един и същи web сървър и желаете те " _
-                  "да споделят бисквитките на ${terms.Bugzilla}.",
+  ssl_redirect => 
+    "Когато е разрешено, $terms.Bugzilla ще подсигури достъпа до всяка"
+    _ " страница по SSL, by redirecting any plain HTTP requests to HTTPS"
+    _ " using the <tt>sslbase</tt> parameter. Also, when this is enabled,"
+    _ " $terms.Bugzilla will send out links using <tt>sslbase</tt> in emails"
+    _ " instead of <tt>urlbase</tt>.",
 
   cookiepath => "Път, относителен спрямо корена на web документите, до който да бъдат ограничени " _
                 "бисквитките на ${terms.Bugzilla}. Нормално това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
@@ -59,52 +45,4 @@
                 "този параметър като /bugzilla/. Задаването му като / ще позволи " _
                 "на всички сайтове от този сървър или виртуален хост да четат " _
                 "бисквитките на ${terms.Bugzilla}.",
-
-  utf8 => "Използване на UTF-8 (Уникод) кодиране за всичкия текст в ${terms.Bugzilla}. Новите " _
-          "инсталации трябва да разрешат този параметър, за да предотвратят проблеми с кодирането на " _
-          "знаците. <strong>Съществуващите бази данни трябва да разрешат параметъра " _
-          " само след като данните бъдат обърнати от съществуващи наследствени " _
-          " кодирания към UTF-8 с използването на " _
-          " скрипта <kbd>contrib/recode.pl</kbd></strong>. <br><br> Забележете, " _
-          " че ако включите параметъра от &quot;off&quot; на " _
-          " &quot;on&quot; трябва да пуснете отново checksetup.pl незабавно " _
-          " след това.",
-
-  shutdownhtml => "Ако това поле не е празно, тогава $terms.Bugzilla ще бъде напълно " _
-                  "забранена и този текст ще бъде показван вместо всички " _
-                  "страници на ${terms.Bugzilla}.",
-
-  announcehtml => "Ако полето не е празно, $terms.Bugzilla ще " _
-                  "показва това което е в него отгоре на всяка " _
-                  "<abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> страница.  <abbr language=\"en\" title=\"Hyper Text Markup Language\">HTML</abbr> кода, който поставите в това поле, не бива да бъде" _
-                  "обвит или вмъкнат в нищо; ако желаете може да го " _
-                  "обвиете в <tt>&lt;div&gt;</tt>.  Дайте на div " _
-                  "<em>id=message</em>, за да получите зелен текст в " _
-                  "червена кутия или <em>class=bz_private</em> за тъмно " _
-                  "червено на червен фон.  Всичко зададено в " _
-                  "<tt>skins/standard/global.css</tt> или " _
-                  "<tt>skins/custom/global.css</tt> ще работи.  За да " _
-                  "получите центриран текст използвайте <em>style=\"text-align: " _
-                  "center;\"</em>.",
-
-  proxy_url => "$terms.Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за нови " _
-               "версии, виж параметъра <tt>upgrade_notification</tt>. В случай, че сте " _
-               "зад прокси, може да се наложи да въведете адреса му ако групата на web " _
-               "сървъра няма достъп до променливата на средата HTTP_PROXY. Ако трябва да " _
-               "се удостоверите, използвайте синтаксиса <code>http://user:pass@proxy_url/</code>.",
-
-  upgrade_notification => "<p>$terms.Bugzilla може да ви уведоми когато е налична нова версия. " _
-                          "Уведомлението ще се появи на началната страница на $terms.Bugzilla, " _
-                          "само за администраторите.</p>" _
-                          "<ul><li>'development_snapshot' уведомява за последната " _
-                          "версия в ствола, т.е. версия за разработчици.</li>" _
-                          "<li>'latest_stable_release' уведомява за най-скорошната версия " _
-                          "налична от най-скорошния стабилен клон. Клона може да бъде " _
-                          "различен от клона на който е основана инсталацията ви.</li>" _
-                          "<li>'stable_branch_release' уведомява само за нови версии " _
-                          "съответствуващи на клона на който е основана инсталацията ви. " _
-                          "Ако ползвате кандидат версия, ще получите " _
-                          "уведомление за по-нови кандидат версии също.</li>" _
-                          "<li>'disabled' не уведомява за нови версии и не " _
-                          "осъществява връкза към отдалечен сървър.</li></ul>" }
-%]
+} %]

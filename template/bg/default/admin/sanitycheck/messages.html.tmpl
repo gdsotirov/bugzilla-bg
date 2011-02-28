@@ -313,6 +313,17 @@
     <a href="sanitycheck.cgi?remove_old_whine_targets=1">Щракнете тук, за да
     премахнете стари потребители/групи</a>
 
+  [% ELSE %]
+    [% message = Hook.process("statuses") %]
+
+    [% IF message %]
+      [% message FILTER none %]
+    [% ELSE %]
+      Низа на съобщението за състояние <code>[% san_tag FILTER html %]</code>
+      не беше открит. Моля, изпратете писмо до [% Param("maintainer") %] описвайки
+      стъпките предприете за получаване на съобщението.
+    [% END %]
+
   [% END %]
 [% END %]
 

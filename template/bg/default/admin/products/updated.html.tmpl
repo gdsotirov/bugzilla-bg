@@ -39,6 +39,8 @@
   style_urls = ['skins/standard/admin.css']
 %]
 
+[% PROCESS "global/field-descs.none.tmpl" %]
+
 [% IF changes.name.defined %]
   <p>
   Обновено е името на продукта от '[% changes.name.0 FILTER html %]' на 
@@ -64,23 +66,6 @@
     отворен за 
   [% END %]
   нови [% terms.bugs %].
-  </p>
-[% END %]
-
-[% IF changes.milestoneurl.defined %]
-  <p>
-  Обновен е <abbr lang="en" title="Uniform Resource Locator">URL</abbr> на важно събитие
-  [% IF changes.milestoneurl.0 != '' %]
-    от<br> <a href="[%- changes.milestoneurl.0 FILTER html %]">
-    [%- changes.milestoneurl.0 FILTER html %]</a>
-  [% END %]
-  на
-  [% IF product.milestone_url != '' %]
-     <br><a href="[%- product.milestone_url FILTER html %]">
-     [%- product.milestone_url FILTER html %]</a>.
-  [% ELSE %]
-    празно.
-  [% END %]
   </p>
 [% END %]
 
@@ -116,6 +101,24 @@
   [%+ product.votes_to_confirm FILTER html %].
   </p>
   [% checkvotes = 1 %]
+[% END %]
+
+[% IF changes.allows_unconfirmed.defined %]
+  <p>
+  [% IF product.allows_unconfirmed %]
+    Продукта вече позволява 
+    [%+ display_value('bug_status', 'UNCONFIRMED') FILTER html %] състоянието.
+  [% ELSE %]
+    Продукта вече не позволява 
+    [%+ display_value('bug_status', 'UNCONFIRMED') FILTER html %] състоянието.
+    Имайте в предвид, че всеки 
+    <a href="buglist.cgi?product=
+            [%- product.name FILTER url_quote %]&amp;bug_status=UNCONFIRMED"> 
+    [%- terms.bugs %] който в момента има 
+    [%+ display_value('bug_status', 'UNCONFIRMED') FILTER html %] състояние</a>
+    ще остане в него докато бъде променен.
+  [% END %]
+  </p>
 [% END %]
 
 [% IF !changes.keys.size %]
@@ -165,8 +168,8 @@
           overwritten, which happens otherwise %]
       [% INCLUDE bug/process/results.html.tmpl
         type = 'votes'
-        mailrecipients = { 'changer' => user.login }
         header_done = 1
+        sent_bugmail = changes.confirmed_bugs_sent_bugmail.$id
         id = id
       %]
     [% END %]
