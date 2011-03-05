@@ -56,7 +56,7 @@ END
     feature_html_desc         => 'Повече HTML в описанията на Продукт/Група',
     feature_inbound_email     => 'Входяща е-поща',
     feature_jobqueue          => 'Поща във фонов режим',
-    feature_jsonrpc           => 'JSON-RPC Interface',
+    feature_jsonrpc           => 'Интерфейс JSON-RPC',
     feature_new_charts        => 'Нови графики',
     feature_old_charts        => 'Стари графики',
     feature_mod_perl          => 'mod_perl',
@@ -65,7 +65,7 @@ END
     feature_rand_security     => 'Подобряване на сигурността на бисквитки и белези',
     feature_smtp_auth         => 'SMTP удостоверяване',
     feature_updates           => 'Автоматични уведомления за обновяване',
-    feature_xmlrpc            => 'XML-RPC Interface',
+    feature_xmlrpc            => 'Интерфейс XML-RPC',
 
     header => "* Това е Bugzilla ##bz_ver## на perl ##perl_ver##\n"
             . "* Работеща на ##os_name## ##os_ver##",

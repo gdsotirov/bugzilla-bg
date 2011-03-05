@@ -57,10 +57,10 @@
   <p style="margin: 1em 3em 1em 3em">[% product.description FILTER html_light %]</p>
 [% END %]
 
-[% IF changes.disallownew.defined %]
+[% IF changes.isactive.defined %]
   <p>
   Продукта вече е
-  [% IF product.disallow_new %]
+  [% IF product.is_active %]
     затворен за
   [% ELSE %]
     отворен за 

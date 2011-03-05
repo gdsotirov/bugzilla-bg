@@ -37,39 +37,39 @@
     <td class="admin_links">
       <dl>
         [% class = user.in_group('tweakparams') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editparams.cgi">Параметри</a></dt>
+        <dt id="parameters" class="[% class %]"><a href="editparams.cgi">Параметри</a></dt>
         <dd class="[% class %]">Задаване на основни параметри на инсталацията. Това е
         мястото където указвате <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-то за достъп до тази инсталация, определяте как
         се удостоверяват потребителите, избирате кои полета на [% terms.bug %] се показват, избирате
         агента за пренос на поща за изпращане на уведомления по е-поща, избирате кои групи
         потребители могат да използват графики и споделят търсения и много други.</dd>
 
-        <dt class="[% class %]"><a href="editsettings.cgi">Подразбиращи се предпочитания</a></dt>
+        <dt id="preferences" class="[% class %]"><a href="editsettings.cgi">Подразбиращи се предпочитания</a></dt>
         <dd class="[% class %]">Задаване на подразбиращите се потребителски предпочитания. Това са стойностите,
         които ще бъдат използвани по подразбиране за всички потребители. Те ще могат да редактират техните
         собствени предпочитания от <a href="userprefs.cgi?tab=settings">Предпочитания</a>.</dd>
 
         [% class = user.in_group('editcomponents') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="sanitycheck.cgi">Санитарна проверка</a></dt>
+        <dt id="sanitycheck" class="[% class %]"><a href="sanitycheck.cgi">Санитарна проверка</a></dt>
         <dd class="[% class %]">Пускане на санитарни проверки за откриване на проблеми в базата ви данни.
         Това може да отнеме няколко десетки минути в зависимост от размера на инсталацията ви.
         Също така можете да автоматизирате тази проверка с пускането на <tt>sanitycheck.pl</tt> от задача по график.
         Ако бъдат открити грешки ще бъде изпратено уведомление по е-поща до указания потребител.</dd>
 
         [% class = (user.in_group('editusers') || user.can_bless) ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editusers.cgi">Потребители</a></dt>
+        <dt id="users" class="[% class %]"><a href="editusers.cgi">Потребители</a></dt>
         <dd class="[% class %]">Създаване на нови потребителски сметки или редактиране на съществуващи. Можете
         също да добавяте или премахвате потребители от групи (познато също като "потребителски привилегии").</dd>
 
         [% class = (Param('useclassification') && user.in_group('editclassifications')) ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editclassifications.cgi">Класификации</a></dt>
+        <dt id="classifications" class="[% class %]"><a href="editclassifications.cgi">Класификации</a></dt>
         <dd class="[% class %]">Ако инсталацията ви трябва да управлява много продукти едновременно,
         е добра идея да ги групирате в отделни категории. Това позволява на потребителите да
         намират информация по-лесно когато правят търсения или когато попълват нови [% terms.bugs %].</dd>
 
         [% class = (user.in_group('editcomponents')
                     || user.get_products_by_permission("editcomponents").size) ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editproducts.cgi">Продукти</a></dt>
+        <dt id="products" class="[% class %]"><a href="editproducts.cgi">Продукти</a></dt>
         <dd class="[% class %]">Редакция на всички страни на продукти, включително групови ограничения
         които ви позволяват да определите кой има достъп до [% terms.bugs %] в тях. Можете
         също да редактирате определени свойства на продукти като
@@ -77,7 +77,7 @@
         и <a href="editmilestones.cgi">целеви събития</a> директно.</dd>
 
         [% class = user.in_group('editcomponents') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editflagtypes.cgi">Флагове</a></dt>
+        <dt id="flags" class="[% class %]"><a href="editflagtypes.cgi">Флагове</a></dt>
         <dd class="[% class %]">Флага е потребителско свойство на [% terms.bugs %] и/или приставки
         с 4 състояния. Те са: даден, отказан, поискан и неопределен.
         Можете да зададете колко искате флагове за [% terms.bug %] и определите на кои потребители
@@ -90,7 +90,7 @@
     <td class="admin_links">
       <dl>
         [% class = user.in_group('admin') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editfields.cgi">Потребителски полета</a></dt>
+        <dt id="custom_fields" class="[% class %]"><a href="editfields.cgi">Потребителски полета</a></dt>
         <dd class="[% class %]">[% terms.Bugzilla %] ви позволява да определите полета които не
         са направени по подразбиране, в зависимост от личните ви и специфични изисквания.
         Тези полета могат след това да се използват като всички други, което значи, че можете да ги
@@ -99,29 +99,29 @@
         интерфейс много сложен и труден за използване. Уверете се, че сте изследвали други начини
         за задоволяване на нуждите си преди да направите това.</dd>
 
-        <dt class="[% class %]"><a href="editvalues.cgi">Стойности на полета</a></dt>
+        <dt id="field_values" class="[% class %]"><a href="editvalues.cgi">Стойности на полета</a></dt>
         <dd class="[% class %]">Определяне на законни стойности за полета чиито стойности трябва да принадлежат
         на даден списък. Това е също мястото където определяте законните стойности за някои
         типове потребителски полета.</dd>
 
-        <dt class="[% class %]"><a href="editworkflow.cgi">Работен поток на [%terms.bug %] състояния</a></dt>
+        <dt id="status_workflow" class="[% class %]"><a href="editworkflow.cgi">Работен поток на [%terms.bug %] състояния</a></dt>
         <dd class="[% class %]">Настройване на работния ви поток и избиране на начални състояния на
         [%+ terms.bug %] достъпни при създаване на [% terms.bug %] и разрешени преходи в състоянията
-        на [% terms.bug %], когато се редактират съществуващи [% terms.bugs %].</dd>
+        на [% terms.bug %] при промяна на съществуващи [% terms.bugs %].</dd>
 
         [% class = user.in_group('creategroups') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editgroups.cgi">Групи</a></dt>
+        <dt id="groups" class="[% class %]"><a href="editgroups.cgi">Групи</a></dt>
         <dd class="[% class %]">Определяне на групи, които ще бъдат използвани в инсталацията.
         Те могат или да се използват за определяне на привилегиите на нови потребители или да ограничават достъпа
         до някои [% terms.bugs %].</dd>
 
         [% class = user.in_group('editkeywords') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editkeywords.cgi">Ключови думи</a></dt>
+        <dt id="keywords" class="[% class %]"><a href="editkeywords.cgi">Ключови думи</a></dt>
         <dd class="[% class %]">Задаване на ключови думи използвани с [% terms.bugs %]. Ключовите думи
         са лесен начин за "отбелязване" на [% terms.bugs %], което позволява бързото им намиране по-късно.</dd>
 
         [% class = user.in_group('bz_canusewhines') ? "" : "forbidden" %]
-        <dt class="[% class %]"><a href="editwhines.cgi">Хленч</a></dt>
+        <dt id="whining" class="[% class %]"><a href="editwhines.cgi">Хленч</a></dt>
         <dd class="[% class %]">Задаване на заявки, които ще бъдат пускани на указана дата
         и час, и получаване на резултатите от тях директно по е-поща. Това е
         добър начин за създаване на напомняния и следене на дейността в инсталацията ви.</dd>
