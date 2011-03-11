@@ -39,16 +39,6 @@ X[% comment_body %]
 *** Този [% terms.bug %] беше означен като двойник на [% terms.bug %] [%+ comment.extra_data %] ***
 [% ELSIF comment.type == constants.CMT_HAS_DUPE %]
 *** [% terms.Bug %] [%+ comment.extra_data %] беше означен като двойник на този [% terms.bug %]. ***
-[% ELSIF comment.type == constants.CMT_POPULAR_VOTES %]
-*** Този [% terms.bug %] беше потвърден с публично гласуване. ***
-[% ELSIF comment.type == constants.CMT_MOVED_TO %]
-X[% comment_body %]
-
-[%+ terms.ABug %] е преместен в [% Param("move-to-url") %].
-Ако преместването е успяло, [% comment.extra_data %] ще получи писмо съдържащо
-номера на новия [% terms.bug %] в другата база данни.
-Ако всичко мине добре, моля добавете връзка към новия [% terms.bug %].
-Иначе, отворете наново [% terms.abug %].
 [% ELSIF comment.type == constants.CMT_ATTACHMENT_CREATED %]
 Създадена приставка [% comment.extra_data %]
 [% IF is_bugmail %]
@@ -65,4 +55,6 @@ X[% comment_body %]
 [%+ comment.attachment.description %]
 
 [%+ comment.body %]
+[% ELSE %]
+X[% Hook.process('type') %]
 [% END %]

@@ -129,7 +129,7 @@
     [% extra_class = " b_open" %]
     [% extra_args = 'onclick="return doToggle(this, event)"' %] 
   [% END %]
-  <a name="b[% bugid %]" 
+  <a id="b[% bugid %]" 
      class="b [%+ extra_class FILTER none %]"
      title="Щракване за разгъване или сгъване на тази част от дървото. Задържането на клавиша Ctrl при щракване разгръща или свива всички поддръвета."
      [% extra_args FILTER none %]>&nbsp;&nbsp;</a>

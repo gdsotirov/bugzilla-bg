@@ -33,8 +33,9 @@
   title = title
   header = header
   subheader = subheader
-  style_urls = [ 'skins/standard/create_attachment.css' ]
-  javascript_urls = [ "js/attachment.js", "js/util.js" ]
+  style_urls = [ 'skins/standard/attachment.css' ]
+  yui = [ 'autocomplete' ]
+  javascript_urls = [ "js/attachment.js", 'js/field.js', "js/util.js" ]
   doc_section = "attachments.html"
 %]
 
@@ -122,6 +123,9 @@
         </td>
       </tr>
     [% END %]
+
+    [% Hook.process('form_before_submit') %]
+
     <tr>
       <th>&nbsp;</th>
       <td><input type="submit" id="create" value="Предаване"></td>

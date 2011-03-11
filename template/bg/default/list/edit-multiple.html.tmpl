@@ -19,6 +19,7 @@
   #                 Max Kanat-Alexander <mkanat@bugzilla.org>
   #                 Frédéric Buclin <LpSolit@gmail.com>
   #                 Guy Pyrzak <guy.pyrzak@gmail.com>
+  #                 Reed Loden <reed@reedloden.com>
   #%]
 
 [% PROCESS global/variables.none.tmpl %]
@@ -149,13 +150,9 @@
                value="[% dontchange FILTER html %]"
                size="6">
       </td>
-      <th><label for="deadline">Краен срок (ГГГГ-ММ-ДД):</label></th>
-      <td>
-        <input id="deadline"
-               name="deadline"
-               value="[% dontchange FILTER html %]"
-               size="10">
-      </td>
+      [% PROCESS bug/field.html.tmpl 
+          field = bug_fields.deadline, value = dontchange
+          editable = 1, allow_dont_change = 1 %]
     </tr>
     <tr>
       <th><label for="remaining_time">Оставащи часове:</label></th>
@@ -177,7 +174,7 @@
            id => "assigned_to"
            name => "assigned_to"
            value => dontchange
-           size => 32
+           size => 40
       %]
       <input type="checkbox" id="set_default_assignee" name="set_default_assignee" value="1">
       <label for="set_default_assignee">Задаване на назначения по подразбиране</label>
@@ -192,7 +189,7 @@
              id => "qa_contact"
              name => "qa_contact"
              value => dontchange
-             size => 32
+             size => 40
         %]
         <input type="checkbox" id="set_default_qa_contact" name="set_default_qa_contact" value="1">
         <label for="set_default_qa_contact">Задаване на качествения контрол по подразбиране</label>
@@ -204,7 +201,13 @@
 
     <th><label for="masscc"><abbr title="Точно копие">ТК</abbr> списък:</label></th>
     <td colspan="3">
-      <input id="masscc" name="masscc" size="32">
+      [% INCLUDE global/userselect.html.tmpl
+           id => "masscc"
+           name => "masscc"
+           value => ""
+           size => 40
+           multiple => 5
+      %]
       <select name="ccaction">
         <option value="add">Добавяне в списъка <abbr title="Точно копие">ТК</abbr></option>
         <option value="remove">Премахване от списъка <abbr title="Точно копие">ТК</abbr></option>
@@ -216,17 +219,19 @@
   [% IF use_keywords %]
     <tr>
 
-      <th>
-        <label for="keywords">
-          <a href="describekeywords.cgi">Ключови думи</a>:
-        </label>
-      </th>
+      [% INCLUDE "bug/field-label.html.tmpl"
+         field = bug_fields.keywords, editable = 1
+         desc_url = "describekeywords.cgi"
+      %]
       <td colspan="3">
-        <input id="keywords" name="keywords" size="32">
+        [% INCLUDE bug/field.html.tmpl
+           field = bug_fields.keywords, editable = 1, value = keywords
+           no_tds = 1
+        %]
         <select name="keywordaction">
           <option value="add">Добавяне на ключовите думи</option>
-          <option value="delete">Премахване на ключовите думи</option>
-          <option value="makeexact">Списъка с ключовите думи да бъде еднакъв за всички</option>
+          <option value="remove">Премахване на ключовите думи</option>
+          <option value="set">Списъка с ключовите думи да бъде еднакъв за всички</option>
         </select>
       </td>
 
@@ -240,7 +245,7 @@
       </label>
     </th>
     <td colspan="3">
-      <input id="dependson" name="dependson" size="32">
+      <input id="dependson" name="dependson" size="40">
       <select name="dependson_action">
           <option value="add">Добавяне на тези номера</option>
           <option value="remove">Изтриване на тези номера</option>
@@ -255,7 +260,7 @@
       </label>
     </th>
     <td colspan="3">
-      <input id="blocked" name="blocked" size="32">
+      <input id="blocked" name="blocked" size="40">
       <select name="blocked_action">
           <option value="add">Добавяне на тези номера</option>
           <option value="remove">Изтриване на тези номера</option>
@@ -276,6 +281,8 @@
   [% END %]
 
   [% USE Bugzilla %]
+  [%# Show all legal values and all fields, ignoring visibility controls. %]
+  [% bug = 0 %]
   [% FOREACH field = Bugzilla.active_custom_fields %]
     <tr>
       [% PROCESS bug/field.html.tmpl value = dontchange
@@ -290,7 +297,7 @@
 
 <b><label for="comment">Допълнителни коментари:</label></b>
 [% IF user.is_insider %]
-  <input type="checkbox" name="commentprivacy" value="1"
+  <input type="checkbox" name="comment_is_private" value="1"
          id="newcommentprivacy"
          onClick="updateCommentTagControl(this, form)"/>
    <label for="newcommentprivacy">
@@ -311,10 +318,18 @@
 
 [% IF groups.size > 0 %]
 
+  <script type="text/javascript">
+    function turn_off(myself, id) {
+        var other_checkbox = document.getElementById(id);
+        if (myself.checked && other_checkbox) {
+            other_checkbox.checked = false;
+        }
+    }
+  </script>
+
   <b>Групи:</b><br>
   <table border="1">
     <tr>
-      <th>Без<br>промяна<br>на ограничението на<br>групата</th>
       <th>Премахване<br>на [% terms.bugs %]<br>от<br>групата</th>
       <th>Добавяне<br>на [% terms.bugs %]<br>към<br>групата</th>
       <th>Име на група:</th>
@@ -323,14 +338,17 @@
     [% FOREACH group = groups %]
     <tr>
       <td align="center">
-        <input type="radio" name="bit-[% group.id %]" value="-1" checked="checked">
-      </td>
-      <td align="center">
-        <input type="radio" name="bit-[% group.id %]" value="0">
+        <input type="checkbox" name="defined_groups" 
+               id="defined_group_[% group.id %]"
+               value="[% group.name FILTER html %]"
+               onchange="turn_off(this, 'group_[% group.id %]')">
       </td>
       [% IF group.is_active %]
         <td align="center">
-          <input type="radio" name="bit-[% group.id %]" value="1">
+          <input type="checkbox" name="groups" 
+                 id="group_[% group.id FILTER html %]"
+                 value="[% group.name FILTER html %]"
+                 onchange="turn_off(this, 'defined_group_[% group.id %]')">
         </td>
       [% ELSE %]
         <td>&nbsp;</td>
@@ -353,11 +371,10 @@
   [% END %]
 
 [% END %]
-<input type="submit" id="commit" value="Предаване">
 
-[% IF Param('move-enabled') && user.is_mover %]
-  <input type="submit" name="action" id="action" value="[% Param('move-button-text') %]">
-[% END %]
+[%+ Hook.process('after_groups') %]
+
+<input type="submit" id="commit" value="Предаване">
 
 [%############################################################################%]
 [%# Select Menu Block                                                        #%]

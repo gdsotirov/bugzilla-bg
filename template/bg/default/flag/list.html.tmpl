@@ -30,7 +30,7 @@
 
 [% DEFAULT flag_table_id = "flags" %]
 
-<script type="text/javascript" src="js/flag.js"></script>
+<script src="[% 'js/flag.js' FILTER mtime %]" type="text/javascript"></script>
 
 <table id="[% flag_table_id FILTER html %]">
   [% UNLESS flag_no_header %]
@@ -53,7 +53,7 @@
     [% FOREACH flag = type.flags %]
       <tr>
         <td>
-          [% flag.setter.nick FILTER html %]:
+          <span title="[% flag.setter.identity FILTER html %]">[% flag.setter.nick FILTER html %]</span>:
         </td>
         <td>
           <label title="[% type.description FILTER html %]"
@@ -88,6 +88,7 @@
           <td>
             [% IF (type.is_active && type.is_requestable && type.is_requesteeble) || flag.requestee %]
               <span style="white-space: nowrap;">
+                [% SET flag_custom_list = [] %]
                 [% IF Param('usemenuforusers') %]
                   [% flag_custom_list = flag.type.grant_list %]
                   [% IF !(type.is_active && type.is_requestable && type.is_requesteeble) %]
@@ -96,22 +97,16 @@
                         nothing else. %]
                     [% flag_custom_list = [flag.requestee] %]
                   [% END %]
-                  [% INCLUDE global/userselect.html.tmpl
-                             name     => "requestee-$flag.id"
-                             id       => "requestee-$flag.id"
-                             value    => flag.requestee.login
-                             multiple => 0
-                             emptyok  => 1
-                             custom_userlist => flag_custom_list
-                  %]
-                [% ELSE %]
-                  (<input type="text" class="requestee" maxlength="255"
-                          id="requestee-[% flag.id %]"
-                          name="requestee-[% flag.id %]"
-                          [% IF flag.status == "?" && flag.requestee %]
-                            value="[% flag.requestee.login FILTER html %]"
-                          [% END %]>)
                 [% END %]
+                [% INCLUDE global/userselect.html.tmpl
+                           name     => "requestee-$flag.id"
+                           id       => "requestee-$flag.id"
+                           value    => flag.requestee.login
+                           multiple => 0
+                           emptyok  => 1
+                           classes => ["requestee"]
+                           custom_userlist => flag_custom_list
+                %]
               </span>
             [% END %]
           </td>
@@ -147,10 +142,18 @@
         <p><b>Флагове:</b></p>
         [% header_displayed = 1 %]
       [% END %]
-      [% flag.setter.nick FILTER html %]:
+      [% IF flag.setter.name %]
+        <span title="[% flag.setter.name FILTER html %]">[% flag.setter.nick FILTER html %]</span>:
+      [% ELSE %]
+        [% flag.setter.nick FILTER html %]:
+      [% END %]
       [%+ type.name FILTER html FILTER no_break %][% flag.status %]
       [% IF flag.requestee %]
-        ([% flag.requestee.nick FILTER html %])
+        [% IF flag.requestee.name %]
+          (<span title="[% flag.requestee.name FILTER html %]">[% flag.requestee.nick FILTER html %]</span>)
+        [% ELSE %]
+          ([% flag.requestee.nick FILTER html %])
+        [% END %]
       [% END %]<br>
     [% END %]
   [% END %]
@@ -191,20 +194,20 @@
       <td>
         [% IF type.is_requestable && type.is_requesteeble %]
           <span style="white-space: nowrap;">
+            [% SET grant_list = [] %]
             [% IF Param('usemenuforusers') %]
-              [% INCLUDE global/userselect.html.tmpl
-                         name     => "requestee_type-$type.id"
-                         id       => "requestee_type-$type.id"
-                         multiple => type.is_multiplicable * 3
-                         emptyok  => !type.is_multiplicable
-                         value    => ""
-                         custom_userlist => type.grant_list
-              %]
-            [% ELSE %]
-              (<input type="text" class="requestee" maxlength="255"
-                      id="requestee_type-[% type.id %]"
-                      name="requestee_type-[% type.id %]">)
+              [% grant_list = type.grant_list %]
             [% END %]
+            [% INCLUDE  global/userselect.html.tmpl
+                        name     => "requestee_type-$type.id"
+                        id       => "requestee_type-$type.id"
+                        multiple => type.is_multiplicable * 3
+                        emptyok  => !type.is_multiplicable
+                        value    => ""
+                        custom_userlist => grant_list
+                        classes => ["requestee"]
+            %]            
+            
           </span>
         [% END %]
       </td>

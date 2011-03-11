@@ -23,6 +23,10 @@
    desc = "Настройка на политки за промяна на $terms.bug"
 %]
 
+[% PROCESS "global/field-descs.none.tmpl" %]
+
+[% accept_status = display_value('bug_status', 'IN_PROGRESS') FILTER html %]
+
 [% param_descs = {
   duplicate_or_move_bug_status => "Когато $terms.abug е обозначен като двойник на някой друг " _
                                   "или е преместен в друга инсталация, да се ползва това състояние на ${terms.bug}."
@@ -37,8 +41,10 @@
                                  "Ако е изключено, тогава всички $terms.bugs първоначално имат подразбиращото се " _
                                  "събитие за продукта, за който са въвеждани.",
 
-  musthavemilestoneonaccept => "Ако използвате Целево Събитие, желаете ли да изисквате " _
-                               "задаването на събитие, когато потребител иска да ПРИЕМЕ ${terms.bug}?",
+  musthavemilestoneonaccept => 
+    "Ако използвате ${field_descs.target_milestone}, желаете ли да направите задължително"
+    _ " задаването на събитие, за да може потребителя да смени"
+    _ " състоянието на ${terms.abug} на ${accept_status}?",
 
   commentonchange_resolution => "Ако тази възможност е включена, потребителя трябва да въведе кратък " _
                                 "коментар ако решение на $terms.abug се промени.",

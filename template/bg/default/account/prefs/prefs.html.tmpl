@@ -50,10 +50,12 @@
               link => "userprefs.cgi?tab=email", saveable => "1" },
             { name => "saved-searches", label => "Съхранени търсения", 
               link => "userprefs.cgi?tab=saved-searches", saveable => "1" },
-            { name => "account", label => "Име и парола",
+            { name => "account", label => "Информация за сметка",
               link => "userprefs.cgi?tab=account", saveable => "1" },
-            { name => "permissions", label => "Разрешения", 
+            { name => "permissions", label => "Позволения", 
               link => "userprefs.cgi?tab=permissions", saveable => "0" } ] %]
+
+[% Hook.process('tabs') %]
 
 [% FOREACH tab IN tabs %]
   [% IF tab.name == current_tab_name %]

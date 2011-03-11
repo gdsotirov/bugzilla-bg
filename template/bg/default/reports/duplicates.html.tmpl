@@ -58,7 +58,7 @@
 
 [% bug_ids_string = bug_ids.join(',') %]
 
-<h3><a name="params">Промяна на параметри</a></h3>
+<h3 id="params">Промяна на параметри</h3>
 
 <form method="get" action="duplicates.cgi">
   <input type="hidden" name="sortby" value="[% sortby FILTER html %]">
@@ -136,9 +136,9 @@
 
 <hr>
 
-<b>
-  <a name="explanation">Какво са "Най-често докладваните [% terms.bugs %]"?</a>
-</b>
+<h3 id="explanation">
+  Какво са "Най-често докладваните [% terms.bugs %]"?
+</h3>
 
 <p>
   Страницата на най-често докладваните [% terms.bugs %] дава списък на познатите отворени 

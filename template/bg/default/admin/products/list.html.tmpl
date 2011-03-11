@@ -37,22 +37,11 @@
   title = "Избор на продукт от $classification_title"
 %]
 
-[% edit_contentlink = BLOCK %]
-  editproducts.cgi?action=edit&amp;product=%%name%%
-[% END %]
-[% delete_contentlink = BLOCK %]
-  editproducts.cgi?action=del&amp;product=%%name%%
-[% END %]
-[% bug_count_contentlink = BLOCK %]
-  buglist.cgi?product=%%name%%
-[% END %]
-
-
 [% columns = [
      { 
        name => "name"
        heading => "Редактиране на продукт..."
-       contentlink => edit_contentlink
+       contentlink => 'editproducts.cgi?action=edit&amp;product=%%name%%'
      },
      { 
        name => "description"
@@ -64,22 +53,7 @@
        heading => "Отворен за нови $terms.bugs"
        yesno_field => 1
      },
-     { 
-       name => "votesperuser"
-       heading => "Гласове за потребител"
-       align => 'right'
-     },
-     { 
-       name => "maxvotesperbug"
-       heading => "Максимум гласове за $terms.bug"
-       align => 'right'
-     },
-     { 
-       name => "votestoconfirm"
-       heading => "Гласове необходими за потвърждаване"
-       align => 'right'
-     } ]
-%]
+] %]
 
 [% IF showbugcounts %]
 
@@ -87,7 +61,7 @@
        name => "bug_count"
        heading => "Брой $terms.bugs"
        align => 'right'
-       contentlink => bug_count_contentlink
+       contentlink => 'buglist.cgi?product=%%name%%'
      })
   %]
 
@@ -96,7 +70,7 @@
 [% columns.push({
        heading => "Действие"
        content => "Изтриване"
-       contentlink => delete_contentlink
+       contentlink => 'editproducts.cgi?action=del&amp;product=%%name%%'
      })
 %]
 

@@ -24,6 +24,35 @@
    desc = "Настройки за разширени конфигурации."
 %]
 
+[% sts_desc = BLOCK %]
+  Разрешава изпращането на 
+  <a href="http://en.wikipedia.org/wiki/Strict_Transport_Security">Strict-Transport-Security</a>
+  заглавката заедно с HTTP отговори по SSL връзки. Това добавя по-висока
+  сигурност към SSL връзките ви като принуждава браузъра винаги да
+  достъпва вашия домейн по SSL и никога да не приема недействителен сертификат. 
+  Обаче, трябва да се ползва само ако имате параметъра <code>ssl_redirect</code>
+  включен, [% terms.Bugzilla %] е единственото нещо вървящо
+  на домейна си (т.е., вашия <code>urlbase</code> е нещо като
+  <code>http://bugzilla.example.com/</code>), и не предвиждате въобще изключване
+  на параметъра <code>ssl_redirect</code>.
+  <ul>
+    <li>
+      off - Не изпраща заглавката Strict-Transport-Security в заявки.
+    </li>
+    <li>
+      this_domain_only - Изпраща Strict-Transport-Security заглавката с всички
+      заявки, но я поддържа само за текущия домейн.
+    </li>
+    <li>
+      include_subdomains - Изпраща Strict-Transport-Security заглавката заедно
+      с флага <code>includeSubDomains</code>, който ще приложи
+      промяната в сигурността към всички поддомейни. Това е особено полезно когато е
+      съчетано с <code>attachment_base</code> които съществуват като
+      поддомейни под основния [% terms.Bugzilla %] домейн.
+    </li>
+  </ul>
+[% END %]
+
 [% param_descs = {
   cookiedomain => 
     "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като"
@@ -47,4 +76,6 @@
     _ " необходимо да въведете неговия <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> ако web сървъра няма достъп до"
     _ " променливата на средата HTTP_PROXY. Ако трябва да се удостоверите,"
     _ " използвайте синтаксиса <code>http://user:pass@proxy_url/</code>.",
+
+  strict_transport_security => sts_desc,
 } %]

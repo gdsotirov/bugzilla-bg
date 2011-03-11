@@ -31,6 +31,8 @@
   #                 minrows will be used.
   # cols:           (required) Number of columns the textarea shall have.
   # defaultcontent: (optional) Default content for the textarea.
+  # mandatory:      (optional) Boolean specifying whether or not the textarea
+  #                 is mandatory.
   #%]
 
 <textarea [% IF name %]name="[% name FILTER html %]"[% END %]
@@ -39,6 +41,7 @@
           [% IF style %] style="[% style FILTER html %]"[% END %]
           [% IF classes %] class="[% classes FILTER html %]"[% END %]
           [% IF wrap %] wrap="[% wrap FILTER html %]"[% END %]
+          [% IF disabled %] disabled="disabled"[% END %]
           [% IF defaultrows && user.settings.zoom_textareas.value == 'off' %]
             rows="[% defaultrows FILTER html %]"
           [% ELSE %]
@@ -47,4 +50,7 @@
           cols="[% cols FILTER html %]"
           [% IF maxrows && user.settings.zoom_textareas.value == 'on' %]
             onFocus="this.rows=[% maxrows FILTER html %]"
+          [% END %]
+          [% IF mandatory %]
+            aria-required="true"
           [% END %]>[% defaultcontent FILTER html %]</textarea>

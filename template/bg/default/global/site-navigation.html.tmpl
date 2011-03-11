@@ -37,18 +37,13 @@
   [% END %]
 
 
-  [%# *** Dependencies, Votes, Activity, Print-version *** %]
+  [%# *** Dependencies, Activity, Print-version *** %]
   [% IF bug %]
     <link rel="Покажи" title="Дърво на зависимостите"
           href="showdependencytree.cgi?id=[% bug.bug_id %]&amp;hide_resolved=1">
     [% IF Param('webdotbase') %]
       <link rel="Покажи" title="Графика на зависимостите"
             href="showdependencygraph.cgi?id=[% bug.bug_id %]">
-    [% END %]
-
-    [% IF bug.use_votes %]
-      <link rel="Покажи" title="Гласове ([% bug.votes %])"
-            href="votes.cgi?action=show_bug&amp;bug_id=[% bug.bug_id %]">
     [% END %]
 
       <link rel="Покажи" title="Дейност по [% terms.Bug %]"
@@ -63,12 +58,6 @@
     [% user_login = user.login FILTER url_quote %]
     <link rel="Съхранени&nbsp;търсения" title="Мои [% terms.Bugs %]"
           href="[% Param('mybugstemplate').replace('%userid%', user_login) %]">
-  [% END %]
-
-  [% FOREACH q = user.queries %]
-    <link rel="Съхранени&nbsp;търсения" 
-          title="[% q.name FILTER html %]"
-          href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% q.name FILTER url_quote %]">
   [% END %]
 
   [% FOREACH q = user.queries_subscribed %]

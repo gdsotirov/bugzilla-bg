@@ -75,33 +75,6 @@
   '[% product.default_milestone FILTER html %]'.
   </p>
 [% END %]
-  
-[% IF changes.votesperuser.defined %]
-  <p>
-  Обновен е броя на гласовете за потребител от
-  [%+ changes.votesperuser.0 FILTER html %] на
-  [%+ product.votes_per_user FILTER html %].
-  </p>
-  [% checkvotes = 1 %]
-[% END %]
-
-[% IF changes.maxvotesperbug.defined %]
-  <p>
-  Обновен е броя на максимума гласове за [% terms.bug %] от 
-  [%+ changes.maxvotesperbug.0 FILTER html %] на
-  [%+ product.max_votes_per_bug FILTER html %].
-  </p>
-  [% checkvotes = 1 %]
-[% END %]
-
-[% IF changes.votestoconfirm.defined %]
-  <p>
-  Обновен е броя на гласовете необходими за потвърждаване на [% terms.bug %] от
-  [%+ changes.votestoconfirm.0 FILTER html %] на
-  [%+ product.votes_to_confirm FILTER html %].
-  </p>
-  [% checkvotes = 1 %]
-[% END %]
 
 [% IF changes.allows_unconfirmed.defined %]
   <p>
@@ -121,63 +94,10 @@
   </p>
 [% END %]
 
+[% Hook.process('changes') %]
+
 [% IF !changes.keys.size %]
   <p>Нищо не е променено по продукт '[% product.name FILTER html %]'.</p>
-[% END %]
-
-[%# Note that this display of changed votes and/or confirmed bugs is
-    not very scalable. We could have a _lot_, and we just list them all.
-    One day we should limit this perhaps, or have a more scalable display %]
-
-
-[% IF checkvotes %]
-  <hr>
-
-  <p>Проверяване на съществуващите гласове в продукта за някой, който сега
-  има твърде много гласове за [% terms.abug %]...<br>
-  [% IF changes.too_many_votes.size %]
-    [% FOREACH detail = toomanyvotes %]
-      &rarr;премахнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
-     [%- detail.id FILTER url_quote %]">
-     [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
-    [% END %]
-  [% ELSE %]
-    &rarr;няма такива.
-  [% END %]
-  </p>
-
-  <p>Проверяване на съществуващите гласове в продукта за някой, който сега
-  има твърде много общо гласове...<br>
-  [% IF changes.too_many_total_votes.size %]
-    [% FOREACH detail = changes.too_many_total_votes %]
-      &rarr;премахнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
-     [%- detail.id FILTER url_quote %]">
-     [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
-    [% END %]
-  [% ELSE %]
-    &rarr;няма такива.
-  [% END %]
-  </p>
-
-  <p>Проверяване на непотвърдени [% terms.bugs %] в този продукт за някой, който сега
-  има достатъчно гласове...<br>
-  [% IF changes.confirmed_bugs.size %]
-    [% FOREACH id = changes.confirmed_bugs %]
-
-      [%# This is INCLUDED instead of PROCESSED to avoid variables getting
-          overwritten, which happens otherwise %]
-      [% INCLUDE bug/process/results.html.tmpl
-        type = 'votes'
-        header_done = 1
-        sent_bugmail = changes.confirmed_bugs_sent_bugmail.$id
-        id = id
-      %]
-    [% END %]
-  [% ELSE %]
-    &rarr;няма такива.
-  [% END %]
-  </p>
-
 [% END %]
 
 [% PROCESS admin/products/footer.html.tmpl %]

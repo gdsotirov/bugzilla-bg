@@ -30,9 +30,8 @@ X-Bugzilla-Type: whine
 системата за следена на [% terms.bugs %] ([% urlbase %]), които изискват
 внимание.
 
-Всички тези [% terms.bugs %] са в състояние [% display_value("bug_status", "NEW") %] или 
-[%= display_value("bug_status", "REOPENED") %] и не са
-пипани от [% Param("whinedays") %] или повече дни.
+Всички тези [% terms.bugs %] са в състояние [% display_value("bug_status", "CONFIRMED") %]
+и не са пипани от [% Param("whinedays") %] или повече дни.
 Трябва да ги прегледате и да вземете решение за първоначално действие.
 
 Най-общо това значи едно от следните три неща:
@@ -44,17 +43,17 @@ X-Bugzilla-Type: whine
     уверете се, че полето Съставна част изглежда правдоподобно и използвайте
     възможността "Връщане на назначения по подразбиране".)
 (3) Решавате, че [% terms.abug %] ви принадлежи, но не можете да го решите сега.
-    Приемете [% terms.abug %] като зададете състоянието [% display_value("bug_status", "ASSIGNED") %].
+    Приемете [% terms.abug %] като зададете състоянието [% display_value("bug_status", "IN_PROGRESS") %].
 
-За списък на всички [% display_value("bug_status", "NEW") %]/[% display_value("bug_status", "REOPENED") %] [%+ terms.bugs %] можете да използвате следния адрес (отметнете
+За списък на всички [% display_value("bug_status", "CONFIRMED") %] [%+ terms.bugs %] можете да използвате следния адрес (отметнете
 го ако желаете!):
 
- [% urlbase %]buglist.cgi?bug_status=NEW&bug_status=REOPENED&assigned_to=[% email %]
+ [% urlbase %]buglist.cgi?bug_status=CONFIRMED&assigned_to=[% email %]
 
 Или можете да използвате общата страница за търсене на 
 [%+ urlbase %]query.cgi
 
-Прикачени по-долу са отделните адреси за достъп до всичките ви [% display_value("bug_status", "NEW") %] [%+ terms.bugs %],
+Прикачени по-долу са отделните адреси за достъп до всичките ви [% display_value("bug_status", "CONFIRMED") %] [%+ terms.bugs %],
 които не са пипани от [% Param("whinedays") %] или повече дни.
 
 Ще получавате това съобщение веднъж на ден докато не се справите с тези [% terms.bugs %]!

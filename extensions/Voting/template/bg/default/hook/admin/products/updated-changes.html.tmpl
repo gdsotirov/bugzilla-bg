@@ -1,0 +1,102 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Everything Solved, Inc.
+  # Portions created by the Initial Developer are Copyright (C) 2010
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s): 
+  #   Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[% SET checkvotes = 0 %]
+
+[% IF changes.votesperuser.defined %]
+  <p>
+  Обновен гласове на потребител от
+  [%+ changes.votesperuser.0 FILTER html %] на
+  [%+ product.votesperuser FILTER html %].
+  </p>
+  [% checkvotes = 1 %]
+[% END %]
+
+[% IF changes.maxvotesperbug.defined %]
+  <p>
+  Обновен максимум гласа на [% terms.bug %] от
+  [%+ changes.maxvotesperbug.0 FILTER html %] на
+  [%+ product.maxvotesperbug FILTER html %].
+  </p>
+  [% checkvotes = 1 %]
+[% END %]
+
+[% IF changes.votestoconfirm.defined %]
+  <p>
+  Обновен броя гласове необходими за потвърждаване на [% terms.bug %] от
+  [%+ changes.votestoconfirm.0 FILTER html %] на
+  [%+ product.votestoconfirm FILTER html %].
+  </p>
+  [% checkvotes = 1 %]
+[% END %]
+
+[%# Note that this display of changed votes and/or confirmed bugs is
+    not very scalable. We could have a _lot_, and we just list them all.
+    One day we should limit this perhaps, or have a more scalable display %]
+
+[% IF checkvotes %]
+  <hr>
+
+  <p>Проверка на съществуащи гласове в този продукт за някой който вече
+  има твърде много гласа за един [% terms.bug %]...<br>
+  [% IF changes.too_many_votes.size %]
+    [% FOREACH detail = changes.too_many_votes %]
+      &rarr;премахнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
+     [%- detail.id FILTER url_quote %]">
+     [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
+    [% END %]
+  [% ELSE %]
+    &rarr;нямаше.
+  [% END %]
+  </p>
+
+  <p>Проверка на същестуващи гласове в този продукт за някой
+  който има твърде много общо гласове...<br>
+  [% IF changes.too_many_total_votes.size %]
+    [% FOREACH detail = changes.too_many_total_votes %]
+      &rarr;прмехнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
+     [%- detail.id FILTER url_quote %]">
+     [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
+    [% END %]
+  [% ELSE %]
+    &rarr;нямаше.
+  [% END %]
+  </p>
+
+  <p>Проверка на непотвърдени [% terms.bugs %] в този продукт за някой който вече има
+  достатъчно гласове...<br>
+  [% IF changes.confirmed_bugs.size %]
+    [% FOREACH id = changes.confirmed_bugs %]
+
+      [%# This is INCLUDED instead of PROCESSED to avoid variables getting
+          overwritten, which happens otherwise %]
+      [% INCLUDE bug/process/results.html.tmpl
+        type = 'votes'
+        header_done = 1
+        sent_bugmail = changes.confirmed_bugs_sent_bugmail.$id
+        id = id
+      %]
+    [% END %]
+  [% ELSE %]
+    &rarr;нямаше.
+  [% END %]
+  </p>
+
+[% END %]

@@ -144,7 +144,7 @@
 
   [% ELSIF message_tag == "buglist_query_gone" %]
     [% title = "Търсенето е изгубено" %]
-    [% link  = "Връщане на страницата за търсене." %]
+    [% link  = "Връщане на търсенето" %]
     OK, търсенето <b>[% namedcmd FILTER html %]</b> е изгубено.
 
   [% ELSIF message_tag == "buglist_sorted_by_relevance" %]
@@ -455,10 +455,6 @@
   [% ELSIF message_tag == "keyword_deleted" %]
     [% title = "Изтрита ключова дума" %]
     Ключовата дума <em>[% keyword.name FILTER html %]</em> беше изтрита.
-    <b>След като приключите редактирането на ключови думи, трябва да
-    <a href="sanitycheck.cgi?rebuildkeywordcache=1">изградите отново наличността
-    с ключови думи</a></b> (на много голяма инсталация на [% terms.Bugzilla %],
-    това може да отнеме няколко минути).
 
   [% ELSIF message_tag == "keyword_updated" %]
     [% title = "Обновена ключова дума" %]
@@ -467,13 +463,7 @@
       съхранени:
       <ul>
         [% IF changes.name.defined %]
-          <li>
-            Ключовата дума преименувана на <em>[% keyword.name FILTER html %]</em>.
-            <b>След като приключите редактирането на ключови думи, трябва да
-            <a href="sanitycheck.cgi?rebuildkeywordcache=1">изградите
-            отново наличността с ключови думи</a></b> (на много голяма инсталация
-            на [% terms.Bugzilla %], това може да отнеме няколко минути).
-          </li>
+          <li>Ключовата дума преименувана на <em>[% keyword.name FILTER html %]</em>.</li>
         [% END %]
         [% IF changes.description.defined %]
           <li>Описанието е обновено на <em>[% keyword.description FILTER html %]</em></li>
@@ -568,7 +558,7 @@
       [% FOREACH param = param_changed %]
         <em>[% param FILTER html %]</em> променен<br>
         [% IF param == 'utf8' && Param('utf8') %]
-          <strong>Трябва да пуснете отново checksetup.pl.</strong><br>
+          <strong>Трябва да пуснете отново <kbd>checksetup.pl</kbd>.</strong><br>
         [% END %]
       [% END %]
     [% ELSE %]
@@ -724,6 +714,9 @@
     работите под Windows.
     Проверете дали правата над файловете в [% terms.Bugzilla %] папката ви са
     подходящи за вашата система. Избягвайте ненужен достъп за писане.
+
+  [% ELSIF message_tag == "install_workflow_init" %]
+    Задаване на подразбиращия се работен поток на състояния...
 
   [% ELSIF message_tag == "product_created" %]
     [% title = "Създаден продукт" %]

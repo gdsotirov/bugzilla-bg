@@ -37,17 +37,7 @@
 [% DEFAULT title = "Вътрешна грешка" %]
 
 [% error_message = BLOCK %]
-  [% IF    error == "action_unrecognized" %]
-    [% docslinks = {'query.html' => "Търсене на $terms.bugs",
-                    'query.html#list' => "$terms.Bug списъци"} %]
-    Не разпознавам стойността (<em>[% action FILTER html %]</em>)
-    на променливата <em>action</em>.
-  
-  [% ELSIF error == "attachment_already_obsolete" %]
-    Приставка №[% attach_id FILTER html %] ([% description FILTER html %])
-    е вече стара.
-
-  [% ELSIF error == "attachment_local_storage_disabled" %]
+  [% IF error == "attachment_local_storage_disabled" %]
     [% title = "Местно съхранение забранено" %]
     Не можете да сърханявате приставки местно. Тази възможност е забранена.
 
@@ -156,6 +146,11 @@
       е-пощенския адрес на потребителя.
     [% END %]
 
+  [% ELSIF error == "extension_disabled" %]
+    [% title = "Спряно разширение" %]
+    Нямате достъп до тази страница, защото разширението '[% name FILTER html %]'
+    е спряно.
+
   [% ELSIF error == "extension_must_be_subclass" %]
     <code>[% package FILTER html %]</code> от 
     <code>[% filename FILTER html %]</code> не е подклас на
@@ -215,10 +210,6 @@
 
   [% ELSIF error == "illegal_field" %]
     Не е зададен правилен [% field FILTER html %].
-
-  [% ELSIF error == "inactive_group" %]
-    Опит да се добави [% terms.bug %] към групата '[% name FILTER html %]',
-    която не се използва за  [% terms.bugs %].
 
   [% ELSIF error == "invalid_attach_id_to_obsolete" %]
      Номера на една от приставките които желахте да извадите от употреба,
@@ -281,13 +272,6 @@
     Не можете да искате
     <em>[% type.name FILTER html %]</em> от определен човек.
   
-  [% ELSIF error == "flag_status_invalid" %]
-    Състоянието на флага <em>[% status FILTER html %]</em>
-    [% IF id %]
-      за флаг с идентификатор №[% id FILTER html %]
-    [% END %]
-    е недействително.
-
   [% ELSIF error == "flag_type_inactive" %]
     [% title = "Пасивни типове флагове" %]
     Типа флаг [% type FILTER html %] е пасивен и не може да бъде използван
@@ -370,14 +354,10 @@
   [% ELSIF error == "need_quipid" %]
     Необходим е действителен идентификатор на остроумие.
 
-  [% ELSIF error == "no_manual_moved" %]
-    Не можете да зададете решението на [% terms.abug %] като [% display_value("resolution", "MOVED") FILTER html %], без
-    да преместите [% terms.abug %].
-
-  [% ELSIF error == "no_open_bug_status" %]
-    [% title = "$terms.Bug Cannot Be Confirmed" %]
-    Няма действително преминаване от
-    [%+ display_value("bug_status", "UNCONFIRMED") FILTER html %] към отворено състояние.
+  [% ELSIF error == "object_dep_sort_loop" %]
+    Има цикъл в VALIDATOR_DEPENDENCIES включващ
+    '[%+ field FILTER html %]'. Това са полетата които взехме в предвид:
+    [%+ considered.join(', ') FILTER html %].
 
   [% ELSIF error == "param_invalid" %]
     [% title = "Недействителен параметър" %]
@@ -431,9 +411,6 @@
     Възникна грешка при подготовката за <abbr lang="en" title="Remote Authentication Dial In User Service">RADIUS</abbr> заявка за удостоверяване:
     <code>[% errstr FILTER html %]</code>.
 
-  [% ELSIF error == "request_queue_group_invalid" %]
-    Полето за група <em>[% group FILTER html %]</em> е недействително.
-
   [% ELSIF error == "report_axis_invalid" %]
     <em>[% val FILTER html %]</em> не е действителна стойност за полето
     [%+ IF    fld == "x" %]хоризонтална ос
@@ -473,13 +450,6 @@
   [% ELSIF error == "undefined_field" %]
     Полето [% field FILTER html %] на формата не е зададено;
     
-  [% ELSIF error == "unknown_action" %]
-    [% IF action %]
-       Непознато действие [% action FILTER html %]!
-    [% ELSE %]
-       Не можах да определя какво искахте да направите.
-    [% END %]
-
   [% ELSIF error == "unknown_method" %]
     Поискания метод '[% method FILTER html %]' не беше намерен.
 
@@ -544,7 +514,7 @@
     това съобщение се появи.
   </p>
   <script type="text/javascript"> <!--
-    document.write("<p>URL: " +
+    document.write("<p>URL: " + 
                     document.location.href.replace(/&/g,"&amp;")
                                           .replace(/</g,"&lt;")
                                           .replace(/>/g,"&gt;") + "</p>");
@@ -561,6 +531,9 @@
     </td>
   </tr>
 </table>
+
+<p>Обратно проследяване:</p>
+<pre>[% traceback FILTER html_linebreak %]</pre>
 
 [% IF variables %]
   <pre>

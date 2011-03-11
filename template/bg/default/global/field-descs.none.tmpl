@@ -68,13 +68,13 @@
 [% value_descs = {
   "bug_status" => {
     # "UNCONFIRMED" => "UNCO",
-    # "NEW"         => "NEWISH",
+    # "CONFIRMED"   => "ITSABUG",
   },
 
   "resolution" => {
     ""        => "---",
-    # "FIXED" => "NO LONGER AN ISSUE",
-    # "MOVED" => "BYE-BYE",
+    # "FIXED"      => "NO LONGER AN ISSUE",
+    # "WORKSFORME" => "NOTMYPROBLEM!",
   },
 } %]
 
@@ -100,6 +100,7 @@
      "actual_time"             => "Действителни часове",
      "alias"                   => "Псевдоним",
      "assigned_to"             => "Назначен на",
+     "assigned_to_realname"    => "Истинско име на назначения",
      "attach_data.thedata"     => "Данни на приставка",
      "attachments.description" => "Описание на приставка",
      "attachments.filename"    => "Име на файл на приставка",
@@ -143,10 +144,12 @@
      "product_id"              => "Идентификатор на продукт",
      "product"                 => "Продукт",
      "qa_contact"              => "Качествен контрол",
+     "qa_contact_realname"     => "Истинско име на кач. контрол",
      "remaining_time"          => "Оставащи часове",
      "rep_platform"            => "Платформа",
      "reporter"                => "Докладчик",
      "reporter_accessible"     => "Достъпен докладчик",
+     "reporter_realname"       => "Истинско име на докладчика",
      "requestees.login_name"   => "Заявител на флаг",
      "resolution"              => "Решение",
      "see_also"                => "Виж още",
@@ -157,7 +160,6 @@
      "status_whiteboard"       => "Бяла дъска",
      "target_milestone"        => "Целево събитие",
      "version"                 => "Версия",
-     "votes"                   => "Гласове",
      "work_time"               => "Отработени часове",
   } %]
 

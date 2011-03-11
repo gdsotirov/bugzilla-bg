@@ -20,128 +20,111 @@
   #%]
 
 [% PROCESS "global/field-descs.none.tmpl" %]
-[% INCLUDE global/header.html.tmpl title = "Жизнен цикъл на $terms.abug" %]
+[% PROCESS global/header.html.tmpl 
+  title = "Полета на $terms.bug" 
+  style_urls = ['skins/standard/page.css']
+%]
 
-<p>
-Полетата <b>състояние</b> и <b>решение</b> определят и проследяват жизнения
-цикъл на [% terms.abug %].  
-</p>
+<p>Тази страница описва различните полета които виждате 
+  по [% terms.abug %].</p>
 
-<a name="status"></a>
-<a name="resolution"></a>
-
-<table border="1" cellpadding="4">
-  <tr align="center" valign="top">
-    <td width="50%">
-      <h1>СЪСТОЯНИЕ</h1>
+<table class="field_value_explanation">
+  <thead>
+  <tr>
+    <td id="bug_status">
+      <h2>[% field_descs.bug_status FILTER upper FILTER html %]</h2>
     </td>
 
-    <td>
-      <h1>РЕШЕНИЕ</h1>
+    <td id="resolution">
+      <h2>[% field_descs.resolution FILTER upper FILTER html %]</h2>
     </td>
   </tr>
 
-  <tr valign="top">
-    <td>Полето <b>състояние</b> показва общото здраве на 
-    [% terms.abug %]. Само определени промени на състоянието са разрешени.</td>
+  <tr>
+    <td>Полето [% field_descs.bug_status FILTER html %] показва
+      текущото състояние на [% terms.abug %]. Само определени преходи в състоянието
+      са разрешени.</td>
 
-    <td>Полето <b>решение</b> показва какво е станало с този
-    [%+ terms.bug %].</td>
+    <td>Полето [% field_descs.resolution FILTER html %] показва какво се
+      е случило с [%+ terms.bug %].</td>
   </tr>
+  </thead>
 
-  <tr valign="top">
+  <tbody>
+  <tr class="header_row">
+    <td colspan="2">Отворени [% terms.bugs %]</td>
+  </tr>
+  <tr>
     <td>
       <dl>
         <dt>
-          <b>[% display_value("bug_status", "UNCONFIRMED") FILTER html %]</b>
+          [% display_value("bug_status", "UNCONFIRMED") FILTER html %]
         </dt>
         <dd>
           Този [% terms.bug %] е добавен наскоро към базата данни. 
           Никой не е потвърдил, че този [% terms.bug %] е истински. Потребителите
-          имащи зададено "canconfirm" позволение могат да потвърдят
-          този [% terms.bug %], променяйки неговото състояние на [% display_value("bug_status", "NEW") FILTER html %]. Или той може
-          да бъде направо разрешен и отбелязан като [% display_value("bug_status", "RESOLVED") FILTER html %].
+          имащи зададено "canconfirm" разрешение могат да потвърдят
+          този [% terms.bug %], сменяийки състоянието му на 
+          <b>[% display_value("bug_status", "CONFIRMED") FILTER html %]</b>. 
+          Или той може да бъде направо разрешен и отбелязан
+          <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% display_value("bug_status", "NEW") FILTER html %]</b>
+          [% display_value("bug_status", "CONFIRMED") FILTER html %]
         </dt>
         <dd>
-          Този [% terms.bug %] е добавен наскоро към списъка с [% terms.bugs %]
-          на назначения и трябва да бъде обработен. [% terms.Bugs %] в
-          това състояние могат да бъдат приети и да станат <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b>,
-          предадени на някой друг и да останат <b>[% display_value("bug_status", "NEW") FILTER html %]</b> или разрешени и
-          отбелязани [% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
+          Този [% terms.bug %] е истински и е бил добавен наскоро.
+          [%+ terms.Bugs %] в това състояние стават 
+          <b>[% display_value("bug_status", "IN_PROGRESS") FILTER html %]</b>
+          когато някой работи по тях или биват решавани и отбелязвани
+          <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b>
+          [% display_value("bug_status", "IN_PROGRESS") FILTER html %]
         </dt>
         <dd>
-          Този [% terms.bug %] все още не е разрешен, но е назначен на
-          правилния човек. От тук [% terms.bugs %] могат да бъдат дадени на
-          някое друго лице и да станат <b>[% display_value("bug_status", "NEW") FILTER html %]</b> или
-          разрешени ставайки <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
-        </dd>
-
-        <dt>
-          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>
-        </dt>
-        <dd>
-          Този [% terms.bug %] е бил разрешен, но решението е било сметнато
-          за неправилно. Например [% terms.bug %] със състояние <b>[% display_value("resolution", "WORKSFORME") FILTER html %]</b> е
-          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>, когато излезе повече информация и [% terms.abug %] е
-          вече възпроизводим. От тук [% terms.bugs %] са отбелязвани или
-          <b>[% display_value("bug_status", "ASSIGNED") FILTER html %]</b> или
+          Този [% terms.bug %] все още не е решен, но е назначен на
+          правилния човек който работи по него. От тук
+          [%+ terms.bugs %] могат да бъдат дадени на някой друг и да станат
+          <b>[% display_value("bug_status", "CONFIRMED") FILTER html %]</b>, или
+          решени и да станат 
           <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>.
         </dd>
       </dl>
     </td>
 
     <td>
-      <dl>
-        <dd>
-          Все още няма решение. Всички [% terms.bugs %], които са в един от
-          тези "отворени" състояния имат непопълнено решение. Всички 
-          други [% terms.bugs %] ще бъдат отбелязани с едно от следващите
-          решения.
-        </dd>
-      </dl>
+      Още няма решение. Всички [% terms.bugs %] които са в едно от
+      тези "отворени" състояние все още нямат решение.
     </td>
   </tr>
 
-  <tr valign="top">
+  <tr class="header_row">
+    <td colspan="2">Затворени [% terms.bugs %]</td>
+  </tr>
+
+  <tr>
     <td>
       <dl>
         <dt>
-          <b>[% display_value("bug_status", "RESOLVED") FILTER html %]</b>
+          [% display_value("bug_status", "RESOLVED") FILTER html %]
         </dt>
         <dd>
-          Взето е решение и то чака проверка от качествения контрол.
-          От тук [% terms.bugs %] са или отваряни наново и стават
-          <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b> или
-          <b>[% display_value("bug_status", "VERIFIED") FILTER html %]</b> или биват затворени за
-          добро и отбелязвани <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>.
+          Взето е решение и то чака проверка от качествения
+          контрол. От тук [% terms.bugs %] са или отваряни отново и получават
+          някакво отворено състояние или се потвърждават от кач. контрол и отбелязват
+          <b>[% display_value("bug_status", "VERIFIED") FILTER html %]</b>.
         </dd>
 
         <dt>
-          <b>[% display_value("bug_status", "VERIFIED") FILTER html %]</b>
+          [% display_value("bug_status", "VERIFIED") FILTER html %]
         </dt>
         <dd>
           Качествения контрол е прегледал [% terms.abug %] и решението и 
-          е съгласен, че е взето правилното решение. [% terms.Bugs %] остават
-          в това състояние докато продукта, за който са докладвани,
-          в действителност бъде пуснат (на пазара, в Интернет), в който момент те стават 
-          <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>.
-        </dd>
-
-        <dt>
-          <b>[% display_value("bug_status", "CLOSED") FILTER html %]</b>
-        </dt>
-        <dd>
-          [% terms.Abug %] се смята за мъртъв, решението е правилно. 
-          Някои зомби [% terms.bugs %] които изберат да се разхождат по земята
-          отново, трябва да го направят като станат <b>[% display_value("bug_status", "REOPENED") FILTER html %]</b>.
+          е съгласен, че е взето правилното решение. Това е
+          крайното състояние за [% terms.bugs %].
         </dd>
       </dl>
     </td>
@@ -149,7 +132,7 @@
     <td>
       <dl>
         <dt>
-          <b>[% display_value("resolution", "FIXED") FILTER html %]</b>
+          [% display_value("resolution", "FIXED") FILTER html %]
         </dt>
         <dd>
           Поправка за този [% terms.bug %] е влязла в дървото и е
@@ -157,14 +140,14 @@
         </dd>
 
         <dt>
-          <b>[% display_value("resolution", "INVALID") FILTER html %]</b>
+          [% display_value("resolution", "INVALID") FILTER html %]
         </dt>
         <dd>
           Описания проблем не е [% terms.bug %].
         </dd>
 
         <dt>
-          <b>[% display_value("resolution", "WONTFIX") FILTER html %]</b>
+          [% display_value("resolution", "WONTFIX") FILTER html %]
         </dt>
         <dd>
           Описания проблем е [% terms.bug %], който никога няма да бъде 
@@ -172,160 +155,80 @@
         </dd>
 
         <dt>
-         <b>[% display_value("resolution", "DUPLICATE") FILTER html %]</b>
+         [% display_value("resolution", "DUPLICATE") FILTER html %]
         </dt>
         <dd>
           Проблема е двойник на съществуващ [% terms.bug %].
-          Отбелязването на [% terms.bug %] като двойник изисква номера на
-          повтарящия го [% terms.bug %] и най-малкото ще постави този
-          номер на [% terms.bug %] в полето за описание.
+          Когато [% terms.bug %] бива отбелязван като
+          <b>[% display_value("resolution", "DUPLICATE") FILTER html %]</b>,
+          ще видите на коии [% terms.bugs %] той е двойник,
+          непосредствено до решението му.
         </dd>
 
         <dt>
-          <b>[% display_value("resolution", "WORKSFORME") FILTER html %]</b>
+          [% display_value("resolution", "WORKSFORME") FILTER html %]
         </dt>
         <dd>
           Всички опити за възпроизвеждане на този [% terms.bug %] са безуспешни
           и четенето на кода не е довело до следи, защо се е стигнало до
-          описаното поведение. Ако повече информация постъпи по-късно 
-          [% terms.abug %] може да бъде отворен отново.
-        </dd>
-
-        <dt>
-          <b>[% display_value("resolution", "MOVED") FILTER html %]</b>
-        </dt>
-        <dd>
-          Проблема е характерен за свързан продукт
-          чиито [% terms.bugs %] се следят
-          в друга база данни с [% terms.bugs %]. [% terms.Abug %] е бил преместен
-          в нея.
+          описаното поведение. Ако повече информация постъпи по-късно
+          [%+ terms.abug %] може да бъде отворен отново.
         </dd>
       </dl>
     </td>
   </tr>
+  </tbody>
 </table>
 
-<h2><a name="importance">Значение</a></h2>
-Значението на [% terms.abug %] се описва като съчетание от
-неговия <a href="#priority">приоритет</a> и <a href="#bug_severity">суровост</a>,
-както следва.
+<h2>Други полета</h2>
 
-<h2><a name="priority">Приоритет</a></h2>
-Полето описва значимостта и реда, в който [% terms.abug %]
-трябва да бъде оправен. Това поле се използва от
-програмисти/инженери, за да подредят работата, която трябва да се свърши
+[% PROCESS "bug/field-help.none.tmpl" %]
 
-<h2><a name="bug_severity">Суровост</a></h2>
-Това поле описва въздействието на [% terms.abug %]. 
-
-<table>
-  <tr>
-    <th>[% display_value("bug_severity", "blocker") FILTER html %]</th>
-
-    <td>Блокира разработката и/или работата по изпитването</td>
-  </tr>
-
-  <tr>
-    <th>[% display_value("bug_severity", "critical") FILTER html %]</th>
-
-    <td>сривове, загуба на данни, тежки течове на памет</td>
-  </tr>
-
-  <tr>
-    <th>[% display_value("bug_severity", "major") FILTER html %]</th>
-
-    <td>Важна загуба на функционалност</td>
-  </tr>
-
-  <tr>
-    <th>[% display_value("bug_severity", "normal") FILTER html %]</th>
-
-    <td>нормален пропуск, малка загуба на функционалност при определени обстоятелства</td>
-  </tr>
-
-
-  <tr>
-    <th>[% display_value("bug_severity", "minor") FILTER html %]</th>
-
-    <td>незначителна загуба на функционалност или друг проблем, за който
-    съществува лесен начин за заобикаляне</td>
-  </tr>
-
-  <tr>
-    <th>[% display_value("bug_severity", "trivial") FILTER html %]</th>
-
-    <td>козметичен проблем като сгрешен правопис или неподравнен
-    текст</td>
-  </tr>
-
-  <tr>
-    <th>[% display_value("bug_severity", "enhancement") FILTER html %]</th>
-
-    <td>Заявка за подобрение</td>
-</table>
-
-<h2><a name="rep_platform">Платформа</a></h2>
-Това е машинната платформа, за която [% terms.abug %] е докладван.
-Позволените платформи включват: 
-
-<ul>
-  <li>[% display_value("rep_platform", "All") FILTER html %] (случва се на всички платформи; междуплатформен [% terms.bug %])</li>
-
-  <li>[% display_value("rep_platform", "Macintosh") FILTER html %]</li>
-
-  <li>[% display_value("rep_platform", "PC") FILTER html %]</li>
-</ul>
-<b>Забележка:</b> При търсене, избирането на 
-<em>[% display_value("rep_platform", "All") FILTER html %]</em>"Всички" не избира 
-[% terms.bugs %]
-назначени, за която и да е платформа. Избира само [% terms.bugs %] които са
-означени като случващи се на всяка платформа, т.е. обозначени като
-<em>[% display_value("rep_platform", "All") FILTER html %]</em>. 
-
-<h2><a name="op_sys">Операционна система</a></h2>
-Това е операционната система, за която е докладван [% terms.abug %].
-Позволените операционни системи включват: 
-
-<ul>
-  <li>[% display_value("op_sys", "All") FILTER html %] (случва се на всички операционни системи; междуплатформен
-  [% terms.bug %])</li>
-
-  <li>Windows</li>
-
-  <li>Mac OS</li>
-
-  <li>Linux</li>
-</ul>
-Понякога операционната система включва платформата, но не
-винаги. Например Linux може да върви на
-<abbr lang="en" title="Personal Computer">PC</abbr>, Macintosh и други.
-
-<h2><a name="assigned_to">Назначен на</a></h2>
-
-<p>
-Това е лицето натоварено с разрешаването на [% terms.bug %]а. Всеки път когато
-това поле се променя, състоянието се променя на <b>[% display_value("bug_status", "NEW") FILTER html %]</b>, за да бъдат
-новите [% terms.bugs %] лесно забележими в списъка на лицето.</p>
-
-<p>
-Подразбиращото се състояние за заявки е зададено като [% display_value("bug_status", "NEW") FILTER html %],
-[%+ display_value("bug_status", "ASSIGNED") FILTER html %] и [% display_value("bug_status", "REOPENED") FILTER html %].
-Когато търсите за [% terms.bugs %], които са били разрешени или
-проверени не забравяйте да зададете полето за състояние подходящо.
-</p>
-
-[% IF Param("use_see_also") %]
-  <h2><a name="see_also"></a>Виж още</h2>
-
-  <p>Това ви позволява да се позовете на [% terms.bugs %] в други инсталации.
-    Можете да въведете URL към [%+ terms.bug %] в "Добавяне на [% terms.bug %] URLs"
-    полето, за да обозначите, че онзи [% terms.bug %] е свързан с този. Можете
-    да въведете няколко URL наведнъж разделяйки ги с запетая.</p>
-
-  <p>Нормално трябва да използвате полето за позоваване на [% terms.bugs %] в 
-    <em>други</em> инсталации. За [% terms.bugs %] в тази 
-    инсталация е по-добре да използвате "Зависи от" и "Блокира"
-    полетата.</p>
+[% SET field_help_map = {} %]
+[% FOREACH field = bug_fields.keys %]
+  [% SET field_desc = field_descs.$field %]
+  [% field_help_map.$field_desc = { help  => help_html.$field, 
+                                    field => field } %]
 [% END %]
 
-[% INCLUDE global/footer.html.tmpl %]
+[%# These are fields that don't need to be documented, either because
+  # they have docs somewhere else in the UI, or they don't show up on bugs. 
+  # %]
+[% SET skip_fields = [ 
+  'days_elapsed', 
+  'everconfirmed',
+  'reporter_accessible',
+  'cclist_accessible',
+  'bug_group',
+  'commenter',
+  'owner_idle_time',
+  'bug_status',
+  'resolution',
+] %]
+
+<dl class="field_descriptions">
+[% FOREACH field_desc = field_help_map.keys.sort %]
+  [% SET field = field_help_map.${field_desc}.field %]
+  [% SET field_object = bug_fields.$field %]
+
+  [% NEXT IF field_object.obsolete %]
+  [% NEXT IF !user.is_timetracker AND field_object.is_timetracking %]
+
+  [% NEXT IF field == 'status_whiteboard' AND !Param('usestatuswhiteboard') %]
+  [% NEXT IF field == 'target_milestone' AND !Param('usetargetmilestone') %]
+  [% NEXT IF field == 'alias' AND !Param('usebugaliases') %]
+
+  [%# For now we don't have help for attachment fields and so on. %]
+  [% NEXT IF field.match('\.') %]
+
+  [% NEXT IF skip_fields.contains(field) %]
+
+  <dt id="[% field FILTER html %]">[% field_desc FILTER html %]</dt>
+    <dd>
+      [% SET help_text = field_help_map.${field_desc}.help %]
+      [% help_text FILTER none %]
+    </dd>
+[% END %]
+</dl>
+
+[% PROCESS global/footer.html.tmpl %]

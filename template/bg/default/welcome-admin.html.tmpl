@@ -35,21 +35,21 @@
   настройването на инсталацията ви.</p>
 
   <p>Като администратор, имате достъп до всички административни страници, достъпни от
-  връзката <a href="admin.cgi">Administration</a>, видима в дъното на тази страница.
+  връзката <a href="admin.cgi">Администрация</a>, видима в дъното на тази страница.
   Тази връзка ще бъдат винаги видима, на всички страници. От там, трябва да посетите поне
   страницата <a href="editparams.cgi">Параметри</a>, от където можете да зададете всички важни
   параметри на тази инсталацията; между другото:</p>
 
   <ul>
-    <li><a href="editparams.cgi?section=core#urlbase">urlbase</a>, което е адреса
+    <li><a href="editparams.cgi?section=core#urlbase_desc">urlbase</a>, което е адреса
     сочещ към тази инсталация и който ще бъде използван в писма (който е също
     причината да виждате тази страница: докато този параметър не е зададен, ще виждате тази
     страница оново и отново).</li>
 
-    <li><a href="editparams.cgi?section=core#cookiepath">cookiepath</a> е важен
+    <li><a href="editparams.cgi?section=core#cookiepath_desc">cookiepath</a> е важен
     за вашия браузър, за да управлява бисквитките правилно.</li>
 
-    <li><a href="editparams.cgi?section=general#maintainer">maintainer</a>, човека
+    <li><a href="editparams.cgi?section=general#maintainer_desc">maintainer</a>, човека
       отговорен за тази инсталация ако нещо се
       обърка.</li>
   </ul>
@@ -57,12 +57,12 @@
   <p>Също важни са следните параметри:</p>
 
   <ul>
-    <li><a href="editparams.cgi?section=auth#requirelogin">requirelogin</a>, ако е
+    <li><a href="editparams.cgi?section=auth#requirelogin_desc">requirelogin</a>, ако е
     включен, ще защити вашата инсталация от потребители нямащи сметка в нея.
     С други думи, потребителите, които не са изрично удостоверени с правилна сметка,
     не могат да видя никакви данни. Това бихте искали ако желаете да запазите данните си лични.</li>
 
-    <li><a href="editparams.cgi?section=auth#createemailregexp">createemailregexp</a>
+    <li><a href="editparams.cgi?section=auth#createemailregexp_desc">createemailregexp</a>
     определя на кои потребители е разрешено да създават сметка на тази инсталация. Ако е зададено
     на ".*" (по подразбиране), всеки е свободен да създаде своя сметка. Ако е зададено
     "@mycompany.com$", само на потребители имащи поща @mycompany.com ще бъде разрешено да
@@ -71,7 +71,7 @@
     инсталация, трябва абсолютно да зададете този параметър на с нещо различно от
     подразбиращото се.</li>
 
-    <li><a href="editparams.cgi?section=mta#mail_delivery_method">mail_delivery_method</a>
+    <li><a href="editparams.cgi?section=mta#mail_delivery_method_desc">mail_delivery_method</a>
     определя метода използван за изпращане на поща, като sendmail или SMTP. Трябва да го зададете
     правилно за изпращане на поща.</li>
   </ul>

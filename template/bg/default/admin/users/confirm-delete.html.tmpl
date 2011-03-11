@@ -33,7 +33,6 @@
   # namedquery_group_map:     number of named queries the user has shared
   # profiles_activity:        number of changes made to other users' profiles
   # series:                   number of series the viewed user has created
-  # votes:                    number of bugs the viewed user has voted on
   # watch.watched:            number of users the viewed user is being watched
   #                           by
   # watch.watcher:            number of users the viewed user is watching
@@ -226,8 +225,8 @@
   [% END %]
 
   [% IF assignee_or_qa || cc || component_cc || email_setting || flags.requestee ||
-        namedqueries || profile_setting || quips || series || votes || watch.watched ||
-        watch.watcher || whine_events || whine_schedules %]
+        namedqueries || profile_setting || quips || series || watch.watched ||
+        watch.watcher || whine_events || whine_schedules || other_safe %]
     <div class="warningmessages">
       <p>Следващите изтривания са <b>безопасни</b> и няма да създадат
       непълноти в цялостта на връзките.</p>
@@ -372,23 +371,6 @@
             вече няма да имат автор, но ще останат достъпни.
           </li>
         [% END %]
-        [% IF votes %]
-          <li>
-            [% otheruser.login FILTER html %] е гласувал по
-            [% IF votes == 1 %]
-              един [% terms.bug %]
-            [% ELSE %]
-              [%+ votes %] [%+ terms.abug %]
-            [% END %].
-            Ако изтриете потребителската сметка,
-            [% IF votes == 1 %]
-              този глас ще бъде изтрит
-            [% ELSE %]
-              тези гласове ще бъдат изтрити
-            [% END %]
-            заедно с нея.
-          </li>
-        [% END %]
         [% IF watch.watched || watch.watcher %]
           <li>
             [% otheruser.login FILTER html %]
@@ -445,6 +427,7 @@
             но самите хленчове ще бъдат оставени непроменени.
           </li>
         [% END %]
+        [% Hook.process('warn_safe') %]
       </ul>
     </div>
 

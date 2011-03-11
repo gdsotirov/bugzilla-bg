@@ -27,7 +27,8 @@
     <a href="editusers.cgi?id=[% userid FILTER none %]">Промяна на потребителя</a>.
   [% END %]
 [% ELSIF san_tag == "example_check_au_user_prompt" %]
-  <a href="sanitycheck.cgi?example_repair_au_user=1">Поправка на потребителите</a>.
+  <a href="sanitycheck.cgi?example_repair_au_user=1&amp;token=
+     [%- issue_hash_token(['sanitycheck']) FILTER url_quote %]"">Поправка на потребителите</a>.
 [% ELSIF san_tag == "example_repair_au_user_start" %]
   <em>ПРИМЕРЕН ПРИСТАВКА</em> - OK, потребителите ще бъдат направени Австралийци сега.
 [% ELSIF san_tag == "example_repair_au_user_end" %]

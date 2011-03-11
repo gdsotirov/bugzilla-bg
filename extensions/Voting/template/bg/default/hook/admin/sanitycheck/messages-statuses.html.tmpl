@@ -1,0 +1,41 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Everything Solved, Inc.
+  # Portions created by the Initial Developer are Copyright (C) 2010
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s): 
+  #   Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[% IF san_tag == "voting_cache_rebuild_fix" %]
+    <a href="sanitycheck.cgi?rebuild_vote_cache=1&amp;token=
+       [%- issue_hash_token(['sanitycheck']) FILTER url_quote %]">Щракнете тук, за да
+    изградите наново наличността с гласовете</a>
+
+[% ELSIF san_tag == "voting_cache_alert" %]
+    Лоша наличност с гласове за [% PROCESS bug_link bug_id = id %]
+
+[% ELSIF san_tag == "voting_count_start" %]
+    Проверка на налични бройки гласове.
+
+[% ELSIF san_tag == "voting_count_alert" %]
+    Грешна сума гласове за [% terms.bug %] [%+ id FILTER html %].
+
+[% ELSIF san_tag == "voting_cache_rebuild_start" %]
+    OK, сега се изгражда наново наличността с гласове.
+
+[% ELSIF san_tag == "voting_cache_rebuild_end" %]
+    Наличността с гласове беше изградена отново
+
+[% END %]

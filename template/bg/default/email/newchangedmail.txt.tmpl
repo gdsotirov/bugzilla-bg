@@ -19,28 +19,31 @@
   #%]
 
 [% PROCESS "global/variables.none.tmpl" %]
+[% PROCESS "global/reason-descs.none.tmpl" %]
+
 From: [% Param('mailfrom') %]
 To: [% to_user.email %]
-Subject: [[% terms.Bug %] [%+ bugid %]] [% 'Нов: ' IF isnew %][%+ summary %]
+Subject: [[% terms.Bug %] [%+ bug.id %]] [% 'Нов: ' IF isnew %][%+ bug.short_desc %]
+Date: [% bug.delta_ts FILTER time("%a, %d %b %Y %T %z", to_user.timezone) %]
 X-Bugzilla-Reason: [% reasonsheader %]
 X-Bugzilla-Type: [% isnew ? 'new' : 'changed' %]
 X-Bugzilla-Watch-Reason: [% reasonswatchheader %]
 [% IF Param('useclassification') %]
-X-Bugzilla-Classification: [% classification %]
+X-Bugzilla-Classification: [% bug.classification %]
 [% END %]
-X-Bugzilla-Product: [% product %]
-X-Bugzilla-Component: [% comp %]
-X-Bugzilla-Keywords: [% keywords %]
-X-Bugzilla-Severity: [% severity %]
-X-Bugzilla-Who: [% changer %]
-X-Bugzilla-Status: [% status %]
-X-Bugzilla-Priority: [% priority %]
-X-Bugzilla-Assigned-To: [% assignedto %]
-X-Bugzilla-Target-Milestone: [% targetmilestone %]
-X-Bugzilla-Changed-Fields: [% changedfields %]
+X-Bugzilla-Product: [% bug.product %]
+X-Bugzilla-Component: [% bug.component %]
+X-Bugzilla-Keywords: [% bug.keywords %]
+X-Bugzilla-Severity: [% bug.bug_severity %]
+X-Bugzilla-Who: [% changer.login %]
+X-Bugzilla-Status: [% bug.bug_status %]
+X-Bugzilla-Priority: [% bug.priority %]
+X-Bugzilla-Assigned-To: [% bug.assigned_to.login %]
+X-Bugzilla-Target-Milestone: [% bug.target_milestone %]
+X-Bugzilla-Changed-Fields: [% changedfields.join(" ") %]
 [%+ threadingmarker %]
 
-[%+ urlbase %]show_bug.cgi?id=[% bugid %]
+[%+ urlbase %]show_bug.cgi?id=[% bug.id %]
 [%- IF diffs %]
 
 [%+ diffs %]
@@ -56,33 +59,12 @@ X-Bugzilla-Changed-Fields: [% changedfields %]
 -- [%# Protect the trailing space of the signature marker %]
 Настройване на [% terms.bug %]поща: [% urlbase %]userprefs.cgi?tab=email
 ------- Получавате тава писмо защото: -------
-[% FOREACH relationship = reasons %]
-  [% SWITCH relationship %]
-    [% CASE constants.REL_ASSIGNEE %]
-Сте назначения по [% terms.abug %].
-    [% CASE constants.REL_REPORTER %]
-Сте докладвали [% terms.abug %].
-    [% CASE constants.REL_QA %]
-Сте качествения контрол по [% terms.abug %].
-    [% CASE constants.REL_CC %]
-Сте в списъка ТК на [% terms.bug %].
-    [% CASE constants.REL_VOTER %]
-Сте гласували за [% terms.abug %].
-    [% CASE constants.REL_GLOBAL_WATCHER %]
-Следите всички промени по [% terms.aug %].
-  [% END %]
+[% SET reason_lines = [] %]
+[% FOREACH reason = reasons %]
+  [% reason_lines.push(reason_descs.$reason) IF reason_descs.$reason %]
 [% END %]
-[% FOREACH relationship = reasons_watch %]
-  [% SWITCH relationship %]
-    [% CASE constants.REL_ASSIGNEE %]
-Наблюдавате назначения по [% terms.abug %].
-    [% CASE constants.REL_REPORTER %]
-Наблюдавате докладчика.
-    [% CASE constants.REL_QA %]
-Наблюдавате качествения конрол по [% terms.abug %].
-    [% CASE constants.REL_CC %]
-Наблюдавате някой от списъка ТК на [% terms.abug %].
-    [% CASE constants.REL_VOTER %]
-Наблюдавате гласувал за [% terms.abug %].
-  [% END %]
+[% FOREACH reason = reasons_watch %]
+  [% reason_lines.push(watch_reason_descs.$reason)
+       IF watch_reason_descs.$reason %]
 [% END %]
+[%+ reason_lines.join("\n") %]

@@ -1,0 +1,239 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[%# This file describes both bug fields and search fields. %]
+
+[% PROCESS "global/field-descs.none.tmpl" %]
+
+[% help_html = {
+
+# Note that all these keys here are in alphabetical order, though
+# search-specific fields are at the bottom.
+
+##############
+# Bug Fields #
+##############
+
+alias =>
+  "Кратко, уникално име присвоявано на ${terms.bug}, за да се подпомогне
+   намирането му и споменаването му на други места в ${terms.Bugzilla}.",
+
+assigned_to =>
+  "Лицето отговорно за разрешаването на ${terms.abug}.",
+
+blocked =>
+  "Този $terms.bug трябва да бъде решен преди $terms.bugs изброени в това
+   поле да могат да бъдат решени.",
+
+bug_file_loc =>
+  "${terms.Bugs}те могат да имат URL свързано с тях - например,"
+  _ " указател към web страница където се наблюдава проблема.",
+
+bug_id =>
+  "Номера на $terms.abug, уникален вътре в цялата инсталация"
+  _ " на ${terms.Bugzilla}.",
+
+bug_severity =>
+  "Колко суров е ${terms.bug}, или дали е подобрение.",
+
+bug_status =>
+  "$terms.Abug може да бъде във всяко от определен брой състояния.",
+
+cc =>
+  "Потребители които може да не игарят пряка роля по този $terms.bug, но които
+   са заинтересовани от напредъка му.",
+
+classification => 
+  "${terms.Bugs}те се категоризират в Класификации, Продукти и"
+  _ " Съставни части. Класификациите са върховата категоризация.",   
+
+component => 
+  "Съставните части са второ ниво категории; всяка принадлежи към"
+  _ " определен Продукт. Изберете Продукт, за да намалите този списък.",
+
+creation_ts =>
+  "Кога е въведен ${terms.abug}.",
+
+deadline =>
+  "Датата до която този $terms.bug трябва да бъде оправен, въведена в ГГГГ-ММ-ДД
+   формат.",
+
+delta_ts =>
+  "Кога този $terms.bug последно е бил обновен.",
+
+dependson =>
+  "${terms.Bugs}те изброени тук трябва да бъдат решени преди този $terms.bug
+   да може да бъде решен.",
+
+estimated_time =>
+  "Времето, което е било преценено, че ще отнеме решаването на
+   този ${terms.bug}.",
+
+keywords =>
+   "Можете да добавите ключови думи от определен списък към $terms.bugs, с цел"
+   _ " да ги обозначите и подредите.",
+
+longdesc =>
+  "$terms.Bugs имат коментари добавяни им от $terms.Bugzilla потребители."
+  _ "Можете да търсите някакъв текст в тях.",
+
+op_sys =>
+  "Операционната система на която $terms.abug е бил наблюдаван.",
+
+percentage_complete =>
+  "Колко близо до 100% готов е този ${terms.bug}, сравнявайки
+   $field_descs.work_time мъ с ${field_descs.estimated_time}.",
+
+priority =>
+  "Инженерите дават предимство на техните $terms.bugs използвайки това поле.",
+
+# Note that this has extra text added below if useclassification is on.
+product =>
+  "$terms.Bugs се категоризират в Продукти и Съставни части.",
+
+qa_contact =>
+  "Лицето отговорно за  потвърждаване на този $terms.bug ако той е"
+  _ " непотвърден и за проверка на поправката веднъж след като $terms.abug"
+  _ " е бил разрешен.",
+
+remaining_time =>
+  "Броя на часовете работа оставащи по този $terms.bug, изчислени чрез
+   изваждане на $field_descs.work_time от 
+   ${field_descs.estimated_time}.",
+
+rep_platform => 
+  "Машинната платформа на която $terms.abug е бил наблюдаван.",
+
+reporter =>
+  "Човека въвел ${terms.abug}.",
+
+resolution =>
+  "Ако $terms.abug е в разрешено състояние, тогава една от тези причини"
+  _ " ще бъде посочене за неговото разрешаване.",
+
+see_also =>
+  "Това ви позволява да правите обръщения към $terms.bugs в други инсталации.
+   Можете да въведете URL към $terms.bug в полето 'Добавяне на $terms.bug URLта',
+   за да отбележите, че онзи $terms.bug свързан с този. Можете да
+   въведете множество URLта наведнъж разделяийки ги със запетая.
+
+   <p>Обикновенно трябва да използвате това поле за обръщения към $terms.bugs в
+     <em>други</em> инсталации. За $terms.bugs в тази
+     инсталация е по-добре да използвате полетата $field_descs.dependson и 
+     ${field_descs.blocked}.</p>",
+
+short_desc =>
+  "Рзюмето на $terms.bug е кратко изречение което сбито"
+  _ " описва за какво е ${terms.abug}.",
+
+status_whiteboard =>
+  "Всеки $terms.bug има едноредова кутия за въвеждане на свободен текст служеща за"
+  _ " добаяне на етикети и информация за състоянието.",
+
+target_milestone =>
+   "Полето $field_descs.target_milestone се използва за определяне на това кога"
+   _ " инженера на който е назначен $terms.abug се очаква да го оправи.",
+
+version =>
+  "Полето за версия определя версията на програмата, в която"
+  _ " $terms.abug е бил открит.",
+
+votes =>
+  "За някои $terms.bugs може да се гласува и можете да ограничите търсенето си до"
+  _ " $terms.bugs с повече от определен брой гласове.",
+
+work_time =>
+  "Общото време изразходвано върху този $terms.bug до тук.",
+
+##########################
+# Search-specific fields #
+##########################
+
+chfield =>
+  "Можете да търсите за определени типове промени - това поле определя"
+  _" промени в кое поле ви интересуват.",
+
+# Duplicated to chfieldto below, also.
+chfieldfrom =>
+  "Указване на начална и крайна дата или в ГГГГ-ММ-ДД формат
+   допълнително следван от ЧЧ:мм, при 24 часов часовник) или в относителни
+   дати като 1h, 2d, 3w, 4m, 5y, които съответно значат един час,
+   два дни, три седмици, четири месеца или пет години преди. 0d е
+   полунощ, а 0h, 0w, 0m, 0y е началото на този час, седмица,
+   месец или година.",
+
+chfieldvalue =>
+  "The value the field defined above changed to during that time.",
+
+content =>
+  "Това е поле достъпно в търсения изпълняващи Google-подобно
+   'пълнотекстово' търсене по $field_descs.short_desc и
+   $field_descs.longdesc полетата.",
+
+# Duplicated to email2 below, also.
+email1 =>
+  "Всеки $terms.bug има хора свързани с него в различни"
+  _ " роли. Тук, можете да търсите по кои хора са в какви роли.",
+
+} %]
+
+[% help_html.email2 = help_html.email1 %]
+[% help_html.chfieldto = help_html.chfieldfrom %]
+[% help_html.deadlinefrom = help_html.deadline %]
+[% help_html.deadlineto = help_html.deadline %]
+
+[% help_all_note = BLOCK %]
+  <strong>Забележка:</strong> При търсене, избирането на "Всичко"
+  намира само [% terms.bugs %] чиято стойност за това поле е буквално
+  думата "Всичко".
+[% END %]
+[% FOREACH all_field = ['op_sys', 'rep_platform'] %]
+  [% help_html.$all_field = help_html.$all_field _ ' ' _ help_all_note %]
+[% END %]
+
+[% IF Param('useclassification') %]
+  [% help_html.product = help_html.product 
+      _ " Изберете Класификация за да намалите списъка." %]
+[% END %]
+
+[% FOREACH help_field = bug_fields.keys %]
+
+  [%# Add help for custom fields. %]
+  [% IF !help_html.${help_field}.defined %]
+    [% SET field_type = bug_fields.${help_field}.type %]
+    [% field_type_desc = BLOCK -%]
+      [% field_types.$field_type FILTER html %]
+    [%- END %]
+    [% help_html.${help_field} = 
+      "Потребителско поле $field_type_desc в тази инсталация"
+      _ " на ${terms.Bugzilla}." %]
+  [% END %]
+
+  [%# Add help for the search types, for query.cgi. %]
+  [% type_desc = BLOCK %]
+    Типа на [% field_descs.${help_field} FILTER html %] търсене което 
+    желаете.
+  [% END %]
+  [% SET type_name = help_field _ '_type' %]
+  [% help_html.$type_name = type_desc %]
+[% END %]
+
+[% Hook.process("end") %]

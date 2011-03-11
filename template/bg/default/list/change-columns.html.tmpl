@@ -34,10 +34,22 @@
 
 [% PROCESS "global/field-descs.none.tmpl" %]
 [% field_descs.short_short_desc     = "Резюме (първите 60 символа)" %]
-[% field_descs.short_desc           = "Резюме" %]
-[% field_descs.assigned_to_realname = "Истинско име на назначен" %]
-[% field_descs.reporter_realname    = "Истинско име на докладчик" %]
-[% field_descs.qa_contact_realname  = "Истинско име на Кач. контрол" %]
+[% field_descs.short_desc           = "Резюме (пълно)" %]
+[% field_descs.assigned_to_realname = "Истинско име на $field_descs.assigned_to" %]
+[% field_descs.reporter_realname    = "Истинско има на $field_descs.reporter" %]
+[% field_descs.qa_contact_realname  = "Истинско име на $field_descs.qa_contact" %]
+
+[%# Create a mapping of field descriptions to field names, so that
+  # the "Available Columns" list can be sorted alphabetically by
+  # field description.
+  #%]
+[% SET available_columns = {} %]
+[% FOREACH column = columns.keys %]
+  [% NEXT IF collist.contains(column) %]
+  [%# We lowecase the keys so that the sort happens case-insensitively. %]
+  [% SET column_desc = field_descs.$column || column FILTER lower %]
+  [% available_columns.$column_desc = column %]
+[% END %]
 
 <form name="changecolumns" action="colchange.cgi" onsubmit="change_submit();">
   <input type="hidden" name="rememberedquery" value="[% buffer FILTER html %]">
@@ -70,12 +82,13 @@
                 [% (field_descs.${column} || column) FILTER html %]
               </option>
             [% END %]
-            [% FOREACH column = masterlist %]
-              [% IF lsearch(collist, column) == -1 %]
-                <option value="[% column FILTER html %]">
-                  [% (field_descs.${column} || column) FILTER html %]
-                </option>
-              [% END %]
+            [% FOREACH key = available_columns.keys.sort %]
+              [% SET column = available_columns.$key %]
+              <option value="[% column FILTER html %]">
+                [%# Don't display the lower-cased column description,
+                  # display the correct-case one. %]
+                [% (field_descs.$column || column) FILTER html %]
+              </option>
             [% END %]
           </select>
         </td>
@@ -108,11 +121,16 @@
     <p>
       <input type="hidden" name="saved_search"
              value="[% saved_search.id FILTER html%]" >
+      <input type="hidden" name="token"
+             value="[% issue_hash_token([saved_search.id, saved_search.name]) FILTER html %]">
       <input type="checkbox" id="save_columns_for_search" checked="checked" 
              name="save_columns_for_search" value="1">
       <label for="save_columns_for_search">Запазване на списъка с колони само 
         за тръсене '[% saved_search.name FILTER html %]'</label>
     </p>
+  [% ELSE %]
+    <input type="hidden" name="token"
+           value="[% issue_hash_token(['default-list']) FILTER html %]">
   [% END %]
 
   <p>

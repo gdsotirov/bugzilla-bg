@@ -107,8 +107,7 @@
   [% IF user.authorizer.can_change_password %]
     <hr>
 
-    <a name="forgot"></a>
-    <form method="get" action="token.cgi">
+    <form id="forgot" method="get" action="token.cgi">
       <input type="hidden" name="a" value="reqpw">
       Ако притежавате сметка, но сте забравили паролата си,
       въведете потребителското си име в полето отдолу и изпратете

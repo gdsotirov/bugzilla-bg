@@ -28,6 +28,11 @@
 
 %strings = (
     any  => 'всяка',
+    apachectl_failed => <<END,
+Внимание: Не можем да проверим настройката на Apache. Това понякога
+се случва когато не пускате checksetup.pl като ##root##. За да видите
+проблема на който се натъкнахме, пуснете: ##command##
+END
     blacklisted => '(в черния списък)',
     checking_for => 'Проверка за',
     checking_dbd      => 'Проверка на наличните Perl DBD модули...',
@@ -57,6 +62,7 @@ END
     feature_inbound_email     => 'Входяща е-поща',
     feature_jobqueue          => 'Поща във фонов режим',
     feature_jsonrpc           => 'Интерфейс JSON-RPC',
+    feature_jsonrpc_faster    => 'Прави JSON-RPC по-бърз',
     feature_new_charts        => 'Нови графики',
     feature_old_charts        => 'Стари графики',
     feature_mod_perl          => 'mod_perl',
@@ -67,6 +73,8 @@ END
     feature_updates           => 'Автоматични уведомления за обновяване',
     feature_xmlrpc            => 'Интерфейс XML-RPC',
 
+    file_remove => 'Премахване на ##name##...',
+    file_rename => 'Преименуване от ##from## на ##to##...',
     header => "* Това е Bugzilla ##bz_ver## на perl ##perl_ver##\n"
             . "* Работеща на ##os_name## ##os_ver##",
     install_all => <<EOT,
@@ -97,6 +105,18 @@ EOT
 # Note: When translating these "modules" messages, don't change the formatting
 # if possible, because there is hardcoded formatting in 
 # Bugzilla::Install::Requirements to match the box formatting.
+    modules_message_apache => <<END,
+***********************************************************************
+* APACHE МОДУЛИ                                                       *
+***********************************************************************
+* Обикновенно, когато Bugzilla е надградена, всичките ѝ потребители   *
+* трябва да изчистят кеша на браузъра си или тя ще се чупи. Ако раз-  *
+* решите определени модули в настройката си на Apache (обичайно файл- *
+* лове именовани httpd.conf или apache2.conf), тогва няма да има нуж- *
+* да потребителите ви да чистят кеша си когато надграждате Bugzilla.  *
+* Модулите които трябва да разрешите са:                              *
+*                                                                     *
+END
     modules_message_db => <<EOT,
 ***********************************************************************
 * ДОСТЪП ДО БАЗИ ДАННИ                                                *

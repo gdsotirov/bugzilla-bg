@@ -1,0 +1,29 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Everything Solved, Inc.
+  # Portions created by the Initial Developer are Copyright (C) 2010
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s):
+  #   Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[% IF error == "oldbugmove_no_delete_moved" %]
+    Доакато разширението OldBugMove работи, не можете да
+    изтриете [%+ display_value("resolution", "MOVED") FILTER html %]
+    решението.
+[% ELSIF error == "oldbugmove_no_manual_move" %]
+    Не можете да зададете решението на [% terms.bug %] на 
+    [%+ display_value("resolution", "MOVED") FILTER html %] без
+    да преместите [% terms.abug %].
+[% END %]

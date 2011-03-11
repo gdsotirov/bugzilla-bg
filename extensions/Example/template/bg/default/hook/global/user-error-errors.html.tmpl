@@ -9,4 +9,7 @@
 [% IF error == "example_my_error" %]
    [% title = "Примерно заглавие на грешка" %]
    Това е съобщение за грешка! То съдържа <em>малко html</em>.
+[% ELSIF error == "example_short_desc_invalid" %]
+  [% title = "Лошо резюме" %]
+  Резюмето трябва да съдържа думата "example".
 [% END %]

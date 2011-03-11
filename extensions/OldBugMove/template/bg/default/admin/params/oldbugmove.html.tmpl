@@ -1,0 +1,40 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Netscape Communications
+  # Corporation. Portions created by Netscape are
+  # Copyright (C) 1998 Netscape Communications Corporation. All
+  # Rights Reserved.
+  #
+  # Contributor(s): Dave Miller <justdave@bugzilla.org>
+  #                 Frédéric Buclin <LpSolit@gmail.com>
+  #%]
+[%
+   title = "Местене на $terms.bug"
+   desc = "Задаване на параметри за местене на $terms.bugs към/от друга инсталация"
+%]
+
+[% param_descs = {
+
+  "move-to-url" => 
+    "Адреса на базата към която разрешавме някои от нашите $terms.bugs да"
+    _ " бъдат местени.",
+
+  "move-to-address" => 
+    "За местене на ${terms.bugs}, се изпраща поща до целевата база данни."
+    _ " Това е пощенския адрес който тази база данни използва, за да слуша"
+    _ " за входящи ${terms.bugs}.",
+
+  movers => 
+    "Списък на хора с разрешение да местят $terms.bugs ",
+
+} %]

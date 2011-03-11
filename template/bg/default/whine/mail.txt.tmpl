@@ -40,13 +40,13 @@
   Търсенето беше насрочено от [% author.login %].
 [% END %]
 
-
-[% FOREACH query=queries %]
+[% IF queries.size %]
+  [% FOREACH query=queries %]
 
 [%+ query.title +%]
 [%+ "-" FILTER repeat(query.title.length) %]
 
- [% FOREACH bug=query.bugs %]
+  [% FOREACH bug=query.bugs %]
   [% terms.Bug +%] [%+ bug.bug_id %]:
   [%+ urlbase %]show_bug.cgi?id=[% bug.bug_id +%]
    Приоритет: [%+ display_value("priority", bug.priority) -%]
@@ -55,11 +55,14 @@
  Назначен на: [%+ bug.assigned_to %]
    Състояние: [%+ display_value("bug_status", bug.bug_status) %]
             [%- IF bug.resolution -%]    Решение: [% display_value("resolution", bug.resolution) -%]
-                                [%- END %]
+            [%- END %]
       Резюме: [% bug.short_desc %]
 
- [% END %]
+   [% END %]
 
+  [% END %]
+[% ELSE %]
+
+  No [% terms.bugs %] were found that matched the search criteria.
 [% END %]
-
 

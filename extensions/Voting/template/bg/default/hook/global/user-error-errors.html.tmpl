@@ -1,0 +1,55 @@
+[%# The contents of this file are subject to the Mozilla Public
+  # License Version 1.1 (the "License"); you may not use this file
+  # except in compliance with the License. You may obtain a copy of
+  # the License at http://www.mozilla.org/MPL/
+  #
+  # Software distributed under the License is distributed on an "AS
+  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  # implied. See the License for the specific language governing
+  # rights and limitations under the License.
+  #
+  # The Original Code is the Bugzilla Bug Tracking System.
+  #
+  # The Initial Developer of the Original Code is Everything Solved, Inc.
+  # Portions created by the Initial Developer are Copyright (C) 2010
+  # the Initial Developer. All Rights Reserved.
+  #
+  # Contributor(s): 
+  #   Max Kanat-Alexander <mkanat@bugzilla.org>
+  #%]
+
+[% IF error == "voting_must_be_nonnegative" %]
+    [% title = "Гласовете трябва да са положителни" %]
+    [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
+    Използвайте само положителни числа за гласовете си за [% terms.bug %].
+
+[% ELSIF error == "voting_product_illegal_votes" %]
+    [% title = "Гласовете трябва да са положителни" %]
+    [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
+    '[% votes FILTER html %]' е недействителна стойност за полето
+    <em>
+    [% IF field == "votesperuser" %]
+      Гласове на потребител
+    [% ELSIF field == "maxvotesperbug" %]
+      Максимум гласове за [% terms.bug %]
+    [% ELSIF field == "votestoconfirm" %]
+      Гласове за потвърждение
+    [% END %]
+    </em>, което трябва да съдържа положително число.
+
+[% ELSIF error == "voting_too_many_votes_for_bug" %]
+    [% title = "Недействителен глас" %]
+    [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
+    Можете да използвате най-много [% max FILTER html %] гласа за един
+    [%+ terms.bug %] в
+    продукта <tt>[% product FILTER html %]</tt>, но се опитвате да
+    ползвате [% votes FILTER html %].
+
+[% ELSIF error == "voting_too_many_votes_for_product" %]
+    [% title = "Недействителен глас" %]
+    [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
+    Опитахте се да ползвате [% votes FILTER html %] гласа в
+    продукта <tt>[% product FILTER html %]</tt>, което надхвърля максимума от
+    [%+ max FILTER html %] гласа за него.
+
+[% END %]
