@@ -24,7 +24,7 @@
 %]
 
 [% param_descs = {
-  cvsroot => "<a href=\"http://www.cvshome.org\">CVS</a> корена, който повечето " _
+  cvsroot => "<a href=\"http://www.cvshome.org\"><abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr></a> корена, който повечето " _
              "потребители на вашата система ще използват за 'cvs diff'. Използван в " _
              "Преглед на кръпки (възможността 'Сравняване' на кръпките), за да се " _
              "установи къде е корена на кръпките дори потребителите да са изпълнили " _
@@ -37,7 +37,7 @@
              "Оставете празно ако нямате <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилище.",
 
   cvsroot_get => "<abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> корена, който $terms.Bugzilla ще използва за извличане на кръпки. " _
-                 "Някои инсталации може да искат да ползват огледални копия на CVS хранилища " _
+                 "Някои инсталации може да искат да ползват огледални копия на <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилища " _
                  "на $terms.Bugzilla сървъра или даже да ползват хранилище на този сървър и " _
                  "така то да бъде на локалната файлова система (съответно много " _
                  "по-бързо). Направете еднакво с cvsroot ако не " _
@@ -52,7 +52,7 @@
 
   lxr_url => "<abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-то на <a href=\"http://sourceforge.net/projects/lxr\"><abbr lang=\"en\" title=\"Linux Cross-Reference\">LXR</abbr></a> сървъра, " _
              "който индексира <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилището Ви. Прегледа на кръпки ще използва тази " _
-             "информация за създаването на връзки до LXR за всеки файл в кръпката. " _
+             "информация за създаването на връзки до <abbr lang=\"en\" title=\"Linux Cross-Reference\">LXR</abbr> за всеки файл в кръпката. " _
              "Оставете празно ако не разбирате какво е това.",
 
   lxr_root => "Някои <abbr lang=\"en\" title=\"Linux Cross-Reference\">LXR</abbr> инсталации не индексират <abbr lang=\"en\" title=\"Concurrent Versions System\">CVS</abbr> хранилището от корена му -- " _

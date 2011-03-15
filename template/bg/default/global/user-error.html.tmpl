@@ -997,12 +997,12 @@
     [% END %]
 
   [% ELSIF error == "json_rpc_get_method_required" %]
-    При ползване на JSON-RPC през GET, трябва да укажете 'method'
+    При ползване на <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> през GET, трябва да укажете 'method'
     параметър. Вижте документацията на
     [%+ docs_urlbase FILTER html %]api/Bugzilla/WebService/Server/JSONRPC.html
 
   [% ELSIF error == "json_rpc_invalid_params" %]
-    Не може да бъде направен синтактичен разбор на аргумента 'params' като действителен JSON.
+    Не може да бъде направен синтактичен разбор на аргумента 'params' като действителен <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>.
     Грешка: [% err_msg FILTER html %]
     Стойност: [% params FILTER html %]
 
@@ -1012,7 +1012,7 @@
     символи са разрешени в параметъра 'callback': <code>[]._</code>
 
   [% ELSIF error == "json_rpc_post_only" %]
-    От съображения за сигурност, можете да използвате HTTP POST за извикване на
+    От съображения за сигурност, можете да използвате <abbr lang="en" title="Hyper Text Transfer Protocol">HTTP</abbr> POST за извикване на
     метода '[% method FILTER html %]'.
 
   [% ELSIF error == "keyword_already_exists" %]

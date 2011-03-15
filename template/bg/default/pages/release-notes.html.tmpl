@@ -64,7 +64,7 @@
 
 <p>Бихме искали да благодарим на
   <a href="http://www.itasoftware.com/">ITA Software</a>,
-  <a href="http://www.ibm.com/linux/ltc/">IBM Линукс Технологичен Център</a>,
+  <a href="http://www.ibm.com/linux/ltc/"><abbr lang="en" title="International Business Machines">IBM</abbr> Линукс Технологичен Център</a>,
   и <a href="http://www.redhat.com/">Red Hat</a> за финансирането на разработката
   на определени възможности и подобрения в тази версия на
   [%+ terms.Bugzilla %].</p>
@@ -143,11 +143,11 @@
   <li><a href="#v40_feat_workflow">Нов подразбиращ се работен поток на състояния</a></li>
   <li><a href="#v40_feat_lists">"Последно търсне" вече помни множество
     търсения</a></li>
-  <li><a href="#v40_feat_jsonp">Cross-Domain WebServices с JSONP</a></li>
+  <li><a href="#v40_feat_jsonp">Cross-Domain WebServices с <abbr lang="en" title="JavaScript Object Notation with Padding">JSONP</abbr></a></li>
   <li><a href="#v40_feat_ws">Големи WebService подобрения</a></li>
   <li><a href="#v40_feat_mandatory">Задължителни потребителски полета</a></li>
   <li><a href="#v40_feat_vot_ext">Гласуването е вече разширение</a></li>
-  <li><a href="#v40_feat_js_css_update">Потребителите получават нов CSS и Javascript
+  <li><a href="#v40_feat_js_css_update">Потребителите получават нов <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> и Javascript
     автоматично</a></li>
   <li><a href="#v40_feat_hooks">Много нови куки</a></li>
   <li><a href="#v40_feat_apache_config">Нова настройка на Apache</a></li>
@@ -161,7 +161,7 @@
   Резюме, [% terms.Bugzilla %] ще предложи възможни двойници на
   [%+ terms.abug %] който попълвате.</p>
 
-<p>За да работи тази възможност, всички предпоставки за JSON-RPC
+<p>За да работи тази възможност, всички предпоставки за <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr>
   поддръжка трябва да бъдат налични на вашата [% terms.Bugzilla %]. Тя ще бъде
   много по-бърза на инсталации работещи с mod_perl отколкото ще
   бъде на други инсталации.</p>
@@ -195,13 +195,13 @@
   [%+ field_descs.assigned_to FILTER html %]) ще се появи списък
   съдържащ всички потребители, чиито истински имена или потребителски имена съвпадат с написаното
   от вас. Вашата [% terms.Bugzilla %] трябва да има налични всички незадължителни Perl
-  модули необходими за JSON-RPC поддръжка, за да работи
+  модули необходими за <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> поддръжка, за да работи
   тази възможност. Също така тази възможност ще бъде <strong>много</strong>
   по-бърза на инсталации работещи под mod_perl отколкото ще бъде на
   други инсталации.</p>
 
 <p>Има също така подобно автоматично завършване за полето Ключови думи. Автоматичното
-  завършване за ключови думи не изисква JSON-RPC.</p>
+  завършване за ключови думи не изисква <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr>.</p>
 
 <h3 id="v40_feat_ui">Общи подобрения по използваемостта</h3>
 
@@ -258,18 +258,18 @@
   "отгатне" през кое търсене се опитвате да се движите, но тя прави
   най-доброто, за да го направи правилно.</p>
 
-<h3 id="v40_feat_jsonp">Cross-Domain WebServices с JSONP</h3>
+<h3 id="v40_feat_jsonp">Cross-Domain WebServices с <abbr lang="en" title="JavaScript Object Notation with Padding">JSONP</abbr></h3>
 
 <p>[% terms.Bugzilla %] вече поддържа правенето на WebService извиквания от
   друг домейн, в web бразузъра, благодарение на поддръжката на
   <a href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/">JSONP</a>.
   Това позволява на web "mash-ups" да използват [% terms.Bugzilla %] данни.
-  При използване на JSONP, можете да използвате функции които <em>получават</em> данни, 
+  При използване на <abbr lang="en" title="JavaScript Object Notation with Padding">JSONP</abbr>, можете да използвате функции които <em>получават</em> данни, 
   но не можете да извиквате функции които <em>променят</em> данни.</p>
 
 <p>За повече подробности, вижте
   <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Server/JSONRPC.html#JSONP">раздела
-  JSONP</a> от документацията на JSON-RPC WebService.</p>
+  <abbr lang="en" title="JavaScript Object Notation with Padding">JSONP</abbr></a> от документацията на <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> WebService.</p>
 
 <h3 id="v40_feat_ws">Големи WebService подобрения</h3>
 
@@ -301,16 +301,16 @@
   да бъдат отговорени е за някой да се изправи и да предложи да поддържа
   системата извън основния кода на [% terms.Bugzilla %].</p>
 
-<h3 id="v40_feat_js_css_update">Потребителите получават нов CSS и Javascript
+<h3 id="v40_feat_js_css_update">Потребителите получават нов <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> и Javascript
   автоматично</h3>
   
 <p>В предишни версии на [% terms.Bugzilla %], ако промените
-  CSS или Javascript файловете на [%+ terms.Bugzilla %], тогава всеки потребител на
+  <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> или Javascript файловете на [%+ terms.Bugzilla %], тогава всеки потребител на
   [%+ terms.Bugzilla %] ще трябваше да изчисти своята наличност в браузъра, за да получи
   обновените файлове. Сега, ако използвате Apache като web сървър и
   имате налични и разрешени <a href="#v40_req_apache">нездължителните Apache
   модули</a>, потребителите автоматично ще получават всяка нова версия на
-  Javascript и CSS на [%+ terms.Bugzilla %] без да се налага да трият
+  Javascript и <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> на [%+ terms.Bugzilla %] без да се налага да трият
   наличността на бразуъра си.</p>
 
 <p>Тази възможност също така дава леко ускоряване на производителността на
@@ -403,7 +403,7 @@
     като X, Y или Z оси на доклад, включително потребителски полета.</li>
   <li>[% terms.Bugzilla %] вече предпазва
     Internet Explorer 8 и по-нов от опита да представя
-    <kbd>text/plain</kbd> приставки като <abbr lang="en" title="Hyper-text Markup Language">HTML</abbr>.</li>
+    <kbd>text/plain</kbd> приставки като <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr>.</li>
   <li>Ако получите писмо от Хленч, което е празно, то вече ще съдържа кратко
     съобщение обясняващо, че търсенето ви не е дало резултати.</li>
   <li><a href="page.cgi?id=fields.html">Страницата помощ за полета Page</a> вече
@@ -444,9 +444,9 @@
     <kbd>checksetup.pl</kbd> вече ще се опитва да извежда съобщенията си в
     кодирането на терминала ви.</li>
   <li><strong>Инсталация:</strong> [% terms.Bugzilla %] вече няма нужда от празен
-    CSS "контейнер" CSS в <kbd>skins/custom</kbd> папка и други
+    <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> "контейнер" в <kbd>skins/custom</kbd> папка и други
     папки. Когато обновите, <kbd>checksetup.pl</kbd> ще ги премахне.
-    Това също значително намалява броя на HTTP заявките необходими за
+    Това също значително намалява броя на <abbr lang="en" title="Hyper Text Transfer Protocol">HTTP</abbr> заявките необходими за
     зареждане на страница за първи път в [% terms.Bugzilla %].</li>
   <li><strong>Инсталация:</strong> За Windows потребители, [% terms.Bugzilla %]
     вече поддържа напълно Strawberry Perl.</li>
@@ -476,11 +476,11 @@
     видите дали те са в подразбиращия се <abbr title="Точно Копие">ТК</abbr> списък на някоя съставна част.</li>
   <li>За нови инсталации на [% terms.Bugzilla %], всички потребители ще
     могат да виждат и използват Хленч системата по подразбиране.</li>
-  <li>Когато ползвате SSL с [% terms.Bugzilla %], вече можете да
+  <li>Когато ползвате <abbr lang="en" title="Secure Socket Layer">SSL</abbr> с [% terms.Bugzilla %], вече можете да
     включите параметъра <kbd>strict_transport_security</kbd>, за да
     пращате
     <a href="https://developer.mozilla.org/en/Security/HTTP_Strict_Transport_Security">Strict-Transport-Security</a>
-    заглавката с всяка HTTPS връзка, за допълнителна сигурност.</li>
+    заглавката с всяка <abbr lang="en" title="Hyper Text Transfer Protocol Secure">HTTPS</abbr> връзка, за допълнителна сигурност.</li>
   <li>Нови куки в кода (вижте документацията им в
     <a href="[% docs_urlbase FILTER html %]api/Bugzilla/Hook.html">Bugzilla::Hook</a>):
     bug_check_can_change_field, search_operator_field_override,
@@ -501,16 +501,16 @@
     <a href="https://developer.mozilla.org/en/the_x-frame-options_response_header"><code>X-Frame-Options: SAMEORIGIN</code></a> заглавката
     с всяка заявка за страница, за да предотврати "clickjacking" нападения. Забележете,
     че това предотвратява други домейни да показват [% terms.Bugzilla %]
-    в HTML рамка.</li> 
+    в <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> рамка.</li> 
 </ul>
 
 <h4 id="v40_feat_ws_changes">WebService промени</h4>
 
 <ul>
-  <li>Вече можете да викате някои JSON-RPC методи използвайки HTTP GET, в допълнение към
-    ползването на HTTP POST. Вижте 
+  <li>Вече можете да викате някои <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> методи използвайки <abbr lang="en" title="Hyper Text Transfer Protocol">HTTP</abbr> GET, в допълнение към
+    ползването на <abbr lang="en" title="Hyper Text Transfer Protocol">HTTP</abbr> POST. Вижте 
     <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Server/JSONRPC.html#Connecting_via_GET">документацията на
-    JSON-RPC</a> за подробности.</li>
+    <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr></a> за подробности.</li>
   <li>Вече можете да обновявате съществуващи [% terms.bugs %] използвайки
     <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Bug.html#update">B[% %]ug.update</a>
     функцията.</li>
@@ -540,7 +540,7 @@
     потребители в указаните групи.</li>
   <li>Има нова, недокументирана B[% %]ug.possible_duplicates
     функция която помага за изпълняването на автоматичната система за установяване на
-    двойници. Тъй като тази функция не е писана, нейния API може да се промени
+    двойници. Тъй като тази функция не е писана, нейния <abbr lang="en" title="Application Programming Interface">API</abbr> може да се промени
     между версиите на [% terms.Bugzilla %].</li>
   <li>Вече не можете да търсите използвайки параметър <kbd>votes</kbd> в
     <kbd>B[% %]ug.search</kbd>.</li>
@@ -621,7 +621,7 @@
   създаван от <kbd>checksetup.pl</kbd>. Този файл вече се доставя с
   [%+ terms.Bugzilla %] вместо да бъде създаван по време на инсталация.</p>
 
-<p>Ако обновявате чрез CVS или bzr, ще получите съобщения, че вашия съществуващ
+<p>Ако обновявате чрез <abbr lang="en" title="Concurrent Versions System">CVS</abbr> или bzr, ще получите съобщения, че вашия съществуващ
   .htaccess е в конфликт с новия. Трябва да 
   <strong>премахнете съществуващия си .htaccess файл</strong> и да използвате новия
   вместо това. Продължвайки да използвате стария .htaccess файл ще доведе до това някой нови
@@ -650,8 +650,8 @@
     <em>единствения</em> начин да се зададе продукта на [% terms.bug %]. Вижте
     <kbd>process_bug.cgi</kbd> като пример как <kbd>set_all</kbd>
     трябва да бъде ползван.</li>
-  <li>Не трябва да вмъквате &lt;script&gt; маркер и &lt;link&gt; CSS маркер
-    в HTML повече, в Разширения или ваши персонализации. Вместо това,
+  <li>Не трябва да вмъквате &lt;script&gt; маркер и &lt;link&gt; <abbr lang="en" title="Cascading Style Sheets">CSS</abbr> маркер
+    в <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> повече, в Разширения или ваши персонализации. Вместо това,
     трябва да натъпкватe нови стойности в <kbd>style_urls</kbd> или
     <kbd>javascript_urls</kbd> параметрите. Ако трябва да вмъкнете ръчни
     маркери поради някаква причина уверете се, че викате "FILTER mtime" върху URL. (Потърсете
@@ -726,7 +726,7 @@
 
 <p>Бихме искали да благодарим на <a href="http://www.canonical.com/">Canonical
 Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
-  <a href="http://www.ibm.com/linux/ltc/">IBM Linux Technology Center</a>,
+  <a href="http://www.ibm.com/linux/ltc/"><abbr lang="en" title="International Business Machines">IBM</abbr> Линукс Технологичен Център</a>,
   <a href="http://www.redhat.com/">Red Hat</a> и 
   <a href="http://www.novell.com/">Novell</a> за финансиране разработката
   на различни възможности и подобрения в тази версия на
@@ -803,7 +803,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 
 <ul>
   <li>Използването на страницата "Промяна на колони" понякога води до
-    чист текст вместо <abbr lang="en" title="HyperText Markup Language">HTML</abbr>.
+    чист текст вместо <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr>.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=376044">[% terms.Bug %] 376044</a>)
   </li>
   <li>Разширения имащи само шаблони и без код вече работят.
@@ -1052,27 +1052,27 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
         <td  class="req_new"> 
             (Всяка)
         </td> 
-          <td>Интерфейс JSON-RPC</td> 
+          <td>Интерфейс <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr></td> 
       </tr> 
       <tr> 
         <td  class="req_new">Test::Taint</td> 
         <td  class="req_new"> 
             (Всяка)
         </td> 
-          <td>Интерфейс JSON-RPC, Интерфейс XML-RPC</td> 
+          <td>Интерфейс <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr>, Интерфейс XML-RPC</td> 
       </tr> 
       <tr> 
         <td >HTML::Parser</td> 
         <td >3.40
         </td> 
-          <td>Повече HTML в описания на Продукт/Група</td> 
+          <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td> 
       </tr> 
       <tr> 
         <td >HTML::Scrubber</td> 
         <td > 
             (Всяка)
         </td> 
-          <td>Повече HTML в описания на Продукт/Група</td> 
+          <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td> 
       </tr> 
       <tr> 
         <td >Email::MIME::Attachment::Stripper</td> 
@@ -1120,7 +1120,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li><a href="#v36_feat_suexec">SUExec поддръжка</a></li>
   <li><a href="#v36_feat_mpwindows">Експерименталена mod_perl поддръжка под Windows</a></li>
   <li><a href="#v36_email_attachments">Изпращане на приставки по е-поща</a></li>
-  <li><a href="#v36_feat_jsonrpc">JSON-RPC интерфейс</a></li>
+  <li><a href="#v36_feat_jsonrpc"><abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> интерфейс</a></li>
   <li><a href="#v36_feat_migrate">Миграция от други системи за следене на [% terms.bugs %]</a></li>
   <li><a href="#v36_feat_other">Други подобрения и промени</a></li>
 </ul>
@@ -1194,7 +1194,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li>Търсене по полетата Платформа и <abbr title="Операционна система">ОС</abbr> ако сте написали един от
     определените в твърдо зададен списък низове (като "pc", "windows" и т.н.).
     Можете явно да търсите тези полета, вместо това, ако желаете да
-    намерите [% terms.bugs %] с зададени определена платформа или <abbr title="Операционна система">ОС</a>.</li>
+    намерите [% terms.bugs %] с зададени определена платформа или <abbr title="Операционна система">ОС</abbr>.</li>
 </ul>
 
 <h3 id="v36_feat_browse">Прост интерфейс "Прелистване"</h3>
@@ -1223,12 +1223,12 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   вече поддържа закачането на множество приставки към [% terms.abug %]
   по е-поща, both when filing and when updating [% terms.abug %].</p>
 
-<h3 id="v36_feat_jsonrpc">JSON-RPC интерфейс</h3>
+<h3 id="v36_feat_jsonrpc"><abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> интерфейс</h3>
 
 <p>[% terms.Bugzilla %] вече има поддръжка за
   <a href="http://json-rpc.org/">JSON-RPC</a> протокола за web услуги през
   <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService/Server/JSONRPC.html">jsonrpc.cgi</a>.
-  Интерфейса JSON-RPC е експериментален в тази версия - ако желаете някакви
+  Интерфейса <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> е експериментален в тази версия - ако желаете някакви
   базови промени в начина по който работи,
   <a href="http://www.bugzilla.org/developers/reporting_bugs.html">уведомете
   ни</a>, за следващата версия на [% terms.Bugzilla %].</p>
@@ -1308,7 +1308,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     оформения преглед "Разлики" вместо суровата кръпка.</li>
   <li><b>Приставки</b>: За текстови приставки, вече оставяме браузъра да 
     открие автоматично кодирането на знаците, вместо да го насилваме
-    винаги да приема, че приставката е в UTF-8.</li>
+    винаги да приема, че приставката е в <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8.</li>
   
   <li><b>Търсене:</b> Вече може да показвате [% terms.bug %] флагове като колона
     в резултати от търсене.</li>
@@ -1422,7 +1422,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     локализирани. Вижте <kbd>value_descs</kbd> променливата в
     <kbd>template/en/default/global/field-descs.none.tmpl</kbd>.</li>
   <li><kbd>config.cgi</kbd> вече връща ETag заглавка и разбира
-    заглавката If-None-Match в <abbr lang="en" title = "HyperText Transfer Protocol">HTTP</abbr> заявки.</li>
+    заглавката If-None-Match в <abbr lang="en" title = "Hyper Text Transfer Protocol">HTTP</abbr> заявки.</li>
   <li>Формата XML на <kbd>show_bug.cgi</kbd> вече връща повече информация:
     числовия номер на всеки коментар, дали приставка е <abbr lang="en" title="Uniform Resource Locator">URL</abbr>,
     времето на последна промяна на приставка, числовия номер на флаг,
@@ -1433,7 +1433,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     новия раздел "Общи", а други в новия раздел "За напреднали".</li>
   <li><b>Параметри:</b> Стария <kbd>ssl</kbd> параметър беше
     променен на <kbd>ssl_redirect</kbd> и може да бъде зададен на "включено" или "изключено".
-    Ако е "включено", тогава всички потребители ще бъдат насилствено пренасочени към SSL винаги
+    Ако е "включено", тогава всички потребители ще бъдат насилствено пренасочени към <abbr lang="en" title="Secure Socket Layer">SSL</abbr> винаги
     когато достъпват [% terms.Bugzilla %]. Когато параметъра е изключен,
     няма да се случват пренасочвания свързани с <abbr lang="en" title="Secure Socket Layer">SSL</abbr> (дори ако потребителите направо
     достъпват [% terms.Bugzilla %] по <abbr lang="en" title="Secure Socket Layer">SSL</abbr>, те <em>няма</em> да бъдат
@@ -1725,7 +1725,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     пренесени думи от съдържанието на коментари вместо първоначалното съдържание.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=509152">[% terms.Bug %] 509152</a>)
   </li>
-  <li>Вече можете да направите <kbd>./install-module.pl --shell</kbd> за да получите CPAN
+  <li>Вече можете да направите <kbd>./install-module.pl --shell</kbd> за да получите <abbr lang="en" title="Comprehensive Perl Archive Network">CPAN</abbr>
     конзола използвайки конфигурацията на 
     <a href="[% docs_urlbase FILTER html %]api/install-module.html">install-module.pl</a>,
     което ви позволява да изпълнявате задачи по инсталацията на Perl модули за напреднали.
@@ -1744,7 +1744,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   тази версия:</p>
 
 <ul>
-  <li>Надгражданията от по-стари версии понякога пропадаха по време на UTF-8 
+  <li>Надгражданията от по-стари версии понякога пропадаха по време на <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 
     превръщането с грешка от външен ключ. 
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=508181">[% terms.Bug %] 508181</a>)
   </li>
@@ -1770,7 +1770,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=475403">[% terms.Bug %] 475403</a>)
   </li>
   <li>Отговорите на XML-RPC интерфейса имаха неправилна Content-Length заглавка
-    и понякога биват отрязвани ако съдържат определени UTF-8
+    и понякога биват отрязвани ако съдържат определени <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8
     символи.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=486306">[% terms.Bug %] 486306</a>)
   </li>
@@ -1791,7 +1791,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <a href="http://www.bugzilla.org/security/3.4/">Бюлетин по сигурността</a>
   за подробности.</p>
 
-<h2id="v34_req">Минимални изисквания</a></h2>
+<h2 id="v34_req">Минимални изисквания</h2>
 
 <p>Всички изисквания които са нови спрямо 3.2.3 ще изглеждат
   <span class="req_new">така</span>.</p>
@@ -1950,12 +1950,12 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <tr> 
     <td>HTML::Parser</td> 
     <td>3.40</td> 
-    <td>Повече HTML в описания на Продукт/Група</td> 
+    <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td> 
   </tr> 
   <tr> 
     <td>HTML::Scrubber</td> 
     <td>(всяка)</td> 
-    <td>Повече HTML в описания на Продукт/Група</td> 
+    <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td> 
   </tr> 
   <tr> 
     <td>XML::Twig</td> 
@@ -1975,7 +1975,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <tr> 
     <td>Image::Magick</td> 
     <td>(всяка)</td> 
-    <td>Възможност за обръщане на BMP приставки в PNG</td> 
+    <td>Възможност за обръщане на <acronym lang="en" title="Bitmap">BMP</acronym> приставки в <abbr lang="en" title="Portable Network Graphics">PNG</abbr></td> 
   </tr> 
   <tr> 
     <td>PatchReader</td> 
@@ -2629,12 +2629,12 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <tr>
   <td>HTML::Parser</td> 
   <td>3.40</td> 
-  <td>Повече HTML в описания на Продукт/Група</td>
+  <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td>
 </tr>
 <tr>
   <td>HTML::Scrubber</td> 
   <td>(Всяка)</td> 
-  <td>Повече HTML в описания на Продукт/Група</td>
+  <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описания на Продукт/Група</td>
 </tr>
 <tr>
   <td>XML::Twig</td> 
@@ -2654,7 +2654,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <tr>
   <td>Image::Magick</td> 
   <td>(Всяка)</td> 
-  <td>Незадължително обръщане на BMP приставки в PNG</td>
+  <td>Незадължително обръщане на <acronym lang="en" title="Bitmap">BMP</acronym> приставки в <abbr lang="en" title="Portable Network Graphics">PNG</abbr></td>
 </tr>
 <tr>
   <td>PatchReader</td> 
@@ -2692,7 +2692,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li><a href="#v32_feat_fields">Нови типове потребителски полета</a></li>
   <li><a href="#v32_feat_install">Улеснена инсталация</a></li>
   <li><a href="#v32_feat_oracle">Експериментална Oracle поддръжка</a></li>
-  <li><a href="#v32_feat_utf8">Подобрена UTF-8 поддръжка</a></li>
+  <li><a href="#v32_feat_utf8">Подобрена <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка</a></li>
   <li><a href="#v32_feat_grcons">Групови икони</a></li>
   <li><a href="#v32_feat_other">Други подобрения и промени</a></li>
 </ul>
@@ -2722,7 +2722,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <a href="http://wiki.mozilla.org/Bugzilla:Addons#Skins">страницата Добавки</a>
   за допълнителни кожи, или опитайте да направите своя!</p>
 
-<h3 id="v32_feat_status"></a>Потребителски работен поток на състоянието</h3>
+<h3 id="v32_feat_status">Потребителски работен поток на състоянието</h3>
 
 <p>Можете да нагласите списъка със състояния в [% terms.Bugzilla %],
   и преминаванията между тях.</p>
@@ -2771,9 +2771,9 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   участия в разработката на [% terms.Bugzilla %] които позволиха това да 
   се случи!</p>
 
-<h3 id="v32_feat_utf8">Подобрена UTF-8 поддръжка</h3>
+<h3 id="v32_feat_utf8">Подобрена <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка</h3>
 
-<p>[% terms.Bugzilla %] 3.2 вече има разширена UTF-8 поддръжка в своя код,
+<p>[% terms.Bugzilla %] 3.2 вече има разширена <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка в своя код,
   включваща правилна обработка на отрязване и пренасяне на многобайтови
   езици. Главните проблеми с многобайтови или обичайни езици
   са вече решени и [% terms.Bugzilla %] трябва вече да е използваема
@@ -2903,7 +2903,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     праща вече само по <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> връзки.</li>
   <li><strong>Сигурност</strong>: Параметъра <code>ssl</code> вече защитава
     всяка страница, която влезлите потребители посещават, когато е зададен на "удостоверени сесии".
-    Също, SSL вече се налага подходящо в WebServices интерфейса, когато
+    Също, <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> вече се налага подходящо в WebServices интерфейса, когато
     параметъра е зададен.</li>
 
   <li><strong>База с данни</strong>: [% terms.Bugzilla %] вече използва транзакции в 
@@ -2998,8 +2998,8 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <h3 id="v32_upgrading_notes">Бележки за надграждащи</h3>
 
 <ul>
-  <li>Ако надграждате по CVS, папките <kbd>extensions</kbd> и 
-    <kbd>skins/contrib</kbd> са вече в CVS вместо да
+  <li>Ако надграждате по <abbr lang="en" title="Concurrent Versions System">CVS</abbr>, папките <kbd>extensions</kbd> и 
+    <kbd>skins/contrib</kbd> са вече в <abbr lang="en" title="Concurrent Versions System">CVS</abbr> вместо да
     бъдат създавани от <kbd>checksetup.pl</kbd> Ако изпълните <kbd>cvs update</kbd>
     от 3.0, ще ви бъде казано че папките ви са "в пътя" и
     че трябва да ги изтриете (или преместите) и тогава изпълните <kbd>cvs update</kbd>
@@ -3168,7 +3168,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
      <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=413672">[% terms.Bug %] 413672</a>, and
      <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=431721">[% terms.Bug %] 431721</a>)</li>
 
-  <li>checksetup.pl вече борави с UTF-8 обръщането по-надеждно при надграждания.
+  <li>checksetup.pl вече борави с <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 обръщането по-надеждно при надграждания.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=374951">[% terms.Bug %] 374951</a>)</li>
 
   <li>Коментари написани на <abbr lang="en" title="Chinese, Japanese, and Korean">CJK</abbr> езици са вече правилно подреждани до дума.
@@ -3283,7 +3283,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li>Логването в [% terms.Bugzilla %] от началната страница работи отново
     с IIS5. 
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=364008">[% terms.Bug %] 364008</a>)</li>
-  <li>Ако използвате <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> за изпращане на поща, понякога на писмата ще
+  <li>Ако използвате <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> за изпращане на поща, понякога на писмата ще
     липсва заглавието <code>Date</code>.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=304999">[% terms.Bug %] 304999</a>).</li>
   <li>В XML-RPC WebService, <code>B<!-- -->ug.legal_values</code> сега
@@ -3294,18 +3294,18 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     и пренаписана.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=378590">[% terms.Bug %] 378590</a>)</li>
   <li>Ако параметъра ви <code>urlbase</code> е включвал номер на порт,
-    като <code>www.domain.com:8080</code>, възможно е <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</> да е пропадало.
+    като <code>www.domain.com:8080</code>, възможно е <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> да е пропадало.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=384501">[% terms.Bug %] 384501</a>)</li>
-  <li>За <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> потребителите, има нов параметър, <code>smtp_debug</code>.
+  <li>За <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> потребителите, има нов параметър, <code>smtp_debug</code>.
     Включването на този параметър ще записва пълната информация за
-    всяка <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr> сесия в журналния файл на web сървъра ви, за подпомагане на
-    диагностицирането на проблеми със <abbr leng="en" title="Simple Mail Transfer Protocol">SMTP</abbr>.
+    всяка <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> сесия в журналния файл на web сървъра ви, за подпомагане на
+    диагностицирането на проблеми със <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr>.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=384497">[% terms.Bug %] 384497</a>)</li>
-  <li>Ако сте "глобален наблюдаващ" (получавате всичката поща от всеки 
+  <li>Ако сте "глобален наблюдаващ" (получавате цялата поща от всеки 
     [%+ terms.bug %]), вече можете да видите това във вашите Е-пощенски предпочитания.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=365302">[% terms.Bug %] 365302</a>)</li>
   <li>Състоянието и Решението на [% terms.bugs %] вече са правилно
-    локализирани в резултатите от търсена с формат <abbr lang="en" title="Concurrent Versions System">CSV</abbr>.
+    локализирани в резултатите от търсена с формат <abbr lang="en" title="Comma Separated Values">CSV</abbr>.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=389517">[% terms.Bug %] 389517</a>)</li>
   <li>Линията "Тема" на писмата биваше обезобразявана ако съдържаше
     не латински символи.
@@ -3440,12 +3440,12 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <tr>
     <td>HTML::Parser</td> 
     <td>3.40</td> 
-    <td>Повече <abbr lang="en" title="HyperText Markup Language">HTML</abbr> в описанията на Продукт/Група</td>
+    <td>Повече <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описанията на Продукт/Група</td>
   </tr>
   <tr>
     <td>HTML::Scrubber</td> 
     <td>(Всяка)</td> 
-    <td>More <abbr lang="en" title="HyperText Markup Language">HTML</abbr> в описанията на Продукт/Група</td>
+    <td>More <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> в описанията на Продукт/Група</td>
   </tr>
   <tr>
     <td>XML::Twig</td> 
@@ -3511,7 +3511,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li><a href="#v30_feat_emi">Въвеждане/Промяна на [% terms.bugs %] по е-поща</a></li>
   <li><a href="#v30_feat_gw">Потребители, които получават всички [% terms.bug %] 
     уведомления</a></li>
-  <li><a href="#v30_feat_utf8">Подобрена UTF-8 поддръжка</a></li>
+  <li><a href="#v30_feat_utf8">Подобрена <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка</a></li>
   <li><a href="#v30_feat_upda">Автоматични уведомления за обновявания</a></li>
   <li><a href="#v30_feat_welc">Страница "добре дошли" за нови инсталации</a></li>
   <li><a href="#v30_feat_other">Други подобрения и промени</a></li>
@@ -3612,7 +3612,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 
 <p>Документация може да бъде намерена в 
   <a lang="en" href="[% docs_urlbase FILTER html %]api/">[% terms.Bugzilla %] 
-  API Docs</a> и в различните <kbd>Bugzilla::WebService</kbd> модули.</p>
+  <abbr lang="en" title="Application Programming Interface">API</abbr> документация</a> и в различните <kbd>Bugzilla::WebService</kbd> модули.</p>
 
 <h3 id="v30_feat_skin">Кожи</h3>
 
@@ -3631,7 +3631,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   не можете да променяте поле то няма да изглежда сякаш можете да го променяте. Това 
   значи, че стойността ще изглежда просто като обикновен текст.</p>
 
-<h3 id="v30_feat_et"></a>Всички писма са шаблони</h3>
+<h3 id="v30_feat_et">Всички писма са шаблони</h3>
 
 <p>Всички изходящи писма вече се контролират от системата за шаблони.
   Това което съдържаха параметрите <code>passwordmail</code>, <code>whinemail</code>,
@@ -3683,10 +3683,10 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <p>Груповите контроли продължават да се прилагат, въпреки това, така че потребителите които не могат да виждат [% terms.bug %]а
   продължават да не получават уведомления за него.</p>
 
-<h3 id="v30_feat_utf8">Подобрена UTF-8 поддръжка</h3>
+<h3 id="v30_feat_utf8">Подобрена <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка</h3>
 
 <p>[% terms.Bugzilla %] потребителите ползващи MySQL вече трябва да имат отлична
-  UTF-8 поддръжка ако включат параметъра <kbd>utf8</kbd>. (Новите
+  <abbr lang="en" title="The Unicode Transformation Format">UTF</abbr>-8 поддръжка ако включат параметъра <kbd>utf8</kbd>. (Новите
   инсталации имат включен този параметър по подразбиране.) [% terms.Bugzilla %]
   вече правилно поддържа търсене и подреждане при езици различни от английски,
   включително двубайтови езици като Китайски.</p>
@@ -3809,7 +3809,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
     много случайна и по този начин сигурна.</li>
   <li>Класификациите вече имат ключ за подреждане, така че могат да бъдат подредени в
     ред, който не е азбучен.</li>
-  <li>Удостоверяването вече поддържа <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> през <abbr lang="en" title="Secure Socket Layer">SSL</abbr>     (LDAPS) или <abbr lang="en" title="Transport Layer Security">TLS</abbr> (използвайки
+  <li>Удостоверяването вече поддържа <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> през <abbr lang="en" title="Secure Socket Layer">SSL</abbr> (<abbr lang="en" title="Lightweight Directory Access Protocol Secure">LDAPS</abbr>) или <abbr lang="en" title="Transport Layer Security">TLS</abbr> (използвайки
     командата STARTLS) в допълнение към обикновения <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr>.</li>
   <li><abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> потребителите вече могат да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> потребителското си име като е-пощенски адрес,
     вместо да ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> атрибута <kbd>mail</kbd> като
@@ -3911,7 +3911,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <ul>
   <li>Ако надграждате през <abbr lang="en" title="Concurrent Versions System">CVS</abbr>, има няколко .cvsignore файла
     които вече са в <abbr lang="en" title="Concurrent Versions System">CVS</abbr> вместо
-    да бъдат създавани локално от  kbd>checksetup.pl</kbd>. Това значи, че ще трябва да
+    да бъдат създавани локално от <kbd>checksetup.pl</kbd>. Това значи, че ще трябва да
     ги изтриете когато <abbr lang="en" title="Concurrent Versions System">CVS</abbr> ви каже, че има конфликт и
     да пуснете <kbd>cvs update</kbd> отново.</li>
   <li>В тази версия на [% terms.Bugzilla %] полето Резюме
@@ -3945,7 +3945,7 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
   <li><a href="#v30_code_loc"><strong>За пакетиращи:</strong> Променливите за
     местоположение са преместени</a></li>
   <li><a href="#v30_code_hooks">Куки!</a></li>
-  <li><a href="#v30_code_api">API документация</a></li>
+  <li><a href="#v30_code_api"><abbr lang="en" title="Application Programming Interface">API</abbr> документация</a></li>
   <li><a href="#v30_code_globals">Отстраняване на globals.pl</a></li>
   <li><a href="#v30_code_scope">Изчистени проблеми с обхвата на променливите</a></li>
   <li><a href="#v30_code_sql">Без повече SendSQL</a></li>
@@ -3985,11 +3985,11 @@ Ltd.</a>, <a href="http://www.itasoftware.com/">ITA Software</a>,
 <p>Ако имате нужда от повече куки, моля 
   <a href="http://www.bugzilla.org/developers/reporting_bugs.html">Въведете б<!-- -->ъг</a>!</p>
 
-<h3 id="v30_code_api">API документация</h3>
+<h3 id="v30_code_api"><abbr lang="en" title="Application Programming Interface">API</abbr> документация</h3>
 
 <p>[% terms.Bugzilla %] вече се предлага с целия perldoc построен
   като <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr>. Продължете и прочетете
-  <a href="[% docs_urlbase FILTER html %]api/">API документацията</a>
+  <a href="[% docs_urlbase FILTER html %]api/"><abbr lang="en" title="Application Programming Interface">API</abbr> документацията</a>
   за всички [% terms.Bugzilla %] модули сега! Дори скриптове като
   <kbd>checksetup.pl</kbd> имат <abbr lang="en" title="Hyper Text Markup Language">HTML</abbr> документация.</p>
 
@@ -4033,7 +4033,7 @@ sub y { $var++ }</pre>
   пренаписано. За подробности по новата структура на удостоверяването,
   прочетете 
   <a href="[% docs_urlbase FILTER html %]api/Bugzilla/Auth.html">Bugzilla::Auth
-  API docs</a>.</p>
+  <abbr lang="en" title="Application Programming Interface">API</abbr> документация</a>.</p>
 
 <p>Би трябвало да е много лесно да се пишат нови добавки за удостоверяване сега.</p>
 
