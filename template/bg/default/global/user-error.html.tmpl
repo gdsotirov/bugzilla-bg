@@ -1284,6 +1284,10 @@
       Или сте въвели грешно името или този потребител все още не се е записал
       за сметка в [% terms.Bugzilla %].
     [% END %]
+    [% IF class == "Bugzilla::Keyword" %]
+      Позволените имена на ключови думи са <a href="describekeywords.cgi">описани
+      тук</a>.
+    [% END %]
 
   [% ELSIF error == "old_password_incorrect" %]
     [% title = "Неправилна стара парола" %]
@@ -1811,6 +1815,8 @@
     поле
   [% ELSIF class == "Bugzilla::Group" %]
     група
+  [% ELSIF class == "Bugzilla::Keyword" %]
+    ключова дума
   [% ELSIF class == "Bugzilla::Product" %]
     продукт
   [% ELSIF class == "Bugzilla::Search::Saved" %]
