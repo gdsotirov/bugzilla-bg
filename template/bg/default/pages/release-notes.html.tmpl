@@ -28,6 +28,7 @@
 
 <ul class="bz_toc">
   <li><a href="#v40_introduction">Въведение</a></li>
+  <li><a href="#v40_point">Обновления в тази 4.0.x версия</a></li>
   <li><a href="#v40_req">Минимални изисквания</a></li>
   <li><a href="#v40_feat">Нови възможности и подобрения</a></li>
   <li><a href="#v40_issues">Оставащи проблеми</a></li>
@@ -68,6 +69,44 @@
   и <a href="http://www.redhat.com/">Red Hat</a> за финансирането на разработката
   на определени възможности и подобрения в тази версия на
   [%+ terms.Bugzilla %].</p>
+
+<h2 id="v40_point">Обновления в тази 4.0.x версия</h2>
+
+<h3>4.0.1</h3>
+
+<ul>
+  <li>По време на инсталация, CPAN модула Math::Random::Secure щеше
+    понякога да се провали да се инсталира правилно и даваше грешка за
+    <kbd>Math::Random::Secure::irand</kbd>. Сега, когато се използва
+    <kbd>install-module.pl</kbd> за инсталиране на Math::Random::Secure, това
+    повече няма да се случва. Ако в момента имате този б[% %]ъг
+    и ако той ви пречи да инсталирате 4.0, махнете Math::Random::Secure
+    от вашата <kbd>lib/</kbd> папка, така:
+    <p><kbd>rm -rf lib/Math/Random/Secure*</kbd></p>
+    <p>(<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=646578">[% terms.Bug %] 646578</a>)</p></li>
+  <li>Бутона "Запомняне на стойностите като отметваем шаблон" на
+    страницата за въвеждане на [%+ terms.bug %], вече ще работи, дори когато някои задължителни полета
+    са празни. 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=640719">[% terms.Bug %] 640719</a>)</li>
+  <li>Е-пощенски уведомляния за зависимости и флагове имаха грешния
+    времеви отпечатък.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=643910">[% terms.Bug %] 643910</a>
+    и  (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=652165">[% terms.Bug %] 652165</a>)</li>
+  <li>Вече можете да изберете "UTC" като дествителна времева зона в Общи Preferences.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=646209">[% terms.Bug %] 646209</a>)</li>
+  <li>Автоматичното засичане на двойници вече работи на PostgreSQL (въпреки че,
+    не е такова високо качество като на други DB платформи). 
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=634144">[% terms.Bug %] 634144</a>)</li>
+   <li>Автоматичното завършване за потребители вече работи дори ако използвате
+     възможността "emailsuffix".
+     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=641519">[% terms.Bug %] 641519</a>)</li>
+   <li>Javascript грешки при създаване на редици в Нови графики бяха
+     поправени.
+     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=644285">[% terms.Bug %] 644285</a>)</li>
+    <li>Страницата "Преглед на гасове" вече работи, за инсталации ползващия разширението
+      Гласуване.
+      (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=652381">[% terms.Bug %] 652381</a>)</li> 
+</ul>
 
 <h2 id="v40_req">Минимални изисквания</h2>
 
@@ -165,9 +204,6 @@
   поддръжка трябва да бъдат налични на вашата [% terms.Bugzilla %]. Тя ще бъде
   много по-бърза на инсталации работещи с mod_perl отколкото ще
   бъде на други инсталации.</p>
-
-<p>Автоматичното установяване на двойници в момента не работи на инсталации
-  вървящи върху PostgreSQL.</p>
 
 <h3 id="v40_feat_search_ui">Нов потребителски интерфейс за Разширено търсене</h3>
 

@@ -71,14 +71,14 @@
         </div>
         [% IF NOT attachment.isurl %]
           <div class="details">
-            [% attachment.filename FILTER html %] ([% attachment.contenttype FILTER html %]) 
+            [% attachment.filename FILTER html %] ([% attachment.contenttype FILTER html %]),
             [% IF attachment.datasize %]
               [%+ attachment.datasize FILTER unitconvert %]
             [% ELSE %]
               <em>изтрита</em>
             [% END %], създадена от  [%+ INCLUDE global/user.html.tmpl who = attachment.attacher %]
-            [% IF attachment.isprivate %]
-              <span class="bz_private">Видима само за <strong>[% Param('insidergroup') FILTER html %]</strong></span>
+            [% IF attachment.isprivate %];
+              <span class="bz_private">видима само за <strong>[% Param('insidergroup') FILTER html %]</strong></span>
             [% END %]
           </div>
         [% END %]
