@@ -1103,13 +1103,19 @@
 
     [%# For logged-out users %]
     [% ELSE %]
-      <table><tr><td><fieldset>
-        <legend>Note</legend>
-        Трябва да
-        <a href="show_bug.cgi?id=
-                 [%- bug.bug_id %]&amp;GoAheadAndLogIn=1">влезете</a>
-         преди да можете да коментирате или правите промени по този [% terms.bug %].
-      </fieldset></table><tr></td>
+      <table>
+        <tr>
+          <td>
+            <fieldset>
+              <legend>Забележка</legend>
+              Трябва да
+              <a href="show_bug.cgi?id=
+                      [%- bug.bug_id %]&amp;GoAheadAndLogIn=1">влезете</a>
+              преди да можете да коментирате или правите промени по този [% terms.bug %].
+            </fieldset>
+          </td>
+        </tr> 
+      </table>
     [% END %]
   </div>
 [% END %]

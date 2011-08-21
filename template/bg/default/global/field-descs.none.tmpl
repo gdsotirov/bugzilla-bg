@@ -162,6 +162,7 @@
      "component"               => "Съставна част",
      "content"                 => "Съдържание",
      "creation_ts"             => "Момент на създаване на $terms.abug",
+     "days_elapsed"            => "Дни от когато $terms.abug е променен",
      "deadline"                => "Краен срок",
      "delta_ts"                => "Средно",
      "dependson"               => "Зависи от",
@@ -210,6 +211,8 @@
          IF !vars.field_descs.${bz_field.name}.defined %]
     [% END %]
   [% END %]
+
+  [% PROCESS "bug/field-help.none.tmpl" %]
 [% END %]
 
 [% Hook.process("end") %]

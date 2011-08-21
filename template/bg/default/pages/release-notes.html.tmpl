@@ -72,6 +72,48 @@
 
 <h2 id="v40_point">Обновления в тази 4.0.x версия</h2>
 
+<h3>4.0.2</h3>
+
+<p>Тази версия поправя няколко проблема със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.4.11/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>В допълнение, бяха направени следните поправки/промени в тази
+  версия:</p>
+
+<ul>
+  <li>WebService метода <kdb>B[% %]ug.create</kdb> вече хвърля грешка ако
+    подадете име на група, което не съществува. В [% terms.Bugzilla %] 4.0 и 4.0.1,
+    това име на група беше безшумно пренебрегвано, оставяйки [% terms.abug %] неподсигурен
+    ако не е приложена и друга група.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=653341">[% terms.Bug %] 653341</a>)</li>
+  <li>Преместването на няколко [% terms.bugs %] наведнъж в друг продукт показваше
+    същата страница за потвърждаване отново и отново, а промените никога не бяха предавани
+    (регресия в 4.0).
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=663208">[% terms.Bug %] 663208</a>)</li>
+  <li>Отбелязването на [% terms.bug %] като двойник сега работи в Internet Explorer 9.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=656769">[% terms.Bug %] 656769</a>)</li>
+  <li><kdb>importxml.pl</kdb> вече не се срива когато внася ключови думи (регресия
+    в 4.0).
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=657707">[% terms.Bug %] 657707</a>)</li>
+  <li>Данни въведени при въвеждането на нов [% terms.bug %] могат да бъдат изгубени ако сте
+    щракнали върху бутона "Назад" на вашата търсачка.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=652427">[% terms.Bug %] 652427</a>)</li>
+  <li>WebServices методи ще връщат неопределени [% terms.bug %] полете като неопределени
+    вместо като празен низ. Промяната е съгласувана с поведението
+    на [%+ terms.Bugzilla %] 4.2.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=657561">[% terms.Bug %] 657561</a>)</li>
+  <li>XML-RPC интерфейса вече работи с SOAP::Lite 0.711 и 0.712 под mod_perl.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=600810">[% terms.Bug %] 600810</a>)</li>
+  <li>LWP 6.00 и по-нов изисква Perl 5.8.8 и по-нов. Когато инсталирате този модул
+    използвайки <kdb>install-module.pl</kdb> на Perl инсталации по-стари от 5.8.8,
+    ще бъде инсталиран LWP 5.837 вместо това.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=655912">[% terms.Bug %] 655912</a>)</li>
+  <li>Показването на [% terms.bug %] доклад трябва да бъде значително по-бързо когато
+    инсталацията ви има много потребителски полета.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=634812">[% terms.Bug %] 634812</a>)</li>
+</ul>
+
 <h3>4.0.1</h3>
 
 <ul>

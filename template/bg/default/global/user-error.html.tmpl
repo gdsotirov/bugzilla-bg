@@ -109,6 +109,11 @@
     Псевдонимите на [% terms.bug %] не могат да бъдат по-дълги от 20 символа.
     Моля, изберете по-къс псевдоним.
 
+  [% ELSIF error == "attachment_bug_id_mismatch" %]
+    [% title = "Недействителни приставки" %]
+    Опитахте се да изършите действие върху приставки от различни [% terms.bugs %].
+    Действието изисква всички приставки да са от един и същи [% terms.bug %].
+
   [% ELSIF error == "auth_cant_create_account" %]
     [% title = "Създаването на сметки невъзможно" %]
     Този сайт използва схема на удостоверяване, която не разрешава създаването
@@ -214,6 +219,8 @@
       версии
     [% ELSIF object == "workflow" %]
       работния поток
+    [% ELSE %]
+      [%+ Hook.process('auth_failure_object') %]
     [% END %].
 
     [% Hook.process("auth_failure") %]
@@ -707,12 +714,6 @@
     в базата данни обръщащи се към нея. Всички обръщения към групата трябва
     да бъдат премахнати преди изтриването и.
 
-  [% ELSIF error == "group_change_denied" %]
-    [% title = "Невъзможно добавяне/премахване на тази група" %]
-    Опитахте се да добавите или премахнете групата [% group.name FILTER html %]
-    от [% terms.bug %] [%+ bug.id FILTER html %], но нямате
-    разрешения за това.
-
   [% ELSIF error == "group_exists" %]
     [% title = "Групата вече съществува" %]
     Групата [% name FILTER html %] вече съществува.
@@ -733,16 +734,17 @@
 
 
   [% ELSIF error == "group_invalid_removal" %]
-    Опитахте се да премахнете [% terms.bug %] [%+ bug.id FILTER html %]
-    от групата [% group.name FILTER html %], но [% terms.bugs %] в 
-    продукта '[% product FILTER html %]' не могат да бъдат премахвани от тази
-    група.
-    
-  [% ELSIF error == "group_invalid_restriction" %]
-    Опитахте се да ограничите [% terms.bug %] [%+ bug.id FILTER html %] до
-    групата [% group.name FILTER html %], но [% terms.bugs %] в
-    продукта '[% product FILTER html %]' не могат да бъдат ограничавани до
-    тази група.
+    Опитахте се да премахнете [% terms.bug %] [%+ bug_id FILTER html %]
+    от групата [% group.name FILTER html %], но или групата не съществува
+    или не ви е разрешено да премахвате [% terms.bugs %] от групата в
+    продукта '[% product FILTER html %]'.
+
+  [% ELSIF error == "group_restriction_not_allowed" %]
+    [% title = "Неразрешено групово ограничение" %]
+    Опитахте се да ограничите [% bug_id ? "$terms.bug $bug_id" : terms.bug FILTER html %]
+    до рупата [% name FILTER html %], но или групата не съществува
+    или не ви е разрешено да ограничавате [% terms.bugs %] до тази група в
+    продукта '[% product FILTER html %]'.
 
   [% ELSIF error == "group_not_specified" %]
     [% title = "Не е указана група" %]
@@ -1324,7 +1326,7 @@
     Паролата ви текущо е дълга по-малко от
     [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа,
     което е новата минимална дължина изисквана за пароли.
-    Трябва да <a href="token.cgi?a=reqpw&loginname=[% locked_user.email FILTER html %]">
+    Трябва да <a href="token.cgi?a=reqpw&amp;loginname=[% locked_user.email FILTER url_quote %]">
     поискате нова парола</a>, за да влезете отново.
 
   [% ELSIF error == "password_too_short" %]
@@ -1554,16 +1556,16 @@
   [% ELSIF error == "sudo_password_required" %]
     [% title = "Изисква се парола" %]
     Вашата [% terms.Bugzilla %] парола е необходима за започване на сесия 
-    като друг. Моля, <a href="relogin.cgi?action=prepare-sudo&target_login=
-    [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">върнете се</a> и въведете паролата си.
+    като друг. Моля, <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
+    [%- target_login FILTER url_quote %]&amp;reason=
+    [%- reason FILTER url_quote %]">върнете се</a> и въведете паролата си.
     
   [% ELSIF error == "sudo_preparation_required" %]
     [% title = "Необходима е подготовка" %]
     Не можете да започнете сесия като друг направо.  Моля
-    <a href="relogin.cgi?action=prepare-sudo&target_login=
-    [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">започнете сесията си нормално</a>.
+    <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
+    [%- target_login FILTER url_quote %]&amp;reason=
+    [%- reason FILTER url_quote %]">започнете сесията си нормално</a>.
 
   [% ELSIF error == "sudo_protected" %]
     [% title = "Защитен потребител" %]
@@ -1752,7 +1754,7 @@
                   
     [% FOREACH q = Bugzilla.user.queries %]
       [% IF q.name == namedcmd %]
-        или <a href="query.cgi?[% q.url FILTER html %]">редактирате</a>
+        или <a href="query.cgi?[% q.url FILTER url_quote %]">редактирате</a>
       [% END %]
     [% END %]
     
@@ -1795,4 +1797,5 @@
     [% SET field_name = matches.0 %]
     [% field_descs.$field_name FILTER html %]
   [% END %]
+  [% Hook.process('end_object_name', 'global/user-error.html.tmpl') %]
 [% END %]
