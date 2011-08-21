@@ -109,6 +109,11 @@
     Псевдонимите на [% terms.bug %] не могат да бъдат по-дълги от 20 символа.
     Моля, изберете по-къс псевдоним.
 
+  [% ELSIF error == "attachment_bug_id_mismatch" %]
+    [% title = "Недействителни приставки" %]
+    Опитахте се да изършите действие върху приставки от различни [% terms.bugs %].
+  	Действието изисква всички приставки да са от един и същи [% terms.bug %].
+
   [% ELSIF error == "auth_cant_create_account" %]
     [% title = "Създаването на сметки невъзможно" %]
     Този сайт използва схема на удостоверяване, която не разрешава създаването
@@ -1310,7 +1315,7 @@
     Паролата ви текущо е дълга по-малко от
     [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа,
     което е новата минимална дължина изисквана за пароли.
-    Трябва да <a href="token.cgi?a=reqpw&loginname=[% locked_user.email FILTER html %]">
+    Трябва да <a href="token.cgi?a=reqpw&amp;loginname=[% locked_user.email FILTER url_quote %]">
     поискате нова парола</a>, за да влезете отново.
 
   [% ELSIF error == "password_too_short" %]
@@ -1568,16 +1573,16 @@
   [% ELSIF error == "sudo_password_required" %]
     [% title = "Изисква се парола" %]
     Вашата [% terms.Bugzilla %] парола е необходима за започване на сесия 
-    като друг. Моля, <a href="relogin.cgi?action=prepare-sudo&target_login=
-    [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">върнете се</a> и въведете паролата си.
+    като друг. Моля, <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
+    [%- target_login FILTER url_quote %]&amp;reason=
+    [%- reason FILTER url_quote %]">върнете се</a> и въведете паролата си.
     
   [% ELSIF error == "sudo_preparation_required" %]
     [% title = "Необходима е подготовка" %]
     Не можете да започнете сесия като друг направо.  Моля
-    <a href="relogin.cgi?action=prepare-sudo&target_login=
-    [%- target_login FILTER html %]&reason=
-    [%- reason FILTER html %]">започнете сесията си нормално</a>.
+    <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
+    [%- target_login FILTER url_quote %]&amp;reason=
+    [%- reason FILTER url_quote %]">започнете сесията си нормално</a>.
 
   [% ELSIF error == "sudo_protected" %]
     [% title = "Защитен потребител" %]
@@ -1784,7 +1789,7 @@
                   
     [% FOREACH q = Bugzilla.user.queries %]
       [% IF q.name == namedcmd %]
-        или <a href="query.cgi?[% q.url FILTER html %]">редактирате</a>
+        или <a href="query.cgi?[% q.url FILTER url_quote %]">редактирате</a>
       [% END %]
     [% END %]
     
