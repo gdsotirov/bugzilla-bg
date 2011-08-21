@@ -36,8 +36,10 @@
   [% IF bug_list && bug_list.size > 0 %]
     <link rel="Нагоре" href="buglist.cgi?regetlastlist=1">
 
-    <link rel="Първи" href="show_bug.cgi?id=[% bug_list.first %]">
-    <link rel="Последен" href="show_bug.cgi?id=[% bug_list.last %]">
+    <link rel="Първи" href="show_bug.cgi?id=
+                            [%- bug_list.first FILTER url_quote %]">
+    <link rel="Последен" href="show_bug.cgi?id=
+                           [%- bug_list.last FILTER url_quote %]">
 
     [% IF bug && bug.bug_id %]
       [% current_bug_idx = lsearch(bug_list, bug.bug_id) %]
@@ -45,12 +47,14 @@
 
         [% IF current_bug_idx > 0 %]
           [% prev_bug = current_bug_idx - 1 %]
-          <link rel="Предишен" href="show_bug.cgi?id=[% bug_list.$prev_bug %]">
+          <link rel="Предишен" href="show_bug.cgi?id=
+                                 [%- bug_list.$prev_bug FILTER url_quote %]">
         [% END %]
 
         [% IF current_bug_idx + 1 < bug_list.size %]
           [% next_bug = current_bug_idx + 1 %]
-          <link rel="Следващ" href="show_bug.cgi?id=[% bug_list.$next_bug %]">
+          <link rel="Следващ" href="show_bug.cgi?id=
+                                 [%- bug_list.$next_bug FILTER url_quote %]">
         [% END %]
 
       [% END %]

@@ -175,7 +175,7 @@
     Не е зададен правилен [% field FILTER html %].
 
   [% ELSIF error == "inactive_group" %]
-    Опит да се добави [% terms.bug %] към групата '[% name FILTER html %]',
+    Опит да се добави [% terms.bug %] към групата с идентификатор [% group_id FILTER html %],
     която не се използва за  [% terms.bugs %].
 
   [% ELSIF error == "invalid_attach_id_to_obsolete" %]

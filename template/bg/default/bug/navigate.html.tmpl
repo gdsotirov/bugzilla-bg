@@ -44,22 +44,24 @@
   [% END %]
 
 [% IF this_bug_idx != -1 %]
-  <a href="show_bug.cgi?id=[% bug_list.first %]">Първи</a>
-  <a href="show_bug.cgi?id=[% bug_list.last %]">Последен</a>
+  <a href="show_bug.cgi?id=[% bug_list.first FILTER url_quote %]">Първи</a>
+  <a href="show_bug.cgi?id=[% bug_list.last FILTER url_quote %]">Последен</a>
 [% END %]
 
   [% IF bug.bug_id %]
     [% IF this_bug_idx != -1 %]
       [% IF this_bug_idx > 0 %]
         [% prev_bug = this_bug_idx - 1 %]
-        <a href="show_bug.cgi?id=[% bug_list.$prev_bug %]">Предходен</a>
+        <a href="show_bug.cgi?id=
+                 [%- bug_list.$prev_bug FILTER url_quote %]">Предишен</a>
       [% ELSE %]
-        <i><font color="#777777">Предходен</font></i>
+        <i><font color="#777777">Предишен</font></i>
       [% END %]
 
       [% IF this_bug_idx + 1 < bug_list.size %]
         [% next_bug = this_bug_idx + 1 %]
-        <a href="show_bug.cgi?id=[% bug_list.$next_bug %]">Следващ</a>
+        <a href="show_bug.cgi?id=
+                 [%- bug_list.$next_bug FILTER url_quote %]">Следващ</a>
       [% ELSE %]
         <i><font color="#777777">Следващ</font></i>
       [% END %]
