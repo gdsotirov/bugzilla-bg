@@ -102,7 +102,7 @@ op_sys =>
 
 percentage_complete =>
   "Колко близо до 100% готов е този ${terms.bug}, сравнявайки
-   $vars.field_descs.work_time мъ с ${vars.field_descs.estimated_time}.",
+   $vars.field_descs.work_time му с ${vars.field_descs.estimated_time}.",
 
 priority =>
   "Инженерите дават предимство на техните $terms.bugs използвайки това поле.",
@@ -212,7 +212,7 @@ email1 =>
 [% END %]
 
 [% IF Param('useclassification') %]
-  [% vars.help_html.product = help_html.product 
+  [% vars.help_html.product = vars.help_html.product 
       _ " Изберете Класификация за да намалите списъка." %]
 [% END %]
 
