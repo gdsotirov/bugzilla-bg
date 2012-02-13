@@ -129,7 +129,7 @@
 
   [% ELSIF error == "db_rename_conflict" %]
     Конфликт с името: Не можете да преименувате [% old FILTER html %] на
-    [% new FILTER html %], защото [% new FILTER html %] вече съществува.
+    [%+ new FILTER html %], защото [% new FILTER html %] вече съществува.
 
   [% ELSIF error == "cookies_need_value" %]
     Всяка бисквитка трябва да има стойност.
@@ -213,7 +213,7 @@
 
   [% ELSIF error == "invalid_attach_id_to_obsolete" %]
      Номера на една от приставките които желахте да извадите от употреба,
-     [% attach_id FILTER html %], е недействителен.
+     [%+ attach_id FILTER html %], е недействителен.
           
   [% ELSIF error == "invalid_customfield_type" %]
     [% title = "Недействителен тип на поле" %]
@@ -251,7 +251,7 @@
     Приставката [% attach_id FILTER html %] ([% description FILTER html %])
     е прикачена към [% terms.bug %] [%+ attach_bug_id FILTER html %],
     но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
-    [% terms.bug %] [%+ my_bug_id FILTER html %].
+    [%+ terms.bug %] [%+ my_bug_id FILTER html %].
 
   [% ELSIF error == "feature_disabled" %]
     Функционалността [% install_string("feature_$feature") FILTER html %] не е
@@ -340,7 +340,7 @@
   [% ELSIF error == "mail_send_error" %]
     Получи се грешка при изпращане на поща от '[% mail.header('From') FILTER html %]'
     до '[% mail.header('To') FILTER html %]':
-    [% msg FILTER html %]
+    [%+ msg FILTER html %]
 
   [% ELSIF error == "missing_bug_id" %]
     Липсва номер на [% terms.bug %].

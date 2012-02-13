@@ -648,7 +648,7 @@
   [% ELSIF message_tag == "install_fk_invalid" %]
     ГРЕШКА: Има неправилни стойности за колоната [% column FILTER html %] в таблицата [% table FILTER html %]
     . (Те не съществуват в таблицата [% foreign_table FILTER html %], в колоната 
-    [% foreign_column FILTER html %].)
+    [%+ foreign_column FILTER html %].)
 
     Преди да продължите с checksetup, ще трябва да оправите тези стойности,
     или чрез изтриването на редовете от базата данни, или чрез смяна на стойностите
@@ -828,6 +828,10 @@
     [% ELSE %]
       Не бяха направени промени по версия <em>[% version.name FILTER html %]</em>.
     [% END %]
+
+  [% ELSIF message_tag == "whine_query_failed" %]
+    Заявката '[% query_name FILTER html %]' от [% author.login FILTER html %]
+    пропадна: [% reason FILTER html %]
 
   [% ELSIF message_tag == "workflow_updated" %]
     Работния поток беше обновен.

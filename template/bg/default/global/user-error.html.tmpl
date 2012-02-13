@@ -576,7 +576,7 @@
   [% ELSIF error == "fieldvalue_still_has_bugs" %]
     [% title = "Не можете да изтриете тази стойност на полето" %]
     Не можете да изтриете стойността '[% value.name FILTER html %]' от полето 
-    [% field.description FILTER html %], защото все още има
+    [%+ field.description FILTER html %], защото все още има
     [%+ value.bug_count FILTER html %] [%+ terms.bug %](а) използващ(ия) я.
 
   [% ELSIF error == "fieldvalue_undefined" %]
@@ -916,8 +916,9 @@
     [% title = "Неправилен тип на съдържанието" %]
     Типа на съдържанието <em>[% contenttype FILTER html %]</em> е неправилен.
     Правилните типове трябва да са във формат <em>foo/bar</em> където <em>foo</em>
-    е едно от <em>[% constants.LEGAL_CONTENT_TYPES.join(', ') FILTER html %]</em>.
-    
+    е едно от <em>[% constants.LEGAL_CONTENT_TYPES.join(', ') FILTER html %]</em>
+    и <em>bar</em> не трябва да съдържа специални символи (като "=", "?", ...).
+
   [% ELSIF error == "invalid_context" %]
     [% title = "Неправилен контекст" %]
     Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
@@ -1769,6 +1770,10 @@
     приставка
   [% ELSIF class == "Bugzilla::User" %]
     потребител
+  [% ELSIF class == "Bugzilla::Classification" %]
+    класификация
+  [% ELSIF class == "Bugzilla::Product" %]
+    продукт
   [% ELSIF class == "Bugzilla::Component" %]
     съставна част
   [% ELSIF class == "Bugzilla::Version" %]
@@ -1787,8 +1792,6 @@
     група
   [% ELSIF class == "Bugzilla::Keyword" %]
     ключова дума
-  [% ELSIF class == "Bugzilla::Product" %]
-    продукт
   [% ELSIF class == "Bugzilla::Search::Recent" %]
     скорошно търсене
   [% ELSIF class == "Bugzilla::Search::Saved" %]
