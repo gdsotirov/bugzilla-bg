@@ -829,11 +829,10 @@
       Правилен адрес трябва да съдържа точно една '@',
       и поне една '.' след @-та.
     [% ELSE %]
-      [%+ Param('emailregexpdesc') %]
+      [%+ Param('emailregexpdesc') FILTER html_light %]
     [% END %]
-    Също така той не трябва да съдържа някой от следните символи:
-    <tt>\ ( ) &amp; &lt; &gt; , ; : &quot; [ ]</tt> или някакви непечатими символи.
-    
+    Също така не трябва да съдържа никакви непозволени символи.
+
   [% ELSIF error == "illegal_frequency" %]
     [% title = "Твърде често" %]
     Освен ако не сте администратор, не можете да създавате редици, които 
@@ -1003,6 +1002,10 @@
     При ползване на <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> през GET, трябва да укажете 'method'
     параметър. Вижте документацията на
     [%+ docs_urlbase FILTER html %]api/Bugzilla/WebService/Server/JSONRPC.html
+
+  [% ELSIF error == "json_rpc_illegal_content_type" %]
+    При използване на JSON-RPC през POST, не можете да използвате [% content_type FILTER html %]
+    като тип на съдържание. Препоръчвания тип съдържание е application/json.
 
   [% ELSIF error == "json_rpc_invalid_params" %]
     Не може да бъде направен синтактичен разбор на аргумента 'params' като действителен <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>.
