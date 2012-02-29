@@ -1685,6 +1685,11 @@
     &lt;[% type FILTER html %]&gt; поле. (Вижте XML-RPC спецификацията
     за подробности.)
 
+  [% ELSIF error == "xmlrpc_illegal_content_type" %]
+    При използване на XML-RPC не можете да пращате данни като
+    [%+ content_type FILTER html %]. Само text/xml 
+    и application/xml са разрешени.
+
   [% ELSIF error == "zero_length_file" %]
     [% title = "Файлът е празен" %]
     Файлът, който се опитвате да прикачите е празен, не съществува или нямате

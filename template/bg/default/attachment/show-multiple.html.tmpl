@@ -83,10 +83,22 @@
   </table>
 
   [% IF a.is_viewable %]
-    <iframe src="attachment.cgi?id=[% a.id %]" width="75%" height="350">
-      <b>Не можете да видите приставката на тази страница, защото браузъра ви не поддържа вградени рамки.
-      <a href="attachment.cgi?id=[% a.id %]>Преглед на прставката на отделна страница</a>.</b>
-    </iframe>
+    [% IF a.contenttype == "text/html" %]
+      [%# For security reasons (clickjacking, embedded scripts), we never
+        # render HTML pages from here. The source code is displayed instead. %]
+      [% INCLUDE global/textarea.html.tmpl
+         minrows = 10
+         cols    = 80
+         defaultcontent = a.data
+         readonly = 'readonly'
+         classes = 'viewall_frame'
+      %]
+    [% ELSE %]
+      <iframe src="attachment.cgi?id=[% a.id %]" class="viewall_frame">
+        <b>Не можете да видите приставката на тази страница, защото браузъра ви не поддържа вградени рамки.
+        <a href="attachment.cgi?id=[% a.id %]>Преглед на прставката на отделна страница</a>.</b>
+      </iframe>
+    [% END %]
   [% ELSE %]
     <p><b>
       Приставката не може да бъде видяна, защото нейния <abbr lang="en" title="Multi-purpose Internet Mail Extensions">MIME</abbr> тип не е text/*, image/*, или application/vnd.mozilla.*.
