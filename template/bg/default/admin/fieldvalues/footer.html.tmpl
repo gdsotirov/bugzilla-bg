@@ -32,7 +32,7 @@
 [% UNLESS no_add_link %]
   <a title="Добавяне на стойност за полето '[% field.description FILTER html %]'."
      href="editvalues.cgi?action=add&amp;field=
-          [%- field.name FILTER url_quote %]">Добавяне</a> на стойност.
+          [%- field.name FILTER uri %]">Добавяне</a> на стойност.
 [% END %]
 
 [% IF value.defined && !no_edit_link %]
@@ -40,15 +40,15 @@
   title="Редактиране на стойност '[% value.name FILTER html %]' за полето '
          [%- field.name FILTER html %]'"
   href="editvalues.cgi?action=edit&amp;field=
-        [%- field.name FILTER url_quote %]&amp;value=
-        [%- value.name FILTER url_quote %]">
+        [%- field.name FILTER uri %]&amp;value=
+        [%- value.name FILTER uri %]">
         '[% value.name FILTER html %]'</a>.
 [% END %]
 
 [% UNLESS no_edit_other_link %]
   Редактиране на други стойности за полето <a 
   href="editvalues.cgi?field=
-        [%- field.name FILTER url_quote %]">'[% field.description FILTER html %]'</a>.
+        [%- field.name FILTER uri %]">'[% field.description FILTER html %]'</a>.
 
 [% END %]
 

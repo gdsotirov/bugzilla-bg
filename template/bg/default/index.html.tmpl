@@ -46,12 +46,6 @@ function onLoadActions() {
   }
   document.getElementById('quicksearch_top').focus();
 }
-function addSidebar() {
-  var sidebarname=window.location.host;
-  if (!/bug/i.test(sidebarname))
-    sidebarname="[% terms.Bugzilla %] "+sidebarname;
-  window.sidebar.addPanel (sidebarname, "[% urlbase FILTER html %]sidebar.cgi", "");
-}
 var quicksearch_message = "Въведете [% terms.bug %] № или термини за търсене";
 
 function checkQuicksearch( form ) {
@@ -98,18 +92,24 @@ YAHOO.util.Event.onDOMReady(onLoadActions);
       Можете да настроите уведомяването от
       страницата <a href="editparams.cgi?section=general#upgrade_notification_desc">Параметри</a>.</p>
     [% ELSIF release.error == "cannot_download" %]
-      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% release.xml_file FILTER html %]' не може да бъде създаден.
-      Моля, уверете се, че web сървъра може да пише в тази папка и че имате достъп
+      <p>Отдалечения файл <a href="[% constants.REMOTE_FILE FILTER html %]">
+      [%~ constants.REMOTE_FILE FILTER html %]</a> не може да изтеглен
+      (причина: [% release.reason FILTER html %]).<br>
+      Или отдалечения сървър е временно недостъпен или web сървъра ви няма достъп до
       до мрежата. Ако сте зад прокси, задайте правилно параметъра
       <a href="editparams.cgi?section=advanced#proxy_url_desc">proxy_url</a>.</p>
+    [% ELSIF release.error == "no_write" %]
+      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% constants.LOCAL_FILE FILTER html %]' не може да бъде създаден
+      (причина: [% release.reason FILTER html %]).<br>
+      Моля уверете се, че web сървъра може да пише в тази папка.
     [% ELSIF release.error == "no_update" %]
-      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% release.xml_file FILTER html %]' не може да бъде обновен.
+      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% constants.LOCAL_FILE FILTER html %]' не може да бъде обновен.
       Моля, уверете се, че web сървъра може да редактира този файл.</p>
     [% ELSIF release.error == "no_access" %]
-      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% release.xml_file FILTER html %]' не може да бъде прочетен.
+      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% constants.LOCAL_FILE FILTER html %]' не може да бъде прочетен.
       Моля, уверете се, че на този файл са зададени точните права.</p>
     [% ELSIF release.error == "corrupted" %]
-      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% release.xml_file FILTER html %]' има неправилен XML формат.
+      <p>Локалния <abbr lang="en" title="eXstensible Markup Language">XML</abbr> файл '[% constants.LOCAL_FILE FILTER html %]' има неправилен XML формат.
       Моля, изтрийте го и опитайте да отворите страницата отново.</p>
     [% ELSIF release.error == "unknown_parameter" %]
       <p>'[% Param("upgrade_notification") FILTER html %]' не е действителен параметър за
@@ -125,27 +125,36 @@ YAHOO.util.Event.onDOMReady(onLoadActions);
       <td>
         <h1 id="welcome"> Добре дошли в [% terms.Bugzilla %]</h1>
         <div class="intro">[% Hook.process('intro') %]</div>
-        <a id="enter_bug" class="bz_common_actions"
-           href="enter_bug.cgi"><span>Въвеждане на [% terms.bug %]</span></a>
-      
-        <a id="query" class="bz_common_actions" 
-           href="query.cgi"><span>Търсене</span></a>
-      
-        <a id="account" class="bz_common_actions"
-          [% IF user.id %]
-            href="userprefs.cgi"><span>Потребителски предпочитания</span></a>
-          [% ELSIF Param('createemailregexp')
-                   && user.authorizer.user_can_create_account 
-          %]
-            href="createaccount.cgi"><span>Отваряне на нова сметка</span></a>
-          [% ELSE %]
-            href="?GoAheadAndLogIn=1"><span>Вход</span></a>
-          [% END %]
+
+        <div class="bz_common_actions">
+          <ul>
+            <li>
+              <a id="enter_bug" href="enter_bug.cgi"><span>Въвеждане
+              на [% terms.bug %]</span></a>
+            </li>
+            <li>
+              <a id="query" href="query.cgi"><span>Търсене</span></a>
+            </li>
+            <li>
+              <a id="account"
+                 [% IF user.id %]
+                   href="userprefs.cgi"><span>Потребителски предпочитания</span></a>
+                 [% ELSIF Param('createemailregexp')
+                          && user.authorizer.user_can_create_account 
+                 %]
+                   href="createaccount.cgi"><span>Отваряне на нова сметка</span></a>
+                 [% ELSE %]
+                   href="?GoAheadAndLogIn=1"><span>Вход</span></a>
+                 [% END %]
+            </li>
+          </ul>
+        </div>
 
         <form id="quicksearchForm" name="quicksearchForm" action="buglist.cgi"
               onsubmit="return checkQuicksearch(this);">
           <div>
             <input id="quicksearch_main" type="text" name="quicksearch"
+              title="Бързо търсене" 
               onfocus="quicksearchHelpText(this.id, 'hide');"
               onblur="quicksearchHelpText(this.id, 'show');"
             >

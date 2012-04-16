@@ -56,10 +56,10 @@
 
   <p>Проверка на съществуащи гласове в този продукт за някой който вече
   има твърде много гласа за един [% terms.bug %]...<br>
-  [% IF changes.too_many_votes.size %]
-    [% FOREACH detail = changes.too_many_votes %]
+  [% IF changes._too_many_votes.size %]
+    [% FOREACH detail = changes._too_many_votes %]
       &rarr;премахнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
-     [%- detail.id FILTER url_quote %]">
+     [%- detail.id FILTER uri %]">
      [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
     [% END %]
   [% ELSE %]
@@ -69,10 +69,10 @@
 
   <p>Проверка на същестуващи гласове в този продукт за някой
   който има твърде много общо гласове...<br>
-  [% IF changes.too_many_total_votes.size %]
-    [% FOREACH detail = changes.too_many_total_votes %]
+  [% IF changes._too_many_total_votes.size %]
+    [% FOREACH detail = changes._too_many_total_votes %]
       &rarr;прмехнати гласове за [% terms.bug %] <a href="show_bug.cgi?id=
-     [%- detail.id FILTER url_quote %]">
+     [%- detail.id FILTER uri %]">
      [%- detail.id FILTER html %]</a> от [% detail.name FILTER html %]<br>
     [% END %]
   [% ELSE %]
@@ -82,15 +82,15 @@
 
   <p>Проверка на непотвърдени [% terms.bugs %] в този продукт за някой който вече има
   достатъчно гласове...<br>
-  [% IF changes.confirmed_bugs.size %]
-    [% FOREACH id = changes.confirmed_bugs %]
+  [% IF changes._confirmed_bugs.size %]
+    [% FOREACH id = changes._confirmed_bugs %]
 
       [%# This is INCLUDED instead of PROCESSED to avoid variables getting
           overwritten, which happens otherwise %]
       [% INCLUDE bug/process/results.html.tmpl
         type = 'votes'
         header_done = 1
-        sent_bugmail = changes.confirmed_bugs_sent_bugmail.$id
+        sent_bugmail = changes._confirmed_bugs_sent_bugmail.$id
         id = id
       %]
     [% END %]

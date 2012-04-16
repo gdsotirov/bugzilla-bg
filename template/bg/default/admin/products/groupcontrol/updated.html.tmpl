@@ -27,16 +27,16 @@
   title = title
 %]
 <p>
-[% IF changes.group_controls.now_na.size %]
-  [% FOREACH g = changes.group_controls.now_na %]
+[% IF changes._group_controls.now_na.size %]
+  [% FOREACH g = changes._group_controls.now_na %]
     Премахване на [% terms.bugs %] от групата '[% g.name FILTER html %]', която
     вече е неприложима за продукта<p>
     [% g.bug_count FILTER html %] [%+ terms.bug %](а) премахнат(и)<p>
   [% END %]
 [% END %]
 
-[% IF changes.group_controls.now_mandatory.size %]
-  [% FOREACH g = changes.group_controls.now_mandatory %]
+[% IF changes._group_controls.now_mandatory.size %]
+  [% FOREACH g = changes._group_controls.now_mandatory %]
     Добавяне на [% terms.bugs %] към групата '[% g.name FILTER html %]', която е 
     задължителна за продукта<p>
     [% g.bug_count FILTER html %] [%+ terms.bug %](а) добавен(и)<p>

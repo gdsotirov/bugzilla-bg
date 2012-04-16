@@ -66,9 +66,9 @@
   <a href="query.cgi?[% default.query FILTER html %]">Преглед
   на параметрите за търсене на редицата</a> |
   <a href="buglist.cgi?cmdtype=dorem&amp;namedcmd=
-    [% default.category FILTER url_quote %]-
-    [% default.subcategory FILTER url_quote %]-
-    [% default.name FILTER url_quote %]&amp;remaction=runseries&amp;series_id=
+    [% default.category FILTER uri %]-
+    [% default.subcategory FILTER uri %]-
+    [% default.name FILTER uri %]&amp;remaction=runseries&amp;series_id=
     [% default.series_id %]">Пускане на търсенето на редицата</a>
 </p>
 

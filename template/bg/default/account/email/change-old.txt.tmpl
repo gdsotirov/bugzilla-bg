@@ -39,7 +39,7 @@ X-Bugzilla-Type: admin
 Ако вие не сте лицето направило заявката или желаете да я отхвърлите,
 посетете следващата препратка:
 
-[%+ urlbase %]token.cgi?t=[% token FILTER url_quote %]&a=cxlem
+[%+ urlbase %]token.cgi?t=[% token FILTER uri %]&a=cxlem
 
 Ако не направите нищо и [%+ newemailaddress %] потвърди заявката,
 промяната ще бъде неизменна след [% constants.MAX_TOKEN_AGE %] дни

@@ -33,7 +33,12 @@
   subheader = filtered_summary
   style_urls = ['skins/standard/attachment.css']
 %]
-
+[% IF hide_obsolete %]
+  <div id="hidden_obsolete_message">
+    Остарелите приставки са скрити. За да видите всички приставки (включително остарелите) 
+    <a href="attachment.cgi?bugid=[% bug.id FILTER html %]&amp;action=viewall">щракнете тук</a>.
+  </div>
+[% END %]
 <br>
 
 [% FOREACH a = attachments %]

@@ -61,73 +61,10 @@
                    ${constants.FIELD_TYPE_BUG_ID}        => "$terms.Bug №",
                 } %]
 
-[%# You can use this hash to localize (translate) the values displayed
-  # for drop-down and multiple-select fields. Lines starting with "#"
-  # are comments.
-  #%]
-[% value_descs = {
-  "bug_status" => {
-    "UNCONFIRMED" => "НЕПОТВЪРДЕН",
-    "CONFIRMED"   => "ПОТВЪРДЕН",
-    "IN_PROGRESS" => "В РАЗВИТИЕ",
-    "VERIFIED"    => "ПРОВЕРЕН",
-    "RESOLVED"    => "РЕШЕН",
-  },
-
-  "resolution" => {
-    ""            => "---",
-    "FIXED"       => "ОПРАВЕН",
-    "INVALID"     => "НЕДЕЙСТВИТЕЛЕН",
-    "WONTFIX"     => "ОТКАЗАН",
-    "LATER"       => "ПО НАТАТЪК",
-    "REMIND"      => "НАПОМНЯНЕ",
-    "DUPLICATE"   => "ДВОЙНИК",
-    "WORKSFORME"  => "НЕВЪЗПРОИЗВОДИМ",
-    "MOVED"       => "ПРЕМЕСТЕН",
-  },
-
-  "bug_severity" => {
-    "blocker"     => "блокиращ",
-    "critical"    => "критичен",
-    "major"       => "важен",
-    "normal"      => "нормален",
-    "minor"       => "маловажен",
-    "trivial"     => "незначителен",
-    "enhancement" => "подобрение",
-  },
-
-  "priority" => {
-    "Very High (P1)" => "Много висок (P1)",
-    "High (P2)"      => "Висок (P2)",
-    "Normal (P3)"    => "Нормален (P3)",
-    "Low (P4)"       => "Нисък (P4)",
-    "Very Low (P5)"  => "Много нисък (P5)",
-  },
-
-  "rep_platform" => {
-    "All"   => "Всяка",
-    "Other" => "Друга",
-  },
-
-  "op_sys" => {
-    "All"   => "Всяка",
-    "Other" => "Друга",
-  },
-} %]
-
-[%# We use "FILTER none" here because only the caller can know how to
-  # filter the result appropriately. 
-  #%]
-[% MACRO display_value(field_name, value_name) BLOCK %][% FILTER trim %]
-  [% IF value_descs.${field_name}.${value_name}.defined %]
-    [% value_descs.${field_name}.${value_name} FILTER none %]
-  [% ELSE %]
-    [% value_name FILTER none %]
-  [% END %]
-[% END %][% END %]
-
 [% IF in_template_var %]
-  [% vars.terms = terms %]
+  [% PROCESS "global/value-descs.none.tmpl" %]
+  [% SET vars.value_descs = value_descs %]
+  [% SET vars.terms = terms %]
 
   [%# field_descs is loaded as a global template variable and cached
     # across all templates--see VARIABLES in Bugzilla/Template.pm.
@@ -145,7 +82,6 @@
      "attachments.ispatch"     => "Приставката е кръпка",
      "attachments.isobsolete"  => "Приставката е остаряла",
      "attachments.isprivate"   => "Приставката е частна",
-     "attachments.isurl"       => "Приставката е URL",
      "attachments.submitter"   => "Създател на приставка",
      "blocked"                 => "Блокира",
      "bug_file_loc"            => "URL",
@@ -172,6 +108,7 @@
      "flagtypes.name"          => "Флагове",
      "keywords"                => "Ключови думи",
      "longdesc"                => "Коментар",
+     "longdescs.count"         => "Брой коментари",
      "longdescs.isprivate"     => "Коментара е частен",
      "newcc"                   => "Точно Копие",
      "op_sys"                  => "ОС",
@@ -196,6 +133,7 @@
      "settings"                => "Настройки",
      "short_desc"              => "Резюме",
      "status_whiteboard"       => "Бяла дъска",
+     "tag.name"                => "Тагове",
      "target_milestone"        => "Целево събитие",
      "version"                 => "Версия",
      "work_time"               => "Отработени часове",

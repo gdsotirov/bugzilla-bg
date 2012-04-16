@@ -24,46 +24,33 @@
 <tr>
   <th><label for="data">Файл</label>:</th>
   <td>
-    <em>Въведете пътя до файла на компютъра ви.</em><br>
-    <input type="file" id="data" name="data" size="50"
-      [% IF Param("allow_attach_url") %]
-        onchange="DataFieldHandler()" 
-      [% END %]
-    >
+    <em>Въведете пътя до файла на компютъра ви</em> (или
+    <a id="attachment_data_controller" href="javascript:TUI_toggle_class('attachment_text_field');
+                                             javascript:TUI_toggle_class('attachment_data')"
+    >пуснете текст като приставка
+    <input type="file" id="data" name="data" size="50" onchange="DataFieldHandler()">
   </td>
 </tr>
-[% IF Param("maxlocalattachment") %]
-<tr class="expert_fields">
-  <th>Голям файл:</th>
+<tr class="attachment_text_field">
+  <th><label for="attach_text">Файл</label>:</th>
   <td>
-    <input type="checkbox" id="bigfile"
-           name="bigfile" value="bigfile">
-    <label for="bigfile">
-      Голям файл - Съхраняван локално и може да бъде изчистен
-    </label>
+    <em>Пуснете текст който да се добави като приставка</em> (или
+    <a id="attachment_text_field_controller" href="javascript:TUI_toggle_class('attachment_text_field');
+                                                   javascript:TUI_toggle_class('attachment_data')"
+    >прикачете файл</a>).<br>
+    <textarea id="attach_text" name="attach_text" cols="80" rows="15"
+              onkeyup="TextFieldHandler()" onblur="TextFieldHandler()"></textarea>
   </td>
 </tr>
-[% END %]
-[% IF Param("allow_attach_url") %]
-<tr class="expert_fields">
-  <th><label for="attachurl"><abbr lang="en" title="Uniform Resource Locator">URL</abbr> за прикачване</label>:</th>
-  <td>
-    <em><abbr lang="en" title="Uniform Resource Locator">URL</abbr> за прикачване.</em><br>
-    <input type="text" id="attachurl" name="attachurl" size="60" 
-           maxlength="2000"
-           onkeyup="URLFieldHandler()" onblur="URLFieldHandler()">
-  </td>
-</tr>
-</tbody>
-[% END %]
 <tr>
   <th><label for="description">Описание</label>:</th>
   <td>
     <em>Опишете приставката кратко.</em><br>
-    <input type="text" id="description" name="description" size="60" maxlength="200">
+    <input type="text" id="description" name="description" class="required"
+           size="60" maxlength="200">
   </td>
 </tr>
-<tr class="expert_fields">
+<tr[% ' class="expert_fields"' UNLESS bug.id %]>
   <th>Тип на съдържанието:</th>
   <td>
     <em>Ако приставката е кръпка, отметнете кутията по-долу.</em><br>
@@ -100,7 +87,7 @@
   <td> </td>
   <td>
     [% IF flag_types && flag_types.size > 0 %]
-      [% PROCESS "flag/list.html.tmpl" bug_id=bugid attach_id=attachid %]<br>
+      [% PROCESS "flag/list.html.tmpl" %]<br>
     [% END %]
   </td>
 </tr>

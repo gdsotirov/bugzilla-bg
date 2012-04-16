@@ -112,7 +112,7 @@
           <li>
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?field0-0-0=attachments.submitter&type0-0-0=equals&value0-0-0=
-               [%- otheruser.login FILTER url_quote %]">е подал
+               [%- otheruser.login FILTER uri %]">е подал
             [% IF attachments == 1 %]
               една приставка
             [% ELSE %]
@@ -132,7 +132,7 @@
           <li>
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailreporter1=1&amp;emailtype1=exact&amp;email1=
-               [%- otheruser.login FILTER url_quote %]">е докладвал
+               [%- otheruser.login FILTER uri %]">е докладвал
             [% IF reporter == 1 %]
               един [% terms.bug %]
             [% ELSE %]
@@ -170,7 +170,7 @@
           <li>
             [% otheruser.login FILTER html %] има
             <a href="buglist.cgi?field0-0-0=setters.login_name&amp;type0-0-0=equals&amp;value0-0-0=
-               [%- otheruser.login FILTER url_quote %]">е задал
+               [%- otheruser.login FILTER uri %]">е задал
             или е поискал задаването на
             [% IF flags.setter == 1 %]
             флаг
@@ -191,7 +191,7 @@
           <li>
             [% otheruser.login FILTER html %] има
             <a href="buglist.cgi?emaillongdesc1=1&amp;emailtype1=exact&amp;email1=
-               [%- otheruser.login FILTER url_quote %]">е коментирал
+               [%- otheruser.login FILTER uri %]">е коментирал
             [% IF longdescs == 1 %]
               веднъж по [% terms.bug %]
             [% ELSE %]
@@ -226,7 +226,8 @@
 
   [% IF assignee_or_qa || cc || component_cc || email_setting || flags.requestee ||
         namedqueries || profile_setting || quips || series || watch.watched ||
-        watch.watcher || whine_events || whine_schedules || other_safe %]
+        watch.watcher || whine_events || whine_schedules || otheruser.has_audit_entries ||
+        other_safe %]
     <div class="warningmessages">
       <p>Следващите изтривания са <b>безопасни</b> и няма да създадат
       непълноти в цялостта на връзките.</p>
@@ -236,7 +237,7 @@
           <li>
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailassigned_to1=1&amp;emailqa_contact1=1&amp;emailtype1=exact&amp;email1=
-               [%- otheruser.login FILTER url_quote %]">е
+               [%- otheruser.login FILTER uri %]">е
             назначен или качествен контрол по
             [% IF assignee_or_qa == 1 %]
               един [% terms.bug %]
@@ -251,7 +252,7 @@
           <li>
             [% otheruser.login FILTER html %]
             <a href="buglist.cgi?emailcc1=1&amp;emailtype1=exact&amp;email1=
-               [%- otheruser.login FILTER url_quote %]">е
+               [%- otheruser.login FILTER uri %]">е
             в <abbr title="Точно Копие">CC</abbr> списъка на
             [% IF cc == 1 %]
               [%+ terms.bug %]
@@ -282,7 +283,7 @@
           <li>
             [% otheruser.login FILTER html %] has been
             <a href="buglist.cgi?field0-0-0=requestees.login_name&amp;type0-0-0=equals&amp;value0-0-0=
-               [%- otheruser.login FILTER url_quote %]">е поискал
+               [%- otheruser.login FILTER uri %]">е поискал
             задаването на
             [% IF flags.requestee == 1 %]
               флаг
@@ -425,6 +426,14 @@
             [% END %].
             Съответстващите разписания ще бъдат изтрити заедно с потребителската сметка,
             но самите хленчове ще бъдат оставени непроменени.
+          </li>
+        [% END %]
+        [% IF otheruser.has_audit_entries %]
+          <li>
+            Потребителя е изпълнявал ревизирани административни задачи
+            които са записани в базата с данни.
+            Ако изтриете сметката, записите в ревизионния журнал
+            повече няма да са отъждествяеми.
           </li>
         [% END %]
         [% Hook.process('warn_safe') %]

@@ -60,6 +60,10 @@
               Беше зададена нова парола.
             [% ELSIF field == 'disabledtext' %]
               Текста за неспособен беше променен.
+            [% ELSIF field == 'is_enabled' %]
+              Потребителя беше [% otheruser.is_enabled ? 'разрешен' : 'забранен' %].
+            [% ELSIF field == 'extern_id' %]
+              Външния идентификатор за вход на потребителя беше променен.
             [% ELSIF field == 'disable_mail' %]
               [% IF otheruser.email_disabled %]
                 [% terms.Bug %]пощата беше забранена.
@@ -129,7 +133,7 @@
   [% ELSIF message_tag == "buglist_updated_named_query" %]
     [% title = "Търсене обновено" %]
     Търсенето ви, именувано <code><a 
-     href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
+     href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER uri %]"
     >[% queryname FILTER html %]</a></code>, беше обновено.
 
   [% ELSIF message_tag == "buglist_new_default_query" %]
@@ -139,7 +143,7 @@
   [% ELSIF message_tag == "buglist_new_named_query" %]
     [% title = "Търсене създадено" %]
     OK, имате ново търсене именувано <code><a
-     href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER url_quote %]"
+     href="buglist.cgi?cmdtype=runnamed&amp;namedcmd=[% queryname FILTER uri %]"
     >[% queryname FILTER html %]</a></code>.
 
   [% ELSIF message_tag == "buglist_query_gone" %]
@@ -233,6 +237,9 @@
         [% ELSE %]
           <li>Подразбиращ ТК списък е изтрит</li>
         [% END %]
+      [% END %]
+      [% IF changes.isactive.defined %]
+        <li>[% comp.is_active ? "Разрешена" : "Забранена" %] за [% terms.bugs %]</li>
       [% END %]
       [% Hook.process('component_updated_fields') %]
       </ul>
@@ -547,6 +554,9 @@
         [% IF changes.sortkey.defined %]
           <li>Ключа за подреждане е обновен на <em>[% milestone.sortkey FILTER html %]</em>
         [% END %]
+        [% IF changes.isactive.defined %]
+          <li>[% milestone.is_active ? "Разрешено" : "Забранено" %] за [% terms.bugs %]</li>
+        [% END %]
       </ul>
     [% ELSE %]
       Не са направени промени по важното събитие <em>[% milestone.name FILTER html %]</em>.
@@ -588,10 +598,64 @@
     [% title = BLOCK %]Тип флаг '[% name FILTER html %]' създаден[% END %]
     Типа флаг <em>[% name FILTER html %]</em> беше създаден.
 
-  [% ELSIF message_tag == "flag_type_changes_saved" %]
-    [% title = BLOCK %]Промените по тип флаг '[% name FILTER html %]' съхранени[% END %]
-    Промените ви по типа флаг <em>[% name FILTER html %]</em>
-    бяха запазени.
+  [% ELSIF message_tag == "flag_type_updated" %]
+    [% title = BLOCK %]Тип флаг '[% flagtype.name FILTER html %]' обновен[% END %]
+    [% IF changes.size %]
+      Промените по типа флаг <em>[% flagtype.name FILTER html %]</em>
+      бяха съхранени:
+      <ul>
+        [% IF changes.is_active.defined %]
+          <li>Типа флаг сега е [% flagtype.is_active ? "действуващ" : "недействуващ" %]</li>
+        [% END %]
+        [% IF changes.name.defined %]
+          <li>Типа флаг преименуван на <em>[% flagtype.name FILTER html %]</em></li>
+        [% END %]
+        [% IF changes.description.defined %]
+          <li>Описанието обновено на <em>[% flagtype.description FILTER html %]</em></li>
+        [% END %]
+        [% IF changes.cc_list.defined %]
+          [% IF flagtype.cc_list %]
+            <li>Списък <abbr title="Точно Копие">ТК</abbr> обновен на <em>[% flagtype.cc_list FILTER html %]</em></li>
+          [% ELSE %]
+            <li>Списък <abbr title="Точно Копие">ТК</abbr> вече е празен</li>
+          [% END %]
+        [% END %]
+        [% IF changes.sortkey.defined %]
+          <li>Ключ за подреждане обновен на <em>[% flagtype.sortkey FILTER html %]</em></li>
+        [% END %]
+        [% IF changes.is_requestable.defined %]
+          <li>Типа флаг [% "вече не" UNLESS flagtype.is_requestable %] е изискуем</li>
+        [% END %]
+        [% IF changes.is_requesteeble.defined AND flagtype.is_requestable %]
+          <li>
+            Типа флаг [% "вече не" UNLESS flagtype.is_requesteeble %] е
+            специално изискуем
+          </li>
+        [% END %]
+        [% IF changes.is_multiplicable.defined %]
+          <li>Типа флаг [% "вече не" UNLESS flagtype.is_multiplicable %] е умножаем</li>
+        [% END %]
+        [% IF changes.grant_group_id.defined %]
+          [% IF flagtype.grant_group_id %]
+            <li>Група на разрешаващите обновена на <em>[% flagtype.grant_group.name FILTER html %]</em></li>
+          [% ELSE %]
+            <li>Група на разрешаващите изтрита</li>
+          [% END %]
+        [% END %]
+        [% IF changes.request_group_id.defined %]
+          [% IF flagtype.request_group_id %]
+            <li>Група на искащите обновена на <em>[% flagtype.request_group.name FILTER html %]</em></li>
+          [% ELSE %]
+            <li>Група на искащите изтрита</li>
+          [% END %]
+        [% END %]
+        [% IF changes.inclusions.defined || changes.exclusions.defined %]
+          <li>Списъците на включения и изключения бяха обновени</li>
+        [% END %]
+     </ul>
+    [% ELSE %]
+      Не са направени промени по тип флаг <em>[% flagtype.name FILTER html %]</em>.
+    [% END %]
 
   [% ELSIF message_tag == "flag_type_deleted" %]
     [% title = BLOCK %]Тип флаг '[% name FILTER html %]' изтрит[% END %]
@@ -662,11 +726,23 @@
     които бяха [% IF action == 'delete' %]изтрити[% ELSE %]зададени на NULL[% END %]:
     [%+ values.join(', ') FILTER html %]
 
+  [% ELSIF message_tag == "install_fk_setup" %]
+    Нагласяване на външни ключове...
+
   [% ELSIF message_tag == "install_group_create" %]
     Създаване на група [% name FILTER html %]...
 
+  [% ELSIF message_tag == "install_groups_setup" %]
+    Създаване на подразбиращи се групи...
+
   [% ELSIF message_tag == "install_setting_new" %]
     Добавяне на нова потребителска настройка с име '[% name FILTER html %]'
+
+  [% ELSIF message_tag == "install_setting_setup" %]
+    Нагласяване на потребителски предпочитания...
+
+  [% ELSIF message_tag == "install_success" %]
+    checksetup.pl завършен.
 
   [% ELSIF message_tag == "install_table_drop" %]
     Премахване на таблицата '[% name FILTER html %]'...
@@ -721,7 +797,7 @@
   [% ELSIF message_tag == "product_created" %]
     [% title = "Създаден продукт" %]
     Продукта <em>[% product.name FILTER html %]</em> беше създаден. Ще трябва да
-    <a href="editcomponents.cgi?action=add&product=[% product.name FILTER url_quote %]">
+    <a href="editcomponents.cgi?action=add&product=[% product.name FILTER uri %]">
     добавите поне една съставна част</a> преди някой да може да въвежда [% terms.bugs %] за него.
 
   [% ELSIF message_tag == "product_deleted" %]
@@ -793,6 +869,18 @@
       Бисквитката съхраняваща данните ви за вход е изгубена.
     [% END %]
 
+  [% ELSIF message_tag == "tag_updated" %]
+    [% title = "Таг обновен" %]
+    '<a href="buglist.cgi?tag=[% tag FILTER uri %]">[% tag FILTER html %]</a>'
+    таг беше
+    [% IF action == "add" %]
+      добавен към
+    [% ELSE %]
+      премахнат от
+    [% END %]
+    [%+ buglist.size > 1 ? terms.bugs : terms.bug %]
+    [%+ buglist.join(", ") FILTER html %].
+
   [% ELSIF message_tag == "term" %]
     [% terms.$term FILTER html %]
 
@@ -822,9 +910,16 @@
   [% ELSIF message_tag == "version_updated" %]
     [% title = "Обновена версия" %]
     [% IF changes.size %]
-      [% IF changes.value.defined %]
-        Версията беше преименувана на <em>[% version.name FILTER html %]</em>.
-      [% END %]
+      Промените към версията <em>[% version.name FILTER html %]</em>
+      бяха съхранени:
+      <ul>
+        [% IF changes.value.defined %]
+          <li>Версията беше преименувана на <em>[% version.name FILTER html %]</em></li>
+        [% END %]
+        [% IF changes.isactive.defined %]
+          <li>[% version.is_active ? "Разрешена" : "Забранена" %] за [% terms.bugs %]</li>
+        [% END %]
+      </ul>
     [% ELSE %]
       Не бяха направени промени по версия <em>[% version.name FILTER html %]</em>.
     [% END %]

@@ -33,7 +33,7 @@
   съставна част <a 
   title="Редактиране на съставна част '[% name FILTER html %]'"
   href="editcomponents.cgi?action=edit&amp;product=
-  [%- product.name FILTER url_quote %]&amp;component=[% comp.name FILTER url_quote %]">
+  [%- product.name FILTER uri %]&amp;component=[% comp.name FILTER uri %]">
    '[% comp.name FILTER html %]'</a> 
   или редактиране на
 [% END %]
@@ -42,13 +42,13 @@
 други съставни части на продукта <a 
   title="Избор на съставна част от продукта '[% product.name FILTER html %]' за редактиране"
   href="editcomponents.cgi?product=
-  [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>, 
+  [%- product.name FILTER uri %]">'[% product.name FILTER html %]'</a>, 
   или редактиране на 
 [% END %]
 
 продукта <a 
   title="Редактиране на продукт '[% product.name FILTER html %]'"
   href="editproducts.cgi?action=edit&amp;product=
-  [%- product.name FILTER url_quote %]">'[% product.name FILTER html %]'</a>.
+  [%- product.name FILTER uri %]">'[% product.name FILTER html %]'</a>.
 
 </p>

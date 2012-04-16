@@ -23,15 +23,16 @@
   #%]
 
 <tr>
-  <td valign="top">Съставна част:</td>
-  <td><input size="64" maxlength="64" name="component"
+  <th class="field_label"><label for="component">Съставна част:</label></th>
+  <td><input size="64" maxlength="64" name="component" id="component"
              value="[%- comp.name FILTER html %]"></td>
 </tr>
 <tr>
-  <td valign="top">Описание:</td>
+  <th class="field_label"><label for="[% desc_name FILTER html %]">Описание:</label></th>
   <td>
     [% INCLUDE global/textarea.html.tmpl
       name           = 'description'
+      id             = 'description'
       minrows        = 4
       cols           = 64
       wrap           = 'virtual'
@@ -40,7 +41,7 @@
   </td>
 </tr>
 <tr>
-  <td valign="top"><label for="initialowner">Подразбиращ се назначен:</label></td>
+  <th class="field_label"><label for="initialowner">Подразбиращ се назначен:</label></th>
   <td>
     [% INCLUDE global/userselect.html.tmpl
        name => "initialowner"
@@ -52,7 +53,7 @@
 </tr>
 [% IF Param('useqacontact') %]
   <tr>
-    <td valign="top"><label for="initialqacontact">Подразбиращ се качествен контрол:</label></td>
+    <th class="field_label"><label for="initialqacontact">Подразбиращ се качествен контрол:</label></th>
     <td>
       [% INCLUDE global/userselect.html.tmpl
          name => "initialqacontact"
@@ -65,9 +66,7 @@
   </tr>
 [% END %]
 <tr>
-  <td valign="top">
-    <label for="initialcc">Подразбиращ се <abbr title="Точно копие">ТК</abbr> списък:</label>
-  </td>
+  <th class="field_label"><label for="initialcc">Подразбиращ се <abbr title="Точно копие">ТК</abbr> списък:</label></th>
   <td>
     [% INCLUDE global/userselect.html.tmpl
        name     => "initialcc"
@@ -78,7 +77,7 @@
     %]
     <br>
     [% IF !Param("usemenuforusers") %]
-      <em>Въведете потребителски имена за <abbr title="Точно копие">ТК</abbr> списъка едно след друго разделени със запетая..</em>
+      <em>Въведете потребителски имена за <abbr title="Точно копие">ТК</abbr> списъка едно след друго разделени със запетая.</em>
     [% END %]
   </td>
 </tr>

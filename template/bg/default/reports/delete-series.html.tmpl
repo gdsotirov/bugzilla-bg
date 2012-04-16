@@ -52,7 +52,7 @@
 
 <p>
   <a href="chart.cgi?action=delete&amp;series_id=[% series.series_id FILTER html %]&amp;token=
-           [%- issue_hash_token([series.id, series.name]) FILTER url_quote %]">Да, изтриване</a> |
+           [%- issue_hash_token([series.id, series.name]) FILTER uri %]">Да, изтриване</a> |
   <a href="chart.cgi">Не, връщане към страницата с графики</a>
 </p>
 

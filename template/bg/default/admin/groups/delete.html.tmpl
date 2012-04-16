@@ -55,7 +55,7 @@
       потребители в нея.</b>
 
     <br><a href="editusers.cgi?action=list&amp;groupid=
-                 [%- group.id FILTER url_quote %]&amp;grouprestrict=1">Показване
+                 [%- group.id FILTER uri %]&amp;grouprestrict=1">Показване
     на потребителите</a> - <label><input type="checkbox" name="removeusers">Премахване
     на всички потребители от групата.</label></p>
   [% END %]
@@ -75,7 +75,7 @@
      [%+ terms.bugs %] я използват.</b>
 
     <br><a href="buglist.cgi?field0-0-0=bug_group&amp;type0-0-0=equals&amp;value0-0-0=
-                 [%- group.name FILTER url_quote %]">Показване на
+                 [%- group.name FILTER uri %]">Показване на
     [% terms.bugs %]те</a> - 
     <label><input type="checkbox" name="removebugs">Премахване
     на всички [% terms.bugs %] от това групово ограничение.</label></p>
@@ -119,7 +119,7 @@
         [% END %]
 
         <li><a href="editproducts.cgi?action=editgroupcontrols&amp;product=
-                    [%- data.product.name FILTER url_quote %]">
+                    [%- data.product.name FILTER uri %]">
           [%- data.product.name FILTER html %]</a>
           ([% active.join(', ') FILTER html %])
           [% IF hidden %]
@@ -139,7 +139,7 @@
     Не можете да я изтриете докато има флаг типове използващи я .</b>
 
     <br><a href="editflagtypes.cgi?action=list&amp;group=
-                 [%- group.id FILTER url_quote %]">Показване
+                 [%- group.id FILTER uri %]">Показване
     на флаг типовете</a> -
     <label><input type="checkbox" name="removeflags">Премахване на всички
     флаг типове от групата.</p>

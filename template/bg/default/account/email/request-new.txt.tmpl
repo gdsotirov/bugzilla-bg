@@ -32,7 +32,7 @@ X-Bugzilla-Type: admin
 За да продължите създаването на сметка, използвайки този е-пощенски адрес, посетете
 следващата препратка до [%expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]:
 
-[%+ urlbase %]token.cgi?t=[% token FILTER url_quote %]&a=request_new_account
+[%+ urlbase %]token.cgi?t=[% token FILTER uri %]&a=request_new_account
 
 Ако не сте получили това писмо преди [% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %] или
 ако желаете да създадете сметка използвайки различен е-пощенски адрес можете да започнете
@@ -50,7 +50,7 @@ Hotmail, или подобни) за предотвратяване получа
 Ако не желаете да създадете сметка, или ако тази заявка е направена пради
 грешка не правете нищо или посетете следващата връзка:
 
-[%+ urlbase %]token.cgi?t=[% token FILTER url_quote %]&a=cancel_new_account
+[%+ urlbase %]token.cgi?t=[% token FILTER uri %]&a=cancel_new_account
 
 Ако връзките отгоре не работят, или ако имате каквито и да било други проблеми свързани с
 вашата сметка, моля свържете се с администацията на [% Param('maintainer') %].

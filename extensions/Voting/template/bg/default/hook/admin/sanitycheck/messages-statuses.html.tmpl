@@ -20,7 +20,7 @@
 
 [% IF san_tag == "voting_cache_rebuild_fix" %]
     <a href="sanitycheck.cgi?rebuild_vote_cache=1&amp;token=
-       [%- issue_hash_token(['sanitycheck']) FILTER url_quote %]">Щракнете тук, за да
+       [%- issue_hash_token(['sanitycheck']) FILTER uri %]">Щракнете тук, за да
     изградите наново наличността с гласовете</a>
 
 [% ELSIF san_tag == "voting_cache_alert" %]

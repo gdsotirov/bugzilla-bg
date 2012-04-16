@@ -73,7 +73,7 @@
 %]
 
 <p><a href="editusers.cgi?action=edit&amp;userid=
-  [%- otheruser.id FILTER url_quote %]"
+  [%- otheruser.id FILTER uri %]"
   title="Редакция на потребителя '[% otheruser.login FILTER html %]'">Радакция на потребителя</a> или
   <a title="Търсене на потребители" href="editusers.cgi">търсене на други потребители</a>
   [% IF listselectionvalues.matchtype != 'exact' %]

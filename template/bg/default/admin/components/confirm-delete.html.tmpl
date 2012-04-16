@@ -83,15 +83,15 @@
 </tr>
 <tr>
   <TD VALIGN="top">Отворен за [% terms.bugs %]:</TD>
-  <TD VALIGN="top">[% IF product.is_active %]Да[% ELSE %]Не[% END %]</td>
+  <TD VALIGN="top">[% IF product.is_active && comp.isactive %]Да[% ELSE %]Не[% END %]</td>
 </tr>
 <tr>
   <td valign="top">[% terms.Bugs %]:</td>
   <td valign="top">
 [% IF comp.bug_count %]
   <a title="Списък с [% terms.bugs %] за съставната част '[% comp.name FILTER html %]'"
-     href="buglist.cgi?component=[% comp.name FILTER url_quote %]&amp;product=
-          [%- product.name FILTER url_quote %]">[% comp.bug_count %]</a>
+     href="buglist.cgi?component=[% comp.name FILTER uri %]&amp;product=
+          [%- product.name FILTER uri %]">[% comp.bug_count %]</a>
 [% ELSE %]
   Няма
 [% END %]

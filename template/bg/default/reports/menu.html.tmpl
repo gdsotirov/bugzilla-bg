@@ -57,6 +57,10 @@
       графики "линия", "лента" и "пита".
     </li>
   [% END %]
+  <li id="report_duplicates">
+    <strong><a href="duplicates.cgi">Двойници</a></strong> -
+    списък с най-често докладваните [% terms.bugs %].
+  </li>
   [% Hook.process('current_state') %]
 </ul>
 

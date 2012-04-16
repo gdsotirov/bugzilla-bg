@@ -37,7 +37,7 @@
   <p>
     <font color="red">
       Вашето остроумие '<tt>[% added_quip FILTER html %]</tt>' беше добавено.
-      [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('admin') %]
+      [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('bz_quip_moderators') %]
         То ще бъде използвано веднага след като бъде одобрено.
       [% END %]
     </font>
@@ -66,7 +66,7 @@
   <p>
     Можете да разширите списъка с остроумия. Напишете нещо умно и забавно или отегчаващо
     (но не неприлично или противно, моля) и натиснете бутона.
-    [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('admin') %]
+    [% IF Param("quip_list_entry_control") == "moderated" AND !user.in_group('bz_quip_moderators') %]
       Имайте в предвид, че остроумието Ви първо трябва да бъде одобрено преди да се използва.
     [% END %]
   </p>
@@ -86,7 +86,7 @@
 [% END %]
 
 [% IF show_quips %]
-  [% IF !user.in_group('admin') %]
+  [% IF !user.in_group('bz_quip_moderators') %]
     <h2>
       Налични остроумия:
     </h2>
@@ -123,8 +123,8 @@
               [% "Unknown" IF NOT users.$userid %]
             </td>
             <td>
-              <a href="quips.cgi?action=delete&amp;quipid=[% quipid FILTER url_quote %]&amp;token=
-                 [%- issue_hash_token(['quips', quipid]) FILTER url_quote %]">
+              <a href="quips.cgi?action=delete&amp;quipid=[% quipid FILTER uri %]&amp;token=
+                 [%- issue_hash_token(['quips', quipid]) FILTER uri %]">
                 Изтриване
               </a>
             </td>
@@ -163,7 +163,7 @@
   <p>
     Тези които харесват остроумия в големи количества могат да
     <a href="quips.cgi?action=show">прегледат
-    [% IF user.in_group('admin') %]
+    [% IF user.in_group('bz_quip_moderators') %]
       и редактират
     [% END %]
     целия списък с остроумия</a>.

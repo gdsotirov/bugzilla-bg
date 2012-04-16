@@ -184,7 +184,7 @@
     </table>
   [% END %]
 
-  <input type="submit" value="Обновяване на група">
+  <input type="submit" id="update-group" value="Обновяване на група">
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
   
@@ -200,7 +200,7 @@
     <legend>Премахване на всички явни членства на потребители, чиито имена за вход
       съвпадат със следния регулярен израз:</legend>
     <input type="text" size="20" name="regexp">
-    <input type="submit" value="Премахване на членствата">
+    <input type="submit" id="remove-membership" value="Премахване на членствата">
 
     <p>Ако оставите полето празно, всички явни членства в 
       групата ще бъдат премахнати.</p>

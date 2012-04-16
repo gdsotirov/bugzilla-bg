@@ -84,7 +84,7 @@ function PutDescription() {
 [% ELSIF product.name == "Thunderbird" %]
   [% productstring = "product=Mozilla%20Application%20Suite&amp;product=Thunderbird" %]
 [% ELSE %]
-  [% productstring = BLOCK %]product=[% product.name FILTER url_quote %][% END %]
+  [% productstring = BLOCK %]product=[% product.name FILTER uri %][% END %]
 [% END %]
 
 <p>
@@ -207,7 +207,7 @@ function PutDescription() {
         За да изберете правилната съставна част, можете да използвате същата като на
         подобни [% terms.bugs %], които сте открили при търсенето или да прочетете пълния списък от
         <a target="_blank" href="describecomponents.cgi?product=
-            [% product FILTER url_quote %]">описания на
+            [% product FILTER uri %]">описания на
         съставни части</a> (отваря се в нов прозорец) ако имате нужа от помощна информация.
       </p>
     </td>

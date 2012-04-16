@@ -38,16 +38,20 @@
   <table border="0" cellpadding="4" cellspacing="0">
 
     <tr>
-      <th valign="top"><label for="milestone">Събитие:</label></th>
+      <th class="field_label"><label for="milestone">Събитие:</label></th>
       <td><input id="milestone" size="20" maxlength="20" name="milestone" value="
       [%- milestone.name FILTER html %]"></td>
     </tr>
     <tr>
-      <th align="right"><label for="sortkey">Ключ за подреждане:</label></th>
+      <th class="field_label"><label for="sortkey">Ключ за подреждане:</label></th>
       <td><input id="sortkey" size="20" maxlength="20" name="sortkey" value="
       [%- milestone.sortkey FILTER html %]"></td>
     </tr>
-
+    <tr>
+      <th class="field_label"><label for="isactive">Позволено за [% terms.bugs %]:</label></th>
+      <td><input id="isactive" name="isactive" type="checkbox" value="1"
+                 [% 'checked="checked"' IF milestone.isactive %]></td>
+    </tr>
   </table>
 
   <input type="hidden" name="milestoneold" value="[% milestone.name FILTER html %]">

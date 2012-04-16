@@ -37,15 +37,7 @@
 [% DEFAULT title = "Вътрешна грешка" %]
 
 [% error_message = BLOCK %]
-  [% IF error == "attachment_local_storage_disabled" %]
-    [% title = "Местно съхранение забранено" %]
-    Не можете да сърханявате приставки местно. Тази възможност е забранена.
-
-  [% ELSIF error == "attachment_url_disabled" %]
-    [% title = "Закачане на URL забранено" %]
-    Не можете да закачите <abbr lang="en" title="Uniform Resource Locator">URL</abbr>. Тази възможност в момента е забранена.
-
-  [% ELSIF error == "auth_invalid_email" %]
+  [% IF error == "auth_invalid_email" %]
     [% title = "Недействителен е-пощенски адрес" %]
     Получихме е-пощенски адрес (<b>[% addr FILTER html %]</b>)
     който не премина синтактичната ни проверка за правилен е-пощенски адрес,
@@ -98,7 +90,12 @@
   
   [% ELSIF error == "chart_file_open_fail" %]
     Не може да бъде отворен файла с данни за графиката <tt>[% filename FILTER html %]</tt>.
-  
+ 
+  [% ELSIF error == "column_alter_nonexistent_fk" %]
+    Опитахте се да промените външния ключ за 
+    [%+ table FILTER html %].[% column FILTER html %], но няма
+    външен ключ на тази колона.
+ 
   [% ELSIF error == "column_not_null_without_default" %]
     Провалено добавянето на колона [% name FILTER html %]:
     Не можете да добавите NOT NULL колона, без стойност по подразбиране, към съществуваща таблица
@@ -192,10 +189,6 @@
     '[% field.description FILTER html %]' ([% field.name FILTER html %])
     не е потребителско поле.
 
-  [% ELSIF error == "field_type_mismatch" %]
-    Не изглежда да могат да се обработят <code>[% field FILTER html %]</code>
-    и <code>[% type FILTER html %]</code> заедно.
-
   [% ELSIF error == "field_type_not_specified" %]
     [% title = "Не е указан тип на поле" %]
     Трябва да укажете тип при създаването на потребителско поле.
@@ -242,6 +235,10 @@
     Идентификатора series_id [% series_id FILTER html %] е недействителен. Възможно е
     колоните да са били изтрити.
 
+  [% ELSIF error == "invalid_timestamp" %]
+    Въведеното клеймо <code>[% timestamp FILTER html %]</code> не може да
+    бъде разбито в действителни дата и час.
+
   [% ELSIF error == "invalid_webservergroup" %]
     Няма такава група: [% group FILTER html %]. Проверете $webservergroup
     настройката ви в [% constants.bz_locations.localconfig FILTER html %].
@@ -276,9 +273,6 @@
     Типа флаг [% type FILTER html %] е пасивен и не може да бъде използван
     за създаване на нови флагове.
 
-  [% ELSIF error == "flag_type_nonexistent" %]
-    Не съществува идентификатор на тип на флаг <em>[% id FILTER html %]</em>.
-
   [% ELSIF error == "flag_type_target_type_invalid" %]
     Целевия тип не е нито <em>[% terms.bug %]</em> нито <em>приставка</em>,
     а вместо това <em>[% target_type FILTER html %]</em>.
@@ -309,7 +303,8 @@
   [% ELSIF error == "jobqueue_no_job_mapping" %]
     <code>Bugzilla::JobQueue</code> не бил конфигуриран за справяне
     с работата "[% job FILTER html %]".  Трябва да добавите този тип работа
-    към <code>JOB_MAP</code> константата в <code>Bugzilla::JobQueue</code>.
+    към <code>JOB_MAP</code> константата в <code>Bugzilla::JobQueue</code>,
+    може би с използването на 'job_map' куката.
 
   [% ELSIF error == "ldap_bind_failed" %]
     Свързването с <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> сървър се провали. Съобщението за грешка беше:
@@ -417,6 +412,13 @@
     [%+ ELSIF fld == "z" %]съставна таблица/изображение
     [%+ ELSE %]ос на доклада[% END %].
 
+  [% ELSIF error == "search_cp_without_op" %]
+    Аргумента за търсене f[% id FILTER html %] е "CP" но нмяа
+    съответно "OP" преди него.
+
+  [% ELSIF error == "search_invalid_joiner" %]
+    '[% joiner FILTER html %]' не е действителен присъединител за търсене.
+
   [% ELSIF error == "setting_info_invalid" %]
     За да създадете нова настройка, трябва да укажете нейното име, списък от
     стойност/индекс двойки и подразбираща се стойност.
@@ -461,11 +463,6 @@
 
   [% ELSIF error == "not_in_transaction" %]
     Опит да се приключи транзакция без да е стартирана такава.
-
-  [% ELSIF error == "comma_operator_deprecated" %]
-    [% title = "Вътрешна грешка на създателя на SQL заявки" %]
-    Има вътрешна грешка в кода на създателя на <abbr lang="en" title="Structured Query Language">SQL</abbr> заявки,
-    създаващ заявки без явен JOIN.
 
   [% ELSIF error == "invalid_post_bug_submit_action" %]
     Неправилна настройка за post_bug_submit_action

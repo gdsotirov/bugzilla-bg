@@ -28,6 +28,10 @@
 
 [% PROCESS global/variables.none.tmpl %]
 
+[% subheader = BLOCK %]
+  [% "$terms.Bug $bug.id" FILTER bug_link(bug) FILTER none %] - [% bug.short_desc FILTER html %]
+[% END %]
+
 [% PROCESS global/header.html.tmpl
            title = "Показване на гласове"
            subheader = "$terms.Bug $bug.id" FILTER bug_link(bug)
@@ -45,7 +49,7 @@
     <tr>
       <td>
           <a href="page.cgi?id=voting/user.html&amp;user_id=
-                  [%- voter.id FILTER url_quote %]">
+                  [%- voter.id FILTER uri %]">
           [% voter.login_name FILTER email FILTER html %]
         </a>
       </td>

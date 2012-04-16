@@ -76,7 +76,8 @@
         <a href="editcomponents.cgi">съставни части</a>, <a href="editversions.cgi">версии</a>
         и <a href="editmilestones.cgi">целеви събития</a> директно.</dd>
 
-        [% class = user.in_group('editcomponents') ? "" : "forbidden" %]
+        [% class = (user.in_group('editcomponents')
+                   || user.get_products_by_permission('editcomponents').size) ? "" : "forbidden" %]
         <dt id="flags" class="[% class %]"><a href="editflagtypes.cgi">Флагове</a></dt>
         <dd class="[% class %]">Флага е потребителско свойство на [% terms.bugs %] и/или приставки
         с 4 състояния. Те са: даден, отказан, поискан и неопределен.
