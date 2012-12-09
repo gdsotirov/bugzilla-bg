@@ -244,8 +244,7 @@
     настройката ви в [% constants.bz_locations.localconfig FILTER html %].
 
   [% ELSIF error == "mismatched_bug_ids_on_obsolete" %]
-    Приставката [% attach_id FILTER html %] ([% description FILTER html %])
-    е прикачена към [% terms.bug %] [%+ attach_bug_id FILTER html %],
+    Приставката [% attach_id FILTER html %] е прикачена към друг [% terms.bug %],
     но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
     [%+ terms.bug %] [%+ my_bug_id FILTER html %].
 

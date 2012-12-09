@@ -53,13 +53,60 @@
 
 <h2 id="v42_point">Обновления в тази 4.2.x версия</h2>
 
+<h3>4.2.4</h3>
+
+<p>Тази версия оправя няколко проблема със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/3.6.11/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>В допълнение, бяха направени следните важни поправки/промени в тази
+  версия:</p>
+
+<ul>
+  <li>Заявки включващи заместване на група с чупеха когато параметъра "usevisibilitygroups"
+    беше разрешен. Също, CVE-2011-2979 не беше напълно оправен в
+    [%+ terms.Bugzilla %] 4.1.3.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=788098">[% terms.Bug %] 788098</a>)</li>
+  <li>Специални символи в имена на флагове не бяха правилно избягвани при показване на страницата "потвърждаване на
+    потребителско съответствие". Администратор можеше  неволно да счупи показването на страницата
+    ако име на флаг съдържаше символа  &lt; или &gt;, защото тези символи
+    не бяха филтрирани.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=790215">[% terms.Bug %] 790215</a>)</li>
+  <li>Вече предпазваме частни WebServices методи от това да бъдат извикани от външни
+    приложения.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=793826">[% terms.Bug %] 793826</a>)</li>
+  <li>PostgreSQL 9.2 изисква DBD::Pg 2.19.3.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=799721">[% terms.Bug %] 799721</a>)</li>
+  <li>Oracle се сриваше когато правеше списъци с ключови думи или флагове.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=780053">[% terms.Bug %] 780053</a>)</li>
+  <li>Oracle се сриваше когато се пишеха няколко прости думи в полето за Бързо търсене.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=804505">[% terms.Bug %] 804505</a>)</li>
+  <li>[% terms.Bugs %] с решение ПРЕМЕСТЕН не можеха да бъдат редактирани повече.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=757935">[% terms.Bug %] 757935</a>)</li>
+  <li>Редактирането на зависимости от страницата "Промяна на няколко [% terms.бugs %] едновременно"
+    не работеше според очакваното. Идентификатори на [% terms.bugs %] бяха неправилно разбирани.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=790909">[% terms.Bug %] 790909</a>)</li>
+  <li>Оста "Действителни часове" вече работи правилно в табулирани и графични доклади.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=794389">[% terms.Bug %] 794389</a>)</li>
+  <li><kbd>checksetup.pl</kbd> не можеше да стартира ако разширението Гласуване беше
+    разрешено на чисто нова инсталация и когато някои задължителни модули липсваха.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=652047">[% terms.Bug %] 652047</a>)</li>
+  <li>[% terms.Bugzilla %] вече не се чупи при преглеждане на [% terms.abug %] когато
+    се добавя потребителско поле.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=531243">[% terms.Bug %] 531243</a>)</li>
+  <li>За подобрена сигурност, вече изпращаме заглавките "X-Content-Type-Options:&nbsp;nosniff"
+    и "X-XSS-Protection:&nbsp;block" с всеки отговор.
+    ([% terms.Bugs %] <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=671612">671612</a>
+    и <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=680771">680771</a>)</li>
+</ul>
+
 <h3>4.2.3</h3>
 
 <p>Тази версия оправя два проблема със сигурността. Вижте
   <a href="http://www.bugzilla.org/security/3.6.10/">Бюлетина по сигурността</a>
   за подробности.</p>
 
-<p>В допълнение, бяха направени важни поправки/промени в тази
+<p>В допълнение, бяха направени следните важни поправки/промени в тази
   версия:</p>
 
 <ul>

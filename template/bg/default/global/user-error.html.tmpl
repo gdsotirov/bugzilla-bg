@@ -1809,7 +1809,7 @@
                   
     [% FOREACH q = Bugzilla.user.queries %]
       [% IF q.name == namedcmd %]
-        или <a href="query.cgi?[% q.url FILTER uri %]">редактирате</a>
+        или <a href="query.cgi?[% q.url FILTER html %]">редактирате</a>
       [% END %]
     [% END %]
     
