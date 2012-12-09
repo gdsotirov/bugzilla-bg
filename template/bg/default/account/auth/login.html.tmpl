@@ -115,6 +115,7 @@
       въведете потребителското си име в полето отдолу и изпратете
       заявка за смяната ѝ.<br>
       <input size="35" name="loginname">
+      <input type="hidden" id="token" name="token" value="[% issue_hash_token(['reqpw']) FILTER html %]">
       <input type="submit" id="request" value="Нулиране на парола">
     </form>
   [% END %]

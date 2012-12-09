@@ -1177,7 +1177,7 @@
     [% title = "Липсващо търсене" %]
     [% docslinks = {'query.html' => "Търсене на $terms.bugs",
                     'query.html#list'  => "$terms.Bug списъци"} %]
-    Търсенето именувано <em>[% queryname FILTER html %]</em>
+    Търсенето именувано <em>[% name FILTER html %]</em>
     [% IF sharer_id && sharer_id != user.id %]
       не е направено видимо за вас.
     [% ELSE %]

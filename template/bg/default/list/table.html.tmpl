@@ -133,7 +133,7 @@
       [% PROCESS new_order %]
       [%-#%]&amp;query_based_on=
       [% defaultsavename OR searchname FILTER uri %]">
-        [%- abbrev.$id.title || field_descs.$id || column.title -%]
+        [%- abbrev.$id.title || field_descs.$id || column.title FILTER html -%]
         [% PROCESS order_arrow ~%]
     </a>
   </th>
@@ -244,7 +244,7 @@
             column == 'percentage_complete' %]
         [% IF columns_to_span > 0 %]
           <td class="bz_total bz_total_label" colspan="
-              [%- columns_to_span FILTER html %]"><b>Totals</b></td>
+              [%- columns_to_span FILTER html %]"><b>Общо</b></td>
           [% columns_to_span = 0 %]
         [% END %]
         [% IF column == 'percentage_complete' %]
