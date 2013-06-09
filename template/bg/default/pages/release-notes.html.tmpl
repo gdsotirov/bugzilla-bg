@@ -53,6 +53,31 @@
 
 <h2 id="v42_point">Обновления в тази 4.2.x версия</h2>
 
+<h3>4.2.6</h3>
+
+<p>Следните важни поправки/промени бяха направени в тази версия:</p>
+
+<ul>
+  <li>MySQL 5.6 вече се поддържа.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=852560">[% terms.Bug %] 852560</a>)</li>
+  <li>Регресия въведена с [% terms.Bugzilla %] 4.2.4 караше Oracle да се чупи
+    при инсталирането на [% terms.Bugzilla %] за първи път.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=858911">[% terms.Bug %] 858911</a>)</li>
+  <li>Ако потребителско поле зависеше от продукт, съставна част или класификация,
+    бита "задължително" беше пренебрегван при създаване на [% terms.bug %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=782210">[% terms.Bug %] 782210</a>)</li>
+  <li>Заявки включващи флагове бяха счупени по няколко начина. Тези заявки
+    бяха оправени.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=828344">[% terms.Bug %] 828344</a>)</li>
+  <li>Табулирани доклади включващи празното решение не даваха правилна връзка към [% terms.bug %]
+    броячи.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=212471">[% terms.Bug %] 212471</a>)</li>
+  <li>WebService метода <kbd>B[%%]ug.search</kbd> връщаше всички видими
+    [%+ terms.bugs %] при извикване без аргументи, пренебрегвайки
+    параметрите <kbd>max_search_results</kbd> и <kbd>search_allow_no_criteria</kbd>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=859118">[% terms.Bug %] 859118</a>)</li>
+</ul>
+
 <h3>4.2.5</h3>
 
 <p>Тази версия оправя един проблем със сигурността. Вижте
