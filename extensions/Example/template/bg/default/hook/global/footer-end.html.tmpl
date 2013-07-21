@@ -6,6 +6,11 @@
   # defined by the Mozilla Public License, v. 2.0.
   #%]
 
-[% IF action == "move" %]
-  преместване
-[% END %]
+[% USE date %]
+
+<p align="center">
+  <em>[% component.callers.first FILTER html %]</em> обработен
+  на [% date.format(date.now, '%b %d, %Y at %H:%M:%S') FILTER html %].
+  <br>
+  (предоставено от разширение Example).
+</p>
