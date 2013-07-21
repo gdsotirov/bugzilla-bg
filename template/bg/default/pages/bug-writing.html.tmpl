@@ -1,31 +1,10 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Netscape Communications
-  # Corporation. Portions created by Netscape are
-  # Copyright (C) 1998 Netscape Communications Corporation. All
-  # Rights Reserved.
-  #
-  # Contributor(s): Eli Goldberg <eli@prometheus-music.com>
-  #                 Gervase Markham <gerv@gerv.net>
-  #                 Vera Horiuchi
-  #                 Claudius Gayle
-  #                 Peter Mock
-  #                 Chris Pratt
-  #                 Tom Schutter
-  #                 Chris Yeh
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
-
-[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% INCLUDE global/header.html.tmpl title = "Насоки за писане на $terms.bug" %]
 
@@ -74,12 +53,13 @@
     Щракнете връху думата "Съставна част" за да видите описание на всяка 
     съставна част. Ако никоя не изглежда подходяща, потърсете съставната част "Обща".</p>
 
-    <p><b><abbr title="Операционна система">ОС</abbr>:</b> На коя операционна система (ОС) сте го 
+    <p><b>[% field_descs.op_sys FILTER html %]:</b> На коя операционна система (ОС) сте го 
           намерили?
     (напр. Linux, Windows XP, Mac OS X.)<br>
     Ако знаете, че [% terms.abug %] се случва на повече от един тип 
     операционна система, изберете <em>[% display_value("op_sys", "All") FILTER html %]</em>. 
-    Ако операционната ви система липсва, изберете <em>[% display_value("op_sys", "Other") FILTER html %]</em>.</p>
+    Ако [% field_descs.op_sys FILTER html %] ви, изберете
+    <em>[% display_value("op_sys", "Other") FILTER html %]</em>.</p>
 
     <p><b>Разюме:</b> Как бихте описали [% terms.abug %], в 
     приблизително 60 или по-малко символа?<br>
@@ -139,7 +119,8 @@ resource:/res/samples/test0.html)
 </pre>
       </blockquote>
 
-      <p><b>Дата на версията &amp; платформа:</b> Дата и платформа на версията,
+      <p><b>Дата на построение &amp; [% field_descs.rep_platform FILTER html %]:</b>
+      Дата и [% field_descs.rep_platform FILTER lower FILTER html %] на построението,
       в която за първи път сте срещнали [% terms.abug %].</p>
 
       <blockquote>

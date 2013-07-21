@@ -1,20 +1,9 @@
-# The contents of this file are subject to the Mozilla Public
-# License Version 1.1 (the "License"); you may not use this file
-# except in compliance with the License. You may obtain a copy of
-# the License at http://www.mozilla.org/MPL/
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Software distributed under the License is distributed on an "AS
-# IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-# implied. See the License for the specific language governing
-# rights and limitations under the License.
-#
-# The Initial Developer of the Original Code is Everything Solved.
-# Portions created by Everything Solved are Copyright (C) 2007
-# Everything Solved. All Rights Reserved.
-#
-# The Original Code is the Bugzilla Bug Tracking System.
-#
-# Contributor(s): Max Kanat-Alexander <mkanat@bugzilla.org>
+# This Source Code Form is "Incompatible With Secondary Licenses", as
+# defined by the Mozilla Public License, v. 2.0.
 
 # This file contains a single hash named %strings, which is used by the
 # installation code to display strings before Template-Toolkit can safely
@@ -106,9 +95,11 @@ END
     feature_moving            => 'Преместване на бъгове между инсталации',
     feature_patch_viewer      => 'Преглед на кръпки',
     feature_smtp_auth         => 'SMTP удостоверяване',
+    feature_smtp_ssl          => 'SSL поддръжка за SMTP',
     feature_updates           => 'Автоматични уведомления за обновяване',
     feature_xmlrpc            => 'Интерфейс XML-RPC',
     feature_detect_charset    => 'Автоматично установяване на кодова таблица за приставки',
+    feature_typesniffer       => 'Установяване на MIME типа на приставки',
 
     file_remove => 'Премахване на ##name##...',
     file_rename => 'Преименуване от ##from## на ##to##...',
@@ -382,24 +373,6 @@ END
 
     http://cyberelk.net/tim/patchutils/
 END
-    ppm_repo_add => <<EOT,
-***********************************************************************
-* Забележка за Windows потребители                                    *
-***********************************************************************
-* За да инсталирате модулите показани отдолу, първо трябва да пуснете * 
-* следната команда като Administrator:                                *
-*                                                                     *
-*   ppm repo add theory58S ##theory_url##
-EOT
-    ppm_repo_up => <<EOT,
-*                                                                     *
-* След това трябва да направите (също като Administrator):            *
-*                                                                     *
-*   ppm repo up theory58S                                             *
-*                                                                     *
-* Пуснете последната команда отново и отново докато видите            *
-* "theory58S" в началото на показания списък.                         *
-EOT
     template_precompile   => "Предварителна компилация на шаблони...",
     template_removal_failed => <<END,
 ПРЕДУПРЕЖДЕНИЕ: Папката '##template_cache##' не може да бъде премахната.

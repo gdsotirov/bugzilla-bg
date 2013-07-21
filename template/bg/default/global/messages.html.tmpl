@@ -1,31 +1,14 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Netscape Communications
-  # Corporation. Portions created by Netscape are
-  # Copyright (C) 1998 Netscape Communications Corporation. All
-  # Rights Reserved.
-  #
-  # Contributor(s): Gervase Markham <gerv@gerv.net>
-  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
 
 [%# This is a list of all the possible messages. Please keep them in
   # alphabetical order by message tag, and leave a blank line between messages.
   #%]
-
-[% PROCESS global/variables.none.tmpl %]
-
-[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% message_tag = message %]
 
@@ -59,9 +42,9 @@
             [% ELSIF field == 'cryptpassword' %]
               Беше зададена нова парола.
             [% ELSIF field == 'disabledtext' %]
-              Текста за неспособен беше променен.
+              Текста за "спряна сметка" беше променен.
             [% ELSIF field == 'is_enabled' %]
-              Потребителя беше [% otheruser.is_enabled ? 'разрешен' : 'забранен' %].
+              Влизането с тази потребителска сметка беше [% otheruser.is_enabled ? 'разрешено' : 'забранено' %].
             [% ELSIF field == 'extern_id' %]
               Външния идентификатор за вход на потребителя беше променен.
             [% ELSIF field == 'disable_mail' %]
@@ -114,7 +97,7 @@
     успешно.
 
   [% ELSIF message_tag == "account_disabled" %]
-    Потребителската сметка [% account FILTER html %] е спряна, така че
+    Влизането с тази потребителска сметка [% account FILTER html %] е спрянао, така че
     не можете да смените паролата ѝ.
 
   [% ELSIF message_tag == "attachment_creation_failed" %]
@@ -221,7 +204,7 @@
         <li>Подразбиращ се назначен е обновен на '[% comp.default_assignee.login FILTER html %]'</li>
       [% END %]
       [% IF changes.initialqacontact.defined %]
-        [% IF comp.default_qa_contact.id %]
+        [% IF comp.default_qa_contact %]
           <li>Подразбиращ се качествен контрол е обновен на '[% comp.default_qa_contact.login FILTER html %]'</li>
         [% ELSE %]
           <li>Подразбиращ се качествен контрол е изтрит</li>
@@ -289,8 +272,7 @@
 
   [% ELSIF message_tag == "extension_created" %]
     Разширение именовано [% name FILTER html %] беше създадено
-    в [% path FILTER html %]. Обезателно сменете "YOUR NAME" и 
-    "YOUR EMAIL ADDRESS" в кода с вашите име и е-пощенски адрес.
+    в [% path FILTER html %].
 
   [% ELSIF message_tag == "field_value_created" %]
     [% title = "Създадена нова стойност на поле" %]
@@ -439,6 +421,8 @@
           [% CASE 'visible_to_me_remove' %]
             <li>Групата вече не може да вижда потребители в следните групи:
               [%+ changes.visible_to_me_remove.join(', ') FILTER html %]</li>
+          [% CASE %]
+            [% Hook.process('group_updated_fields') %]
         [% END %]
       [% END %]
       </ul>
@@ -484,7 +468,7 @@
     [% title = "Излязъл" %]
     [% url = "index.cgi?GoAheadAndLogIn=1" %]
     [% link = "Влизане отново." %]
-    <b>Входните ви данни са забравени</b>.
+    <b>Излязохте успешно</b>.
     Бисквитката съхраняваща входните Ви данните е изтрита. Ще трябва
     да ги въведете следващия път когато е необходимо.
 
@@ -796,9 +780,7 @@
 
   [% ELSIF message_tag == "product_created" %]
     [% title = "Създаден продукт" %]
-    Продукта <em>[% product.name FILTER html %]</em> беше създаден. Ще трябва да
-    <a href="editcomponents.cgi?action=add&product=[% product.name FILTER uri %]">
-    добавите поне една съставна част</a> преди някой да може да въвежда [% terms.bugs %] за него.
+    Продукта <em>[% product.name FILTER html %]</em> беше създаден.
 
   [% ELSIF message_tag == "product_deleted" %]
     [% title = "Изтрит продукт" %]
@@ -814,6 +796,15 @@
     Продукта <em>[% product FILTER html %]</em> не съществува
     или вие нямате достъп до него. Следва списък с продукти
     от които можете да изберете.
+
+  [% ELSIF message_tag == "report_created" %]
+    OK, имате нов запазен доклад именован <em>[% reportname FILTER html %]</em>.
+
+  [% ELSIF message_tag == "report_deleted" %]
+    OK, доклада <em>[% reportname FILTER html %]</em> го няма.
+
+  [% ELSIF message_tag == "report_updated" %]
+    Съхранения доклад <em>[% reportname FILTER html %]</em> беше обновен.
 
   [% ELSIF message_tag == "remaining_time_zeroed" %]
     Полето [% field_descs.remaining_time FILTER html %] беше
@@ -842,8 +833,8 @@
   
   [% ELSIF message_tag == "sudo_ended" %]
     [% title = "Сесията като друг потребител завърши" %]
-      Сесията като друг потребител приключи.  От тук нататък всичко което
-      правите го правите от свое име.
+      Сесията ви като друг потребител приключи. Всички бъдещи действия ще бъдат приписвани
+      на собствената ви сметка.
 
   [% ELSIF message_tag == "series_created" %]
     [% title = "Редицата създадена" %]
@@ -868,18 +859,6 @@
       <p>Поради съображения за сигурност, бяхте изхвърлен автоматично.
       Бисквитката съхраняваща данните ви за вход е изгубена.
     [% END %]
-
-  [% ELSIF message_tag == "tag_updated" %]
-    [% title = "Таг обновен" %]
-    '<a href="buglist.cgi?tag=[% tag FILTER uri %]">[% tag FILTER html %]</a>'
-    таг беше
-    [% IF action == "add" %]
-      добавен към
-    [% ELSE %]
-      премахнат от
-    [% END %]
-    [%+ buglist.size > 1 ? terms.bugs : terms.bug %]
-    [%+ buglist.join(", ") FILTER html %].
 
   [% ELSIF message_tag == "term" %]
     [% terms.$term FILTER html %]

@@ -1,21 +1,9 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Netscape Communications
-  # Corporation. Portions created by Netscape are
-  # Copyright (C) 1998 Netscape Communications Corporation. All
-  # Rights Reserved.
-  #
-  # Contributor(s): Gervase Markham <gerv@gerv.net>
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
 
 [%# INTERFACE:
@@ -31,8 +19,6 @@
   # Note that you must explicitly filter every single template variable
   # in this file; if you do not wish to change it, use the "none" filter.
   #%]
-
-[% PROCESS "global/field-descs.none.tmpl" %]
 
 [% DEFAULT title = "Вътрешна грешка" %]
 
@@ -53,11 +39,6 @@
   [% ELSIF error == "authres_unhandled" %]
     Получената стойност за [% value FILTER html %] не бе обработена
     от кода за вход.
-
-  [% ELSIF error == "bad_page_cgi_id" %]
-    [% title = "Недействителен идентификатор на страница" %]
-    Идентификатора <code>[% page_id FILTER html %]</code> не е
-    действителен идентификатор на страница.
 
   [% ELSIF error == "bad_arg" %]
     Лош аргумент <code>[% argument FILTER html %]</code> бе изпратен до
@@ -142,11 +123,6 @@
       е-пощенския адрес на потребителя.
     [% END %]
 
-  [% ELSIF error == "extension_disabled" %]
-    [% title = "Спряно разширение" %]
-    Нямате достъп до тази страница, защото разширението '[% name FILTER html %]'
-    е спряно.
-
   [% ELSIF error == "extension_must_be_subclass" %]
     <code>[% package FILTER html %]</code> от 
     <code>[% filename FILTER html %]</code> не е подклас на
@@ -193,27 +169,12 @@
     [% title = "Не е указан тип на поле" %]
     Трябва да укажете тип при създаването на потребителско поле.
 
-  [% ELSIF error == "illegal_content_type_method" %]
-    Данните ви са се повредили при предаването по някакъв начин. Полето <em>content
-    method</em>, което указва как се определя типа на съдържанието,
-    трябваше да бъде едно от <em>автоматично откриване</em>, <em>списък</em>,
-    или <em>ръчно</em>, но вместо това беше
-    <em>[% contenttypemethod FILTER html %]</em>.
-
   [% ELSIF error == "illegal_field" %]
     Не е зададен правилен [% field FILTER html %].
 
-  [% ELSIF error == "invalid_attach_id_to_obsolete" %]
-     Номера на една от приставките които желахте да извадите от употреба,
-     [%+ attach_id FILTER html %], е недействителен.
-          
   [% ELSIF error == "invalid_customfield_type" %]
     [% title = "Недействителен тип на поле" %]
     Типа <em>[% type FILTER html %]</em> не е действителен тип на поле.
-
-  [% ELSIF error == "invalid_dimensions" %]
-    [% title = "Недействителни измерения" %]
-    Указаната дължина или височина не е положително цяло число.
 
   [% ELSIF error == "invalid_feature" %]
     [% title = "Недействително име на функционалност" %]
@@ -243,31 +204,11 @@
     Няма такава група: [% group FILTER html %]. Проверете $webservergroup
     настройката ви в [% constants.bz_locations.localconfig FILTER html %].
 
-  [% ELSIF error == "mismatched_bug_ids_on_obsolete" %]
-    Приставката [% attach_id FILTER html %] ([% description FILTER html %])
-    е прикачена към [% terms.bug %] [%+ attach_bug_id FILTER html %],
-    но вие се опитахте да я изхвърлите от употреба, докато създавате нова приставка на
-    [%+ terms.bug %] [%+ my_bug_id FILTER html %].
-
-  [% ELSIF error == "feature_disabled" %]
-    Функционалността [% install_string("feature_$feature") FILTER html %] не е
-    налична в тази [% terms.Bugzilla %] инсталация. 
-    [% IF user.in_group('admin') %]
-      Ако желаете да разрешите тази функционалност, моля пуснете 
-      <kbd>checksetup.pl</kbd>, за да видите как да инсталирате необходимите
-      изисквания за нея.
-    [% END %]
-
   [% ELSIF error == "flag_unexpected_object" %]
     [% title = "Неразпознат обект" %]
     Не могат да бъдат задавани флагове от тип [% caller FILTER html %].
     Те могат да бъдат задавни само за [% terms.bugs %] и приставки.
 
-  [% ELSIF error == "flag_requestee_disabled" %]
-    [% title = "Флага не е изискуем от определен човек" %]
-    Не можете да искате
-    <em>[% type.name FILTER html %]</em> от определен човек.
-  
   [% ELSIF error == "flag_type_inactive" %]
     [% title = "Пасивни типове флагове" %]
     Типа флаг [% type FILTER html %] е пасивен и не може да бъде използван
@@ -279,21 +220,6 @@
   
   [% ELSIF error == "invalid_field_name" %]
     [% field FILTER html %] не може да бъде използвано като име на поле.
-
-  [% ELSIF error == "invalid_keyword_id" %]
-    Идентификатора на ключова дума <em>[% id FILTER html %]</em> не може да
-    бъде намерен.
-
-  [% ELSIF error == "invalid_user" %]
-    [% title = "Недействителен потребител" %]
-
-    [% IF user_id %]
-      Няма потребителска сметка с номер <em>[% user_id FILTER html %]</em>.
-    [% ELSIF user_login %]
-      Няма потребителска сметка с потребителско име <em>[% user_login FILTER html %]</em>.
-    [% ELSE %]
-      Не е дадена потребителска сметка.
-    [% END %]
 
   [% ELSIF error == "jobqueue_insert_failed" %]
    [% title = "Провал в Работната Опашка" %]
@@ -336,17 +262,11 @@
     до '[% mail.header('To') FILTER html %]':
     [%+ msg FILTER html %]
 
-  [% ELSIF error == "missing_bug_id" %]
-    Липсва номер на [% terms.bug %].
-    
   [% ELSIF error == "missing_series_id" %]
     След вмъкването на колона в базата данни не беше върнат идентификатор за
     нея. Колони: [% series.category FILTER html %] / 
     [%+ series.subcategory FILTER html %] / 
     [%+ series.name FILTER html %].
-    
-  [% ELSIF error == "need_quipid" %]
-    Необходим е действителен идентификатор на остроумие.
 
   [% ELSIF error == "object_dep_sort_loop" %]
     Има цикъл в VALIDATOR_DEPENDENCIES включващ
@@ -404,13 +324,6 @@
   [% ELSIF error == "radius_preparation_error" %]
     Възникна грешка при подготовката за <abbr lang="en" title="Remote Authentication Dial In User Service">RADIUS</abbr> заявка за удостоверяване:
     <code>[% errstr FILTER html %]</code>.
-
-  [% ELSIF error == "report_axis_invalid" %]
-    <em>[% val FILTER html %]</em> не е действителна стойност за полето
-    [%+ IF    fld == "x" %]хоризонтална ос
-    [%+ ELSIF fld == "y" %]вертикална ос
-    [%+ ELSIF fld == "z" %]съставна таблица/изображение
-    [%+ ELSE %]ос на доклада[% END %].
 
   [% ELSIF error == "search_cp_without_op" %]
     Аргумента за търсене f[% id FILTER html %] е "CP" но нмяа
@@ -507,12 +420,14 @@
    admindocslinks = admindocslinks
 %]
 
+<p>
+  Получи се неочаквана грешка. Това може да е временен проблем или някой код
+  се държи неправилно. Ако проблема остане, моля изпратете тази страница
+  до <a href="mailto:[% Param("maintainer") %]">[% Param("maintainer") %]</a>
+  с подробности за това какво правехте когато това съобщение се появи.
+</p>
+
 <tt>
-  <p>
-    [% terms.Bugzilla %] претърпя вътрешна грешка. Моля, съхранете тази страница и я изпратете
-    на [% Param("maintainer") %] с подробности за това какво правехте по времето, когато
-    това съобщение се появи.
-  </p>
   <script type="text/javascript"> <!--
     document.write("<p>URL: " + 
                     document.location.href.replace(/&/g,"&amp;")

@@ -1,23 +1,9 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Netscape Communications
-  # Corporation. Portions created by Netscape are
-  # Copyright (C) 1998 Netscape Communications Corporation. All
-  # Rights Reserved.
-  #
-  # Contributor(s): Gervase Markham <gerv@gerv.net>
-  #                 Frédéric Buclin <LpSolit@gmail.com>
-  #                 Max Kanat-Alexander <mkanat@bugzilla.org>
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
 
 [%# INTERFACE:
@@ -38,8 +24,6 @@
   # Note: be aware of uniqueness of error string parameter value, since
   # nobody can guarantee the hook files processing order in the future.
   #%]
-
-[% PROCESS global/variables.none.tmpl %]
 
 [% PROCESS "global/field-descs.none.tmpl" %]
 
@@ -93,9 +77,13 @@
 
   [% ELSIF error == "alias_in_use" %]
     [% title = "Псевдонима се използва" %]
-    [% terms.Bug %] [%+ bug_id FILTER bug_link(bug_id) FILTER none %]
+    [% IF user.can_see_bug(bug_id) %]
+      [% terms.Bug %] [%+ bug_id FILTER bug_link(bug_id) FILTER none %]
+    [% ELSE %]
+      Друг [% terms.bug %]
+    [% END %]
     вече е взел псевдонима <em>[% alias FILTER html %]</em>.
-    Моля, изберете друг.
+    Моля, изберете друг псевдоним.
 
   [% ELSIF error == "alias_is_numeric" %]
     [% title = "Псевдонима е цифров" %]
@@ -237,6 +225,11 @@
     [% title = "Приставката е премахната" %]
     Приставката, която се опитвате да достъпите беше премахната.
 
+  [% ELSIF error == "bad_page_cgi_id" %]
+    [% title = "Недействителен идентификатор на страница" %]
+    Идентификатора <code>[% page_id FILTER html %]</code> не е
+    действителен идентификатор на страница.
+
   [% ELSIF error == "bug_access_denied" %]
     [% title = "Достъпът отказан" %]
     [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
@@ -258,21 +251,23 @@
       <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да започват с "http" или "https".
     [% ELSIF reason == 'path_only' %]
       Трябва да укажете пълен <abbr lang="en" title="Uniform Resource Locator">URL</abbr>.
-    [% ELSIF reason == 'show_bug' %]
+    [% ELSIF reason == 'id' %]
+      Няма действителен [% terms.bug %] идентификатор в този URL.
+    [% ELSE %]
       [%+ field_descs.see_also FILTER html %] <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да сочат към някое от:
       <ul>
         <li><code>show_bug.cgi</code> в [% terms.Bugzilla %]
           инсталация.</li>
         <li>Б[% %]ъг в launchpad.net</li>
-        <li>Б[% %]ъг в code.google.com.</li>
+        <li>Издание в code.google.com.</li>
         <li>Б[% %]ъг в b[% %]ugs.debian.org.</li>
         <li>Издание в JIRA инсталация.</li>
         <li>Билет в Trac инсталация.</li>
         <li>Б[% %]ъг в MantisBT инсталация.</li>
         <li>Б[% %]ъг в sourceforge.net.</li>
+        <li>Издание в github.com.</li>
+        [% Hook.process('bug_url_invalid_tracker') %]
       </ul>
-    [% ELSIF reason == 'id' %]
-      Няма действителен идентификатор на [% terms.bug %] в този <abbr lang="en" title="Uniform Resource Locator">URL</abbr>.
     [% END %]
 
   [% ELSIF error == "bug_url_too_long" %]
@@ -307,10 +302,11 @@
 
   [% ELSIF error == "comment_required" %]
     [% title = "Необходим е коментар" %]
-    Трябва да посочите
-    [% IF old && new %]
-      <b>коментар</b> при смяната на състоянието на [% terms.abug %] от
-      [%+ old.name FILTER html %] на [% new.name FILTER html %].
+    Трябва да дадете
+    [% IF old.defined && new.defined %]
+      <b>коментар</b> при смяна на [% field_descs.$field FILTER html %]
+      на [% terms.abug %] от [% (old || "(празно)") FILTER html %]
+      на [% (new || "(празно)") FILTER html %].
     [% ELSIF new %]
       описание за този [% terms.bug %].
     [% ELSE %]
@@ -371,6 +367,11 @@
     Съществуват [% nb FILTER html %] [%+ terms.bug %](а) въведени за съставната част!
     Трябва да преназначите тези [% terms.bugs %] на друга съставна част, преди да
     можете да изтриете тази.
+
+  [% ELSIF error == "component_is_last" %]
+    [% title = BLOCK %]Последна съставна част в този продукт[% END %]
+    '[% comp.name FILTER html %]' е оследната съставна час на
+    продукта '[% comp.product.name FILTER html %]'. Не можете да я изтриете.
 
   [% ELSIF error == "component_name_too_long" %]
     [% title = "Име на съставна част е твърде дълго" %]
@@ -439,13 +440,8 @@
     [% title = "Промяната на е-пощенски адрес се обработва" %]
     Промяната на е-пощенски адрес се обработва; моля, проверете пощата си.
 
-  [% ELSIF error == "email_confirmation_failed" %]
-    [% title = "Потвърждаването на е-пощенски адрес пропадна" %]
-    Потвърждаването на е-пощенски адрес пропадна.
-
-  [% ELSIF error == "email_no_text_plain" %]
-    Съобщението ви не съдържа никакъв текст. [% terms.Bugzilla %] не
-    приема само HTML е-поща, или HTML е-поща с приставки.
+  [% ELSIF error == "email_no_body" %]
+    Съобщението ви не съдържа никакъв текст, доколкото можем да кажем.
 
   [% ELSIF error == "empty_group_description" %]
     [% title = "Описанието на група не може да е празно" %]
@@ -465,9 +461,23 @@
   [% ELSIF error == "extension_create_no_name" %]
     Трябва да укажете име за разширението ви, като аргумент на този скрипт.
 
+  [% ELSIF error == "extension_disabled" %]
+    [% title = "Спряно разширение" %]
+    Нямате достъп до тази страница защото разширението '[% name FILTER html %]'
+    е спряно.
+
   [% ELSIF error == "extension_first_letter_caps" %]
     Първата буква от името на разширението ви трябва да бъде главна.
     (Указали сте '[% name FILTER html %]'.)
+
+  [% ELSIF error == "feature_disabled" %]
+    Функцията [% install_string("feature_$feature") FILTER html %] не е
+    достъпна в тази [% terms.Bugzilla %].
+    [% IF user.in_group('admin') %]
+      Ако желаете да разрешите тази функция, моля пуснете
+      <kbd>checksetup.pl</kbd>, за да видите как да инсталирате необходимите
+      изисквания за тази функция.
+    [% END %]
 
   [% ELSIF error == "field_already_exists" %]
     [% title = "Полето вече съществува" %]
@@ -499,6 +509,11 @@
   [% ELSIF error == "field_missing_description" %]
     [% title = "Липса описание на поле" %]
     Трябва да въведете описание за това поле.
+
+  [% ELSIF error == "field_long_desc_too_long" %]
+    [% title = "Разширеното описание на поле е твърде дълго" %]
+    Разширеното описание коео предоставихте за това поле е по-дълго от 
+    [% constants.MAX_FIELD_LONG_DESC_LENGTH FILTER html %] символа.
 
   [% ELSIF error == "field_missing_name" %]
     [% title = "Липсва име на поле" %]
@@ -582,8 +597,8 @@
   [% ELSIF error == "fieldvalue_sortkey_invalid" %]
     [% title = "Недействителен ключ за подредба за стойност на поле" %]
     Ключа за подредба '[% sortkey FILTER html %]' за полето 
-    [%+ field.description FILTER html %] не е действително 
-    (положително) число.
+    [%+ field.description FILTER html %] трябва да е цяло число
+    между 0 и [% constants.MAX_SMALLINT FILTER none %].
 
   [% ELSIF error == "fieldvalue_still_has_bugs" %]
     [% title = "Не можете да изтриете тази стойност на полето" %]
@@ -617,6 +632,10 @@
     създаване на приставки в съответното текстово поле.
     <br>Вместо това, ако приставката е изображение, можете да я обърнете
     в сбит формат, като <abbr lang="en" title="Joint Photographic Experts Group">JPG</abbr> или <abbr lang="en" title="Portable Network Graphics">PNG</abbr> и опитате отново.
+
+  [% ELSIF error == "flag_requestee_disabled" %]
+    [% title = "Флаг не е изискуем от определен човек" %]
+    Не можете да искате от определен човек за <em>[% type.name FILTER html %]</em>.
 
   [% ELSIF error == "flag_requestee_needs_privs" %]
     [% title = "Даващия флаг има нужда от права" %]
@@ -722,6 +741,9 @@
     [% title = "Формата не е намерен" %]
     Заявеният формат <em>[% format FILTER html %]</em> не съществува с
     тип на съдържанието <em>[% ctype FILTER html %]</em>.
+    [% IF invalid %]
+      И двата параметъра трябва да съдържат само букви и тирета.
+    [% END %]
 
   [% ELSIF error == "flag_type_sortkey_invalid" %]
     [% title = "Недействителен ключ за подреждане на тип флаг" %]
@@ -910,9 +932,7 @@
     [% END %]
     [% IF bug_id %]
       '[% bug_id FILTER html %]' не е действителен номер на [% terms.bug %]
-      [% IF Param("usebugaliases") %]
-        нито псевдоним на [% terms.bug %]
-      [% END %].
+      нито псевдоним на [% terms.bug %].
     [% ELSE %]
       [% IF field %]
         Полето '[% field_descs.$field FILTER html %]' 
@@ -943,6 +963,10 @@
     Недействителни набори данни <em>[% datasets.join(":") FILTER html %]</em>. Позволени са,
     само числа, букви и двоеточие.
 
+  [% ELSIF error == "invalid_dimensions" %]
+    [% title = "Недействителни измерения" %]
+    Указаните широчина и височина не са положителни цели числа.
+
   [% ELSIF error == "invalid_format" %]
     [% title = "Неправилен формат" %]
     Формата "[% format FILTER html %]" е неправилен (трябва да бъде един от
@@ -958,6 +982,9 @@
   [% ELSIF error == "invalid_group_name" %]
     [% title = "Недействително име на група" %]
     Указаната група, [% name FILTER html %], е недействителна тук.
+
+  [% ELSIF error == "invalid_keyword_id" %]
+    Идентификатора на ключова дума <em>[% id FILTER html %]</em> не е открит.
 
   [% ELSIF error == "invalid_maxrows" %]
     [% title = "Недействителен максимален брой редове" %]
@@ -975,6 +1002,17 @@
   [% ELSIF error == "invalid_regexp" %]
     [% title = "Неправилен регулярен израз" %]
     Регулярният израз, който въведохте, е неправилен.
+
+  [% ELSIF error == "invalid_user" %]
+    [% title = "Недействителен потребител" %]
+    Няма потребителска сметка
+    [% IF user_id %]
+      с идентификатор <em>[% user_id FILTER html %]</em>.
+    [% ELSIF user_login %]
+      с потребителско име <em>[% user_login FILTER html %]</em>.
+    [% ELSE %]
+      .
+    [% END %]
 
   [% ELSIF error == "invalid_user_group" %]
     [% title = "Неправилна потребителска група" %]
@@ -1011,6 +1049,8 @@
       още [% remaining FILTER html %] опит(а), ще бъдете
       заключени от тази сметка за 
       [%+ constants.LOGIN_LOCKOUT_INTERVAL FILTER html %] минути.
+      За да избегнете заключване, можете да нулирате паролата си ползвайки
+      връзката "Забравена парола".
     [% END %]
 
   [% ELSIF error == "json_rpc_get_method_required" %]
@@ -1116,11 +1156,20 @@
     [% title = "Неправилно подредени дати" %]
     Началната ви дата  ([% datefrom FILTER html %]) е след 
     крайната ([% dateto FILTER html %]).
-    
+
+  [% ELSIF error == "mismatched_bug_ids_on_obsolete" %]
+    Приставка [% attach_id FILTER html %] е закачена към друг [% terms.bug %],
+    но се опитахте да я обозначите като остаряла докато съдавахте нова пристаква към
+    [%+ terms.bug %] [%+ my_bug_id FILTER html %].
+
   [% ELSIF error == "missing_attachment_description" %]
     [% title = "Липсващо описание на приставка" %]
     Трябва да добавите описание за приставката.
-    
+
+  [% ELSIF error == "missing_bug_id" %]
+    [% title = "Липсващ $terms.Bug идентификатор" %]
+    Не беше даден идентификатор на [% terms.bug %].
+
   [% ELSIF error == "missing_category" %]
     [% title = "Липсваща категория" %]
     Не сте указали категория за тази поредица.
@@ -1145,12 +1194,6 @@
      Пожелахте [% terms.Bugzilla %] да определи автоматично типа на
      съдържанието, но вашият агент не указа тип на съдържанието при качването
      на файла, така че трябва да въведете типа ръчно.
-                
-  [% ELSIF error == "missing_content_type_method" %]
-    [% title = "Липсващ метод за определяне на типа на съдържанието" %]
-    Трябва да изберете метод за определяне на типа на съдържанието, един от:
-    <em>автоматично определяне</em>, <em>избор от списък</em> или <em>ръчно
-    въвеждане</em>.
 
   [% ELSIF error == "missing_cookie" %]
     [% title = "Липсваща бисквитка" %]
@@ -1183,6 +1226,10 @@
     [% ELSE %]
       не съществува.
     [% END %]
+
+  [% ELSIF error == "need_quipid" %]
+    [% title = "Липсващ идентификатор на остроумие" %]
+    Необходим е действителен идентификатор на остроумие.
 
   [% ELSIF error == "missing_resolution" %]
     [% title = "Необходимо е разрешение" %]
@@ -1305,8 +1352,8 @@
     [% END %]
 
   [% ELSIF error == "old_password_incorrect" %]
-    [% title = "Неправилна стара парола" %]
-    Не сте въвели старата си парола правилно.
+    [% title = "Неправилна парола" %]
+    Не сте въвели правилно текущата си парола.
 
   [% ELSIF error == "old_password_required" %]
     [% title = "Необходима е старата парола" %]
@@ -1485,10 +1532,32 @@
         <a href="page.cgi?id=quicksearch.html#fields">описани тук</a>.</p>
     [% END %]
 
+  [% ELSIF error == "quip_too_long" %]
+    [% title = "Твърде дълго остроумие" %]
+    Въведохте остроумие с дължина [% length FILTER none %] символа, 
+    но максималната позволена дължина е [% constants.MAX_QUIP_LENGTH FILTER none %] 
+    символа.
+
   [% ELSIF error == "reassign_to_empty" %]
     [% title = "Незаконно преназначаване" %]
     За да преназначите [% terms.bug %], трябва да предоставите адреса на
     новия назначен.
+
+  [% ELSIF error == "report_axis_invalid" %]
+    [% title = "Недействителна ос" %]
+    <em>[% val FILTER html %]</em> не е действителна стойност за
+    [%+ IF    fld == "x" %]хоризонталната ос
+    [%+ ELSIF fld == "y" %]вертикалната ос
+    [%+ ELSIF fld == "z" %]множеството таблици/изображения
+    [%+ ELSE %]ос на доклад[% END %].
+
+  [% ELSIF error == "report_name_missing" %]
+    [% title = "Не е указано име на доклад" %]
+    Трябва да въведете име за доклада си.
+
+  [% ELSIF error == "report_access_denied" %]
+    [% title = "Отказан достъп до доклад" %]
+    Нямате достъп до този доклад.
 
   [% ELSIF error == "require_component" %]
     [% title = "Необходима е съставна част" %]
@@ -1538,6 +1607,17 @@
     търсене "съвпадение" може да бъде използвано само с полето
     "съдържание".
 
+  [% ELSIF error == "search_grouped_field_invalid" %]
+    [% terms.Bugzilla %] не поддържа използването на 
+    полето "[%+ field_descs.$field FILTER html %]" ([% field FILTER html %])
+    с групирани условия за търсене.
+
+  [% ELSIF error == "search_grouped_invalid_nesting" %]
+    Не можете да вмествате клаузи в групирани условия за търсене.
+
+  [% ELSIF error == "search_grouped_field_mismatch" %]
+    Всички условия при групово търсене трябва да ползват същото поле.
+
   [% ELSIF error == "search_field_operator_invalid" %]
     [% terms.Bugzilla %] не поддържа използването на 
     "[%+ field_descs.$field FILTER html %]" ([% field FILTER html %])
@@ -1558,7 +1638,11 @@
     
   [% ELSIF error == "still_unresolved_bugs" %]
     [% title = "Нерешени зависимости" %]
-    [% terms.Bug %] [%+ bug_id FILTER bug_link(bug_id) FILTER none %]
+    [% IF bug_id %]
+      [% terms.Bug %] [%+ bug_id FILTER bug_link(bug_id) FILTER none %]
+    [% ELSE %]
+       Този [% terms.bug %]
+    [% END %]
     има [% dep_count FILTER none %] 
     [% IF dep_count == 1 %]
       нерешена зависимост
@@ -1626,7 +1710,9 @@
     [% ELSIF type == "account" %]
       за сметка
     [% END %]
-    твърде скоро, за да заявите друг. Моля, изчакайте малко и опитайте отново.
+    твърде скоро, за да заявите друг.
+    Моля, изчакайте [% constants.ACCOUNT_CHANGE_INTERVAL FILTER html %] минути
+    и опитайте отново.
 
   [% ELSIF error == "unknown_action" %]
     [% IF action %]
@@ -1638,6 +1724,11 @@
   [% ELSIF error == "unknown_tab" %]
     [% title = "Неизвестен прозорец" %]
     <code>[% current_tab_name FILTER html %]</code> не е действително име на прозорец.
+
+  [% ELSIF error == "value_inactive" %]
+    [% title = "Стойност не е в действие" %]
+    [% type = BLOCK %][% INCLUDE object_name class = class %][% END %]
+    Стоността '[% value FILTER html %]' на [% type FILTER html %] не е в действие.
 
   [% ELSIF error == "version_already_exists" %]
     [% title = "Версията вече съществува" %]
@@ -1654,6 +1745,11 @@
     Съществуват [% nb FILTER html %] [%+ terms.bugs %] свързани с
     версията! Трябва да преназначите тези [% terms.bugs %] на друга версия
     преди да можете да изтриете тази.
+
+  [% ELSIF error == "version_is_last" %]
+    [% title = BLOCK %]Последна версия в този продукт[% END %]
+    '[% version.name FILTER html %]' е последната версия в
+    продукта '[% version.product.name FILTER html %]'. Не можете да я изтриете.
 
   [% ELSIF error == "users_deletion_disabled" %]
     [% title = "Изтриването не действа" %]
@@ -1725,8 +1821,8 @@
 
   [% ELSIF error == "xmlrpc_illegal_content_type" %]
     При използване на XML-RPC не можете да пращате данни като
-    [%+ content_type FILTER html %]. Само text/xml 
-    и application/xml са разрешени.
+    [%+ content_type FILTER html %]. Позволените тъпове съдържание 
+    са [% constants.XMLRPC_CONTENT_TYPE_WHITELIST.join(', ') FILTER html %].
 
   [% ELSIF error == "zero_length_file" %]
     [% title = "Файлът е празен" %]
@@ -1809,7 +1905,7 @@
                   
     [% FOREACH q = Bugzilla.user.queries %]
       [% IF q.name == namedcmd %]
-        или <a href="query.cgi?[% q.url FILTER uri %]">редактирате</a>
+        или <a href="query.cgi?[% q.url FILTER html %]">редактирате</a>
       [% END %]
     [% END %]
     

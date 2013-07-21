@@ -1,31 +1,551 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Everything Solved.
-  # Portions created by Everything Solved are Copyright (C) 2006
-  # Everything Solved. All Rights Reserved.
-  #
-  # Contributor(s): Max Kanat-Alexander <mkanat@bugzilla.org>
-  #                 Frédéric Buclin <LpSolit@gmail.com>
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
 
-[% PROCESS global/variables.none.tmpl %]
-[% SET title = "$terms.Bugzilla 4.2 Бележки към изданието" %]
+[% SET title = "$terms.Bugzilla 4.4 Бележки към изданието" %]
 [% INCLUDE global/header.html.tmpl 
   title = title
   style_urls = ['skins/standard/page.css'] 
 %]
 
 <h1>[% title FILTER html %]</h1>
+
+<ul class="bz_toc">
+  <li><a href="#v44_introduction">Въведение</a></li>
+  <!-- li><a href="#v44_point">Обновления в тази 4.4.x версия</a></li -->
+  <li><a href="#v44_req">Минимални изисквания</a></li>
+  <li><a href="#v44_feat">Нови възможности и подобрения</a></li>
+  <li><a href="#v44_issues">Оставащия проблеми</a></li>
+  <li><a href="#v44_upgrading">Бележки по надграждането от предишна версия</a></li>
+  <li><a href="#v44_code_changes">Промени в кода които може да отразят
+    на персонализации и разширения</a></li>
+  <li><a href="#v44_previous">Бележки към версията за предишни версии</a></li>
+</ul>
+
+<h2 id="v44_introduction">Въведение</h2>
+
+<p>Добре дошли в [% terms.Bugzilla %] 4.4! Измина повече от година от както
+  пуснахме [% terms.Bugzilla %] 4.2 през Февруари 2012 и тази нова главна
+  версия идва с няколко нови възможности и подобрения. Версията
+  съдържа основни подобрения по WebServices, които бяха нашата основна цел в
+  нея, пренаписана система за етикети, действително автоматично откриване на MIME тип за
+  приставки, подобрена поддръжка за Oracle, подобрения в производителността и много
+  други подобрения.</p>
+
+<p>Ако надграждате, обезателно прочетете <a href="#v44_upgrading">Бележки по
+  надграждането от предишни версии</a>. Ако надграждате от версия
+  преди 4.2, обезателно прочетете бележките към изданието за всички
+  <a href="#v44_previous">предишни версии</a> между вашата версия и
+  тази, <strong>особено секцията Надграждане от бележките към изданието
+  на всяка версия</strong>.</p>
+
+<!-- h2 id="v44_point">Обновления в тази 4.4.x версия</h2 -->
+
+
+<h2 id="v44_req">Минимални изисквания</h2>
+
+<p>Всички изисквания които са нови спрямо 4.2 ще изглеждат
+  <span class="req_new">така</span>.</p>
+
+<ul>
+  <li><a href="#v44_req_perl">Perl</a></li>
+  <li><a href="#v44_req_mysql">За MySQL потребители</a></li>
+  <li><a href="#v44_req_pg">За PostgreSQL потребители</a></li>
+  <li><a href="#v44_req_oracle">За Oracle потребители</a></li>
+  <li><a href="#v44_req_sqlite">За SQLite потребители</a></li>
+  <li><a href="#v44_req_modules">Задължителни Perl модули</a></li>
+  <li><a href="#v44_req_optional_mod">Незадължителни Perl модули</a></li>
+  <li><a href="#v44_req_apache">Незадължителни Apache модули</a></li>
+</ul>
+
+<h3 id="v44_req_perl">Perl</h3>
+
+<p>Perl v5.8.1</p>
+
+<p><strong>ВАЖНО:</strong> Това е последната главна версия която ще поддържа
+  Perl 5.8.x! Следващата главна версия, [% terms.Bugzilla %] 5.0, ще изисква
+  Perl 5.10.1 като минимум.</p>
+
+[% INCLUDE db_req db='mysql' %]
+
+[% INCLUDE db_req db='pg' dbd_new => 1 %]
+
+[% INCLUDE db_req db='oracle' %]
+
+[% INCLUDE db_req db='sqlite' %]
+
+<h3 id="v44_req_modules">Задължителни Perl модули</h3>
+
+[% INCLUDE req_table reqs = REQUIRED_MODULES
+                     updated = ['TimeDate', 'DBI', 'Email-Send', 'List-MoreUtils'] %]
+
+<h3 id="v44_req_optional_mod">Незадължителни Perl модули</h3>
+
+<p>Следните perl модули, ако са налични, разрешават различни
+  възможности на [% terms.Bugzilla %]:</p>
+
+[% INCLUDE req_table reqs = OPTIONAL_MODULES
+                     new  = ['Net-SMTP-SSL', 'HTML-FormatText-WithLinks',
+                             'File-MimeInfo', 'IO-stringy']
+                     include_feature = 1 %]
+
+<h3 id="v44_req_apache">Незадължителни Apache модули</h3>
+
+<p>Ако използвате Apache като web сървър, [% terms.Bugzilla %] вече
+  може да се възползва от някои възможности на Apache ако имате следните Apache
+  модули налични и разрешени. Текущо,
+  <a href="#v40_feat_js_css_update">определени [% terms.Bugzilla %] възможности</a>
+  са разрешени само ако имате всички от следните модули налични
+  и разрешени:</p>
+
+<ul>
+  <li>mod_headers</li>
+  <li>mod_expires</li>
+  <li>mod_env</li>
+</ul>
+
+<p>На повечето системи (но не под Windows), <kbd>checksetup.pl</kbd> може да
+  каже дали имате или не тези модули налични и ще ви
+  каже.</p>
+
+
+<h2 id="v44_feat">Нови възможности и подобрения</h2>
+
+<ul>
+  <li><a href="#v44_feat_search">Възможност за няколко критерия за търсене по едно поле</a></li>
+  <li><a href="#v44_feat_search_perf">Подобрена производителност за търсения</a></li>
+  <li><a href="#v44_feat_bug_tags">Основен ремонт на системата за етикети</a></li>
+  <li><a href="#v44_feat_mimetype_autodetect">Автоматично определяне MIME типа на приставка</a></li>
+  <li><a href="#v44_feat_saved_reports">Съхраняване на табулирани и графични доклади</a></li>
+  <li><a href="#v44_feat_whining">Потребителски колони в хленч поща</a></li>
+  <li><a href="#v44_feat_webservices">Подобрени WebServices</a></li>
+  <li><a href="#v44_feat_apache_config">Нова настройка за Apache</a></li>
+  <li><a href="#v44_feat_other">Други подобрения и промени</a></li>
+</ul>
+
+<h3 id="v44_feat_search">Възможност за няколко критерия за търсене по едно поле</h3>
+
+<p>
+  В страницата "Разширено търсене", вече е възможно да се изграждат заявки с използване
+  на множество потребителски критерии за търсене по едно и също поле. В [% terms.Bugzilla %]
+  4.2 и по-стара, заявки като
+  <br><br>
+  <kbd>"Състояние сменено на ПРОВЕРЕН" И "Състояние сменено от foo@bar.com"</kbd>
+  <br><br>
+  връщаха всички [% terms.bugs %] които имаха състояние сменено на ПРОВЕРЕН
+  от някой потребител и които са били променяни от foo@bar.com някога, но двете действия може
+  да са независими. В [% terms.Bugzilla %] 4.4, вече можете да решите дали и двете
+  условия трябва да съвпаднат с точно същото действие или не, т.е. ако искате
+  [%+ terms.bugs %] чието състояние е било зададено на ПРОВЕРЕН от самия foo@bar.com.
+  По същия начин, заявки като
+  <br><br>
+  <kbd>"Флагове променени на одобрение+" И "Флагове променени от foo@bar.com"</kbd>
+  <br><br>
+  вече могат да връщат [% terms.bugs %] за които флага за одобрение е бил променен на
+  "+" от foo@bar.com himself. В предишни версии, двете действия бяха обработвани
+  отделно и [% terms.bugs %] за които foo@bar.com е задал флага за одобрение
+  на "?" и който след това е сменен на "+" от някой друг също бяха връщани.
+</p>
+<p>
+  Тази нова възможност ви дава възможността да изграждате по-точни заявки и да
+  получавате по-уместни резултати.
+</p>
+
+<h3 id="v44_feat_search_perf">Подобрена производителност за търсения</h3>
+
+<p>
+  Системата за търсене получи подобрение на производителността което в някои случаи намалява
+  времето прекарано в изпълнение на заявки от няколко минути до само няколко секунди.
+  Колкото по-сложни са вашите заявки, толкова по-видим трябва да е резултата
+  от подобрението.
+</p>
+
+<h3 id="v44_feat_bug_tags">Основен ремонт на системата за етикети</h3>
+
+<p>
+  Старата система за етикети която беше в дъното на всички страници имаше сериозни проблеми
+  с замисъла и използваемостта и беше заменена с лъскава нова такава, която ви позволява
+  да обозначавате [% terms.bugs %] директно от [% terms.bug %] доклад. Етикетите сега
+  основно работят като ключови думи, но с две основни разлики. Преди всичко, те
+  са лични, което значи че етикети които задавате на [% terms.bugs %] са видими само
+  от вас, и никой друг не бива уведомяван или може да вижда етикетите които задавате. Това
+  поведение е същото като при старата система и така тази функционалност не се
+  променя. Втората основна разлика е, че  списъка с възможни етикети е
+  неограничен и по никакъв начин предварително зададен от администратори. Можете да въведете
+  нов етикет по ваш избор или да изберете такъв от автоматично създаван списък
+  от етикети които вече сте използвали в други [% terms.bugs %]. Отново, тази функция
+  беше вече налична в старата система, но нейната използваемост беше
+  значително подобрена. В частност, това означава че етикетите се показват директно
+  в [%+ terms.bug %] доклади, така че веднага знаете кои етикети
+  вече сте задали за този [% terms.bug %]. Това е нова функция в тази версия.
+</p>
+<p>
+  Друга нова функция е че личните ви етикети могат да се показват в бъг списъци.
+  Те също могат да се ползват като критерии за търсене в заявки. Ако решите да
+  споделите съхранено търсене което използва етикети като критерии, това също ще работи! Имайте
+  в предвид, че когато добавите нов етикет вече не се създава съхранено търсене на негова
+  база, тъй като можете лесно да си го създадете ако наистина ви трябва.
+</p>
+<p>
+  Етикетите създадени със старата система за етикети се прехвърлят автоматично в
+  новата система.
+</p>
+
+<h3 id="v44_feat_mimetype_autodetect">Автоматично определяне MIME типа на приставка</h3>
+
+<p>
+  Когато потребител качва нова приставка и остави полето "Тип на съдържанието" зададено с
+  "автоматично откриване", [% terms.Bugzilla %] вече прави свое собствено установяване на MIME типа
+  ако web търсачката ѝ предаде, че приставката е от тип
+  "application/octet-stream", в опит да направи по-добро отгатване от
+  нея. Във всички други случаи, [% terms.Bugzilla %] още се доверява на това което ѝ
+  предадат.
+</p>
+<p>
+  Вижте <a href="#v44_req_optional_mod">списъка с незадължителни Perl модули</a>, за
+  да разберете кои модули да инсталирате за разрешаване на отгатването на MIME типа.
+</p>
+
+<h3 id="v44_feat_saved_reports">Съхраняване на табулирани и графични доклади</h3>
+
+<p>
+  Вече е възможно да запазвате табулирани и графични доклади по същия начин по
+  който съхранявате търсения. Съхранени доклади ще се появяват в дъното на страници, под
+  съхранени търсения.
+</p>
+<p>
+  За разлика от съхранени търсения все още не е възможно да споделяте съхранени доклади с
+  други потребители.
+</p>
+
+<h3 id="v44_feat_whining">Потребителски колони в хленч поща</h3>
+
+<p>
+  Списъка от колони показвани в бъг списъци съдържащи се в писма изпращани
+  редовно от системата за хленч вече не е твърдо кодиран. Ако съхраненото
+  търсене използвано за хленч писма съдържа списък от колони, същите колони се
+  използват за показване в писмата. Ако не е намерен специфичен списък, списъка по
+  подразбиране се ползва вместо това.
+</p>
+<p>
+  Това означава, че в зависимост от вида на желаните е-пощенски уведомления,
+  можете напълно да настроите връщаните данни за всяко отделно съхранено търсене!
+</p>
+
+<h3 id="v44_feat_webservices">Подобрени WebServices</h3>
+
+<p>
+  Тази версия получи основни подобрения в WebServices интерфейса си. Много нови
+  методи бяха изпълнени, за да позволят на приложения на трети страни да взаимодействат с
+  [%+ terms.Bugzilla %] дори по-тясно. Например, вече е възможно да
+  се разбере с какво са зададени параметрите с използването на <kbd>B[%%]ugzilla.parameters</kbd>.
+  Вече също е възможно да се обновят етикети, продукти, групи или потребителски сметки
+  с използването на нашето <abbr lang="en" title="Application Programming Interface">API</abbr>.
+<p>
+<p>
+  Няколко съществуващи метода също бяха подобрени да връщат данни които
+  не бяха достъпни досега, като флагове на [% terms.bug %] и приставка с
+  използването на <kbd>B[%%]ug.get</kbd>, <kbd>B[%%]ug.attachments</kbd> или
+  <kbd>Product.get</kbd>. Потребители също могат да получат съхранените си търсения и доклади
+  с използването на <kbd>User.get</kbd>; и още много, вижте
+  <a href="#v44_feat_webservices_details">подробния списък</a> отдолу.
+</p>
+
+<h3 id="v44_feat_apache_config">Нова настройка за Apache</h3>
+
+<p>
+  За подобрена сигурност, [% terms.Bugzilla %] вече предотвратява ровенето в папки
+  по подразбиране. Ако сте пуснали [% terms.Bugzilla %] върху Apache (както повечето хора),
+  най-вероятно ще имате нужда от <strong>нова настройка на Apache</strong> за тази
+  версия на [% terms.Bugzilla %]. Вижте секцията
+  <a href="#v44_upgrading">Бележки към версията за предишни версии</a>
+  за подробности.
+</p>
+
+<h3 id="v44_feat_other">Други подобрения и промени</h3>
+
+<h4>Подобрения за потребители</h4>
+
+<ul>
+  <li><strong>[% terms.Bugs %]:</strong> Вече е възможно да се добавите в
+    <abbr title="Точно Копие">ТК</abbr> списък когато качвате приставка и когато променяте съществуваща.</li>
+  <li><strong>[% terms.Bugs %]:</strong> Има ново потребителско предпочитание да
+    бъдете автоматично добавяни към  <abbr title="Точно Копие">ТК</abbr> списъка на [% terms.bugs %] за който запитване
+    за флаг е адресирано към вас (флага ви има за изпълнител).</li>
+  <li><strong>[% terms.Bugs %]:</strong> Промени по  <abbr title="Точно Копие">ТК</abbr> списъка вече не
+    предизвикват сблъсквания във въздуха.</li>
+  <li><strong>[% terms.Bugs %]:</strong> Вече има <em>(вземам)</em> връзка
+    до полето Качествен контрол за да се задавате лесно като качествен контрол.</li>
+  <li><strong>[% terms.Bugs %]:</strong> [% terms.Bugs %] вече не се
+    преназначават на подразбиращия се назначен при преместване на [% terms.bug %] в
+    друг продукт или съставна част ако текущия назначен не е този по подразбиране
+    Същото за  качествения контрол.</li>
+  <li><strong>[% terms.Bugs %]:</strong> При докладване на нов [% terms.bug %],
+    флаговете които не са достъпни за избраната съставна част  и тези които
+    докладчика не може да променя вече са скрити вместо  забранени. За
+    съществуващи [% terms.bugs %], незададени флагове също са скрити по подразбиране. Щракването
+    върху връзките <em>(задаване на флагове)</em> или <em>(още флагове)</em> ще ги накара да се
+    покажат.</li>
+  <li><strong>[% terms.Bugs %]:</strong> При преглеждане на [% terms.bug %], списъка
+    на двойниците [% terms.bugs %] вече се намира близо до горната част на страницата.</li>
+  <li><strong>[% terms.Bugs %]:</strong> Частни коментари сега винаги остават
+    видими за автора им. Преди, автора на коментар не можеше да го види
+    повече ако коментара беше обозначен като частен и автора не е в
+    групата на вътрешните.</li>
+  <li><strong>[% terms.Bugs %]:</strong> Полето Виж още вече поддържа <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-та
+    сочещи към GitHub по подразбиране. Ако новото MoreBugUrl разширение включено в
+    тази версия се разреши, тогава можете да добавяте <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-та сочещи към:
+    b[%%]ugs.php.net, RT, appspot.com (Rietveld), Review Board, и
+    getsatisfaction.com.</li>
+  <li><strong>Търсене:</strong> Псевдонима на [% terms.bugs %] които не можете да виждате
+    вече не се свеждат до техните [% terms.bug %] идентификатори, което означава, че вече
+    не е възможно да се свърже псевдоним с неговия идентификатор освен ако не можете да виждате
+    [%+ terms.bug %].</li>
+  <li><strong>Търсене:</strong> Потребителски полета за множествен избор вече са достъпни
+    в "Търсене в историята на промените" секцията на страницата за заявки.</li>
+  <li><strong>Търсене:</strong> Оператора <em>променен от</em> в булеви
+    карти вече приема местоимения.</li>
+  <li><strong>Търсене:</strong> Полетата Заявител и задаващ в булеви
+    карти вече приемат местоимения.</li>
+  <li><strong>Търсене:</strong> Сега е възможно да скривате описанието на
+    заявките показващо се отгоре на бъг списъци.</li>
+  <li><strong>Заявки:</strong> Страницата "Заявки" вече показва И/ИЛИ
+    радио бутони за определяне на отношението между полетата заявител и
+    изпълнител.</li>
+  <li><strong>Е-пощенски уведомления:</strong> Има ново потребителско предпочитание да
+    не се слага "Нов:" към темата на [% terms.bug %] писма когато се докладва
+    нов [% terms.bug %]. Някои пощенски клиенти не могат да показват правилно писма в нишка
+    поради това.</li>
+  <li><strong>Е-пощенски уведомления:</strong> Има ново е-пощенски събитие за получаване на
+    уведомления когато продукт или съставна част на [% terms.abug %] се променят.</li>
+  <li><strong>Е-пощенски уведомления:</strong> Всички [% terms.bug %] писма сега имат
+    заглавка <em>X-Bugzilla-Flags</em>, даваща списък на всички текущо зададени флагове.</li>
+  <li><strong>Е-пощенски уведомления:</strong> Всички [% terms.bug %] писма сега имат
+    заглавка <em>X-Bugzilla-Version</em> с текущата версия на
+    продукта.</li>
+  <li><strong>Хленч:</strong> Подреждането на съхраненото търсене се ползва за
+    подреждане на [% terms.bugs %] в писмата.</li>
+  <li><strong>Потребителски сметки:</strong> За потвърждаване на промяна на е-пощенски адрес,
+    сега се иска паролата вместо стария е-пощенски адрес.</li>
+  <li><strong>Графични доклади:</strong> Размера на графични доклади сега
+    се задава динамично, за да се събере в прозореца на търсачката.
+    Връзките По-висока/По-тясна/По-широка/По-ниска вече ги няма.</li>
+  <li><strong>Входяща е-поща:</strong> <kbd>email_in.pl</kbd> вече приема
+    писма само с <abbr title="en" title="HTML за създаване и промяна на [% terms.bugs %] по е-поща.</li>
+  <li><strong>Входяща е-поща:</strong> При създаване на нов [% terms.bug %],
+    <kbd>email_in.pl</kbd> ще съблюдава заглавките <em>Importance</em> и
+    <em>X-Priority</em> на писмото, за да увеличи или намали първоначалния
+    приоритет на [% terms.bug %], освен ако приоритета не е вече явно
+    зададен в самото писмо.</li>
+  <li><strong>Кожи:</strong> [% terms.Bugzilla %] вече не извлича всички налични
+    кожи при преглеждане на страница. Зарежда се само кожата избрана от потребителя
+    в неговите предпочитания, което се отразява като по-малко заявки към сървъра.</li>
+</ul>
+
+<h4>Подобрения за администратори и разработчици</h4>
+
+<ul>
+  <li><strong>Лиценз:</strong> Кода на [% terms.Bugzilla %] сега се разпространява
+    под лиценза MPL 2.0 (преди беше MPL 1.1).</li>
+  <li><strong>Инсталация:</strong> Под mod_perl, шаблоните вече остават в
+    паметта за един час, което може да причини увеличени изисквания към размера на паметта.
+    Това също значи, че  може да отнеме до 1 час преди промяна в шаблон
+    да стане действуваща (освен ако не рестартирате Apache).</li>
+  <li><strong>Инсталация:</strong> Пускането на
+    <kbd>checksetup.pl --make-admin=foo@bar.com</kbd> сега автоматично
+    пуска потребителската сметка ако е спряна.</li>
+  <li><strong>Настройка:</strong> Нов параметър <em>smtp_ssl</em> може да
+    се включи за разрешаване на SSL връзки към SMTP сървъра за изпращане на е-пощенски
+    уведомления.</li>
+  <li><strong>Администрация:</strong> Потребителски полета сега използват ново свойство <em>Разширено
+    описание</em> за по-добро охарактеризиране на това за какво е
+    полето. Така това описание се показва като подсказка при преминаване над потребителското
+    поле в [% terms.bug %] доклади.</li>
+  <li><strong>Администрация:</strong> При създаване на нов продукт, формуляра
+    ви позволява едновременно с това да добавите съставна част.</li>
+  <li><strong>Администрация:</strong> При преглеждане на потребителска сметка в
+    <kbd>editusers.cgi</kbd>, се показва дата на последния вход в системата. За потребители
+    които не са влизали след надграждане до 4.4 полето ще бъде празно.</li>
+  <li><strong>Администрация:</strong> Сега е възможно да се изключат спрени
+    потребителски сметки при пускане на заявки в <kbd>editusers.cgi</kbd>.</li>
+  <li><strong>Администрация:</strong> ТК списъка по подразбиране сега също се показва
+    в списъка от съставни части от <kbd>editcomponents.cgi</kbd>.</li>
+  <li><strong>Администрация:</strong> Целеви събития сега могат да са дълги до 64
+    символа, за съвместимост с версиите (преди бяха ограничени до само 20
+    символа).</li>
+  <li><strong>Администрация:</strong> Кода за резултат връщан от
+    <kbd>contrib/bugzilla-queue.rhel</kbd> когато не се изпълнява сега е 2
+    вместо 0.</li>
+  <li><strong>База с данни:</strong> Поддръжка на MySQL 5.6 беше добавена.</li>
+  <li><strong>База с данни:</strong> Поддръжка на Oracle беше значително подобрена.</li>
+  <li><strong>Сигурност:</strong> За подобрена сигурност, заглавките
+    "X-Content-Type-Options:&nbsp;nosniff" и "X-XSS-Protection:&nbsp;block"
+    вече се пращат с всеки отговор.</li>
+  <li><strong>Сигурност:</strong> Белезите сега се създават с използването на HMAC SHA-256
+    вместо MD5.</li>
+  <li><strong>Документация:</strong> Документацията вече се създава с
+    <kbd>xmlto</kbd> и <kbd>dblatex</kbd> вместо с <kbd>jade</kbd>.</li>
+</ul>
+
+<h4 id="v44_feat_webservices_details">WebService промени</h4>
+
+<ul>
+  <li>Бяха добавени няколко нови метода: <kbd>B[%%]ug.update_tags</kbd>,
+    <kbd>B[%%]ugzilla.parameters</kbd>, <kbd>B[%%]ugzilla.last_audit_time</kbd>,
+    <kbd>Classification.get</kbd>, <kbd>Group.update</kbd>,
+    <kbd>Product.update</kbd>, <kbd>User.update</kbd>.</li>
+  <li><kbd>B[%%]ug.add_attachment</kbd> сега само връща идентификатора на новосъздадени
+    приставки вместо всички данни на приставката.</li>
+  <li><kbd>B[%%]ug.attachments</kbd> сега също връща полето <kbd>size</kbd>
+    съдържащо размера на приставката.</li>
+  <li><kbd>B[%%]ug.attachments</kbd> и <kbd>B[%%]ug.get</kbd> сега връщат
+    данни за флагове.</li>
+  <li><kbd>B[%%]ug.comments</kbd> сега също връща <kbd>creation_time</kbd>
+    което е съвсем същото като <kbd>time</kbd>, но се предоставя за
+    съвместимост с <kbd>B[%%]ug.get</kbd> и <kbd>B[%%]ug.attachments</kbd>.
+    Полето <kbd>time</kbd> може да бъде отхвърлено и премахнато в бъдеща версия,
+    затова трябва да ползвате <kbd>creation_time</kbd> вместо него.</li>
+  <li><kbd>B[%%]ug.comments</kbd> сега също връща полето <kbd>count</kbd>
+    съдържащо номера на коментара във връзка с [% terms.bug %] към който принадлежи.
+    Това е същия номер като този който виждате в [% terms.bug %]
+    доклади.</li>
+  <li>Сега е възможно да създадете нов [% terms.bugs %] с затворено състояние с
+    <kbd>B[%%]ug.create</kbd>.</li>
+  <li>Полето <kbd>bug_status</kbd> връщано от <kbd>B[%%]ug.fields</kbd> сега
+    включва също [% terms.bug %] състоянията достъпни при създаване на [% terms.bug %].</li>
+  <li><kbd>B[%%]ug.fields</kbd> сега връща също описанията на ключови думи, а не само
+    техните имена.</li>
+  <li><kbd>B[%%]ug.fields</kbd> сега връща също полето <kbd>is_active</kbd>
+    за полета характерни за продукт.</li>
+  <li>За потребители в timetracking групата, <kbd>B[%%]ug.get</kbd> сега също
+    връща полето <kbd>actual_time</kbd> с общия брой часове
+    изразходвани за [% terms.abug %].</li>
+  <li>Имената на полета връщани от полето <kbd>field_name</kbd> на
+    метода <kbd>B[%%]ug.history</kbd> бяха сменени, за да са в съгласие с други
+    методи.</li>
+  <li>Метода <kbd>B[%%]ug.search</kbd> връщаше всички видими [% terms.bugs %]
+    когато се извика без аргументи, пренебрегвайки <kbd>max_search_results</kbd>
+    и <kbd>search_allow_no_criteria</kbd> параметрите. Това беше оправено.</li>
+  <li><kbd>Product.get</kbd> сега връща също полето <kbd>flag_types</kbd>
+    съдържащо всички съответни данни за приставки и типове флагове за [% terms.bug %].</li>
+  <li><kbd>Product.get</kbd> сега изхвърля грешка ако нито <kbd>ids</kbd> нито
+    <kbd>names</kbd> са подадени към метода.</li>
+  <li>При изискване на данни за собствената сметка използвайки <kbd>User.get</kbd>,
+    метода сега връща две допълнителни полета: <kbd>saved_searches</kbd>
+    и <kbd>saved_reports</kbd> съдържащи всичките ви съхранени търсения и
+    графични и табулирани доклади.</li>
+  <li><kbd>User.get</kbd> сега връща също полето <kbd>groups</kbd>
+    съдържащо списък с групите в които потребителя участва. Списъка се прецежда
+    в зависимост от правата ви.</li>
+</ul>
+
+
+<h2 id="v44_issues">Оставащи проблеми</h2>
+
+<ul>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=89822">
+    [%- terms.Bug %] 89822</a>: При промяна на множество [% terms.bugs %] 
+    едновременно, няма защита от "сблъскване във въздуха".</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276230">
+    [%- terms.Bug %] 276230</a>: Поддръжката за ограничаване на достъпа до
+    определени Категории на Нови Графики не е завършена. Трябва да се отнасяте към параметъра
+    <em>chartgroup</em> като единствен възможен механизъм за достъп..</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=584742">
+    [%- terms.Bug %] 584742</a>: При преглед на [% terms.bug %], WebKit-базирани
+    търсачки могат автоматично да нулират избраната стойност на поле когато полето
+    има забранени стойности.</li>
+</ul>
+
+
+<h2 id="v44_upgrading">Бележки по надграждането от предишна версия</h2>
+
+<h3>ВАЖНО: Промяна в настройката на Apache</h3>
+
+<p>
+  За подобрена сигурност, [% terms.Bugzilla %] сега предотвратява ровенето на папки
+  по подразбиране. За постигането на това, главния <kbd>bugzilla/.htaccess</kbd> файл
+  съдържа директивата <kbd>Options -Indexes</kbd>. По подразбиране, тази
+  директива не е позволена в <kbd>.htaccess</kbd>, така че трябва да настроите
+  Apache да я позволи. За да направите това, добавете <kbd>Options</kbd> към
+  директивата <kbd>AllowOverride</kbd> в <kbd>httpd.conf</kbd>. Това значи
+  да имате нещо такова:
+  <p>
+    <kbd>AllowOverride Limit FileInfo Indexes Options</kbd>
+  </p>
+  Проверете в
+  <a href="http://www.bugzilla.org/docs/4.4/en/html/configuration.html#http-apache">документацията</a>
+  за повече информация как да настроите Apache.
+</p>
+
+<h2 id="v44_code_changes">Промени в кода които може да отразят на персонализации и разширения</h2>
+
+<ul>
+  <li>Параметъра <em>usebugaliases</em> беше премахнат. Псевдонимите сега
+    са налични винаги.</li>
+  <li>Има нова кука <kbd>admin_editusers_action</kbd> в кода, за промяна на
+    начина по който работи <kbd>editusers.cgi</kbd>.</li>
+  <li>Има нова кука <kbd>buglist_column_joins</kbd> в кода, за промяна на начина
+    по който таблици и колони се съединяват в заявки. В комбинация с куката
+    <kbd>buglist_columns</kbd>, се дава възможност за персонализиране на списъка от
+    колони показвани в бъг списъци.</li>
+  <li>Има нова кука <kbd>bug_start_of_update</kbd> в кода, която се вика
+    след <kbd>object_end_of_update</kbd>, но преди <kbd>bug_end_of_update</kbd>
+    за по-добър контрол над начина за обновяване на [% terms.bugs %].</li>
+  <li>Има нова кука <kbd>bug_url_sub_classes</kbd> в кода, за поддръжка на
+    допълнителни <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-та в полето Виж още.</li>
+  <li>Има нова кука <kbd>error_catch</kbd> в кода, за прихващане на грешки изхвърляни
+    от [% terms.Bugzilla %] и предприемане на подходящите действия.</li>
+  <li>Има нова кука <kbd>path_info_whitelist</kbd> в кода, за поставяне в бял списък
+    на скриптове които все пак трябва да получават Path-Info информация от <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-та. По
+    подразбиране, Path-Info сега се премахва от подаване към <abbr lang="en" title="Common Gateway Interface">CGI</abbr> скриптове.</li>
+  <li>Вече е незаконно да имате продукт без съставни части и без версии.
+    Опитването да се изтрие последната съставна част или версия на продукт сега се
+    отхвърля.</li>
+  <li>Опитването да се зададе съставна част, целево събитие или версия на [% terms.abug %]
+    с спряна стойност вече не се приема. Промяната ще бъде отхвърлена.</li>
+  <li>Кутията за коментар вече проверява връщаната от check_can_change_field() стойност,
+    за да определи дали трябва да го показва или не. Това значи, че видимостта ѝ
+    сега може да се управлява с куката <kbd>bug_check_can_change_field</kbd>.</li>
+  <li>Флагове сега проверяват връщaната от check_can_change_field() стойност, за да
+    определят дали трябва да се появят като променяеми или не. Това означава, че тяхната
+    видимост сега може да се управлява с <kbd>bug_check_can_change_field</kbd>
+    куката.</li>
+  <li>Остроумия вече не могат да надвишават 512 символа. Съществуващи остроумия по-дълги от
+    това автоматично се отрязват при надграждане.</li>
+  <li>Статичния файл <kbd>bugzilla.dtd</kbd> беше заменен с динамичен
+    такъв, за да вземе в предвид и потребителски полета. Стария
+    <em>&lt;urlbase&gt;/bugzilla.dtd</em> <abbr lang="en" title="Uniform Resource Locator">URL</abbr> сега е
+    <em>&lt;urlbase&gt;/page.cgi?id=bugzilla.dtd</em>.</li>
+  <li>Има ново разширение намиращо се в <kbd>extensions/MoreBugUrl/</kbd>
+    което разрешава добавянето на нови класове от <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-та в полето Виж още. То използва
+    куката <kbd>bug_url_sub_classes</kbd> спомената по-горе.</li>
+  <li>Има нов метод <kbd>B[%%]ugzilla->process_cache</kbd> за съхраняване на
+    данни които трябва да са налични по време на изпълнението на процеса работник,
+    под mod_perl. Под mod_cgi, той действа по същия начин както
+    <kbd>B[%%]ugzilla->request_cache</kbd>.</li>
+  <li>В <abbr lang="en" title="Resource Description Framework">RDF</abbr> изхода от  <kbd>config.cgi</kbd>, <abbr lang="en" title="Uniform Resource Identifier">URI</abbr>-та използвани за отъждествяване на
+    версии и целеви събития бяха сменени да са уникални между
+    продукти.</li>
+  <li>в <abbr lang="en" title="Resource Description Framework">RDF</abbr> изхода от <kbd>config.cgi</kbd> сега се връщат също данни за
+    класификации.</li>
+  <li>Сега е законно да се извика <kbd>B[%%]ugzilla::Version->check({ id => $id })</kbd>
+    и <kbd>B[%%]ugzilla::Milestone->check({ id => $id })</kbd> за потвърждение
+    и взимане на обекет с използването на идентификатора му.</li>
+  <li>Редове в таблиците <kbd>dependencies</kbd>, <kbd>flaginclusions</kbd> и
+    <kbd>flagexclusions</kbd> в базата от данни сега се налага да бъдат уникални.</li>
+  <li>Таблиците <kbd>b[%%]ugs_activity</kbd> и <kbd>profiles_activity</kbd> в
+    базата данни сега имат автоматично увличаван първичен ключ с име <kbd>id</kbd>.</li>
+  <li>Специален модул <kbd>B[%%]ugzilla.pm</kbd> беше добавен в
+    <kbd>contrib/</kbd> за да подпомогне разработчиците в пакетирането на B[%%]ugzilla за техните
+    Linux дистрибуции.</li>
+</ul>
+
+
+<h1 id="v44_previous">[% terms.Bugzilla %] 4.2 Бележки към изданието</h1>
 
 <ul class="bz_toc">
   <li><a href="#v42_introduction">Въведение</a></li>
@@ -173,9 +693,6 @@
     Сега повече полета могат да бъдат показвани като колони в бъгсписъци, в допълнение
     с вече съществуващата <kbd>buglist_columns</kbd> кука.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=743991">[% terms.Bug %] 743991</a>)</li>
-  <li>Нова кука с име <kbd>error_catch</kbd> беше добавена, за да позволи разширения
-    да променят начина по който се изхвърлят грешки.
-    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=745197">[% terms.Bug %] 745197</a>)</li>
   <li>Нова кука с име <kbd>admin_editusers_action</kbd> беше добавена, за да позволи
     разширения след минаването на <kbd>editusers.cgi</kbd>. Това си позволява да добавяте
     нови възможности към този скрипт много лесно.
@@ -202,29 +719,239 @@
 
 <p>Perl v5.8.1</p>
 
-[% INCLUDE db_req db='mysql' db_new => 1 dbd_new => 1 %]
+<h3 id="v42_req_mysql">За MySQL потребители</h3>
 
-[% INCLUDE db_req db='pg' db_new => 1 %]
+<ul>
+  <li>MySQL <span class="req_new">v5.0.15</span></li>
+  <li><strong>perl module:</strong> DBD::mysql <span class="req_new">v4.001</span></li>
+</ul>
 
-[% INCLUDE db_req db='oracle' %]
+<h3 id="v42_req_pg">За PostgreSQL потребители</h3>
 
-[% INCLUDE db_req db='sqlite' %]
+<ul>
+  <li>PostgreSQL <span class="req_new">v8.03.0000</span></li>
+  <li><strong>perl module:</strong> DBD::Pg v1.45</li>
+</ul>
+
+<h3 id="v42_req_oracle">За Oracle потребители</h3>
+
+<ul>
+  <li>Oracle v10.02.0</li>
+  <li><strong>perl module:</strong> DBD::Oracle v1.19</li>
+</ul>
+
+<h3 id="v42_req_sqlite">За SQLite потребители</h3>
+
+<ul>
+  <li>SQLite v3.6.22</li>
+  <li><strong>perl module:</strong> DBD::SQLite v1.29</li>
+</ul>
 
 <h3 id="v42_req_modules">Задължителни Perl модули</h3>
 
-[% INCLUDE req_table reqs = REQUIRED_MODULES
-                     new = ['Math-Random-ISAAC']
-                     updated = ['URI'] %]
+
+<table class="req_table" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <th>Модул</th>
+        <th>Версия</th>
+      </tr>
+      <tr>
+        <td>CGI</td>
+        <td>3.51</td>
+      </tr>
+      <tr>
+        <td>Digest::SHA</td>
+        <td>(Всяка)</td>
+      </tr>
+      <tr>
+        <td>Date::Format</td>
+        <td>2.21</td>
+      </tr>
+      <tr>
+        <td>DateTime</td>
+        <td>0.28</td>
+      </tr>
+      <tr>
+        <td>DateTime::TimeZone</td>
+        <td>0.71</td>
+      </tr>
+      <tr>
+        <td>DBI</td>
+        <td>1.614</td>
+      </tr>
+      <tr>
+        <td>Template</td>
+        <td>2.22</td>
+      </tr>
+      <tr>
+        <td>Email::Send</td>
+        <td>2.00</td>
+      </tr>
+      <tr>
+        <td>Email::MIME</td>
+        <td>1.904</td>
+      </tr>
+      <tr>
+        <td>URI</td>
+        <td class="req_new">1.37</td>
+      </tr>
+      <tr>
+        <td>List::MoreUtils</td>
+        <td>0.22</td>
+      </tr>
+      <tr>
+        <td class="req_new">Math::Random::ISAAC</td>
+        <td class="req_new">1.0.1</td>
+      </tr>
+  </tbody>
+</table>
 
 <h3 id="v42_req_optional_mod">Незадължителни Perl модули</h3>
 
 <p>Следните perl модули, ако са налични, разрешават различни
   възможности на [% terms.Bugzilla %]:</p>
 
-[% INCLUDE req_table reqs = OPTIONAL_MODULES
-                     new  = ['Encode', 'Encode-Detect']
-                     updated = ['PatchReader', 'Apache-SizeLimit']
-                     include_feature = 1 %]
+
+<table class="req_table" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <th>Модул</th>
+        <th>Версия</th>
+        <th>Разрешава</th>
+      </tr>
+      <tr>
+        <td>GD</td>
+        <td>1.20</td>
+        <td>Графични доклади, Нови графики, Стари графики</td>
+      </tr>
+      <tr>
+        <td>Chart::Lines</td>
+        <td>2.1</td>
+        <td>Нови графики, Стари графики</td>
+      </tr>
+      <tr>
+        <td>Template::Plugin::GD::Image</td>
+        <td>(Всяка)</td>
+        <td>Графични доклади</td>
+      </tr>
+      <tr>
+        <td>GD::Text</td>
+        <td>(Всяла)</td>
+        <td>Графични доклади</td>
+      </tr>
+      <tr>
+        <td>GD::Graph</td>
+        <td>(Всяка)</td>
+        <td>Графични доклади</td>
+      </tr>
+      <tr>
+        <td>MIME::Parser</td>
+        <td>5.406</td>
+        <td>Преместване на [% terms.bugs %] между инсталации</td>
+      </tr>
+      <tr>
+        <td>LWP::UserAgent</td>
+        <td>(Всяка)</td>
+        <td>Автоматични уведомления за обновяване</td>
+      </tr>
+      <tr>
+        <td>XML::Twig</td>
+        <td>(Всяка)</td>
+        <td>Преместване на [% terms.bugs %] между инсталации, Автоматични уведомления за обновяване</td>
+      </tr>
+      <tr>
+        <td>PatchReader</td>
+        <td class="req_new">0.9.6</td>
+        <td>Преглед на кръпки</td>
+      </tr>
+      <tr>
+        <td>Net::LDAP</td>
+        <td>(Всяка)</td>
+        <td>LDAP удостоверяване</td>
+      </tr>
+      <tr>
+        <td>Authen::SASL</td>
+        <td>(Всяка)</td>
+        <td>SMTP удостоверяване</td>
+      </tr>
+      <tr>
+        <td>Authen::Radius</td>
+        <td>(Всяка)</td>
+        <td>RADIUS удостоверяване</td>
+      </tr>
+      <tr>
+        <td>SOAP::Lite</td>
+        <td>0.712</td>
+        <td>Интерфейс XML-RPC</td>
+      </tr>
+      <tr>
+        <td>JSON::RPC</td>
+        <td>(Всяка)</td>
+        <td>Интерфейс JSON-RPC</td>
+      </tr>
+      <tr>
+        <td>JSON::XS</td>
+        <td>2.0</td>
+        <td>Прави JSON-RPC по-бърз</td>
+      </tr>
+      <tr>
+        <td>Test::Taint</td>
+        <td>(Всяка)</td>
+        <td>Интерфейс JSON-RPC, Интерфейс XML-RPC</td>
+      </tr>
+      <tr>
+        <td>HTML::Parser</td>
+        <td>3.67</td>
+        <td>Повече HTML в описанията на Продукт/Група</td>
+      </tr>
+      <tr>
+        <td>HTML::Scrubber</td>
+        <td>(Всяка)</td>
+        <td>Повече HTML в описанията на Продукт/Група</td>
+      </tr>
+      <tr>
+        <td class="req_new">Encode</td>
+        <td class="req_new">2.21</td>
+        <td>Автоматично установяване на кодова таблица за текстови приставки</td>
+      </tr>
+      <tr>
+        <td class="req_new">Encode::Detect</td>
+        <td class="req_new">(Всяка)</td>
+        <td>Автоматично установяване на кодова таблица за текстови приставки</td>
+      </tr>
+      <tr>
+        <td>Email::MIME::Attachment::Stripper</td>
+        <td>(Всяка)</td>
+        <td>Входяща е-поща</td>
+      </tr>
+      <tr>
+        <td>Email::Reply</td>
+        <td>(Всяка)</td>
+        <td>Входяща е-поща</td>
+      </tr>
+      <tr>
+        <td>TheSchwartz</td>
+        <td>(Всяка)</td>
+        <td>Поща във фонов режим</td>
+      </tr>
+      <tr>
+        <td>Daemon::Generic</td>
+        <td>(Всяка)</td>
+        <td>Поща във фонов режим</td>
+      </tr>
+      <tr>
+        <td>mod_perl2</td>
+        <td>1.999022</td>
+        <td>mod_perl</td>
+      </tr>
+      <tr>
+        <td>Apache2::SizeLimit</td>
+        <td class="req_new">0.96</td>
+        <td>mod_perl</td>
+      </tr>
+  </tbody>
+</table>
 
 <h3 id="v42_req_apache">Незадължителни Apache модули</h3>
 
@@ -470,6 +1197,9 @@
     [%- terms.Bug %] 584742</a>: При преглед на [% terms.bug %], WebKit-основани
     търсачки могат автоматично да възстановят избраната стойност на поле, когато то
     има забранени стойности.</li>
+  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=780053">
+    [%- terms.Bug %] 780053</a>: Oracle се чупи при показването на ключови думи, етикети
+    или флагове в бъгсписъци.</li>
 </ul>
 
 
@@ -1451,7 +2181,7 @@
 
 [% BLOCK db_req %]
   [% SET m = DB_MODULE.$db %]
-  <h3 id="v42_req_[% db FILTER html %]">За [% m.name FILTER html %] потребители</h3>
+  <h3 id="v40_req_[% db FILTER html %]">За [% m.name FILTER html %] потребители</h3>
 
   <ul>
     <li>[% m.name FILTER html %]

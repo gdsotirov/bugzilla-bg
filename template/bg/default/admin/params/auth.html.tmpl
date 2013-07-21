@@ -1,23 +1,9 @@
-[%# The contents of this file are subject to the Mozilla Public
-  # License Version 1.1 (the "License"); you may not use this file
-  # except in compliance with the License. You may obtain a copy of
-  # the License at http://www.mozilla.org/MPL/
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
   #
-  # Software distributed under the License is distributed on an "AS
-  # IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  # implied. See the License for the specific language governing
-  # rights and limitations under the License.
-  #
-  # The Original Code is the Bugzilla Bug Tracking System.
-  #
-  # The Initial Developer of the Original Code is Netscape Communications
-  # Corporation. Portions created by Netscape are
-  # Copyright (C) 1998 Netscape Communications Corporation. All
-  # Rights Reserved.
-  #
-  # Contributor(s): Dave Miller <justdave@bugzilla.org>
-  #                 Frédéric Buclin <LpSolit@gmail.com>
-  #                 Marc Schumann <wurblzap@gmail.com>
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
   #%]
 [%
    title = "Удостоверяване на потребители"
@@ -107,10 +93,13 @@
                   "началната страница ще изисква вход. Няма да бъдат допускани " _
                   "анонимни потребители.",
 
-  emailregexp => "Този параметър определя регулярния израз, който да бъде използван за правилен е-пощенски адрес. По " _
-                 "подразбиране се прави опит за съвпадение с напълно квалифицирани е-пощенски адреси . Друга " _
-                 "популярна стойност, която се слага тук е <tt>^[^@]+$</tt>, което значи " _
-                 "'локални потребители, @ не е позволена.'",
+  emailregexp =>
+    "Този параметър определя регулярния израз, който да бъде използван за правилен е-пощенски адрес. " _
+    "По подразбиране се прави опит за съвпадение с напълно квалифицирани е-пощенски адреси. " _
+    "Използвайте <tt>.*</tt> за приемане на всеки е-пощенски адрес съгласно " _
+    "<a href='http://tools.ietf.org/html/rfc2822#section-3.4.1'>RFC 2822</a> " _
+    "спецификацията. Друга популярна стойност, която се слага тук е <tt>^[^@]+$</tt>, " _
+    "която значи 'локални потребители, @ не е позволена.'",
 
   emailregexpdesc => "Този текст описва на Английски какви типове правилни адреси " _
                      "са позволени от параметъра <tt>emailregexp</tt>.",
