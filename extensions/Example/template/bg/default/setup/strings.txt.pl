@@ -6,7 +6,7 @@
 # defined by the Mozilla Public License, v. 2.0.
 
 %strings = (
-  feature_example_acme => 'Примерно разширение: Някаква функционалност',
+  feature_example_acme => 'Примерно разширение: Acme функционалност',
 );
 
 1;
