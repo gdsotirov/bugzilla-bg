@@ -424,10 +424,10 @@
           <div id="bz_qa_contact_edit_container" class="bz_default_hidden">
             <span>
               [% INCLUDE global/user.html.tmpl who = bug.qa_contact %]
-              (<a href="#" id="bz_qa_contact_edit_action">edit</a>)
+              (<a href="#" id="bz_qa_contact_edit_action">промяна</a>)
               [% IF bug.qa_contact.id != user.id %]
                 (<a title="Change QA contact to yourself" 
-                    href="#" id="bz_qa_contact_take_action">take</a>)
+                    href="#" id="bz_qa_contact_take_action">вземам</a>)
               [% END %]
             </span>
           </div>
