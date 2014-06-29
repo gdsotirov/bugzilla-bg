@@ -16,7 +16,7 @@
 
 <ul class="bz_toc">
   <li><a href="#v44_introduction">Въведение</a></li>
-  <!-- li><a href="#v44_point">Обновления в тази 4.4.x версия</a></li -->
+  <li><a href="#v44_point">Обновления в тази 4.4.x версия</a></li>
   <li><a href="#v44_req">Минимални изисквания</a></li>
   <li><a href="#v44_feat">Нови възможности и подобрения</a></li>
   <li><a href="#v44_issues">Оставащия проблеми</a></li>
@@ -43,8 +43,51 @@
   тази, <strong>особено секцията Надграждане от бележките към изданието
   на всяка версия</strong>.</p>
 
-<!-- h2 id="v44_point">Обновления в тази 4.4.x версия</h2 -->
+<h2 id="v44_point">Обновления в тази 4.4.x версия</h2>
 
+<h3>4.4.1</h3>
+
+<p>Тази версия оправя няколко проблема със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/4.0.10/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Допълнително в тази версия бяха оправени следните [% terms.bugs %]:</p>
+
+<ul>
+  <li><kbd>checksetup.pl</kbd> вече не пропада с "Invalid version format (non-numeric data)"
+    когато Perl модул съдържа недействителен номер на версия.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=781672">[% terms.Bug %] 781672</a>)</li>
+  <li>Internet Explorer 11 и базирани на KHTML търсачки като Konqueror вече могат
+    да показват бъг списъци правилно.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=902515">[% terms.Bug %] 902515</a> и
+    <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=914262">[% terms.bug %] 914262</a>)</li>
+  <li>При промяна на няколко [% terms.abug %] наведнъж и местенето им в нов
+    продукт, [% terms.bugs %] ограничени до група в стария продукт могат
+    да изгубят тези групови ограничения в новия продукт.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=769134">[% terms.Bug %] 769134</a>)</li>
+  <li>Когато параметъра <kbd>password_complexity</kbd> беше зададен с
+    'letters_numbers_specialchars', бяха приемани пароли съдържащи само
+    числа и специални символи. Сега вече е подсигурено, че има също и буква.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=897264">[% terms.Bug %] 897264</a>)</li>
+  <li>Големи дървета на зависимости вече се показват доста по-бързо.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=917370">[% terms.Bug %] 917370</a>)</li>
+  <li>Когато потребител е дал много гласове, страницата "Гласове" вече се показва много по-бързо.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=851267">[% terms.Bug %] 851267</a>)</li>
+  <li>Страницата "Мои заявки" сега правилно използва оператора И/ИЛИ само за
+    полетата заявител и изпълнител вместо за всички полета.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=891311">[% terms.Bug %] 891311</a>)</li>
+  <li>Със сървъри на бази данни правещи нечувствителни към регистъра сравнения, като MySQL, белези
+    и бисквитки за вход не бяха правилно потвърждавани тъй като регистъра беше пренебрегван.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=906745">[% terms.Bug %] 906745</a> и
+    <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=907438">[% terms.bug %] 907438</a>)</li>
+  <li>Всички заглавки свързани със сигурността (като X-Frame-Options) вече биват връщани при използване на XML-RPC.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=787328">[% terms.Bug %] 787328</a>)</li>
+  <li>Oracle се чупеше при докладване на нов [% terms.bug %] ако потребителско поле със свободен текст
+    не беше задължително и е оставено празно.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=919475">[% terms.Bug %] 919475</a>)</li>
+  <li>Не беше възможно да се внесе [% terms.bugs %] с използване на <kbd>importxml.pl</kbd> с Oracle.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=848063">[% terms.Bug %] 848063</a>)</li>
+</ul>
 
 <h2 id="v44_req">Минимални изисквания</h2>
 
@@ -91,6 +134,7 @@
 [% INCLUDE req_table reqs = OPTIONAL_MODULES
                      new  = ['Net-SMTP-SSL', 'HTML-FormatText-WithLinks',
                              'File-MimeInfo', 'IO-stringy']
+                     updated = ['TheSchwartz']
                      include_feature = 1 %]
 
 <h3 id="v44_req_apache">Незадължителни Apache модули</h3>

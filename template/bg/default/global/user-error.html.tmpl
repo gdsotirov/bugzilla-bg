@@ -1381,21 +1381,21 @@
     [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа.
 
   [% ELSIF error == "password_not_complex" %]
-     [% title = "Парола неотговаряща на изискванията" %]
-     [% passregex = Param('password_complexity') %]
-     Паролата трябва да съдържа поне един/една:
-     <ul>
-       [% IF passregex.search('letters') %]
-         <li>ГЛАВНА буква</li>
-         <li>малка буква</li>
-       [% END %]
-       [% IF passregex.search('numbers') %]
-         <li>цифра</li>
-       [% END %]
-       [% IF passregex.search('specialchars') %]
-         <li>специален символ</li>
-       [% END %]
-     </ul>
+    [% title = "Парола неотговаряща на изискванията" %]
+    [% passregex = Param('password_complexity') %]
+    Паролата трябва да съдържа поне един/една:
+    <ul>
+      [% IF passregex == 'letters_numbers_specialchars' %]
+        <li>буква</li>
+        <li>специален символ</li>
+      [% ELSIF passregex.search('letters') %]
+        <li>ГЛАВНА буква</li>
+        <li>малка буква</li>
+      [% END %]
+      [% IF passregex.search('numbers') %]
+        <li>цифра</li>
+      [% END %]
+    </ul>
 
   [% ELSIF error == "product_access_denied" %]
     [% title = "Отказан достъп до продукт" %]
