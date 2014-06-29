@@ -438,6 +438,9 @@
   [% ELSIF error == "token_generation_error" %]
     Нещо е наистина грешно в системата за създаване на признаци.
 
+  [% ELSIF error == "cancel_token_does_not_exist" %]
+    Белега за изтриване не съществува.
+
   [% ELSIF error == "template_error" %]
     [% template_error_msg FILTER html %]
 
