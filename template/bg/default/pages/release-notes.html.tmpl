@@ -53,6 +53,37 @@
 
 <h2 id="v42_point">Обновления в тази 4.2.x версия</h2>
 
+<h3>4.2.8</h3>
+
+<p>Тази версия оправя един маловажен проблем със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/4.0.11/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Допълнително в тази версия бяха оправени следните [% terms.bugs %]:</p>
+
+<ul>
+  <li><kbd>checksetup.pl</kbd> неправилно докладваше DBI 1.630 (1.63) като
+    по-стар от 1.614, предотвратявайки приключване на надграждането.
+    Ако все още използвате Perl 5.10.0 или по-стар, уверете се че имате
+    <a href="http://search.cpan.org/~jpeacock/version/lib/version.pod">version</a>
+    модула инсталиран преди да пускане на <kbd>checksetup.pl</kbd>.
+    Ако ползвате Perl 5.10.1 или по-нов, този модул е вече наличен и
+    няма нужда от специални действия.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=938300">[% terms.Bug %] 938300</a>)</li>
+  <li><kbd>checksetup.pl</kbd> вече не пропада с "Invalid version format (non-numeric data)"
+    когато Perl модул съдържа недействителен номер на версия.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=781672">[% terms.Bug %] 781672</a>)</li>
+  <li>Променливата на средата PROJECT вече правилно се взема в предвид
+    когато е разрешен mod_perl (тази променлива позволява няколко инсталации да
+    споделят същия програмен код).
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=843457">[% terms.Bug %] 843457</a>)</li>
+  <li>[% terms.Bugzilla %] повече не се чупи когато параметъра <kbd>shutdownhtml</kbd>
+    е зададен и се ползва метод за удостоверяване без бисквитки.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=748095">[% terms.Bug %] 748095</a>)</li>
+  <li>Формата за дата и час по подразбиране използван за SQLite беше оправен.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=938161">[% terms.Bug %] 938161</a>)</li>
+</ul>
+
 <h3>4.2.7</h3>
 
 <p>Тази версия оправя няколко проблема със сигурността. Вижте
