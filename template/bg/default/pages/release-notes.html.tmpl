@@ -45,6 +45,33 @@
 
 <h2 id="v44_point">Обновления в тази 4.4.x версия</h2>
 
+<h3>4.4.3</h3>
+
+<p>Тази версия оправя два проблема със сигурността. Вижте
+  <a href="http://www.bugzilla.org/security/4.0.11/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Допълнително в тази версия бяха направени следните важни проправки/промени:</p>
+
+<ul>
+  <li>WebService метода <kbd>User.login</kbd> сега също връща
+    аргумент <kbd>token</kbd> съдържащ белга за вход който можете да използвате за
+    удостоверяване в последващи извиквания. От съображения за сигурност, този метод
+    вече не създава бисквитки за вход.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=893195">[% terms.Bug %] 893195</a>)</li>
+  <li>WebService метода <kbd>User.get</kbd> сега правилно взима в предвид
+    параметъра <kbd>maxusermatches</kbd> когато е подаден <kbd>match</kbd>
+    аргумента. Преди той връщаше всички съвпадащи сметки.
+    За още по-голямо орграничаване на броя на сметките връщани от <kbd>User.get</kbd>,
+    вече можете да подавате аргумента <kbd>limit</kbd>.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=962060">[% terms.Bug %] 962060</a>)</li>
+  <li>Бисквитката за представяне за друг потребител вече не е достъпна от JavaScript.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=966676">[% terms.Bug %] 966676</a>)</li>
+  <li>Големи дървета със зависимости с много разрешени [% terms.bugs %] вече се зареждат
+    много по-бързо.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=961789">[% terms.Bug %] 961789</a>)</li>
+</ul>
+
 <h3>4.4.2</h3>
 
 <p>Следните [% terms.bugs %] бяха оправени в тази версия:</p>
@@ -58,7 +85,7 @@
     Ако ползвате Perl 5.10.1 или по-нов, този модул е вече наличен и
     няма нужда от специални действия.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=938300">[% terms.Bug %] 938300</a>)</li>
-  <li>Грашка за <kbd>longdescs.comment_id</kbd> беше изхвърляна от MySQL 5.0
+  <li>Грешка за <kbd>longdescs.comment_id</kbd> беше изхвърляна от MySQL 5.0
     и 5.1 при надграждане към [% terms.Bugzilla %] 4.4 или 4.4.1.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=870369">[% terms.Bug %] 870369</a>)</li>
   <li>Съхранени търсения съдържащи Уникод символи в името си не могат

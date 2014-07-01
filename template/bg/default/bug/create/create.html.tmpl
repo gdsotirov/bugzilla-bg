@@ -565,6 +565,9 @@ TUI_hide_default('attachment_text_field');
           Правене на описанието и всички нови приставки частни (видими само за членове на
           група <strong>[% Param('insidergroup') FILTER html %]</strong>)
         </label>
+        <script>
+          updateCommentTagControl(document.getElementById('comment_is_private'), 'comment');
+        </script>
       </td>
     </tr>
   [% END %]

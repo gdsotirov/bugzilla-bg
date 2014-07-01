@@ -67,9 +67,10 @@
     <p>
       Накрая, въведете <label for="Bugzilla_password">вашата [% terms.Bugzilla %]
       парола:</label>:
-      <input type="hidden" name="Bugzilla_login" value="
-      [%- user.login FILTER html %]">
+      <input type="hidden" name="Bugzilla_login" value="[% user.login FILTER html %]">
       <input type="password" id="Bugzilla_password" name="Bugzilla_password" size="20">
+      <input type="hidden" name="Bugzilla_login_token"
+             value="[% login_request_token FILTER html %]">
       <br>
       Това се прави поради две причини.  Първо, за да намали
       шанса някой да нанесе големи щети използвайки сметката,

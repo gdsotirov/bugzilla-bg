@@ -217,6 +217,15 @@
 
     [% Hook.process("auth_failure") %]
 
+  [% ELSIF error == "auth_untrusted_request" %]
+    [% title = "Недостоверна заявка за удостоверяване" %]
+    Опитахте се да влезете използвайки сметката <em>[% login FILTER html %]</em>,
+    но [% terms.Bugzilla %] не е в състояние да се довери на заявкта ви. Уверете се,
+    че търсачката ви приема бисквитки и че не сте били пренасочени
+    тук от външен web сайт.
+    <a href="index.cgi?GoAheadAndLogIn=1">Щракнете тук</a> ако наистина желаете
+    да влезете.
+
   [% ELSIF error == "attachment_deletion_disabled" %]
     [% title = "Изтриването на приставки е забранено" %]
     Изтриването на приставки е забранено на тази инсталация.
@@ -836,13 +845,13 @@
     [% title = "Непозволено" %]
     Опитахте се да смените
     полето <strong>[% field_descs.$field FILTER html %]</strong>
-    [% IF oldvalue.defined %]
+    [% IF oldvalue.defined AND oldvalue != "" %]
       от <em>[% oldvalue.join(', ') FILTER html %]</em>
     [% END %]
-    [% IF newvalue.defined %]
+    [% IF newvalue.defined AND newvalue != "" %]
       на <em>[% newvalue.join(', ') FILTER html %]</em>
-    [% END %]
-    , но само
+    [% END %],
+    но само
     [% IF privs < constants.PRIVILEGES_REQUIRED_EMPOWERED %]
       назначения по
       [% IF privs < constants.PRIVILEGES_REQUIRED_ASSIGNEE %] или докладвалия [% END %]

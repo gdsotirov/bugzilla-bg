@@ -58,16 +58,14 @@
         [% END %]
         [% IF groups_added_to.size %]
           <li>
-            Сметката беше добавена към 
-            груп[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %]
-            [%+ groups_added_to.join(', ') FILTER html %].
+            Сметката беше добавена към следн[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %] груп[% 'а' IF groups_added_to.size == 1 %][% 'и' IF groups_added_to.size > 1 %]
+            [%+ groups_added_to.join(', ') FILTER html %]
           </li>
         [% END %]
         [% IF groups_removed_from.size %]
           <li>
-            Сметката беше премахната от
-            груп[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %]
-            [%+ groups_removed_from.join(', ') FILTER html %].
+            Сметката беше премахната от следн[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %] груп[% 'а' IF groups_removed_from.size == 1 %][% 'и' IF groups_removed_from.size > 1 %]
+            [%+ groups_removed_from.join(', ') FILTER html %]
           </li>
         [% END %]
         [% IF groups_granted_rights_to_bless.size %]
@@ -919,9 +917,9 @@
 [%# Give sensible error if the message function is used incorrectly. #%]
 [% IF !message %]
   [% message = BLOCK %]
-    Използвате функцияиите за съобщения на [% terms.Bugzilla %] неправилно.
+    Използвате функцията за съобщения на [% terms.Bugzilla %] неправилно.
     Подадохте низа '[% message_tag %]'. Правилното използване е чрез подаване на
-    таг и описването му във файла messages.html.tmpl.<br>
+    таг и описването му във файла <kbd>messages.html.tmpl</kbd>.<br>
     <br>
     Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля
     съхранете тази страница и я изпратете на [% Param('maintainer') %].
