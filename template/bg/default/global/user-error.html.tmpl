@@ -1725,10 +1725,11 @@
     и опитайте отново.
 
   [% ELSIF error == "unknown_action" %]
+    [% title = "Непознато действие" %]
     [% IF action %]
-       Непознато действие [% action FILTER html %]!
+      Непознато действие "[% action.truncate(20, "...") FILTER html %]"!
     [% ELSE %]
-       Не мога да установя какво искахте да направите.
+      Не мога да установя какво искахте да направите.
     [% END %]
 
   [% ELSIF error == "unknown_tab" %]

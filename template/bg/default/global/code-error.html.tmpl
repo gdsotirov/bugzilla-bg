@@ -219,7 +219,8 @@
     а вместо това <em>[% target_type FILTER html %]</em>.
   
   [% ELSIF error == "invalid_field_name" %]
-    [% field FILTER html %] не може да бъде използвано като име на поле.
+    [% title = "Недействително име на поле" %]
+    Не може да се ползва "[% field.truncate(30, "...") FILTER html %]" като име на поле.
 
   [% ELSIF error == "jobqueue_insert_failed" %]
    [% title = "Провал в Работната Опашка" %]
@@ -384,8 +385,9 @@
     Неправилна настройка за post_bug_submit_action
 
   [% ELSIF error == "search_field_operator_unsupported" %]
+    [% title = "Недействителен тип търсене" %]
     [% terms.Bugzilla %] не поддържа тип на търсене
-    "[% operator FILTER html %]".
+    "[% operator.truncate(30, "...") FILTER html %]".
 
   [% ELSE %]
     [%# Try to find hooked error messages %]
