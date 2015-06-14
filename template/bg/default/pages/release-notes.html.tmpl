@@ -53,13 +53,32 @@
 
 <h2 id="v42_point">Обновления в тази 4.2.x версия</h2>
 
+<h3>4.2.14</h3>
+
+<p>Тази версия съдържа следните поправки на [% terms.bugs %]:</p>
+
+<ul>
+  <li>На потребители които не са в insidergroup им беше невъзможно да определят дали някой
+    определен потребител е направил  частен коментар в [% terms.bugs %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1151290">[% terms.Bug %] 1151290</a>)</li>
+  <li>Поради регресия причинена от <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1090275">
+    [% terms.bug %] 1090275</a>, WebService методите <kbd>B[%%]ug.get_bugs</kbd> и
+    <kbd>B[%%]ug.get_history</kbd> вече не бяха разрешени.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1154099">[% terms.Bug %] 1154099</a>)</li>
+  <li><kbd>B[%%]ug.update</kbd> понякога връщаше <kbd>cc_accessible</kbd>
+    вместо <kbd>is_cc_accessible</kbd> as being changed.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1001846">[% terms.Bug %] 1001846</a>)</li>
+  <li>Подтиснати предупреждения изхвърляни от CGI 4.05 и по-нов за "CGI::param извикван в списъчен контекст".
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1087400">[% terms.Bug %] 1087400</a>)</li>
+</ul>
+
 <h3>4.2.13</h3>
 
 <p>Тази версия съдържа следната поправка на [% terms.bug %]:</p>
 
 <ul>
   <li>Поправка на регресия причинена от <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1090275">
-    [% terms.bug %] 10902750</a>, <kbd>JSON-RPC</kbd> API извиквания могат да се счупят в
+    [% terms.bug %] 1090275</a>, <kbd>JSON-RPC</kbd> API извиквания могат да се счупят в
     определени случаи, вместо да покажат правилното съобщене за грешка.
     (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1124716">[% terms.Bug %] 1124716</a>)</li>
 </ul>
