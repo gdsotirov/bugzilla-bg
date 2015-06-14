@@ -45,6 +45,25 @@
 
 <h2 id="v44_point">Обновления в тази 4.4.x версия</h2>
 
+<h3>4.4.9</h3>
+
+<p>Тази версия съдържа следните попрвки на [% terms.bugs %]:</p>
+
+<ul>
+  <li>На потребители които не са в insidergroup им беше невъзможно да определят дали някой
+    определен потребител е направил  частен коментар в [% terms.bugs %].
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1151290">[% terms.Bug %] 1151290</a>)</li>
+  <li>Поради регресия причинена от <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1090275">
+    [% terms.bug %] 1090275</a>, WebService методите <kbd>B[%%]ug.get_bugs</kbd> и
+    <kbd>B[%%]ug.get_history</kbd> вече не бяха разрешени.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1154099">[% terms.Bug %] 1154099</a>)</li>
+  <li>[% terms.Bugzilla %] вече поддържа новия <kbd>.htaccess</kbd> формат от Apache 2.4.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1121477">[% terms.Bug %] 1121477</a>)</li>
+  <li>Регресия в [% terms.Bugzilla %] 4.4.3 поради CVE-2014-1517 причиняваше пренебрегване на
+    администраторската парола при стартиране на sudo сесия.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1132887">[% terms.Bug %] 1132887</a>)</li>
+</ul>
+
 <h3>4.4.8</h3>
 
 <p>Тази версия съдържа следната поправка на [% terms.bug %]:</p>
