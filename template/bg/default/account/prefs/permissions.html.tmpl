@@ -17,12 +17,11 @@
   #           other people.
   #%]
 
-<table align="center">
-  <tr>
-    <td>
+    <div id="permissions">
       [% IF has_bits.size %]
-        Имате следните разрешаващи битове зададени на сметката ви:
-        <table align="center">
+        <p>Имате следните разрешаващи битове зададени на сметката ви:</p>
+
+        <table>
           [% FOREACH bit_description = has_bits %]
             <tr>
               <td>[% bit_description.name FILTER html %]</td>
@@ -34,46 +33,47 @@
         [% FOREACH privs = ["editcomponents", "canconfirm", "editbugs"] %]
           [% SET products = ${"local_$privs"} %]
           [% IF products && products.size %]
-            <br>
             <p>
               Също така имате локални '[% privs FILTER html %]' права
               за следните продукти:
             </p>
-            <p>
+            <ul>
               [% FOREACH product = products %]
-                [% product.name FILTER html %]<br>
+                <li>[% product.name FILTER html %]</li>
               [% END %]
-            </p>
+            </ul>
           [% END %]
         [% END %]
 
       [% ELSE %]
-        Няма разрешаващи битове зададени на сметката ви.
+        <p>Няма разрешаващи битове зададени на сметката ви.</p>
       [% END %]
 
       [% IF user.in_group('editusers') %]
-        <br>
-        Имате права за редактиране на потребители.  Можете да давате или снемате
-        всички разрешения на всички потребители.
+        <p>
+          Имате права за редактиране на потребители. Можете да давате или снемате
+          всички разрешения на всички потребители.
+        </p>
       [% ELSIF set_bits.size %]
-        <br>
-        И можете да давате или снемате следните битове за
-        <a href="editusers.cgi">други потребители</a>:
-          <table align="center">
+        <p>
+          И можете да давате или снемате следните битове за
+          <a href="editusers.cgi">други потребители</a>:
+        </p>
+
+        <table>
           [% FOREACH bit_description = set_bits %]
             <tr>
               <td>[% bit_description.name FILTER html %]</td>
               <td>[% bit_description.desc FILTER html_light %]</td>
             </tr>
           [% END %]
-          </table>
+        </table>
       [% END %]
 
       [% IF user.in_group('bz_sudoers') %]
-        <br>
-        Член сте на групата <b>bz_sudoers</b>, така че можете да се 
-        <a href="relogin.cgi?action=prepare-sudo">представите за някой друг</a>.
+        <p>
+          Член сте на групата <b>bz_sudoers</b>, така че можете да се 
+          <a href="relogin.cgi?action=prepare-sudo">представите за някой друг</a>.
+        </p>
       [% END %]
-    </td>
-  </tr>
-</table>
+    </div>

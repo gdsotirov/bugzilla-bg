@@ -1,0 +1,84 @@
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+  #
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
+  #%]
+
+[%# INTERFACE:
+  # api_keys: array. Array of api keys this user has.
+  # any_revoked: boolean. True is any keys have been revoked.
+  #%]
+
+<p>
+  <abbr lang="en" title="Application programming interface">API</abbr> ключовете се използват за удостоверяване на WebService API извиквания. Можете да създавате повече от
+  един <abbr lang="en" title="Application programming interface">API</abbr> ключ ако е нужно. Всеки <abbr lang="en" title="Application programming interface">API</abbr> ключ има незадължително описание което ви помога
+  да запишете за какво се ползва всеки ключ. Документацията относно начина на влизане е
+  достъпна от
+  <a href="[% docs_urlbase FILTER html %]api/Bugzilla/WebService.html#LOGGING_IN">тук</a>.
+</p>
+
+<h3>Съществуващи <abbr lang="en" title="Application programming interface">API</abbr> ключове</h3>
+
+<p>Можете да обновите описанието и да отменяте или възобновявате същестуващи <abbr lang="en" title="Application programming interface">API</abbr> ключове
+тук.</p>
+
+<table id="email_prefs">
+  <tr class="column_header">
+    <th><abbr lang="en" title="Application programming interface">API</abbr> ключ</th>
+    <th>Описание (незадължително)</th>
+    <th>Последно използван</th>
+    <th>Отменен</th>
+  </tr>
+
+  [% FOREACH api_key IN api_keys %]
+    <tr[% IF api_key.revoked %] class="apikey_revoked"[% END %]>
+      <td>[% api_key.api_key FILTER html %]</td>
+      <td>
+        <input name="description_[% api_key.id FILTER html %]"
+          id="description_[% api_key.id FILTER html %]"
+          value="[% api_key.description FILTER html %]">
+      </td>
+      [% IF api_key.last_used %]
+        <td>[% api_key.last_used FILTER time %]</td>
+      [% ELSE %]
+        <td class="center"><i>never used</i></td>
+      [% END %]
+      <td class="center">
+        <input type="checkbox" value="1"
+          name="revoked_[% api_key.id FILTER html %]"
+          id="revoked_[% api_key.id FILTER html %]"
+          [% IF api_key.revoked %] checked="checked" [% END %]>
+      </td>
+    </tr>
+  [% END %]
+  [% UNLESS api_keys.size %]
+    <tr><td colspan="4">Нямате никакви <abbr lang="en" title="Application programming interface">API</abbr> ключове.</td></tr>
+  [% END %]
+</table>
+
+[% IF any_revoked %]
+  <a id="apikey_revoked_controller" class="bz_default_hidden"
+     href="javascript:TUI_toggle_class('apikey_revoked')">Скриване на отменените ключове</a>
+  [%# Show the link if the browser supports JS %]
+  <script type="text/javascript">
+    TUI_hide_default('apikey_revoked');
+    TUI_alternates['apikey_revoked'] = 'Показване на отменените ключове';
+    YAHOO.util.Dom.removeClass('apikey_revoked_controller',
+                               'bz_default_hidden');
+  </script>
+[% END %]
+
+<h3>Нов <abbr lang="en" title="Application programming interface">API</abbr> ключ</h3>
+
+<p>Можете да създадете нов <abbr lang="en" title="Application programming interface">API</abbr> ключ с отмятането на полето за отметка отдолу и ако желаете
+можете да предоставите описание за него. <abbr lang="en" title="Application programming interface">API</abbr> ключ ще бъде създаден за
+вас на случаен принцип.</p>
+
+<p>
+  <input type="checkbox" name="new_key" id="new_key">
+  Създаване на нов API ключ с незадължително описание
+  <input name="new_description" id="new_description">
+</p>
+

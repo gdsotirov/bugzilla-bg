@@ -13,13 +13,9 @@
   # Param("emailsuffix") is used to pre-fill the email field.
   #%]
 
-[% title = BLOCK %]
-Създаване на нова [% terms.Bugzilla %] сметка
-[% END %]
-
 [% PROCESS global/header.html.tmpl
-           title = title
-           onload = "document.forms['account_creation_form'].login.focus();" %]
+           title = "Създаване на нова $terms.Bugzilla сметка"
+%]
 
 <p>
   За създаване на [% terms.Bugzilla %] сметка, всичко което трябва да направите е да въведете
@@ -32,16 +28,28 @@
   На този адрес ще получите писмо за потвърждаване създаването на сметката
   ви. <b>Няма да имате възможност да влезете докато не получите писмото.</b>
   Ако то не пристигне в приемлив интервал от време, можете да се свържете
-  с поддържащия тази [% terms.Bugzilla %] инсталация
+  с поддържащия тази Bugzilla инсталация
   на <a href="mailto:[% Param("maintainer") %]">[% Param("maintainer") %]</a>.
 </p>
+
+[% IF Param('allowemailchange') %]
+<p>
+  Ако вече имате сметка и искате да смените
+  [% IF Param('emailsuffix') == '' %]
+    адреса си за е-поща,
+  [% ELSE %]
+    потребителското си име,
+  [% END %]
+  можете да го направите от страницата Предпочитания след като влезете.
+</p>
+[% END %]
 
 <p>
   Необходима е потребителска сметка за докладване на нови [% terms.bugs %] или за оставяне на мнения по
   съществуващи, тъй като може да се наложи връзка с вас за повече информация при нужда.
   Това също позволява на други потребители ясно да отъждествяват автора на мнения
   или промени направени по [% terms.bugs %]. <b>Имайте предвид, че адреса ви за електронна поща
-  <u>никога</u> няма да бъде показван на нерегистрирани потребители. Само регистрирани потребители ще
+  <em>никога</em> няма да бъде показван на нерегистрирани потребители. Само регистрирани потребители ще
   могат да го виждат.</b>
 </p>
 
@@ -56,18 +64,16 @@
 [% END %]
 
 <form id="account_creation_form" method="get" action="createaccount.cgi">
-  <table>
-    <tr>
-      <td align="right">
-        <b>Е-пощенски адрес:</b>
-      </td>
-      <td>
-        <input size="35" id="login" name="login">
-        [% Param('emailsuffix') FILTER html %]
-      </td>
-    </tr>
-  </table>
-  <br>
+  <span class="label">
+    [% IF Param('emailsuffix') %]
+      Потребителско име:
+    [% ELSE %]
+      Е-пощенски адрес:
+    [% END %]
+  </span>
+  <input size="35" id="login" name="login" autofocus
+         [%- ' type="email"' UNLESS Param('emailsuffix') %] required>
+  [% Param('emailsuffix') FILTER html %]
   <input type="hidden" id="token" name="token" value="[% issue_hash_token(['create_account']) FILTER html %]">
   <input type="submit" id="send" value="Изпращане">
 </form>

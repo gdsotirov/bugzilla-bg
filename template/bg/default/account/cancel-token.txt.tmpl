@@ -11,7 +11,7 @@ To: [% emailaddress %]
 Subject: [% PROCESS subject %]
 X-Bugzilla-Type: admin
 
-Заявка беше отхвърлена от [% remoteaddress %].
+[% PROCESS subject %] от [% remoteaddress %].
 
 Ако не сте заявили това, то може би това е или искрена грешка
 или някой се опитва да открадне вашата сметка в [% terms.Bugzilla %].
@@ -81,7 +81,7 @@ X-Bugzilla-Type: admin
   [% ELSE %]
     [%# Give sensible error if the cancel-token function is used incorrectly.
       #%]
-    Използвате функцията за отхвърляне на признаци на [% terms.Bugzilla %] неправилно. Подали
+    Използвате функцията за отхвърляне на признаци на Bugzilla неправилно. Подали
     сте низа '[% cancelaction %]'. Правилното използване е да подадете етикет
     и да определите този етикет във файла <kbd>cancel-token.txt.tmpl</kbd>.
 

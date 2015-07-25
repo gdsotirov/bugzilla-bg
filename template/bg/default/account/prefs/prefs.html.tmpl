@@ -23,25 +23,25 @@
   #%]
 
 [% filtered_login = user.login FILTER html %]
-[% PROCESS global/header.html.tmpl
-   title = "Потребителски предпочитания"
-   subheader = filtered_login
-   style_urls = ['skins/standard/admin.css']
-   javascript_urls = ['js/util.js', 'js/field.js']
-   doc_section = "userpreferences.html"
-   yui = ['autocomplete']
- %]
 
 [% tabs = [{ name => "settings", label => "Общи предпочитания",
-              link => "userprefs.cgi?tab=settings", saveable => "1" },
+              link => "userprefs.cgi?tab=settings", saveable => "1",
+              doc_section => "using/preferences.html#general-preferences" },
             { name => "email", label => "Е-пощенски предпочитания", 
-              link => "userprefs.cgi?tab=email", saveable => "1" },
+              link => "userprefs.cgi?tab=email", saveable => "1",
+              doc_section => "using/preferences.html#email-preferences" },
             { name => "saved-searches", label => "Съхранени търсения", 
-              link => "userprefs.cgi?tab=saved-searches", saveable => "1" },
+              link => "userprefs.cgi?tab=saved-searches", saveable => "1",
+              doc_section => "using/preferences.html#saved-searches" },
             { name => "account", label => "Информация за сметка",
-              link => "userprefs.cgi?tab=account", saveable => "1" },
+              link => "userprefs.cgi?tab=account", saveable => "1",
+              doc_section => "using/preferences.html#account-information" },
+            { name => "apikey", label => "API ключове",
+              link => "userprefs.cgi?tab=apikey", saveable => "1",
+              doc_section => "using/preferences.html#api-keys" },
             { name => "permissions", label => "Позволения", 
-              link => "userprefs.cgi?tab=permissions", saveable => "0" } ] %]
+              link => "userprefs.cgi?tab=permissions", saveable => "0",
+              doc_section => "using/preferences.html#permissions" } ] %]
 
 [% Hook.process('tabs') %]
 
@@ -51,6 +51,16 @@
     [% LAST %]
   [% END %]
 [% END %]
+
+[% PROCESS global/header.html.tmpl
+   title = current_tab.label
+   subheader = filtered_login
+   generate_api_token = 1
+   style_urls = ['skins/standard/admin.css']
+   javascript_urls = ['js/util.js', 'js/field.js', 'js/TUI.js']
+   doc_section = current_tab.doc_section
+   yui = ['autocomplete']
+ %]
 
 [% WRAPPER global/tabs.html.tmpl
    tabs        = tabs
@@ -63,8 +73,9 @@
 
     [% IF email_changes_saved %]
       <p>
-        Електронна поща беше изпратена и към стария и към новия
-        електронен пощенски адрес за потвърждаване на промяната му.
+        За потвърждаване на вашата заявка беше изпратено писмо към новия
+        ви адрес за е-поща. Като предпазна мярка писмо беше изпратено и
+        към стария ви адрес позволявайки ви отхвърляне на промяната при нужда.
       </p>
     [% END %]
   </div>
@@ -83,16 +94,10 @@
 
 [% IF current_tab.saveable %]
     <input type="hidden" name="dosave" value="1">
-
     [% UNLESS dont_show_button %]
-      <table>
-        <tr>
-          <td width="150">&nbsp;</td>
-          <td>
-            <input type="submit" id="update" value="Предаване на промените">
-          </td>
-        </tr>
-      </table>
+      <p>
+        <input type="submit" id="update" value="Предаване на промените">
+      </p>
     [% END %]
   </form>
 [% END %]

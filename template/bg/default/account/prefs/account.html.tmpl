@@ -21,7 +21,7 @@
       </td>
     </tr>
     <tr>
-      <th align="right">Парола:</th>
+      <th>Парола:</th>
       <td>
         <input type="hidden" name="old_login" value="[% user.login FILTER html %]">
         <input type="password" name="old_password">
@@ -34,22 +34,22 @@
 
   [% IF user.authorizer.can_change_password %]
     <tr>
-      <th align="right">Нова парола:</th>
+      <th>Нова парола:</th>
       <td>
         <input type="password" name="new_password1">
       </td>
-    </tr>              
+    </tr>
 
     <tr>
-      <th align="right">Потвърждаване на нова парола:</th>
+      <th>Потвърждаване на нова парола:</th>
       <td>
         <input type="password" name="new_password2">
       </td>
-    </tr>              
+    </tr>
   [% END %]
 
   <tr>
-    <th align="right">Истинското ви име (незадължително, но се насърчава):</th>
+    <th>Истинското ви име (незадължително, но се насърчава):</th>
     <td>
       <input size="35" name="realname" value="[% realname FILTER html %]">
     </td>
@@ -59,28 +59,35 @@
     [% IF login_change_date %]
       [% IF new_login_name %]
         <tr>
-          <th align="right">Предстоящ е-пощенски адрес:</th>
+          <th>Предстоящ е-пощенски адрес:</th>
           <td>[% new_login_name FILTER html %]</td>
         </tr>
         <tr>
-          <th align="right">Заявката за промяна изтича:</th>
+          <th>Заявката за промяна изтича:</th>
           <td>[% login_change_date FILTER time %]</td>
         </tr>
       [% ELSE %]
         <tr>
-          <th align="right">Потвърден е-пощенски адрес:</th>
+          <th>Потвърден е-пощенски адрес:</th>
           <td>[% user.login FILTER html %]</td>
         </tr>
         <tr>
-          <th align="right">Дата на изпълнение</th>
+          <th>Дата на изпълнение</th>
           <td>[% login_change_date FILTER time %]</td>
         </tr>
       [% END %]
     [% ELSE %]
       <tr>
-        <th align="right">Нов е-пощенски адрес:</th>
+        <th>
+          [% IF Param('emailsuffix') %]
+            Ново потребителско име:
+          [% ELSE %]
+            Нов е-пощенски адрес:
+          [% END %]
+        </th>
         <td>
-          <input size="35" name="new_login_name">
+          <input size="35" id="new_login_name" name="new_login_name"
+                 [%- ' type="email"' UNLESS Param('emailsuffix') %]>
         </td>
       </tr>
     [% END %]

@@ -15,7 +15,9 @@
 [% title = BLOCK %]Създаване на нова сметка за '[% email FILTER html %]'[% END %]
 [% PROCESS "global/header.html.tmpl"
            title = title
-           onload = "document.forms['confirm_account_form'].realname.focus();" %]
+%]
+
+[% password_complexity = Param('password_complexity') %]
 
 <p>
   За да създадете сметката си, трябва да въведете парола във формуляра отдолу.
@@ -28,26 +30,34 @@
   <input type="hidden" name="a" value="confirm_new_account">
   <table>
     <tr>
-      <th align="right">Е-пощенски адрес:</th>
+      <th>Е-пощенски адрес:</th>
       <td>[% email FILTER html %]</td>
     </tr>
     <tr>
-      <th align="right"><small><i>(НЕЗАДЪЛЖИТЕЛНО)</i></small> <label for="realname">Истинско име</label>:</th>
-      <td><input type="text" id="realname" name="realname" value=""></td>
+      <th><small><i>(НЕЗАДЪЛЖИТЕЛНО)</i></small> <label for="realname">Истинско име</label>:</th>
+      <td><input id="realname" name="realname" autofocus></td>
     </tr>
     <tr>
-      <th align="right"><label for="passwd1">Въвеждане на парола</label>:</th>
+      <th><label for="passwd1">Въвеждане на парола</label>:</th>
       <td>
-        <input type="password" id="passwd1" name="passwd1" value="">
-        (минимум [% constants.USER_PASSWORD_MIN_LENGTH FILTER none %] символа)
+        <input type="password" id="passwd1" name="passwd1" value="" required>
+        (Паролата трябва да бъде дълга минимум [% constants.USER_PASSWORD_MIN_LENGTH FILTER none %] символа
+        [% IF password_complexity == "mixed_letters" %]
+          и трябва да съдържа поне една ГОЛЯМА и една малка буква
+        [% ELSIF password_complexity == "letters_numbers" %]
+          и трябва да съдържа поне една ГОЛЯМА и една малка буква и цифра
+        [% ELSIF password_complexity == "letters_numbers_specialchars" %] 
+          и трябва да съдържа поне една буква, цифра и специален символ
+        [% END ~%]
+        .)
       </td>
     </tr>
     <tr>
-      <th align="right"><label for="passwd2">Повторно въвеждане на парола</label>:</th>
-      <td><input type="password" id="passwd2" name="passwd2" value=""></td>
+      <th><label for="passwd2">Повторно въвеждане на парола</label>:</th>
+      <td><input type="password" id="passwd2" name="passwd2" value="" required></td>
     </tr>
     <tr>
-      <th align="right">&nbsp;</th>
+      <th>&nbsp;</th>
       <td><input type="submit" id="confirm" value="Създаване"></td>
     </tr>
   </table>
@@ -55,7 +65,7 @@
 
 <p>
   Сметката няма да бъде създадена ако този формуляр не е попълнен до
-  <u>[% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]</u>.
+  <b>[% expiration_ts FILTER time("%e %B %Y в %H:%M %Z") %]</b>.
 </p>
 
 <p>
@@ -66,7 +76,7 @@
 <form id="cancel_account_form" method="post" action="token.cgi">
   <input type="hidden" name="t" value="[% token FILTER html %]">
   <input type="hidden" name="a" value="cancel_new_account">
-  <input type="submit" id="confirm" value="Отказ от сметката">
+  <input type="submit" id="confirm" value="Отказ от сметка">
 </form>
 
 [% PROCESS global/footer.html.tmpl %]
