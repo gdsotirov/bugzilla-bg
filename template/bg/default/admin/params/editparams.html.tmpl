@@ -25,7 +25,7 @@
 
 [% title = BLOCK %]
   [% IF curpanel == -1 %]
-    Параметри: Индекс
+    Параметри: Показалец
   [% ELSE %]
     Конфигурация:
     [%+ current_panel.title FILTER html %]
@@ -35,14 +35,13 @@
 [% PROCESS global/header.html.tmpl
    title = title
    message = message
-   style_urls = ['skins/standard/params.css']
+   style_urls = ['skins/standard/admin.css']
    javascript_urls = ['js/params.js', 'js/util.js']
-   doc_section = "parameters.html"
+   doc_section = "administering/parameters.html"
 %]
 
-<table border="0" width="100%">
-  <tr>
-    <td>
+<div class="table">
+  <div class="cell">
       [%# NAVIGATION BAR %]
       <table id="menu">
         <tr>
@@ -66,38 +65,37 @@
           </tr>
         [% END %]
       </table>
-    </td>
-    <td>
-      [% IF curpanel == -1 %]
-        [% PROCESS admin/params/index.html.tmpl panels = panels %]
-      [% ELSE %]
+  </div>
 
-        <div class="contribute"><strong>Бележка:</strong>
-          B[% %]ugzilla се разработва изцяло от доброволци. Най-добрия
-          начин да се отблагодарите на проекта B[% %]ugzilla е
-          <a href="http://www.bugzilla.org/contribute/">да съдействувате</a>
-          самите вие!
-          Не е нужно да сте програмист, за да участвате, има
-          много неща от които имаме нужда.
-        </div>
+  <div class="cell">
+    <div id="contribute">
+      <strong>Бележка:</strong>
+      Bugzilla се разработва изцяло от доброволци.
+      Най-добрия начин да се отблагодарите на проекта Bugzilla е
+      <a href="http://www.bugzilla.org/contribute/">да съдействувате</a> самите вие!
+      Не е нужно да сте програмист, за да участвате, има много
+      неща от които имаме нужда.
+    </div>
 
+    [% IF curpanel == -1 %]
+      [% PROCESS admin/params/index.html.tmpl panels = panels %]
+    [% ELSE %]
         <p>
-          Тази страница Ви позволява да редактирате основните работни параметри на [% terms.Bugzilla %].
+          Тази страница Ви позволява да редактирате основните работни параметри на Bugzilla.
           Бъдете внимателни!<br>
           Всеки параметър, за който изберете "Изчистване", ще бъде върнат към подразбиращата се стойност.
         </p>
 
         [%# CONTENT PANEL %]
-        <form method="post" action="editparams.cgi">
+        <form id="edit_params" method="post" action="editparams.cgi">
           [% PROCESS admin/params/common.html.tmpl panel = current_panel %]
           <input type="hidden" name="section" value="[% current_panel.name FILTER html %]">
           <input type="hidden" name="action" value="save">
           <input type="hidden" name="token" value="[% token FILTER html %]">
           <input type="submit" id="save-params" value="Запазване на промените">
         </form>
-      [% END %]
-    </td>
-  </tr>
-</table>
+    [% END %]
+  </div>
+</div>
 
 [% INCLUDE global/footer.html.tmpl %]

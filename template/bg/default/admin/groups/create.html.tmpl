@@ -13,29 +13,34 @@
 [% PROCESS global/header.html.tmpl
   title = "Добавяне на група"
   subheader = "Тази страница ви позволява да определите нова потребителска група."
-  doc_section = "groups.html#create-groups"
+  style_urls = ['skins/standard/admin.css']
+  doc_section = "administering/groups.html#creating-groups"
 %]
 
 <form method="post" action="editgroups.cgi">
-  <table border="1" cellpadding="4" cellspacing="0"><tr>
-    <th>Ново име</th>
-    <th>Ново описание</th>
-    <th>Нов потребителски регулярен израз</th>
-    <th>Използване за [% terms.bugs %]</th>
-  </tr><tr>
-    <td><input size="20" name="name"></td>
-    <td><input size="40" name="desc"></td>
-    <td><input size="30" name="regexp"></td>
-    <td><input type="checkbox" name="isactive" value="1" checked></td>
-  </tr>
-  <tr>
-    <th><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на икона:</th>
-    <td colspan="3"><input type="text" size="70" maxlength="255" id="icon_url" name="icon_url"></td>
-  </tr>
-  [% Hook.process('field') %]
+  <table id="admin_table_edit">
+    <tr>
+      <th>Име на група:</th>
+      <td><input size="60" maxlength="255" name="name" required></td>
+    </tr>
+    <tr>
+      <th>Описание</th>
+      <td><input size="60" name="desc" required></td>
+    </tr>
+    <tr>
+      <th>Потребителски регулярен израз</th>
+      <td><input size="60" name="regexp"></td>
+    </tr>
+    <tr>
+      <th><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на икона:</th>
+      <td><input type="text" size="60" id="icon_url" name="icon_url"></td>
+    </tr>
+    <tr>
+      <th>Използване за [% terms.bugs %]</th>
+      <td><input type="checkbox" name="isactive" value="1" checked></td>
+    </tr>
+    [% Hook.process('field') %]
   </table>
-
-  <hr>
 
   <input type="checkbox" id="insertnew" name="insertnew" value="1"
     [% IF Param("makeproductgroups") %] checked[% END %]>
@@ -46,7 +51,9 @@
   <input type="hidden" name="token" value="[% token FILTER html %]">
 </form>
 
-<p><b>Името</b> е това което се използва с функцията B<!-- blah -->ugzilla->user->in_group()
+<hr>
+
+<p><b>Име на група</b> е това което се използва с функцията B[%%]ugzilla->user->in_group()
 във всеки допълнително написан cgi файл, който трябва да използва дадена група.
 Също така може да бъде използвано от хора предаващи [% terms.bugs %] по е-поща, за да
 ограничи [% terms.abug %] до известен набор от групи.</p>
@@ -54,15 +61,6 @@
 <p><b>Описанието</b> е това което ще бъде показано в [% terms.bug %] докладите
 на членовете на групата, където те могат да изберат дали 
 [% terms.abug %] да бъде ограничен за другите в същата група.</p>
-
-<p>Флагът <b>Използване за [% terms.bugs %]</b> определя дали е приемливо
-групата да бъде използвана за [% terms.bugs %]. Ако изчистите това поле, то
-повече няма да бъде възможно за потребителите да добавят [% terms.bugs %] към
-тази група, въпреки че [% terms.bugs %] които вече са в групата ще си останат
-в нея. Това е не толкова драстичен начин за спиране растежа не една групата
-спрямо изтриването и. <b>Забележка: Ако създавате
-група вие най-вероятно желаете тя да бъде използваема за [% terms.bugs %], в този
-случай оставете отметката в това поле.</b></p>
 
 <p><b>Потребителския регулярен израз</b> е незадължително поле и ако бъде
 попълнено, автоматически ще позволи членство в тази група на всеки чийто
@@ -74,6 +72,15 @@
   на тази инсталация или абсолютен адрес. Иконата ще бъде показвана
   в коментари в [% terms.bugs %] до името на автора на коментари.
 </p>
+
+<p>Флагът <b>Използване за [% terms.bugs %]</b> определя дали е приемливо
+групата да бъде използвана за [% terms.bugs %]. Ако изчистите това поле, то
+повече няма да бъде възможно за потребителите да добавят [% terms.bugs %] към
+тази група, въпреки че [% terms.bugs %] които вече са в групата ще си останат
+в нея. Това е не толкова драстичен начин за спиране растежа не една групата
+спрямо изтриването и. <b>Забележка: Ако създавате
+група вие най-вероятно желаете тя да бъде използваема за [% terms.bugs %], в този
+случай оставете отметката в това поле.</b></p>
 
 [% IF Param("makeproductgroups") %]
 <p>По подразбиране новата група ще бъде свързана със съществуващите продукти.
@@ -87,8 +94,6 @@
   продукт.</p>
 [% END %]
 
-<p>Обратно към <a href="./">главната страница с [% terms.bugs %]</a>
-
-или към <a href="editgroups.cgi">списъка с групи</a>.
+<p>Обратно към <a href="editgroups.cgi">списъка с групи</a>.</p>
 
 [% PROCESS global/footer.html.tmpl %] 

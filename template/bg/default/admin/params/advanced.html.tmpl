@@ -18,7 +18,7 @@
   сигурност към <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> връзките ви като принуждава браузъра винаги да
   достъпва вашия домейн по <abbr lang="en" title="Secure Sockets Layer">SSL</abbr> и никога да не приема недействителен сертификат. 
   Обаче, трябва да се ползва само ако имате параметъра <code>ssl_redirect</code>
-  включен, [% terms.Bugzilla %] е единственото нещо вървящо
+  включен, Bugzilla е единственото нещо вървящо
   на домейна си (т.е., вашия <code>urlbase</code> е нещо като
   <code>http://bugzilla.example.com/</code>), и не предвиждате въобще изключване
   на параметъра <code>ssl_redirect</code>.
@@ -35,7 +35,7 @@
       с флага <code>includeSubDomains</code>, който ще приложи
       промяната в сигурността към всички поддомейни. Това е особено полезно когато е
       съчетано с <code>attachment_base</code> които съществуват като
-      поддомейни под основния [% terms.Bugzilla %] домейн.
+      поддомейни под основния Bugzilla домейн.
     </li>
   </ul>
 [% END %]
@@ -44,22 +44,22 @@
   cookiedomain => 
     "Ако вашата страница се намира на 'www.foo.com', задаването на параметъра като"
     _ " '.foo.com' ще позволи достъп също и на 'bar.foo.com' до"
-    _ " бисквитките на ${terms.Bugzilla}. Това е полезно ако имате повече от"
+    _ " бисквитките на Bugzilla. Това е полезно ако имате повече от"
     _ " едно име на хост сочещо към един и същи web сървър и желаете те"
-    _ " да споделят бисквитките на ${terms.Bugzilla}.",
+    _ " да споделят бисквитките на Bugzilla.",
 
   inbound_proxies =>
-    "Когато входящия към $terms.Bugzilla трафик минава през прокси,"
-    _ " $terms.Bugzilla приема, че <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреса на всеки отделен"
+    "Когато входящия към Bugzilla трафик минава през прокси,"
+    _ " Bugzilla приема, че <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреса на всеки отделен"
     _ " потребител е <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреса на проксито. Ако въведете разделен със запетаи"
-    _ " списък от <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреси в този параметър, тогава $terms.Bugzilla ще вярва на всяка"
+    _ " списък от <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреси в този параметър, тогава Bugzilla ще вярва на всяка"
     _ " <code>X-Forwarded-For</code> заглавка изпратена от тези <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адреси,"
     _ " и ще използва стойността на заглавката като крайния <abbr lang=\"en\" title=\"Internet Protocol\">IP</abbr> адрес на потребителя.",
 
   proxy_url => 
-    "$terms.Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за"
-    _ " нови версии (виж параметъра <tt>upgrade_notification</tt>)."
-    _ " Ако $terms.Bugzilla сървъра ви е зад прокси, може да е"
+    "Bugzilla може да има нужда от достъп до мрежата, за да получава уведомления за"
+    _ " нови версии (виж параметъра <var>upgrade_notification</var>)."
+    _ " Ако Bugzilla сървъра ви е зад прокси, може да е"
     _ " необходимо да въведете неговия <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> ако web сървъра няма достъп до"
     _ " променливата на средата HTTP_PROXY. Ако трябва да се удостоверите,"
     _ " използвайте синтаксиса <code>http://user:pass@proxy_url/</code>.",

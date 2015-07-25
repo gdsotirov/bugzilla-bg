@@ -13,21 +13,28 @@
   #                 group.
   #%]
 
-
+[% title = BLOCK %]Изтриване на група '[% group.name FILTER html %]'[% END %]
 [% PROCESS global/header.html.tmpl
-  title = "Изтриване на група"
-  doc_section = "groups.html"
+  title = title
+  style_urls = ['skins/standard/admin.css']
+  doc_section = "administering/groups.html"
 %]
 
-<table border="1">
-  <tr>
-    <th>Идентификатор</th>
-    <th>Име</th>
-    <th>Описание</th>
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Поле</th>
+    <th>Стойност</th>
   </tr>
   <tr>
+    <td>Идентификатор</td>
     <td>[% group.id FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Име</td>
     <td>[% group.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Описание</td>
     <td>[% group.description FILTER html_light %]</td>
   </tr>
 </table>
@@ -151,7 +158,9 @@
 
   <h2>Потвърждение</h2>
 
-  <p>Наистина ли искате да изтриете групата?</p>
+  <p class="confirmation">
+  Наистина ли искате да изтриете групата?
+  </p>
   [% IF group.users.size || group.bugs.size || group.products.size 
         || group.flags.size
   %]

@@ -22,101 +22,96 @@
   style_urls = ['skins/standard/admin.css']
 %]
 
-<table border="1" cellpadding="4" cellspacing="0">
-<tr bgcolor="#6666FF">
-  <th valign="top" align="left">Поле</th>
-  <th valign="top" align="left">Стойност</th>
-</tr>
-<tr>
-  <td valign="top">Съставна част:</td>
-  <td valign="top">[% comp.name FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">Описание на съставната част:</td>
-  <td valign="top">[% comp.description FILTER html_light %]</td>
-</tr>
-<tr>
-  <td valign="top">Подразбиращ се назначен:</td>
-  <td valign="top">[% comp.default_assignee.login FILTER html %]</td>
-  
-[% IF Param('useqacontact') %]
-</tr>
-<tr>
-  <td valign="top">Подразбиращ се качествен контрол:</td>
-  <td valign="top">[% comp.default_qa_contact.login FILTER html %]</td>
-[% END %]
-  
-</tr>
-<tr>
-  <td valign="top">Съставна част на продукта:</td>
-  <td valign="top">[% product.name FILTER html %]</td>
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Поле</th>
+    <th>Стойност</th>
+  </tr>
+  <tr>
+    <td>Съставна част</td>
+    <td>[% comp.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Описание на съставната част</td>
+    <td>[% comp.description FILTER html_light %]</td>
+  </tr>
+  <tr>
+    <td>Подразбиращ се назначен</td>
+    <td>[% comp.default_assignee.login FILTER html %]</td>
+  </tr>
 
-[% IF product.description %]
-</tr>
-<tr>
-  <td valign="top">Описание на продукта:</td>
-  <td valign="top">[% product.description FILTER html_light %]</td>
-[% END %]
+  [% IF Param('useqacontact') %]
+    <tr>
+      <td>Подразбиращ се качествен контрол</td>
+      <td>[% comp.default_qa_contact.login FILTER html %]</td>
+    </tr>
+  [% END %]
 
-[% IF Param('usetargetmilestone') %]
-</tr>
-<tr>
-  <td valign="top"><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на важно събитите за продукта:</td>
-  <td valign="top">
-    <a href="[% product.milestone_url FILTER html %]">
-      [% product.milestone_url FILTER html %]
-    </a>
-  </td>
-[% END %]
+  <tr>
+    <td>Съставна част на продукта</td>
+    <td>[% product.name FILTER html %]</td>
+  </tr>
 
-</tr>
-<tr>
-  <TD VALIGN="top">Отворен за [% terms.bugs %]:</TD>
-  <TD VALIGN="top">[% IF product.is_active && comp.isactive %]Да[% ELSE %]Не[% END %]</td>
-</tr>
-<tr>
-  <td valign="top">[% terms.Bugs %]:</td>
-  <td valign="top">
-[% IF comp.bug_count %]
-  <a title="Списък с [% terms.bugs %] за съставната част '[% comp.name FILTER html %]'"
-     href="buglist.cgi?component=[% comp.name FILTER uri %]&amp;product=
-          [%- product.name FILTER uri %]">[% comp.bug_count %]</a>
-[% ELSE %]
-  Няма
-[% END %]
-  </td>
-</tr>
+  [% IF product.description %]
+    <tr>
+      <td>Описание на продукта</td>
+      <td>[% product.description FILTER html_light %]</td>
+    </tr>
+  [% END %]
+
+  [% IF Param('usetargetmilestone') %]
+    <tr>
+      <td><abbr lang="en" title="Uniform Resource Locator">URL</abbr> на важно събитите за продукта</td>
+      <td>
+        <a href="[% product.milestone_url FILTER html %]">
+          [% product.milestone_url FILTER html %]</a>
+      </td>
+    </tr>
+  [% END %]
+
+  <tr>
+    <td>Отворен за [% terms.bugs %]</td>
+    <td>[% IF product.is_active && comp.isactive %]Да[% ELSE %]Не[% END %]</td>
+  </tr>
+  <tr>
+    <td>[% terms.Bugs %]</td>
+    <td>
+      [% IF comp.bug_count %]
+        <a title="Списък с [% terms.bugs %] за съставната част '[% comp.name FILTER html %]'"
+           href="buglist.cgi?component=[% comp.name FILTER uri %]&amp;product=
+                 [%- product.name FILTER uri %]">[% comp.bug_count %]</a>
+      [% ELSE %]
+        Няма
+      [% END %]
+    </td>
+  </tr>
 </table>
 
 <h2>Потвърждаване</h2>
-  
+
 [% IF comp.bug_count %]
 
   [% IF !Param("allowbugdeletion") %]
-  <p class="confirmation">
-    Съжалявам, има
+    <p class="confirmation">
+      Съжалявам, има
+      [% IF comp.bug_count > 1 %]
+        [% comp.bug_count %] [%+ terms.abug %]
+      [% ELSE %]
+        [% comp.bug_count %] [%+ terms.bug %]
+      [% END %]
+      останал(и) за този компонент. Трябва да преназначите 
 
-    [% IF comp.bug_count > 1 %] 
-      [% comp.bug_count %] [%+ terms.abug %] 
-    [% ELSE %]
-      [% comp.bug_count %] [%+ terms.bug %] 
-    [% END %]
-
-    останал(и) за този компонент. Трябва да преназначите 
-
-    [% IF comp.bug_count > 1 %]
-       тези [% terms.bugs %] 
-    [% ELSE %]
-       този [% terms.bug %]
-    [% END %]
-
-    към друга съставна част преди да можете да изтриете тази.
-  </p>
+      [% IF comp.bug_count > 1 %]
+        тези [% terms.bugs %]
+      [% ELSE %]
+        този [% terms.bug %]
+      [% END %]
+      към друга съставна част преди да можете да изтриете тази.
+    </p>
   [% ELSE %]
-
-    <table border="0" cellpadding="20" width="70%" bgcolor="red"><tr><td>
-
-      Има [% IF comp.bug_count > 1 %] 
+    <p class="confirmation">
+      Има
+      [% IF comp.bug_count > 1 %]
         въведени [% comp.bug_count %] [%+ terms.abug %]
       [% ELSE %]
         въведен [% terms.bug %]
@@ -124,8 +119,7 @@
       за тази съставна част! Когато я изтриете,
       <b>ВСИЧКИ</b> съхранени [% terms.bugs %] и
       тяхната история също ще бъдат изтрити.
-      </td></tr></table>
-
+    </p>
   [% END %]
 
 [% END %]

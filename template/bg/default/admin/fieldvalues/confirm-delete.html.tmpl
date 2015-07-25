@@ -22,34 +22,34 @@
   style_urls = ['skins/standard/admin.css']
 %]
 
-<table border="1" cellpadding="4" cellspacing="0">
-<tr bgcolor="#6666FF">
-  <th valign="top" align="left">Поле</th>
-  <th valign="top" align="left">Стойност</th>
-</tr>
-<tr>
-  <td valign="top">Име на поле:</td>
-  <td valign="top">[% field.description FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">Стойност на поле:</td>
-  <td valign="top">[% value FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">[% terms.Bugs %]:</td>
-  <td valign="top">
-[% IF value.bug_count %]
-  <a title="Списък на [% terms.bugs %] където '
-            [%- field.description FILTER html %]' е '
-            [%- value.name FILTER html %]'"
-     href="buglist.cgi?[% field.name FILTER uri %]=
-           [%- value.name FILTER uri %]">
-   [%- value.bug_count FILTER html %]</a>
-[% ELSE %]
-  Няма
-[% END %]
-  </td>
-</tr>
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Поле</th>
+    <th>Стойност</th>
+  </tr>
+  <tr>
+    <td>Име на поле:</td>
+    <td>[% field.description FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Стойност на поле:</td>
+    <td>[% value FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>[% terms.Bugs %]:</td>
+    <td>
+      [% IF value.bug_count %]
+        <a title="Списък на [% terms.bugs %] където '
+                  [%- field.description FILTER html %]' е '
+                  [%- value.name FILTER html %]'"
+           href="buglist.cgi?[% field.name FILTER uri %]=
+                 [%- value.name FILTER uri %]">
+          [%- value.bug_count FILTER html %]</a>
+      [% ELSE %]
+        Няма
+      [% END %]
+    </td>
+  </tr>
 </table>
 
 <h2>Потвърждаване</h2>
@@ -149,6 +149,6 @@
 
 [% PROCESS admin/fieldvalues/footer.html.tmpl
   no_edit_link = 1
- +%]
+%]
 
 [% PROCESS global/footer.html.tmpl %] 

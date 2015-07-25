@@ -8,7 +8,7 @@
 
 [% 
    title = "Задължителни настройки"
-   desc = "Задължителни настройки за правилна работа на ${terms.Bugzilla}"
+   desc = "Задължителни настройки за правилна работа на Bugzilla"
 %]
 
 [% param_descs = {
@@ -19,17 +19,17 @@
              "(<abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>) $terms.Bugzilla <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>-та.",
 
   ssl_redirect => 
-    "Когато е разрешено, $terms.Bugzilla ще подсигури достъпа до всяка"
-    _ " страница по SSL, с пренасочване на всяка обикновенна <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol\">HTTP</abbr> заявка към <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol Secure\">HTTPS</abbr>"
-    _ " използвайки <tt>sslbase</tt> параметъра. Също, когато това е разрешено,"
-    _ " $terms.Bugzilla ще изпраща навън връзки използвайки <tt>sslbase</tt> е е-поща"
-    _ " вместо <tt>urlbase</tt>.",
+    "Когато е разрешено, Bugzilla ще подсигури достъпа до всяка"
+    _ " страница по <abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr>, с пренасочване на всяка обикновенна <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol\">HTTP</abbr> заявка към <abbr lang=\"en\" title=\"Hyper Text Transfer Protocol Secure\">HTTPS</abbr>"
+    _ " използвайки <var>sslbase</var> параметъра. Също, когато това е разрешено,"
+    _ " Bugzilla ще изпраща навън връзки използвайки <var>sslbase</var> е е-поща"
+    _ " вместо <var>urlbase</var>.",
 
   cookiepath => "Път, относителен спрямо корена на web документите, до който да бъдат ограничени " _
-                "бисквитките на ${terms.Bugzilla}. Нормално това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
+                "бисквитките на Bugzilla. Нормално това е <abbr lang=\"en\" title=\"Uniform Resource Identificator\">URI</abbr> частта на вашия базов <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>. " _
                 "Започва с / (единична наклонена на дясно черта). Например, ако " _
-                "$terms.Bugzilla обслужва от 'http://www.somedomain.com/bugzilla/', задайте " _
+                "Bugzilla обслужва от 'http://www.somedomain.com/bugzilla/', задайте " _
                 "този параметър като /bugzilla/. Задаването му като / ще позволи " _
                 "на всички сайтове от този сървър или виртуален хост да четат " _
-                "бисквитките на ${terms.Bugzilla}.",
+                "бисквитките на Bugzilla.",
 } %]

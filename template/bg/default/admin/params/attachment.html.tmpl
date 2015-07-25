@@ -19,44 +19,44 @@
     _ "<p>Това е ограничение свързано със сигурността за инсталации където недостоверни"
     _ " потребители могат да качат приставки, които биха могли да са опасни ако"
     _ " бъдат прегледани направо в браузъра.</p>"
-    _ "<p>Силно препоръчително е да зададете параметъра <tt>attachment_base</tt>"
+    _ "<p>Силно препоръчително е да зададете параметъра <var>attachment_base</var>"
     _ " ако включите този параметър.",
 
   attachment_base => 
-    "Когато параметъра <tt>allow_attachment_display</tt> е включен, е "
+    "Когато параметъра <var>allow_attachment_display</var> е включен, е "
     _ " възможно за злонамерени приставки да откраднат бисквитките ви или"
-    _ " да извършат атака над $terms.Bugzilla използвайки пълномощията ви."
+    _ " да извършат атака над Bugzilla използвайки пълномощията ви."
     _ "<p>Ако желаете допълнителна сигурност върху приставките, за да предотвратите"
-    _ " това, задайте този параметър с друг <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> за вашата $terms.Bugzilla,"
-    _ " който не е същия като <tt>urlbase</tt> или <tt>sslbase</tt>."
+    _ " това, задайте този параметър с друг <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr> за вашата Bugzilla,"
+    _ " който не е същия като <var>urlbase</var> или <var>sslbase</var>."
     _ " Това е различно име на област, което се решава до точно"
-    _ " същата $terms.Bugzilla инсталация.</p>"
+    _ " същата Bugzilla инсталация.</p>"
     _ "<p>Имайте в предвид, че ако сте задали"
-    _ " <a href=\"editparams.cgi?section=advanced#cookiedomain_desc\">параметъра <tt>cookiedomain</tt>"
-    _" </a>, трябва да зададете на <tt>attachment_base</tt> да използва"
+    _ " <a href=\"editparams.cgi?section=advanced#cookiedomain_desc\">параметъра <var>cookiedomain</var>"
+    _" </a>, трябва да зададете на <var>attachment_base</var> да използва"
     _ " област, която <em>няма да</em> съвпадне с"
-    _ " <tt>cookiedomain</tt>.</p>"
-    _ "<p>За допълнителна сигурност, можете да вмъкнете <tt>%bugid%</tt> в <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>,"
+    _ " <var>cookiedomain</var>.</p>"
+    _ "<p>За допълнителна сигурност, можете да вмъкнете <var>%bugid%</var> в <abbr lang=\"en\" title=\"Uniform Resource Locator\">URL</abbr>,"
     _ " което ще бъде заменено с номера на текущия $terms.bug за"
     _ " който е приставката, когато отворите приставка. Това ще ограничи"
     _ " приставките до достъп само до други приставки на същия"
     _ " ${terms.bug}. Запомнете, въпреки че, всички тези възможни имена на област "
-    _ " (като <tt>1234.your.domain.com</tt>) трябва да сочат към същата"
-    _ " $terms.Bugzilla инстанция.",
+    _ " (като <var>1234.your.domain.com</var>) трябва да сочат към същата"
+    _ " Bugzilla инстанция.",
 
   allow_attachment_deletion => "Ако тази възможност е включена, администраторите ще могат да изтриват " _
                                "съдържанието на приставките.",
 
   maxattachmentsize => "Максималния размер (в килобайти) за приставки които да се съхраняват " _
                        "в базата с данни. Ако файл с по-голям от този размер е прикачен " _
-                       "към ${terms.bug}, $terms.Bugzilla ще провери параметъра " _
-                       "<a href=\"#maxlocalattachment\"><tt>maxlocalattachment</tt> parameter</a>, " _
+                       "към ${terms.bug}, Bugzilla ще провери параметъра " _
+                       "<a href=\"#maxlocalattachment\"><var>maxlocalattachment</var> parameter</a>, " _
                        "за да определи дали файла може да бъде съхранен локално на web сървъра. " _
                        "Ако размера на файла надхвърля и двете ограничения тогава приставката се отхвърля. " _
                        "Задаването на двата параметъра на 0 ще предотврати прикачването на файлове към ${terms.bugs}.",
 
   maxlocalattachment => "Максималния размер (в мегабайти) за приставки които да се съхраняват " _
                         "локално на web сървъра. Ако е зададена стойност по-малка от " _
-                        "<a href=\"#maxattachmentsize\"><tt>maxattachmentsize</tt> parameter</a>, " _
+                        "<a href=\"#maxattachmentsize\"><var>maxattachmentsize</var> parameter</a>, " _
                         "приставки никога няма да бъдат пазени върху локалната файлова система." }
 %]

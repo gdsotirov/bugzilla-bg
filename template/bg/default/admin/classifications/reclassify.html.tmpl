@@ -8,38 +8,39 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Прекласифициране на продукти"
+  style_urls = ['skins/standard/admin.css']
 %]
 
 <form method=post action="editclassifications.cgi">
-  <table border=0 cellpadding=4 cellspacing=0>
+  <table id="admin_table_edit">
     <tr>
-      <th align="right">Класификация:</th>
-      <td valign="top" colspan=3>[% classification.name FILTER html %]</td>
-
-    </tr><tr>
-      <th align="right">Описание:</th>
-      <td valign="top" colspan=3>
+      <th>Класификация:</th>
+      <td colspan=3>[% classification.name FILTER html %]</td>
+    </tr>
+    <tr>
+      <th>Описание:</th>
+      <td colspan=3>
         [% IF classification.description %]
           [% classification.description FILTER html_light %]
         [% ELSE %]
-          <font color="red">липсва описание</font>
+          <span class="warning">липсва описание</span>
         [% END %]
       </td>
+    </tr>
+    <tr>
+      <th>Ключ за подреждане:</th>
+      <td colspan=3>[% classification.sortkey FILTER html %]</td>
 
     </tr><tr>
-      <th align="right">Ключ за подреждане:</th>
-      <td valign="top" colspan=3>[% classification.sortkey FILTER html %]</td>
-
-    </tr><tr>
-      <th align="right">Продукти:</th>
-      <td valign="top">Други класификации</td>
+      <th>Продукти:</th>
+      <td>Други класификации</td>
       <td></td>
-      <td valign="top">Тази класификация</td>
-
-    </tr><tr>
+      <td>Тази класификация</td>
+    </tr>
+    <tr>
       <td></td>
-      <td valign="top">
-      <select name="prodlist" id="prodlist" multiple="multiple" size="20">
+      <td>
+        <select name="prodlist" id="prodlist" multiple="multiple" size="20">
         [% FOREACH class = classifications %]
           [% IF class.id != classification.id %]
             [% FOREACH product = class.products %]
@@ -49,21 +50,23 @@
             [% END %]
           [% END %]
         [% END %]
-      </select></td>
+        </select>
+      </td>
 
-      <td align="center">
+      <td>
         <input type=submit value="Добавяне &gt;&gt;  " name="add_products"><br><br>
         <input type=submit value="&lt;&lt; Премахване" name="remove_products">
       </td>
 
-      <td valign="middle" rowspan=2>
+      <td rowspan=2 class="max-width">
         <select name="myprodlist" id="myprodlist" multiple="multiple" size="20">
           [% FOREACH product = classification.products %]
             <option value="[% product.name FILTER html %]">
               [% product.name FILTER html %]
             </option>
           [% END %]
-      </select></td>
+        </select>
+      </td>
     </tr>
   </table>
 

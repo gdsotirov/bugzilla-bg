@@ -8,32 +8,32 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Изтриване на класификация"
+  style_urls = ['skins/standard/admin.css']
 %]
 
-<table border=1 cellpadding=4 cellspacing=0>
-<tr bgcolor="#6666ff">
-  <th valign="top" align="left">Част</th>
-  <th valign="top" align="left">Стойност</th>
-
-</tr><tr>
-  <td valign="top">Класификация:</td>
-  <td valign="top">[% classification.name FILTER html %]</td>
-
-</tr><tr>
-  <td valign="top">Описание:</td>
-  <td valign="top">
-    [% IF classification.description %]
-      [% classification.description FILTER html_light %]
-    [% ELSE %]
-      <font color="red">липсва описание</font>
-    [% END %]
-  </td>
-
-</tr><tr>
-  <td valign="top">Ключ за подреждане:</td>
-  <td valign="top">[% classification.sortkey FILTER html %]</td>
-
-</tr>
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Част</th>
+    <th>Стойност</th>
+  </tr>
+  <tr>
+    <td>Класификация:</td>
+    <td>[% classification.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td">Описание:</td>
+    <td>
+      [% IF classification.description %]
+        [% classification.description FILTER html_light %]
+      [% ELSE %]
+        <span class="warning">липсва описание</span>
+      [% END %]
+    </td>
+  </tr>
+  <tr>
+    <td>Ключ за подреждане</td>
+    <td>[% classification.sortkey FILTER html %]</td>
+  </tr>
 </table>
 
 <h2>Потвърждаване</h2>

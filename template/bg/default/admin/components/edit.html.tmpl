@@ -18,12 +18,14 @@
 [% END %]
 [% PROCESS global/header.html.tmpl
   title = title
+  generate_api_token = 1
+  style_urls = ['skins/standard/admin.css']
   yui = [ 'autocomplete' ]
   javascript_urls = [ "js/field.js" ]
 %]
 
 <form method="post" action="editcomponents.cgi">
-  <table border="0" cellpadding="4" cellspacing="0">
+  <table id="admin_table_edit">
 
     [% PROCESS "admin/components/edit-common.html.tmpl" %]
 
@@ -33,30 +35,28 @@
                  [% 'checked="checked"' IF comp.isactive %]></td>
     </tr>
     <tr>
-      <th class="field_label">[% terms.Bugs %]:</th>
+      <th>[% terms.Bugs %]:</th>
       <td>
-[% IF comp.bug_count > 0 %]
-        <a title="[% terms.Bugs %] в съставната част '[% comp.name FILTER html %]'"
-           href="buglist.cgi?component=
-                [%- comp.name FILTER uri %]&amp;product=
-                [%- product.name FILTER uri %]">[% comp.bug_count %]</a>
-[% ELSE %]
-        Няма
-[% END %]
+        [% IF comp.bug_count > 0 %]
+          <a title="[% terms.Bugs %] в съставната част '[% comp.name FILTER html %]'"
+             href="buglist.cgi?component=
+                  [%- comp.name FILTER uri %]&amp;product=
+                  [%- product.name FILTER uri %]">[% comp.bug_count %]</a>
+        [% ELSE %]
+          Няма
+        [% END %]
       </td>
     </tr>
-
   </table>
 
    <input type="hidden" name="action" value="update">
    <input type="hidden" name="componentold" value="[% comp.name FILTER html %]">
    <input type="hidden" name="product" value="[% product.name FILTER html %]">
    <input type="hidden" name="token" value="[% token FILTER html %]">
-   <input type="submit" value="Съхраняване на промените" id="update"> или <a 
-        href="editcomponents.cgi?action=del&amp;product=
-        [%- product.name FILTER uri %]&amp;component=
-        [%- comp.name FILTER uri %]">Изтриване</a> на съставната част.
-
+   <input type="submit" value="Съхраняване на промените" id="update"> или
+   <a href="editcomponents.cgi?action=del&amp;product=
+            [%- product.name FILTER uri %]&amp;component=
+            [%- comp.name FILTER uri %]">Изтриване</a> на съставната част.
 </form>
 
 [% PROCESS admin/components/footer.html.tmpl

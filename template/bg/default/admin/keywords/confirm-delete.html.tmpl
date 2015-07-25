@@ -12,26 +12,29 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Изтриване на ключова дума"
+  style_urls = ['skins/standard/admin.css']
 %]
 
-<p>
+<h2>Потвърждение</h2>
+
+<p class="confirmation">
   [% IF keyword.bug_count == 1 %]
-    Съществува един [% terms.bug %], за който тази ключова дума е зададена.
+    Съществува един [% terms.bug %] за който
   [% ELSIF keyword.bug_count > 1 %]
-    Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %], за които
-    тази ключова дума е зададена.
+    Съществуват [% keyword.bug_count FILTER html %] [%+ terms.bugs %] за които
   [% END %]
-  
-  <b>Сигурни</b> ли сте, че искате да изтриете
-  ключовата дума <code>[% keyword.name FILTER html %]</code>?
+   ключовата дума <em>[% keyword.name FILTER html %]</em> е зададена.
+</p>
+
+<p>
+  Сигурни ли сте, че искате да изтриете ключовата дума?
 </p>
 
 <form method="post" action="editkeywords.cgi">
   <input type="hidden" name="id" value="[% keyword.id FILTER html %]">
   <input type="hidden" name="action" value="delete">
   <input type="hidden" name="token" value="[% token FILTER html %]">
-  <input type="submit" id="delete"
-         value="Да, изтриване на ключовата дума">
+  <input type="submit" id="delete" value="Да, изтриване">
 </form>
 
 <p><a href="editkeywords.cgi">Редактиране на други ключови думи</a>.</p>

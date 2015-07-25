@@ -14,16 +14,21 @@
   mail_delivery_method => "Определя как се изпраща поща или дали се изпраща изобщо.<br>
                            <ul>
                              <li>
-                               'Sendmail', 'SMTP' и 'Qmail' са всички Агенти Предаващи Поща (<abbr lang=\"en\" title=\"Mail Transfer Agent\">MTA</abbr>).
-                               Ще трябва да инсталирате заместител на sendmail от трета страна ако
-                               желаете да използвате sendmail на Windows.
+                               'SMTP' означава да се използва <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> протокол за разговор с отдалечен
+                               пощенски сървър.
+                             </li>
+                             <li>
+                               'Sendmail' означава да се използва sendmail-съвместим <abbr lang=\"en\" title=\"Mail Transfer Agent\">MTA</abbr>
+                               инсталиран на Bugzilla машината.
+                               Трябва да инсталирате заместител на sendmail предоставян от трета страна ако
+                               желаете да използвате sendmail под Windows.
                              </li>
                              <li>
                                'Test' е полезно за отстраняване на проблеми: цялата поща се съхранява
-                               в 'data/mailer.testfile' вместо да бъде пращана.
+                               в 'data/mailer.testfile' вместо да бъде изпращана.
                              </li>
                              <li>
-                               'none' ще забрани напълно пощата. $terms.Bugzilla продължава
+                               'None' ще забрани напълно пощата. Bugzilla продължава
                                да действа сякаш изпраща поща, но нищо не се изпраща или
                                съхранява.
                              </li>
@@ -32,28 +37,29 @@
   mailfrom => "Е-пощенския адрес на пощенския демон на ${terms.Bugzilla}.  Някои е-пощенски системи " _
               "изискват това да бъде действителен е-пощенски адрес.",
 
-  use_mailer_queue => "В големи $terms.Bugzilla инсталации, обновяването на"
-    _ " $terms.bugs може да бъде много бавно, защото $terms.Bugzilla изпраща цялата"
-    _ " поща наведнъж. Ако разрешите този параметър, $terms.Bugzilla ще"
+  use_mailer_queue => "В големи Bugzilla инсталации, обновяването на"
+    _ " $terms.bugs може да бъде много бавно, защото Bugzilla изпраща цялата"
+    _ " поща наведнъж. Ако разрешите този параметър, Bugzilla ще"
     _ " нарежда на опашка цялата поща и тогава ще я изпраща във фонов режим. Това изисква"
     _ " да сте инсталирали определени Perl модули (както е указано от"
     _ " <kbd>checksetup.pl</kbd> за тази възможност) и да сте"
     _ " пуснали <code>jobqueue.pl</code> демона (иначе вашата поща"
-    _ " няма да бъде изпратена). Това засяга цялата поща изпращана от ${terms.Bugzilla},"
+    _ " няма да бъде изпратена). Това засяга цялата поща изпращана от Bugzilla,"
     _ " не само за обновяване на ${terms.bug}.",
 
-  smtpserver => "Адреса на сървъра за изпращане на поща (Ако се използва такъв за доставяне на поща).",
+  smtpserver => "Адреса на <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> сървъра с незадължителен номер на порт (ако се <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr>",
+                " за доставяне на поща). напр. example.com or example.com:1234",
 
-  smtp_username => "Потребителското име което да се подаде на SMTP сървъра за SMTP удостоверяване. " _
-                   "Оставете това поле празно, ако SMTP сървъра ви не изисква удостоверяване.",
+  smtp_username => "Потребителското име което да се подаде на <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> сървъра за <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> удостоверяване. " _
+                   "Оставете това поле празно, ако <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> сървъра ви не изисква удостоверяване.",
 
-  smtp_password => "Паролата която да се подаде на SMTP сървъра за SMTP удостоверяване. " _
+  smtp_password => "Паролата която да се подаде на <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> сървъра за <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> удостоверяване. " _
                    "Това поле няма ефект ако параметъра smtp_username е оставен празен.",
 
-  smtp_ssl => "Разрешена SSL поддръжка за SMTP.",
+  smtp_ssl => "Разрешена <abbr lang=\"en\" title=\"Secure Socket Layer\">SSL</abbr> поддръжка за <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr>.",
 
   smtp_debug => "Ако е разрешено, това ще печата информация за комуникацията " _
-                " на $terms.Bugzilla със SMTP сървъра ви в журнала за грешки на " _
+                " на Bugzilla с <abbr lang=\"en\" title=\"Simple Mail Transfer Protocol\">SMTP</abbr> сървъра ви в журнала за грешки на " _
                 " web сървъра ви. Можете да използвате тази възможност " _
                 " отстраняване на проблеми с е-поща.",
 

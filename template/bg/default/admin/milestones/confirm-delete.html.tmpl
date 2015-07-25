@@ -21,33 +21,33 @@
   style_urls = ['skins/standard/admin.css']
 %]
 
-<table border="1" cellpadding="4" cellspacing="0">
-<tr bgcolor="#6666FF">
-  <th valign="top" align="left">Поле</th>
-  <th valign="top" align="left">Стойност</th>
-</tr>
-<tr>
-  <td valign="top">Събитие:</td>
-  <td valign="top">[% milestone.name FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">Събитие на продукт:</td>
-  <td valign="top">[% product.name FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">[% terms.Bugs %]:</td>
-  <td valign="top">
-[% IF milestone.bug_count %]
-  <a title="Списък от [% terms.bugs %] целящи това събитие '
-           [% milestone.name FILTER html %]'"
-     href="buglist.cgi?target_milestone=[% milestone.name FILTER uri %]&amp;product=
-          [%- product.name FILTER uri %]">
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Поле</th>
+    <th>Стойност</th>
+  </tr>
+  <tr>
+    <td>Събитие</td>
+    <td>[% milestone.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Събитие на продукт</td>
+    <td>[% product.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>[% terms.Bugs %]</td>
+    <td>
+      [% IF milestone.bug_count %]
+        <a title="Списък от [% terms.bugs %] целящи това събитие '
+                 [%- milestone.name FILTER html %]'"
+           href="buglist.cgi?target_milestone=[% milestone.name FILTER uri %]&amp;product=
+                [%- product.name FILTER uri %]">
           [% milestone.bug_count FILTER none %]</a>
-[% ELSE %]
-  Няма
-[% END %]
-  </td>
-</tr>
+      [% ELSE %]
+        Няма
+      [% END %]
+    </td>
+  </tr>
 </table>
 
 <h2>Потвърждаване</h2>

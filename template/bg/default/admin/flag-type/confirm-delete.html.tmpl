@@ -10,7 +10,8 @@
 
 [% PROCESS global/header.html.tmpl
   title = title
-  doc_section = "flags-overview.html#flags-delete"
+  style_urls = ['skins/standard/admin.css']
+  doc_section = "administering/flags.html#deleting-a-flag"
 %]
 
 <p>
@@ -23,27 +24,17 @@
    <a href="editflagtypes.cgi?action=deactivate&amp;id=[% flag_type.id %]&amp;token=
            [%- token FILTER html %]">деактивирате</a>,
    като в този случай типа [% IF flag_type.flag_count %] и флагове му [% END %] ще останат
-   в базата данни, но няма да се появяват в потребителския интерфейс на [% terms.Bugzilla %].
+   в базата данни, но няма да се появяват в потребителския интерфейс на Bugzilla.
 </p>
 
-<table>
-   <tr>
-      <td colspan="2">
-         Наистина ли желаете да изтриете този тип?
-      </td>
-   </tr>
-   <tr>
-      <td>
-         <a href="editflagtypes.cgi?action=delete&amp;id=[% flag_type.id %]&amp;token=
-                 [%- token FILTER html %]">Да, изтриване
-         </a>
-      </td>
-      <td align="right">
-         <a href="editflagtypes.cgi">
-            Не, запазване
-         </a>
-      </td>
-   </tr>
-</table>
+<p class="confirmation">
+  Наистина ли желаете да изтриете този тип?
+</p>
+
+<p>
+  <a href="editflagtypes.cgi?action=delete&amp;id=[% flag_type.id %]&amp;token=
+           [%- token FILTER html %]">Да, изтриване</a>
+  <a href="editflagtypes.cgi">Не, запазване</a>
+</p>
 
 [% PROCESS global/footer.html.tmpl %]
