@@ -43,9 +43,9 @@
         <input type="password" id="passwd1" name="passwd1" value="" required>
         (Паролата трябва да бъде дълга минимум [% constants.USER_PASSWORD_MIN_LENGTH FILTER none %] символа
         [% IF password_complexity == "mixed_letters" %]
-          и трябва да съдържа поне една ГОЛЯМА и една малка буква
+          и трябва да съдържа поне една ГЛАВНА и една малка буква
         [% ELSIF password_complexity == "letters_numbers" %]
-          и трябва да съдържа поне една ГОЛЯМА и една малка буква и цифра
+          и трябва да съдържа поне една ГЛАВНА и една малка буква и цифра
         [% ELSIF password_complexity == "letters_numbers_specialchars" %] 
           и трябва да съдържа поне една буква, цифра и специален символ
         [% END ~%]

@@ -7,13 +7,13 @@
   #%]
 
 [% title = BLOCK %]
-  Администрация на вашата ([% terms.Bugzilla %]
-  [%+ constants.BUGZILLA_VERSION FILTER html %]) инсталация
+  Администрация на вашата инсталация (Bugzilla
+  [%+ constants.BUGZILLA_VERSION FILTER html %])
 [% END %]
 
 [% PROCESS global/header.html.tmpl title = title
                                    style_urls = ['skins/standard/admin.css']
-                                   doc_section = "administration.html"
+                                   doc_section = "administering/index.html"
 %]
 
 <div>
@@ -44,7 +44,7 @@
         <dt id="sanitycheck" class="[% class %]"><a href="sanitycheck.cgi">Санитарна проверка</a></dt>
         <dd class="[% class %]">Пускане на санитарни проверки за откриване на проблеми в базата ви данни.
         Това може да отнеме няколко десетки минути в зависимост от размера на инсталацията ви.
-        Също така можете да автоматизирате тази проверка с пускането на <tt>sanitycheck.pl</tt> от задача по график.
+        Също така можете да автоматизирате тази проверка с пускането на <kbd>sanitycheck.pl</kbd> от задача по график.
         Ако бъдат открити грешки ще бъде изпратено уведомление по е-поща до указания потребител.</dd>
 
         [% class = (user.in_group('editusers') || user.can_bless) ? "" : "forbidden" %]
@@ -83,7 +83,7 @@
       <dl>
         [% class = user.in_group('admin') ? "" : "forbidden" %]
         <dt id="custom_fields" class="[% class %]"><a href="editfields.cgi">Потребителски полета</a></dt>
-        <dd class="[% class %]">[% terms.Bugzilla %] ви позволява да определите полета които не
+        <dd class="[% class %]">Bugzilla ви позволява да определите полета които не
         са направени по подразбиране, в зависимост от личните ви и специфични изисквания.
         Тези полета могат след това да се използват като всички други, което значи, че можете да ги
         задавате в [% terms.bugs %] и пускате което и да е търсене включващо ги.<br>
@@ -117,6 +117,16 @@
         <dd class="[% class %]">Задаване на заявки, които ще бъдат пускани на указана дата
         и час, и получаване на резултатите от тях директно по е-поща. Това е
         добър начин за създаване на напомняния и следене на дейността в инсталацията ви.</dd>
+
+        [% IF Param('use_mailer_queue') %]
+          [% class = user.in_group('admin') ? "" : "forbidden" %]
+          <dt id="view_job_queue" class="[% class %]"><a href="view_job_queue.cgi">Опашка със задачи</a></dt>
+          <dd class="[% class %]">Преглед на опашката с недоставени/отложени задачи/е-поща.</dd>
+        [% END %]
+
+        <dt id="release_notes">
+          <a href="page.cgi?id=release-notes.html">Бележки към версията</a></dt>
+        <dd>Подробна информация свързана с тази версия на Bugzilla.</dd>
 
         [% Hook.process('end_links_right') %]
       </dl>

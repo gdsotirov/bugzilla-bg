@@ -26,22 +26,29 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Избор на продукт от $classification_title"
+  style_urls = ['skins/standard/admin.css']
 %]
 
 [% columns = [
-     { 
+     {
        name => "name"
        heading => "Редактиране на продукт..."
        contentlink => 'editproducts.cgi?action=edit&amp;product=%%name%%'
      },
-     { 
+     {
        name => "description"
        heading => "Описание"
        allow_html_content => 1
      },
-     { 
+     {
        name => "is_active"
        heading => "Отворен за нови $terms.bugs"
+       yesno_field => 1
+     },
+     {
+       name => "allows_unconfirmed"
+       heading => "Позволява " _ display_value('bug_status', 'UNCONFIRMED') _
+                       " " _ terms.Bugs
        yesno_field => 1
      },
 ] %]
@@ -51,7 +58,7 @@
   [% columns.push({
        name => "bug_count"
        heading => "Брой $terms.bugs"
-       align => 'right'
+       class => 'right'
        contentlink => 'buglist.cgi?product=%%name%%'
      })
   %]

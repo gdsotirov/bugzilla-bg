@@ -14,32 +14,32 @@
 
 [% IF Param('useclassification') %]
   <tr>
-    <th align="right">Класификация:</th>
+    <th>Класификация:</th>
     <td><b>[% classification.name FILTER html %]</b></td>
   </tr>
 [% END %]
     
 <tr>
-  <th align="right">Продукт:</th>
+  <th>Продукт:</th>
   <td><input size="64" maxlength="64" name="product" 
-             value="[% product.name FILTER html %]">
+             value="[% product.name FILTER html %]" required>
   </td>
 </tr>
 <tr>
-  <th align="right">Описание:</th>
-  <td><textarea rows="4" cols="64" wrap="virtual" name="description">
+  <th>Описание:</th>
+  <td><textarea rows="4" cols="64" wrap="virtual" name="description" required>
         [% product.description FILTER html %]</textarea>
   </td>
 </tr>
 
 <tr>
-  <th align="right">Отворен за въвеждане на [% terms.bugs %]:</th>
+  <th>Отворен за въвеждане на [% terms.bugs %]:</th>
   <td><input type="checkbox" name="is_active" value="1"
        [% ' checked="checked"' IF product.is_active %]>
   </td>
 </tr>
 <tr>
-  <th align="right">
+  <th>
     <label for="allows_unconfirmed">Разрешаване на
       състояние [%+ display_value('bug_status', 'UNCONFIRMED') FILTER html %]
       в продукта:</label>
@@ -51,7 +51,7 @@
 
 [% IF Param('usetargetmilestone') -%]
   <tr>
-    <th align="right">Подразбиращо се целево събитие:</th>
+    <th>Подразбиращо се целево събитие:</th>
     <td>
       [% IF product.milestones.size %]
         <select name="defaultmilestone">

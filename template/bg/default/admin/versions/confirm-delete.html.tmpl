@@ -21,33 +21,33 @@
   style_urls = ['skins/standard/admin.css']
 %]
 
-<table border="1" cellpadding="4" cellspacing="0">
-<tr bgcolor="#6666FF">
-  <th valign="top" align="left">Поле</th>
-  <th valign="top" align="left">Стойност</th>
-</tr>
-<tr>
-  <td valign="top">Версия:</td>
-  <td valign="top">[% version.name FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">Версия на продукт:</td>
-  <td valign="top">[% product.name FILTER html %]</td>
-</tr>
-<tr>
-  <td valign="top">[% terms.Bugs %]:</td>
-  <td valign="top">
-[% IF version.bug_count %]
-  <a title="Списък на [% terms.bugs %] целящи версията '
-           [%- version.name FILTER html %]'"
-     href="buglist.cgi?version=[% version.name FILTER uri %]&amp;product=
-          [%- product.name FILTER uri %]">
-          [%- version.bug_count FILTER none %]</a>
-[% ELSE %]
-  Няма
-[% END %]
-  </td>
-</tr>
+<table id="admin_table">
+  <tr class="column_header">
+    <th>Поле</th>
+    <th>Стойност</th>
+  </tr>
+  <tr>
+    <td>Версия</td>
+    <td>[% version.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>Версия на продукт</td>
+    <td>[% product.name FILTER html %]</td>
+  </tr>
+  <tr>
+    <td>[% terms.Bugs %]</td>
+    <td>
+      [% IF version.bug_count %]
+        <a title="Списък на [% terms.bugs %] целящи версията '
+                  [%- version.name FILTER html %]'"
+           href="buglist.cgi?version=[% version.name FILTER uri %]&amp;product=
+                 [%- product.name FILTER uri %]">
+                 [%- version.bug_count FILTER none %]</a>
+      [% ELSE %]
+        Няма
+      [% END %]
+    </td>
+  </tr>
 </table>
 
 <h2>Потвърждаване</h2>

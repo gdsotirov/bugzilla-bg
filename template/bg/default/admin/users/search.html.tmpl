@@ -17,9 +17,8 @@
 
 [% PROCESS global/header.html.tmpl
   title = "Търсене на потребители"
-  style_urls = ['skins/standard/editusers.css']
-  onload = "document.forms['f'].matchstr.focus()"
-  doc_section = "useradmin.html#user-account-search"
+  style_urls = ['skins/standard/admin.css']
+  doc_section = "administering/users.html"
 %]
 
 [% PROCESS admin/users/listselectvars.html.tmpl
@@ -27,7 +26,7 @@
 %]
 
 <form name="f" method="get" action="editusers.cgi">
-<input type="hidden" name="action" value="list" />
+<input type="hidden" name="action" value="list">
 <p><label for="matchvalue">Списък на потребителите чието/чийто</label>
 <select id="matchvalue" name="matchvalue">
   <option value="login_name">потребителско име</option>
@@ -35,17 +34,18 @@
   <option value="userid">потребителски номер</option>
 </select>
 <label for="matchstr">съвпада с</label>
-<input size="32" name="matchstr" id="matchstr" />
+<input size="32" name="matchstr" id="matchstr">
 <select name="matchtype">
   <option value="substr" selected="selected">нечуствителен към регистъра подниз</option>
   <option value="regexp">нечуствителен към регистъра регулярен израз</option>
   <option value="notregexp">не (нечуствителен към регистъра регулярен израз)</option>
 <option value="exact">точно (намира този потребител)</option>
 </select>
-<input type="submit" id="search" value="Търсене" /></p>
+<input type="submit" id="search" value="Търсене">
+</p>
 
 [% IF restrictablegroups.size %]
-  <p><input type="checkbox" name="grouprestrict" value="1" id="grouprestrict" />
+  <p><input type="checkbox" name="grouprestrict" value="1" id="grouprestrict">
   <label for="grouprestrict">Ограничаване до потребители принадлежащи на групата</label>
   <select name="groupid"
           onchange="document.forms['f'].grouprestrict.checked=true">
@@ -56,9 +56,13 @@
 [% END %]
 
 <p>
-  <input type="checkbox" name="enabled_only" value="1" id="enabled_only"
-         checked="checked">
-  <label for="enabled_only">Само действащи потребителски сметки</label>
+  Ограничаване на търсенето до
+  <select name="is_enabled">
+      <option value="2">Всички</option>
+      <option value="1" selected>Способни</option>
+      <option value="0">Неспособни</option>
+  </select>
+  потребители.
 </p>
 
 [% Hook.process('end') %]
@@ -67,11 +71,11 @@
 
 [% IF editusers %]
   <p>
-    Също така <a href="editusers.cgi?action=add">добавяне на нов потребител</a>
+    Също така можете <a href="editusers.cgi?action=add">да добавите нов потребител</a>
     [%- IF listselectionvalues %],
       или
-      <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">показване
-      на списъка с потребители отново</a>
+      <a href="editusers.cgi?action=list[% INCLUDE listselectionurlparams %]">да прегледате
+      отново списъка с потребители</a>
     [%- END %].
   </p>
 [% END %]

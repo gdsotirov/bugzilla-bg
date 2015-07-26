@@ -16,41 +16,38 @@
   #%]
 
 [% PROCESS global/header.html.tmpl
-   title = "Подразбиращи се предпочитания"
- %]
+  title = "Подразбиращи се предпочитания"
+  style_urls = ['skins/standard/admin.css']
+%]
 
 [% PROCESS "global/setting-descs.none.tmpl" %]
 
 <p>
-Тази страница ви позволява да редактирате подразбиращите се стойностите на предпочитанията.
+  Тази страница ви позволява да редактирате подразбиращите се стойности за предпочитанията. Подразбиращата се стойност показвана
+  за всяко предпочитание ще бъде прилагана за всички потребители които не са избрали стойност сами
+  и за всеки който не е влязъл в системата.
 </p>
-<p>
-Подразбиращата се стойност показвана за всяко предпочитание ще бъде прилагано за всички потребители които
-не изберат собствена стойност и за всеки, който не е влязъл в системата.
-</p>
-<p>
-Полето за отметка 'Разрешено' управлява достъпността на предпочитанието от
-потребителите.<br>
-Ако е отметнато потребителите ще виждат предпочитанието на тяхната страница Потребителски предпочитания
-и ще могат да изберат собствена стойност по тяхно желание.<br>
-Ако не е отметнато предпочитанието няма да се показва на тяхната страница Потребителски предпочитания
-и подразбиращата се стойност автоматично ще бъде прилагана за всички.
-</p>
-<hr>
 
-[% IF settings.size %]
-    <form name="adminsettingform" method="post" action="editsettings.cgi">
-      <table border="1" cellpadding="4">
-      <tr>
-        <th>Текст</th>
-        <th>Подразбираща се стойност</th>
-        <th>Разрешено</th>
-      </tr>
+<div>
+  Полето за отметка 'Разрешено' управлява достъпността на предпочитанието от потребителите:
+  <ul>
+    <li>Ако е отметнато, потребителите ще могат да избират сами стойност ако желаят.</li>
+    <li>Ако не е отметнато, стойността по подразбиране автоматично ще бъде прилагана за всички.</li>
+  </ul>
+</div>
 
-      [% FOREACH name = settings.keys %]
+    <form id="settings" method="post" action="editsettings.cgi">
+      <table id="admin_table">
+        <tr class="column_header">
+          <th>Текст</th>
+          <th>Подразбираща се стойност</th>
+          <th>Разрешено</th>
+        </tr>
+
+        [% FOREACH name = settings.keys %]
           [% checkbox_name = name _ '-enabled' %]
           <tr>
-            <td align="right">
+            <td>
               [% setting_descs.$name OR name FILTER html %]
             </td>
             <td>
@@ -63,31 +60,19 @@
                 [% END %]
               </select>
             </td>
-            <td align="center">
+            <td class="center">
               <input type="checkbox"
                 name="[% checkbox_name FILTER html %]"
                 id="[% checkbox_name FILTER html %]"
                 [% " checked=\"checked\"" IF settings.${name}.is_enabled %]>
-              <br>
             </td>
           </tr>
-      [% END %]
+        [% END %]
       </table>
 
     <input type="hidden" name="action" value="update">
     <input type="hidden" name="token" value="[% token FILTER html %]">
-    <table>
-      <tr>
-        <td width="150"></td>
-        <td>
-          <input type="submit" id="update" value="Предаване на промените">
-        </td>
-      </tr>
-    </table>
-  
+    <input type="submit" id="update" value="Предаване на промените">
   </form>
-[% ELSE %]
-  Няма предпочитания за редакция.
-[% END %]
 
 [% PROCESS global/footer.html.tmpl %]

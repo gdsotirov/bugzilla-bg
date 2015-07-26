@@ -15,25 +15,25 @@
 <!--
   function toggle_cell(cell) {
     if (cell.checked)
-      cell.parentNode.className = "checkbox-cell checked";
+      cell.parentNode.className = "checked";
     else
-      cell.parentNode.className = "checkbox-cell";
+      cell.parentNode.className = "";
   }
 //-->
 </script>
 
 <p>
   Тази страница ви позволява да определите кои преходи в състоянията са валидни в работния ви поток.
-  За съвместимост с по-стари версии на [% terms.Bugzilla %], отварянето отново на [% terms.abug %]
+  За съвместимост с по-стари версии на Bugzilla, отварянето отново на [% terms.abug %]
   ще покаже само или [% get_status("UNCONFIRMED") FILTER html %] или
   [%+ get_status("REOPENED") FILTER html %] (ако е разрешено от работния ви поток), но не
   двете. Решението зависи от това дали [% terms.abug %] е бил потвърждаван или не.
-  Така че е добра идея да разрешите и двата прехода и оставите [% terms.Bugzilla %] да избере
+  Така че е добра идея да разрешите и двата прехода и оставите Bugzilla да избере
   правилния.
 </p>
 
 <form id="workflow_form" method="POST" action="editworkflow.cgi">
-<table>
+<table id="workflow">
   <tr>
     <th colspan="2">&nbsp;</th>
     <th colspan="[% statuses.size FILTER html %]" class="title">Към</th>
@@ -43,7 +43,7 @@
     <th rowspan="[% statuses.size + 2 FILTER html %]" class="title">От</th>
     <th>&nbsp;</th>
     [% FOREACH status = statuses %]
-      <th class="col-header[% status.is_open ? " open-status" : " closed-status" %]">
+      <th class="[% status.is_open ? "open-status" : "closed-status" %] center">
         [% display_value("bug_status", status.name) FILTER html %]
       </th>
     [% END %]
@@ -53,7 +53,7 @@
   [% p = [{id => 0, name => "{Начало}", is_open => 1}] %]
   [% FOREACH status = p.merge(statuses) %]
     <tr class="highlight">
-      <th align="right" class="[% status.is_open ? "open-status" : "closed-status" %]">
+      <th class="[% status.is_open ? "open-status" : "closed-status" %]">
         [% display_value("bug_status", status.name) FILTER html %]
       </th>
 
@@ -61,7 +61,7 @@
         [% IF status.id != new_status.id %]
           [% checked = workflow.${status.id}.${new_status.id}.defined ? 1 : 0 %]
           [% mandatory = (status.id && new_status.name == Param("duplicate_or_move_bug_status")) ? 1 : 0 %]
-          <td align="center" class="checkbox-cell[% " checked" IF checked || mandatory %]"
+          <td class="[% "checked" IF checked || mandatory %]"
               title="От [% status.name FILTER html %] към [% new_status.name FILTER html %]">
             <input type="checkbox" name="w_[% status.id %]_[% new_status.id %]"
                    id="w_[% status.id %]_[% new_status.id %]" onclick="toggle_cell(this)"
@@ -69,7 +69,7 @@
                    [%+ "disabled='disabled'" IF mandatory %]>
           </td>
         [% ELSE %]
-          <td class="checkbox-cell forbidden">&nbsp;</td>
+          <td class="forbidden">&nbsp;</td>
         [% END %]
       [% END %]
     </tr>
@@ -87,7 +87,7 @@
   и редактиране на параметъра <i>duplicate_or_move_bug_status</i>.
 </p>
 
-<p align="center">
+<p class="center">
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="token" value="[% token FILTER html %]">
   <input type="submit" id="update_workflow" value="Предаване на промените"> -

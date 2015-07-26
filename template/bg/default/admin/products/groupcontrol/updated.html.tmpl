@@ -18,24 +18,36 @@
 [% PROCESS global/header.html.tmpl
   title = title
 %]
-<p>
+
 [% IF changes._group_controls.now_na.size %]
   [% FOREACH g = changes._group_controls.now_na %]
+    <p>
     Премахване на [% terms.bugs %] от групата '[% g.name FILTER html %]', която
-    вече е неприложима за продукта<p>
-    [% g.bug_count FILTER html %] [%+ terms.bug %](а) премахнат(и)<p>
+    вече е неприложима за продукта<br>
+    [% IF g.bug_count == 1 %]
+      Един [% terms.bug %] премахнат.
+    [% ELSE %]
+      [% g.bug_count FILTER html %] [%+ terms.bugs %] премахнати.
+    [% END %]
+    </p>
   [% END %]
 [% END %]
 
 [% IF changes._group_controls.now_mandatory.size %]
   [% FOREACH g = changes._group_controls.now_mandatory %]
+    <p>
     Добавяне на [% terms.bugs %] към групата '[% g.name FILTER html %]', която е 
-    задължителна за продукта<p>
-    [% g.bug_count FILTER html %] [%+ terms.bug %](а) добавен(и)<p>
+    задължителна за продукта<br>
+    [% IF g.bug_count == 1 %]
+      Един [% terms.bug %] добавен.
+    [% ELSE %]
+      [% g.bug_count FILTER html %] [%+ terms.bugs %] добавени.
+    [% END %]
+    </p>
   [% END %]
 [% END %]
 
-Обновяванията на групов контрол приключиха<p>
+<p>Обновяванията на групов контрол приключиха</p>
 
 [% PROCESS admin/products/footer.html.tmpl %]
 

@@ -21,11 +21,12 @@
   <th><label for="login">Потребителско име:</label></th>
   <td>
     [% IF editusers %]
-      <input size="64" maxlength="255" name="login" 
-             id="login" value="[% otheruser.login FILTER html %]" />
+      <input size="64" maxlength="255" id="login" name="login"
+             value="[% otheruser.login FILTER html %]"
+             [%- " autofocus" UNLESS editform %] required>
       [% IF editform %]
         [% IF !otheruser.in_group('bz_sudo_protect') %]
-          <br />
+          <br>
           <a href="relogin.cgi?action=prepare-sudo&amp;target_login=
           [%- otheruser.login FILTER uri %]">Представяне за този потребител</a>
         [% END %]
@@ -52,9 +53,8 @@
   <th><label for="name">Истинско име:</label></th>
   <td>
     [% IF editusers %]
-      <input size="64" maxlength="255" name="name"
-             autocomplete="off"
-             id="name" value="[% otheruser.name FILTER html %]" />
+      <input size="64" maxlength="255" id="name" name="name"
+             autocomplete="off" value="[% otheruser.name FILTER html %]">
     [% ELSE %]
       [% otheruser.name FILTER html %]
     [% END %]
@@ -65,16 +65,23 @@
   # if we ever have a login system that can create accounts through
   # createaccount.cgi but can't change passwords.
   #%]
-  
+  [% password_complexity = Param('password_complexity') %]
 [% IF editusers %]
   [% IF user.authorizer.can_change_password %]
   <tr>
     <th><label for="password">Парола:</label></th>
     <td>
       <input type="password" size="16" name="password" id="password"
-             value="" autocomplete="off" />
-      [% IF editform %]<br />
-        (Въведете нова парола, за да я смените.)
+             value="" autocomplete="off" [% 'required' IF !editform %]>
+      [% IF password_complexity == "mixed_letters" %] 
+        (Паролата трябва да съдържа поне една ГЛАВНА и една малка буква.)
+      [% ELSIF password_complexity == "letters_numbers" %] 
+        (Паролата трябва да съдържа поне една ГЛАВНА и една малка буква и цифра.)
+      [% ELSIF password_complexity == "letters_numbers_specialchars" %] 
+        (Паролата трябва да съдържа поне една буква, цифра и специален символ.)
+      [% END %]
+      [% IF editform %]<br>
+        (Въведете нова парола за смяна.)
       [% END %]
     </td>
   </tr>
@@ -104,6 +111,15 @@
        %]<br>
       (Ако полето не е празно, няма да е възможно да се влиза с използване на тази сметка
       и текста му трябва да обясни защо.)
+    </td>
+  </tr>
+[% END %]
+[% UNLESS editform %]
+  <tr>
+    <th><label for="notify_user">Уведомяване на потребител:</label></th>
+    <td>
+      <input type="checkbox" name="notify_user" id="notify_user" value="1">
+      (Изпращане на електронна поща до този потребител с информация за сметката му. Паролата няма да бъде включена.)
     </td>
   </tr>
 [% END %]
