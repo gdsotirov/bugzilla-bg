@@ -9,8 +9,8 @@
 Обикновените шаблони са в тази папка. Можете да ги заредите във ваш
 код ето така:
 
-use B[% %]ugzilla::Error;
-my $template = B[% %]ugzilla->template;
+use Bugzilla::Error;
+my $template = Bugzilla->template;
 $template->process('[% name FILTER lower %]/some-template.html.tmpl')
   or ThrowTemplateError($template->error());
 
@@ -18,7 +18,7 @@ $template->process('[% name FILTER lower %]/some-template.html.tmpl')
 е в тази папка.
 
 Забележете, че трябва да сте внимателни, така че пълния път на вашия шаблон
-никога да не съвпада с шаблон, който съществува в [% terms.Bugzilla %] или в 
+никога да не съвпада с шаблон, който съществува в Bugzilla или в 
 друго разширение, иначе шаблона ви може да го замени. Затова
 създадхоме папка именувана '[% name FILTER lower %]' за вас, така че
 да можете да сложите шаблните си тук с оглед предотвратяване на противоречия.

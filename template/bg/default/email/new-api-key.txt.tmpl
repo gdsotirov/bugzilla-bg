@@ -1,0 +1,33 @@
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+  #
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
+  #%]
+
+[%# INTERFACE:
+  # user: The Bugzilla::User object of the user being created
+  # new_key: The API key created
+  #%]
+
+From: [% Param('mailfrom') %]
+To: [% user.email %]
+Subject: [% terms.Bugzilla %]: Нов API ключ създаден
+X-Bugzilla-Type: admin
+
+[This e-mail has been automatically generated]
+
+Нов [% terms.Bugzilla %] API ключ[% IF new_key.description %], с
+описание '[% new_key.description %]'[% END %] беше създаден. Можете да прегледате
+или обновите ключа на следния URL:
+
+[%+ urlbase %]userprefs.cgi?tab=apikey
+
+ВАЖНО: Ако не сте заявили нов ключ, вашата [% terms.Bugzilla %] сметка
+може да е била разбита. В този случай, моля забранете ключа на горния
+URL и незабавно сменете паролата си.
+
+От съображения за сигурност, не сме включили новия ви ключ в това писмо.
+
+При каквито и да е проблем с вашата сметка, моля свържете се с [% Param('maintainer') %].
