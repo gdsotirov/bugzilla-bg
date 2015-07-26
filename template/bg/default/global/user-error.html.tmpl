@@ -97,6 +97,15 @@
     Псевдонимите на [% terms.bug %] не могат да бъдат по-дълги от 20 символа.
     Моля, изберете по-къс псевдоним.
 
+  [% ELSIF error == "api_key_not_valid" %]
+    [% title = "Недействителен API ключ" %]
+    Указания API ключ е недействителен. Моля проверете, че сте го въвели
+    правилно.
+
+  [% ELSIF error == "api_key_revoked" %]
+    [% title = "Недействителен API ключ" %]
+    Указания API ключ беше снет от потребителя който го е създал.
+
   [% ELSIF error == "attachment_bug_id_mismatch" %]
     [% title = "Недействителни приставки" %]
     Опитахте се да изършите действие върху приставки от различни [% terms.bugs %].
@@ -170,6 +179,8 @@
       класификации
     [% ELSIF object == "components" %]
       съставни части
+    [% ELSIF object == "comment_tags" %]
+      етикети на коментари
     [% ELSIF object == "custom_fields" %]
       потребителски полета
     [% ELSIF object == "field_values" %]
@@ -217,6 +228,11 @@
 
     [% Hook.process("auth_failure") %]
 
+  [% ELSIF error == "auth_invalid_token" %]
+    [% title = 'Възникна грешка с белег' %]
+    Белега '[% token FILTER html %]' е недействителен. Това може да е защото
+    сте заредили страницата преди повече от 3 дни.
+
   [% ELSIF error == "auth_untrusted_request" %]
     [% title = "Недостоверна заявка за удостоверяване" %]
     Опитахте се да влезете използвайки сметката <em>[% login FILTER html %]</em>,
@@ -240,12 +256,12 @@
     действителен идентификатор на страница.
 
   [% ELSIF error == "bug_access_denied" %]
-    [% title = "Достъпът отказан" %]
+    [% title = "Достъп до $terms.Bug отказан" %]
     [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
     Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
 
   [% ELSIF error == "bug_access_query" %]
-    [% title = "Достъпът отказан" %]
+    [% title = "Достъп до $terms.Bug отказан" %]
     [% docslinks = {'myaccount.html' => 'Създаване на сметка'} %]
     Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
     За да видите този [% terms.bug %] първо
@@ -265,7 +281,7 @@
     [% ELSE %]
       [%+ field_descs.see_also FILTER html %] <abbr lang="en" title="Uniform Resource Locator">URL</abbr>-тата трябва да сочат към някое от:
       <ul>
-        <li><code>show_bug.cgi</code> в [% terms.Bugzilla %]
+        <li><code>show_bug.cgi</code> в Bugzilla
           инсталация.</li>
         <li>Б[% %]ъг в launchpad.net</li>
         <li>Издание в code.google.com.</li>
@@ -274,7 +290,7 @@
         <li>Билет в Trac инсталация.</li>
         <li>Б[% %]ъг в MantisBT инсталация.</li>
         <li>Б[% %]ъг в sourceforge.net.</li>
-        <li>Издание в github.com.</li>
+        <li>Издание/заявка за изтегляне в github.com.</li>
         [% Hook.process('bug_url_invalid_tracker') %]
       </ul>
     [% END %]
@@ -326,6 +342,25 @@
     [% title = "Коментарът твърде дълъг" %]
     Коментарите не могат да бъдат по-дълги от 
     [%+ constants.MAX_COMMENT_LENGTH FILTER html %] символа.
+
+  [% ELSIF error == "comment_tag_disabled" %]
+    [% title = "Етикирането на коментари забранено" %]
+    Етикирането на коментари не е разрешено.
+
+  [% ELSIF error == "comment_tag_invalid" %]
+    [% title = "Недействителен етикет на коментар" %]
+    Етикета на коментар "[% tag FILTER html %]" съдържа недействителни символи или
+    думи.
+
+  [% ELSIF error == "comment_tag_too_long" %]
+    [% title = "Твърде дълъг етикет на коментар" %]
+    Етикетите на кментари не могат да бъдат по-дълги от
+    [%+ constants.MAX_COMMENT_TAG_LENGTH FILTER html %] символа.
+
+  [% ELSIF error == "comment_tag_too_short" %]
+    [% title = "Твърде къс етикет на коментар" %]
+    Етикетите на коментари трябва да бъдат поне
+    [%+ constants.MIN_COMMENT_TAG_LENGTH FILTER html %] символа.
 
   [% ELSIF error == "auth_classification_not_enabled" %]
     [% title = "Класификацията не е позволена" %]
@@ -481,7 +516,7 @@
 
   [% ELSIF error == "feature_disabled" %]
     Функцията [% install_string("feature_$feature") FILTER html %] не е
-    достъпна в тази [% terms.Bugzilla %].
+    достъпна в тази Bugzilla.
     [% IF user.in_group('admin') %]
       Ако желаете да разрешите тази функция, моля пуснете
       <kbd>checksetup.pl</kbd>, за да видите как да инсталирате необходимите
@@ -643,9 +678,14 @@
     <br>Вместо това, ако приставката е изображение, можете да я обърнете
     в сбит формат, като <abbr lang="en" title="Joint Photographic Experts Group">JPG</abbr> или <abbr lang="en" title="Portable Network Graphics">PNG</abbr> и опитате отново.
 
-  [% ELSIF error == "flag_requestee_disabled" %]
+  [% ELSIF error == "flag_type_requestee_disabled" %]
     [% title = "Флаг не е изискуем от определен човек" %]
     Не можете да искате от определен човек за <em>[% type.name FILTER html %]</em>.
+
+  [% ELSIF error == "flag_requestee_disabled" %]
+    [% title = "Забранана сметка на даващия флаг" %]
+    Не може да искате от <em>[% requestee.identity FILTER html %]</em>, защото тази
+    сметка е забранена
 
   [% ELSIF error == "flag_requestee_needs_privs" %]
     [% title = "Даващия флаг има нужда от права" %]
@@ -728,6 +768,16 @@
     Не ви е позволено да променята свойства на типа флаг '[% flagtype.name FILTER html %]',
     защото той не е достъпен за продукти които можете да администрирате.
 
+  [% ELSIF error == "flag_not_unique" %]
+    [% title = "Флаг не е уникален" %]
+    Флага '[% value FILTER html %]' е бил задаван многократно.
+    Трябва да укажете стойност на идентификатор, за да го обновите.
+
+  [% ELSIF error == "flag_type_not_unique" %]
+    [% title = "Тип флаг не е уникален" %]
+    Типа флаг '[% value FILTER html %]' съвпада с няколкото флаг типа.
+    Трябва да укажете идентификатора на типа, за да го обновите или добавите.
+
   [% ELSIF error == "flag_type_not_multiplicable" %]
     [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
                     'flags.html' => 'Използване на флагове'} %]
@@ -775,6 +825,11 @@
              [%- group.id FILTER uri %]">записи</a>
     в базата данни обръщащи се към нея. Всички обръщения към групата трябва
     да бъдат премахнати преди изтриването и.
+
+  [% ELSIF error == "group_cannot_view" %]
+    [% title = "Не можете да виждате групи" %]
+    За да виждате групите, трябва да сте член на 'editusers' или
+    'creategroups' група, или да имате права на даващ за поне една група.
 
   [% ELSIF error == "group_exists" %]
     [% title = "Групата вече съществува" %]
@@ -868,9 +923,9 @@
 
   [% ELSIF error == "illegal_date" %]
     [% title = "Неправилна дата" %]
-    '<tt>[% date FILTER html %]</tt>' е неправилна дата.
+    '<kbd>[% date FILTER html %]</kbd>' е неправилна дата.
     [% IF format %]
-      Моля, използвайте формата '<tt>[% format FILTER html %]</tt>'.
+      Моля, използвайте формата '<kbd>[% format FILTER html %]</kbd>'.
     [% END %]
     
   [% ELSIF error == "illegal_email_address" %]
@@ -896,6 +951,13 @@
     Комбинацията за групов контрол за групата &quot;
     [% groupname FILTER html %]&quot; е недействителна.
 
+  [% ELSIF error == "illegal_pronoun" %]
+    [% title = "Недействителен местоимение" %]
+    Използванто от вас местоимение ([% pronoun FILTER html %]) е недействително. Трябва да ползвате
+    едно от одобрените местоимения. Моля вижте
+    <a href="[% docs_urlbase FILTER html %]query.html#pronouns">Заместване на местоимения</a>
+    за пълен списък.
+
   [% ELSIF error == "illegal_query_name" %]
     [% title = "Недействително име на търсене" %]
     Името на търсенето ви не може да съдържа някой от следващите символи: 
@@ -914,9 +976,9 @@
 
   [% ELSIF error == "illegal_time" %]
     [% title = "Недействително време" %]
-    '<tt>[% time FILTER html %]</tt>' не е действително време.
+    '<kbd>[% time FILTER html %]</kbd>' не е действително време.
     [% IF format %]
-      Моля, използвайте формата '<tt>[% format FILTER html %]</tt>'.
+      Моля, използвайте формата '<kbd>[% format FILTER html %]</kbd>'.
     [% END %]
 
   [% ELSIF error == "illegal_regexp" %]
@@ -963,11 +1025,6 @@
     е едно от <em>[% constants.LEGAL_CONTENT_TYPES.join(', ') FILTER html %]</em>
     и <em>bar</em> не трябва да съдържа специални символи (като "=", "?", ...).
 
-  [% ELSIF error == "invalid_context" %]
-    [% title = "Неправилен контекст" %]
-    Контекста [% context FILTER html %] е неправилен (трябва да бъде число,
-    "файл" или "кръпка").
-
   [% ELSIF error == "invalid_datasets" %]
     [% title = "Недействителни набори данни" %]
     Недействителни набори данни <em>[% datasets.join(":") FILTER html %]</em>. Позволени са,
@@ -1005,10 +1062,6 @@
     [% title = "Неправилен параметър" %]
     Новата стойност за [% name FILTER html %] е неправилна: [% err FILTER html %].
 
-  [% ELSIF error == "invalid_product_name" %]
-    [% title = "Недействително име на продукт" %]
-    Името на продукт '[% product FILTER html %]' е недействително или не съществува.
-
   [% ELSIF error == "invalid_regexp" %]
     [% title = "Неправилен регулярен израз" %]
     Регулярният израз, който въведохте, е неправилен.
@@ -1044,11 +1097,11 @@
 
   [% ELSIF error == "invalid_username" %]
     [% title = "Невалидно потребителско име" %]
-    Името <tt>[% name FILTER html %]</tt> е непознато потребителско име.  
+    Името <kbd>[% name FILTER html %]</kbd> е непознато потребителско име.  
     Или сте го написали неправилно или лицето не се е регистрирало в
     [% terms.Bugzilla %].
 
-  [% ELSIF error == "invalid_username_or_password" %]
+  [% ELSIF error == "invalid_login_or_password" %]
     [% title = "Недействително потребителско име или парола" %]
     Потребителското име или паролата, които въведохте са непознати.
     [%# People get two login attempts before being warned about
@@ -1062,6 +1115,11 @@
       За да избегнете заключване, можете да нулирате паролата си ползвайки
       връзката "Забравена парола".
     [% END %]
+
+  [% ELSIF error == "invalid_cookies_or_token" %]
+    [% title = "Невалидни бисквитки или белег" %]
+    Предоставените бисквитки или белега са недействителни или са изтекли.
+    Можете да влезете отново, за да получите нови бисквитки или нов белег.
 
   [% ELSIF error == "json_rpc_get_method_required" %]
     При ползване на <abbr lang="en" title="JavaScript Object Notation">JSON</abbr>-<abbr lang="en" title="Remote Procedure Call">RPC</abbr> през GET, трябва да укажете 'method'
@@ -1086,6 +1144,13 @@
   [% ELSIF error == "json_rpc_post_only" %]
     От съображения за сигурност, можете да използвате <abbr lang="en" title="Hyper Text Transfer Protocol">HTTP</abbr> POST за извикване на
     метода '[% method FILTER html %]'.
+
+  [% ELSIF error == "rest_invalid_resource" %]
+    REST API ресурс не беше открит за '[% method FILTER html +%] [%+ path FILTER html %]'.
+
+  [% ELSIF error == "get_products_invalid_type" %]
+    Типа продукт '[% type FILTER html %]' е недействителен. Действителните възможности
+    са 'accessible', 'selectable' и 'enterable'.
 
   [% ELSIF error == "keyword_already_exists" %]
     [% title = "Ключовата дума вече съществува" %]
@@ -1122,7 +1187,7 @@
 
   [% ELSIF error == "migrate_from_invalid" %]
     '[% from FILTER html %]' не е действителен тип на система за следене на [% terms.bugs %]
-    от която да мигрирате. Проверете съдържанието на папка <kbd>B[% %]ugzilla/Migrate/</kbd>
+    от която да мигрирате. Проверете съдържанието на папка <kbd>Bugzilla/Migrate/</kbd>
     за списък на действителните системи за следене на [% terms.bugs %].
 
   [% ELSIF error == "milestone_already_exists" %]
@@ -1289,16 +1354,23 @@
       за промяна.
     [% ELSIF action == "view" %]
       за преглед.
+    [% ELSIF action == 'summarize' %]
+      за преглед на времеви сборове.
     [% END %]
 
   [% ELSIF error == "no_tag_to_edit" %]
-    [% title = "Не е избран таг" %]
-    Опитахте се да създадете или премахнете таг без име.
+    [% title = "Не е избран етикет" %]
+    Опитахте се да създадете или премахнете етикет без име.
 
   [% ELSIF error == "no_initial_bug_status" %]
     [% title = "Няма първоначален статус на $terms.bug" %]
     Не е наличен статус на [% terms.bug %] при създаване.
     Моля, докладвайте проблема на [% Param("maintainer") %].
+    
+  [% ELSIF error == "no_keywords" %]
+    [% title = "Няма ключови думи" %]
+    [% admindocslinks = {'keywords.html' => 'Setting up a keyword'} %]
+    Не са определени ключови думи за тази инсталация.
 
   [% ELSIF error == "no_new_quips" %]
     [% title = "Без нови остроумия" %]
@@ -1316,6 +1388,12 @@
                          'groups.html'     => 'Групова сигурност'} %]
     Или не са определени продукти, за които да въвеждате [% terms.bugs %] или не
     Ви е даден достъп до никой.
+
+  [% ELSIF error == "number_not_integer" %]
+    [% title = "Необходима е целочислена стойност" %]
+    Стойността '[% num FILTER html %]' в
+    полето <em>[% field_descs.$field FILTER html %]</em>
+    не е целочислена (т.е. не е цяло число).
 
   [% ELSIF error == "number_not_numeric" %]
     [% title = "Необходима е числова стойност" %]
@@ -1357,8 +1435,7 @@
       Или сте въвели грешно името или този потребител все още не се е записал
       за сметка в [% terms.Bugzilla %].
     [% ELSIF class == "Bugzilla::Keyword" %]
-      Позволените имена на ключови думи са <a href="describekeywords.cgi">описани
-      тук</a>.
+      Вижте списъка на <a href="describekeywords.cgi">наличните ключови думи</a>.
     [% END %]
 
   [% ELSIF error == "old_password_incorrect" %]
@@ -1377,18 +1454,14 @@
     [% title = "Паролите не съвпадат" %]
     Двете пароли които въведохте не съвпадат.
 
-  [% ELSIF error == "password_current_too_short" %]
-    [% title = "Изисква се нова парола" %]
-    Паролата ви текущо е дълга по-малко от
-    [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа,
-    което е новата минимална дължина изисквана за пароли.
-    Трябва да <a href="token.cgi?a=reqpw&amp;loginname=[% locked_user.email FILTER uri %]">
-    поискате нова парола</a>, за да влезете отново.
-
   [% ELSIF error == "password_too_short" %]
     [% title = "Твърде къса парола" %]
     Паролата трябва да бъде най-малко
     [%+ constants.USER_PASSWORD_MIN_LENGTH FILTER html %] символа.
+    [% IF locked_user %]
+      Трябва да <a href="token.cgi?a=reqpw&amp;loginname=[% locked_user.email FILTER uri %]&amp;token=[% issue_hash_token(['reqpw']) FILTER uri %]">
+      поискате нова парола</a>, за да влезете отново.
+    [% END %]
 
   [% ELSIF error == "password_not_complex" %]
     [% title = "Парола неотговаряща на изискванията" %]
@@ -1406,6 +1479,10 @@
         <li>цифра</li>
       [% END %]
     </ul>
+    [% IF locked_user %]
+      Трябва да <a href="token.cgi?a=reqpw&amp;loginname=[% locked_user.email FILTER uri %]&amp;token=[% issue_hash_token(['reqpw']) FILTER uri %]">
+      поискате нова парола</a>, за да влезете отново.
+    [% END %]
 
   [% ELSIF error == "product_access_denied" %]
     [% title = "Отказан достъп до продукт" %]
@@ -1519,7 +1596,7 @@
 
   [% ELSIF error == "quicksearch_unbalanced_quotes" %]
     [% title = "Лошо форматирана заявка" %]
-    [% terms.Bugzilla %] не е способна да направи правилен синтактичен разбор на заявката ви:
+    Bugzilla не е способна да направи правилен синтактичен разбор на заявката ви:
     <em>[% string FILTER html %]</em>.<br>
     Ако използвате кавички за обграждане на низове, уверете се, че и двете са поставени.
     Ако наистина желаете да търсите за кавичка в низ, въведете \" вместо ".
@@ -1618,7 +1695,7 @@
     "съдържание".
 
   [% ELSIF error == "search_grouped_field_invalid" %]
-    [% terms.Bugzilla %] не поддържа използването на 
+    Bugzilla не поддържа използването на 
     полето "[%+ field_descs.$field FILTER html %]" ([% field FILTER html %])
     с групирани условия за търсене.
 
@@ -1629,7 +1706,7 @@
     Всички условия при групово търсене трябва да ползват същото поле.
 
   [% ELSIF error == "search_field_operator_invalid" %]
-    [% terms.Bugzilla %] не поддържа използването на 
+    Bugzilla не поддържа използването на 
     "[%+ field_descs.$field FILTER html %]" ([% field FILTER html %])
     поле с "[% search_descs.$operator FILTER html %]" 
     ([% operator FILTER html %]) тип за търсене.
@@ -1703,8 +1780,8 @@
     Потребителя [% login FILTER html %] не може да бъде представляван от някой друг.
 
   [% ELSIF error == "tag_name_too_long" %]
-    [% title = "Твърде дълго име на таг" %]
-    Името на тага трябва да бъде по-кратко от [% constants.MAX_LEN_QUERY_NAME FILTER html %]
+    [% title = "Твърде дълго име на етикет" %]
+    Етикета трябва да бъде по-кратко от [% constants.MAX_LEN_QUERY_NAME FILTER html %]
     символа.
 
   [% ELSIF error == "token_does_not_exist" %]
@@ -1734,7 +1811,7 @@
 
   [% ELSIF error == "unknown_tab" %]
     [% title = "Неизвестен прозорец" %]
-    <code>[% current_tab_name FILTER html %]</code> не е действително име на прозорец.
+    Няма раздел с име <code>[% current_tab_name FILTER html %]</code>.
 
   [% ELSIF error == "value_inactive" %]
     [% title = "Стойност не е в действие" %]
@@ -1795,12 +1872,12 @@
 
   [% ELSIF error == "user_match_failed" %]
     [% title = "Сравнението пропадна" %]
-    <tt>[% name FILTER html %]</tt> не съществува или не ви е позволено 
+    <kbd>[% name FILTER html %]</kbd> не съществува или не ви е позволено 
     да виждате потребителя.
 
   [% ELSIF error == "user_match_too_many" %]
     [% title = "Няма окончателно съвпадение" %]
-    [% terms.Bugzilla %] не може да направи окончателно съвпадение за едно или повече
+    Bugzilla не може да направи окончателно съвпадение за едно или повече
     от имената и/или е-пощенските адреси които въведохте за
     полетата [% fields.join(', ') FILTER html %].
 
@@ -1808,6 +1885,16 @@
     [% title = "Потребител не е в Insidergroup" %]
     Съжалявам, но не ви е разрешено да отбелязвате (и обратното) коментари или приставки
     като частни.
+
+  [% ELSIF error == "user_not_involved" %]
+    [% title = "Потребител не е замесен с $terms.Bug" %]
+    Съжалявам, но не сте замесени с [% terms.Bug %] [%+
+        bug_id FILTER bug_link(bug_id) FILTER none %].
+
+  [% ELSIF error == "webdot_too_large" %]
+    [% title = "Твърде голям граф на зависимостите" %]
+    Графа на зависимостите съдържа твъре много [% terms.bugs %] за да бъде показан (повече
+    от [% constants.MAX_WEBDOT_BUGS FILTER html %] [%+ terms.bugs %]).
 
   [% ELSIF error == "wrong_token_for_cancelling_email_change" %]
     [% title = "Грешен признак" %]
@@ -1888,15 +1975,11 @@
    admindocslinks = admindocslinks
 %]
 
-<table cellpadding="20">
-  <tr>
-    <td id="error_msg" class="throw_error">
-      [% error_message FILTER none %]
-    </td>
-  </tr>
-</table>
+<div id="error_msg" class="throw_error">
+  [% error_message FILTER none %]
+</div>
 
-<p>
+<p id="post_err_msg">
   Моля, щракнете върху <b>Назад</b> и опитайте отново.
 </p>
 

@@ -26,14 +26,12 @@
     отхвърлено.
 
   [% ELSIF message_tag == "account_updated" %]
-    [% IF changed_fields.size
-          + groups_added_to.size + groups_removed_from.size
-          + groups_granted_rights_to_bless.size + groups_denied_rights_to_bless.size %]
+    [% IF changes.size %]
       [% title = "Сметката $loginold бе обновена" %]
       Следните промени бяха направени върху сметката
       [%+ loginold FILTER html %]:
       <ul>
-        [% FOREACH field = changed_fields %]
+        [% FOREACH field = changes.keys %]
           <li>
             [% IF    field == 'login_name' %]
               Името за вход вече е [% otheruser.login FILTER html %].
@@ -53,33 +51,29 @@
               [% ELSE %]
                 [% terms.Bug %]пощата беше разрешена.
               [% END %]
+            [% ELSIF field == 'groups' %]
+              [% IF changes.groups.1.size %]
+                Сметката беше добавена към
+                [%+ changes.groups.1.join(', ') FILTER html %]
+                груп[% 'ите' IF changes.groups.1.size > 1 %][% 'ата' IF changes.groups.1.size == 1 %].
+              [% END %]
+              [% IF changes.groups.0.size %]
+                Сметката беше премахната от
+                [%+ changes.groups.0.join(', ') FILTER html %]
+                груп[% 'ите' IF changes.groups.0.size > 1 %][% 'и' IF changes.groups.0.size == 1 %].
+              [% END %]
+            [% ELSIF field == 'bless_groups' %]
+              [% IF changes.bless_groups.1.size %]
+                На сметката бяха дадени права да добавя сметки към
+                [%+ changes.bless_groups.1.join(', ') FILTER html %]
+                груп[% 'ите' IF changes.bless_groups.1.size > 1 %][% 'ата' IF changes.bless_groups.1.size > 1 %].
+              [% END %]
+              [% IF changes.bless_groups.0.size %]
+                На сметката бяха отнети правата да добавя сметки към
+                [%+ changes.bless_groups.0.join(', ') FILTER html %]
+                груп[% 'ите' IF changes.bless_groups.0.size > 1 %][% 'ата' IF changes.bless_groups.0.size > 1 %].
+              [% END %]
             [% END %]
-          </li>
-        [% END %]
-        [% IF groups_added_to.size %]
-          <li>
-            Сметката беше добавена към следн[% 'ата' IF groups_added_to.size == 1 %][% 'ите' IF groups_added_to.size > 1 %] груп[% 'а' IF groups_added_to.size == 1 %][% 'и' IF groups_added_to.size > 1 %]
-            [%+ groups_added_to.join(', ') FILTER html %]
-          </li>
-        [% END %]
-        [% IF groups_removed_from.size %]
-          <li>
-            Сметката беше премахната от следн[% 'ата' IF groups_removed_from.size == 1 %][% 'ите' IF groups_removed_from.size > 1 %] груп[% 'а' IF groups_removed_from.size == 1 %][% 'и' IF groups_removed_from.size > 1 %]
-            [%+ groups_removed_from.join(', ') FILTER html %]
-          </li>
-        [% END %]
-        [% IF groups_granted_rights_to_bless.size %]
-          <li>
-            На сметката бяха дадени правата да добавя сметки към
-            груп[% 'ата' IF groups_granted_rights_to_bless.size == 1 %][% 'ите' IF groups_granted_rights_to_bless.size > 1 %]
-            [%+ groups_granted_rights_to_bless.join(', ') FILTER html %].
-          </li>
-        [% END %]
-        [% IF groups_denied_rights_to_bless.size %]
-          <li>
-            На сметката бяха отнети правата да добавя сметки към
-            груп[% 'ата' IF groups_denied_rights_to_bless.size == 1 %][% 'ите' IF groups_denied_rights_to_bless.size > 1 %]
-            [%+ groups_denied_rights_to_bless.join(', ') FILTER html %].
           </li>
         [% END %]
       </ul>
@@ -569,7 +563,8 @@
 
   [% ELSIF message_tag == "password_change_request" %]
     [% title = "Заявка за смяна на парола" %]
-    Признак за смяна на вашата парола, ви беше изпратен по електронна поща.
+    Признак за смяна на вашата парола, ви беше изпратен по електронна поща до
+    <em>[% login_name FILTER html %]</em>.
     Следвайте инструкциите в съобщението, за да я смените.
 
   [% ELSIF message_tag == "password_changed" %]
@@ -733,7 +728,7 @@
     Преименуване на таблицата '[% old FILTER html %]' на '[% new FILTER html %]'...
 
   [% ELSIF message_tag == "install_urlbase_default" %]
-    Сега след като сте инсталирали [% terms.Bugzilla %], трябва да посетите
+    Сега след като сте инсталирали Bugzilla, трябва да посетите
     страницата 'Параметри' (връзка за която има в дъното на страниците на администраторската
     сметка), за да се уверите, че е настроена както желаете - това включва
     задаване на правилен адрес за 'urlbase'.
@@ -752,7 +747,7 @@
     други файлове (включително файла localconfig съхраняващ паролата ви за
     базата с данни) трябва да е четим от всички. Това означава, че _всеки_ сдобил се
     с местен достъп до тази машина може да прави каквото си поиска с вашата
-    [%+ terms.Bugzilla %] инсталация и вероятно също ще има възможност да пусне 
+    Bugzilla инсталация и вероятно също ще има възможност да пусне 
     произволен Perl код като потребителя, с който се изпълнява web сървъра.
 
     Наистина, наистина, наистина трябва да промените тази настройка.
@@ -762,7 +757,7 @@
     Внимание: въвели сте стойност за параметъра "webservergroup" във файла
     localconfig, но не сте a) пуснали този скрипт като [% constants.ROOT_USER FILTER html %]; 
     или b) член на тази група. Това може да предизвика проблеми с правата и
-    намалена сигурност.  Ако изпитвате затруднения с пускането на [% terms.Bugzilla %]
+    намалена сигурност.  Ако изпитвате затруднения с пускането на Bugzilla
     скриптове, влезте като [% constants.ROOT_USER FILTER html %] и пуснете отново скрипта, станете 
     член на групата или премахнете стойността на "webservergroup" параметъра.
 
@@ -770,7 +765,7 @@
     Внимание: Задали сте webservergroup в [% constants.bz_locations.localconfig FILTER html %]
     Моля, разберете, че това не ви носи никаква сигурност когато
     работите под Windows.
-    Проверете дали правата над файловете в [% terms.Bugzilla %] папката ви са
+    Проверете дали правата над файловете в Bugzilla папката ви са
     подходящи за вашата система. Избягвайте ненужен достъп за писане.
 
   [% ELSIF message_tag == "install_workflow_init" %]
@@ -794,6 +789,30 @@
     Продукта <em>[% product FILTER html %]</em> не съществува
     или вие нямате достъп до него. Следва списък с продукти
     от които можете да изберете.
+
+  [% ELSIF message_tag == "quips_added" %]
+    Вашето остроумие <em>[% added_quip FILTER html %]</em> беше добавено.
+    [% IF Param("quip_list_entry_control") == "moderated" AND
+          !user.in_group('bz_quip_moderators') %]
+      То ще бъде използвано веднага щом бъде одобрено.
+    [% END %]
+
+  [% ELSIF message_tag == "quips_deleted" %]
+    Остроумието <em>[% deleted_quip FILTER html %]</em> беше изтрито.
+
+  [% ELSIF message_tag == "quips_approved_unapproved" %]
+    [% IF approved.size == 1 %]
+      Едно остроумие одобрено
+    [% ELSE %]
+      [% approved.size %] остроумия одобрени
+    [% END %]
+    и
+    [% IF unapproved.size == 1 %]
+      едно остроумие неодобрено
+    [% ELSE %]
+      [%+ unapproved.size %] остроумия неодобрени
+    [% END %]
+    .
 
   [% ELSIF message_tag == "report_created" %]
     OK, имате нов запазен доклад именован <em>[% reportname FILTER html %]</em>.
@@ -849,6 +868,12 @@
       [%+ series.subcategory FILTER html %] /
       [%+ series.name FILTER html %]</em>
       беше изтрита.
+
+  [% ELSIF message_tag == "series_updated" %]
+    [% title = "Обновена редица" %]
+    Редицата <em>[% default.category FILTER html %] /
+    [%+ default.subcategory FILTER html %] /
+    [%+ default.name FILTER html %]</em> беше обновена.
 
   [% ELSIF message_tag == "shutdown" %]
     [% title = "$terms.Bugzilla е спряна" %]
@@ -917,7 +942,7 @@
 [%# Give sensible error if the message function is used incorrectly. #%]
 [% IF !message %]
   [% message = BLOCK %]
-    Използвате функцията за съобщения на [% terms.Bugzilla %] неправилно.
+    Използвате функцията за съобщения на Bugzilla неправилно.
     Подадохте низа '[% message_tag FILTER html %]'. Правилното използване е чрез подаване на
     таг и описването му във файла <kbd>messages.html.tmpl</kbd>.<br>
     <br>

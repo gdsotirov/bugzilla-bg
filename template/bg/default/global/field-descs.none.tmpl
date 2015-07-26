@@ -34,15 +34,19 @@
   "changedto"      => "променен на",
   "changedby"      => "променен от протребител",
   "matches"        => "съвпада",
-  "notmatches"      => "не съвпада",
+  "notmatches"     => "не съвпада",
+  "isempty"        => "е празно",
+  "isnotempty"     => "не е празно",
 } %]
 
 [% field_types = { ${constants.FIELD_TYPE_UNKNOWN}       => "Непознат тип",
                    ${constants.FIELD_TYPE_FREETEXT}      => "Свободен текст",
+                   ${constants.FIELD_TYPE_INTEGER}       => "Цяло число",
                    ${constants.FIELD_TYPE_SINGLE_SELECT} => "Поле за избор"
                    ${constants.FIELD_TYPE_MULTI_SELECT}  => "Поле за множествен избор",
                    ${constants.FIELD_TYPE_TEXTAREA}      => "Голямо текстово поле",
                    ${constants.FIELD_TYPE_DATETIME}      => "Дата/Час",
+                   ${constants.FIELD_TYPE_DATE}          => "Дата",
                    ${constants.FIELD_TYPE_BUG_ID}        => "$terms.Bug №",
                 } %]
 
@@ -92,6 +96,7 @@
      "everconfirmed"           => "Някога потвърждаван",
      "flagtypes.name"          => "Флагове",
      "keywords"                => "Ключови думи",
+     "last_visit_ts"           => "Последно посещение",
      "longdesc"                => "Коментар",
      "longdescs.count"         => "Брой коментари",
      "longdescs.isprivate"     => "Коментара е частен",
@@ -119,7 +124,7 @@
      "short_desc"              => "Резюме",
      "short_short_desc"        => "Резюме",
      "status_whiteboard"       => "Бяла дъска",
-     "tag"                     => "Етикети",
+     "tag"                     => "Лични етикети",
      "target_milestone"        => "Целево събитие",
      "version"                 => "Версия",
      "work_time"               => "Отработени часове",

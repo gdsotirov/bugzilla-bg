@@ -50,8 +50,8 @@
     
   [% ELSIF error == "chart_data_not_generated" %]
     [% admindocslinks = {'extraconfig.html' => 'Настройване на графики'} %]
-    [% IF product %]
-      Графиките за продукта <em>[% product FILTER html %]</em> не са
+    [% IF product.id %]
+      Графиките за продукта <em>[% product.name FILTER html %]</em> не са
       достъпни все още, защото не са събирани данни за него откакто
       е създаден.
     [% ELSE %]
@@ -64,13 +64,13 @@
 
   [% ELSIF error == "chart_datafile_corrupt" %]
     Файла с данни за графиката [% file FILTER html %] е повреден.
-        
+
   [% ELSIF error == "chart_dir_nonexistent" %]
-    Една от директориите <tt>[% dir FILTER html %]</tt> и
-    <tt>[% graph_dir FILTER html %]</tt> не съществуват.
-  
+    Една от директориите <kdb>[% dir FILTER html %]</kbd> и
+    <kbd>[% graph_dir FILTER html %]</kbd> не съществуват.
+
   [% ELSIF error == "chart_file_open_fail" %]
-    Не може да бъде отворен файла с данни за графиката <tt>[% filename FILTER html %]</tt>.
+    Не може да бъде отворен файла с данни за графиката <kbd>[% filename FILTER html %]</kbd>.
  
   [% ELSIF error == "column_alter_nonexistent_fk" %]
     Опитахте се да промените външния ключ за 
@@ -112,7 +112,7 @@
     Всяка бисквитка трябва да има стойност.
 
   [% ELSIF error == "env_no_email" %]
-    [% terms.Bugzilla %] не получи е-пощенски адрес от
+    Bugzilla не получи е-пощенски адрес от
     средата.
     [% IF Param("auth_env_email") %]
       Това значи, че параметъра '[% Param("auth_env_email") FILTER html %]'
@@ -386,7 +386,7 @@
 
   [% ELSIF error == "search_field_operator_unsupported" %]
     [% title = "Недействителен тип търсене" %]
-    [% terms.Bugzilla %] не поддържа тип на търсене
+    Bugzilla не поддържа тип на търсене
     "[% operator.truncate(30, "...") FILTER html %]".
 
   [% ELSE %]
@@ -394,7 +394,7 @@
     [% error_message = Hook.process("errors") %]
     [% IF NOT error_message %]
       [% title = "Вътрешна грешка" %]
-      Възникна вътрешна грешка, но [% terms.Bugzilla %] не знае
+      Възникна вътрешна грешка, но Bugzilla не знае
       какво значи <code>[% error FILTER html %]</code>.
 
       Ако сте краен потребител на [% terms.Bugzilla %] виждащ това съобщение, моля съхранете
@@ -432,25 +432,18 @@
   с подробности за това какво правехте когато това съобщение се появи.
 </p>
 
-<tt>
-  <script type="text/javascript"> <!--
-    document.write("<p>URL: " + 
-                    document.location.href.replace(/&/g,"&amp;")
-                                          .replace(/</g,"&lt;")
-                                          .replace(/>/g,"&gt;") + "</p>");
-  // -->
-  </script>
-</tt>
+<p>
+  <samp><abbr lang="en" title="Uniform Resource Locator>URL</abbr>: [% Bugzilla.cgi.self_url FILTER html %]</samp>
+</p>
 
-<table cellpadding="20">
-  <tr>
-    <td id="error_msg" class="throw_error">
-      [% error_message FILTER none %]
-    </td>
-  </tr>
-</table>
+<div id="error_msg" class="throw_error">
+  [% error_message FILTER none %]
+</div>
 
-<p>Обратно проследяване:</p>
+<p id="post_err_msg">
+  Обратно проследяване:
+</p>
+
 <pre>[% traceback FILTER html %]</pre>
 
 [% IF variables %]
