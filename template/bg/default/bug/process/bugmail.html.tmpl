@@ -12,34 +12,18 @@
   #%]
 
 <dl>
-[% PROCESS emails
-   description = "Е-поща изпратена до"
-   names = sent_bugmail.sent
-%]
-
-[% PROCESS emails
-   description = "С изключение на"
-   names = sent_bugmail.excluded
-%]
-</dl>
-
-[%############################################################################%]
-[%# Block for a set of email addresses                                       #%]
-[%############################################################################%]
-
-[% BLOCK emails %]
-  <dt>[% description FILTER html %]:</dt>
+  <dt>Е-поща изпратена до:</dt>
   <dd>
   [% IF user.can_see_bug(mailing_bugid) %]
-    [% IF names.size > 0 %]
-      [%+ FOREACH name = names %]
+    [% IF sent_bugmail.sent.size %]
+      [% FOREACH name = sent_bugmail.sent %]
         <code>[% name FILTER html %]</code>[% ", " UNLESS loop.last() %]
       [% END %]
     [% ELSE %]
       никой
     [% END %]
   [% ELSE %]
-    (списъка с е-пощеи не е достъпен)
+    (списъка с е-пощи не е достъпен)
   [% END %]
   </dd>
-[% END %]
+</dl>

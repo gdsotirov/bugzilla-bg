@@ -20,23 +20,22 @@
 
 [% DEFAULT type="bug" %]
 
-[% Link = BLOCK %][% "$terms.Bug $id" FILTER bug_link(id) %][% END %]
-[% link = BLOCK %][% "$terms.bug $id" FILTER bug_link(id) %][% END %]
+[% link = BLOCK %][% terms.bug %] [%+ id FILTER bug_link(id) FILTER none %][% END %]
 
 [%
   title = {
     'bug' => "Промените по $link получени" ,
     'dupe' => "Добавена дупликираща нотация към $link" ,
     'dep' => "Проверка за промени по зависимостите на $link" ,
-    'created' => "$Link бе добавен към базата данни" ,
-    'move' => "$Link бе преместен в друга база данни" ,
+    'created' => "$link бе създаден успешно" ,
+    'move' => "$link бе преместен в друга база данни" ,
   }
 %]
 
 [% Hook.process('title') %]
 
 <dl>
-  <dt>[% title.$type %]</dt>
+  <dt>[% title.$type.ucfirst %]</dt>
   <dd>
     [% PROCESS "bug/process/bugmail.html.tmpl" mailing_bugid = id %]
     [%# Links to more information about the changed bug. %]

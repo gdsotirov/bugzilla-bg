@@ -18,7 +18,9 @@
   #%]
 
 [% PROCESS global/header.html.tmpl
-  title = 'Проверка на подробности на нов продукт...' %]
+  title = 'Проверка на подробности на нов продукт...'
+  style_urls = ['skins/standard/buglist.css']
+%]
 
 <form action="process_bug.cgi" method="post">
 
@@ -150,23 +152,23 @@
         }
       </script>
 
-      <table border="1">
+      <table id="groups_edit_multiple">
         <tr>
-          <th>Премахване на<br>[% terms.bugs %]<br>от тази<br>група</th>
-          <th>Добавяне на<br>[% terms.bugs %]<br>към тази<br>група</th>
+          <th class="narrow_column">Премахване на [% terms.bugs %] от тази група</th>
+          <th class="narrow_column">Добавяне на [% terms.bugs %] към тази група</th>
           <th>Група:</th>
         </tr>
 
         [% FOREACH group = optional_groups %]
         <tr>
-          <td align="center">
+          <td class="center">
             <input type="checkbox" name="defined_groups"
                    id="defined_group_[% group.group.id FILTER html %]"
                    value="[% group.group.name FILTER html %]"
                    [% IF cgi.param("defined_groups").contains(group.group.name) %] checked="checked"[% END %]
                    onchange="turn_off(this, 'group_[% group.group.id FILTER html %]')">
           </td>
-          <td align="center">
+          <td class="center">
             <input type="checkbox" name="groups"
                    id="group_[% group.group.id FILTER html %]"
                    value="[% group.group.name FILTER html %]"
