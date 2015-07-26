@@ -37,33 +37,36 @@
   [% subheader = BLOCK %]
     [% bugsummary FILTER html %]
   [% END %]
-  [% PROCESS global/header.html.tmpl doc_section = "attachments.html#patchviewer"
-                                     javascript_urls = "js/attachment.js"
-                                     style_urls = ['skins/standard/attachment.css'] %]
+  [% PROCESS global/header.html.tmpl javascript_urls = [ "js/attachment.js" ]
+                                     style_urls = ['skins/standard/bug.css'] %]
 [% ELSE %]
+  <!DOCTYPE html>
   <html>
-  <head>
-  <link href="[% 'skins/standard/attachment.css' FILTER mtime %]" 
-        rel="stylesheet" type="text/css">
-  <script src="[% 'js/attachment.js' FILTER mtime %]" 
-          type="text/javascript"></script>
-  </head>
-  <body onload="[% onload FILTER html %]">
+    <head>
+      <link href="[% 'skins/standard/global.css' FILTER mtime %]"
+            rel="stylesheet" type="text/css">
+      <link href="[% 'skins/standard/bug.css' FILTER mtime %]"
+            rel="stylesheet" type="text/css">
+      <script src="[% 'js/attachment.js' FILTER mtime %]"
+              type="text/javascript"></script>
+    </head>
+    <body onload="[% onload FILTER html %]">
 [% END %]
-  
+
 [%# If we have attachid, we are in diff, otherwise we're in interdiff %]
 [% IF attachid %]
   [%# HEADER %]
   [% IF headers %]
     <a href="[% PROCESS viewurl id=attachid %]">Преглед</a>
     | <a href="[% PROCESS editurl id=attachid %]">Подробности</a>
-    | <a href="[% PROCESS diffurl id=attachid %]&amp;context=[% context FILTER uri %]&amp;collapsed=[% collapsed FILTER uri %]&amp;headers=[% headers FILTER uri %]&amp;format=raw">Разлики&nbsp;в&nbsp;суров&nbsp;унифициран&nbsp;формат</a>
+    | <a href="[% PROCESS diffurl id=attachid %]&amp;collapsed=[% collapsed FILTER uri %]&amp;headers=[%
+               headers FILTER uri %]&amp;format=raw">Разлики&nbsp;в&nbsp;суров&nbsp;унифициран&nbsp;формат</a>
     | Връщане към [% "$terms.bug $bugid" FILTER bug_link(bugid) FILTER none %]
   [% END %]
   [% IF other_patches.size > 0 %]
     [% IF headers %] |[%END%]
     Разлики между
-    <form style="display: inline" action="attachment.cgi">
+    <form class="inline" action="attachment.cgi">
       <select name="oldid">
       [% FOREACH patch = other_patches %]
         <option value="[% patch.id %]"
@@ -97,37 +100,19 @@
    onmouseout="window.status = lastStatus; return true"
    onclick="return expand_all()">Развиване на всички</a>
 
-[% IF do_context %]
-  [%# only happens for normal viewing, not interdiff %]
-  | <span style='font-weight: bold'>Контекст:</span>
-  [% IF context == "patch" %]
-    (<strong>Кръпка</strong> / 
-  [% ELSE %]
-    (<a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER uri %]">Кръпка</a> / 
-  [% END %]
-  [% IF context == "file" %]
-    <strong>Файл</strong> /
-  [% ELSE %]
-    <a href="[% PROCESS diffurl id=attachid %]&amp;headers=[% headers FILTER uri %]&amp;context=file">Файл</a> / 
-  [% END %]
-
-  [% IF context == "patch" || context == "file" %]
-    [% context = 3 %]
-  [% END %]
-  [%# textbox for context %]
-  <form style="display: inline" action="attachment.cgi"><input type="hidden" name="action" value="diff"><input type="hidden" name="id" value="[% attachid %]"><input type="hidden" name="collapsed" value="[% collapsed FILTER html %]"><input type="hidden" name="headers" value="[% headers FILTER html %]"><input type="text" name="context" value="[% context FILTER html %]" size="3"></form>)
-[% END %]
-
 [% IF warning %]
-<h2 class="warning">Предупреждение: 
+<h2 class="warning">
+  Предупреждение: 
   [% IF warning == "interdiff1" %]
-  това сравнение между две кръпки може да покаже нещата на грешните места поради
-  ограничение в [% terms.Bugzilla %] при съпоставка на кръпки с различни
-  множества от файлове.
-  [% END %]
-  [% IF warning == "interdiff2" %]
-  това сравнение между две кръпки може да бъде неточно поради ограничение в 
-  [%+ terms.Bugzilla %] при съспоставка на кръпки направени за различни издания.
+    това сравнение между две кръпки може да покаже нещата на грешните места поради
+    ограничение в Bugzilla при съпоставка на кръпки с различни
+    множества от файлове.
+  [% ELSIF warning == "interdiff2" %]
+    това сравнение между две кръпки може да бъде неточно поради ограничение в 
+    Bugzilla при съспоставка на кръпки направени за различни
+    ревизии.
+  [% ELSIF warning == "interdiff3" %]
+    interdiff се натъкна на грешки при сравняването на тези кръпки.
   [% END %]
 </h2>
 [% ELSE %]
@@ -136,4 +121,4 @@
  
 [%# Restore Stuff %]
 <form name="checkboxform" action="attachment.cgi">
-<input type="checkbox" name="restore_indicator" style="display: none">
+<input type="checkbox" name="restore_indicator" class="bz_default_hidden">

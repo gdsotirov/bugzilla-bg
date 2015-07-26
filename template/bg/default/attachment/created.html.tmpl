@@ -28,13 +28,13 @@
     [% PROCESS "bug/process/bugmail.html.tmpl" mailing_bugid = attachment.bug_id %]
     [% IF convertedbmp %]
       <p>
-        <b>Забележка:</b> [% terms.Bugzilla %] автоматично превърна <acronym lang="en" title="Bitmap">BMP</acronym> файлa ви до 
+        <b>Забележка:</b> Bugzilla автоматично превърна <acronym lang="en" title="Bitmap">BMP</acronym> файлa ви до 
         сбит <abbr lang="en" title="Portable Network Graphics">PNG</abbr> формат.
       </p>
     [% END %]
     [% IF contenttypemethod == 'autodetect' %]
       <p>
-        <b>Забележка:</b> [% terms.Bugzilla %] автоматично откри типа на съдържанието
+        <b>Забележка:</b> Bugzilla автоматично откри типа на съдържанието
         <em>[% attachment.contenttype FILTER html %]</em> за тази приставка. Ако това e
         направилно, поправете стойността като редактирате
         <a href="attachment.cgi?id=[% attachment.id %]&amp;action=edit">параметрите</a> ѝ.

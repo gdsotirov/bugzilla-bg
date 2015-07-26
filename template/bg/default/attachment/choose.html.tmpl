@@ -8,8 +8,7 @@
 
 [% PROCESS global/header.html.tmpl
    title = "Намиране на приставка",
-   onload = "document.forms['choose-id'].id.focus()"
- %]
+%]
 
 <form name="choose-id" method="get" action="attachment.cgi">
   <p>Доберете се до приставка чрез въвеждане на нейния номер в полето отдолу:</p>
@@ -21,9 +20,15 @@
 
 <form method="get" action="show_bug.cgi">
   <p>Или се доберете до нея през списъка с приставки в свързания с него [% terms.bug %] доклад:</p>
-  <p>[% terms.Bug %] номер: <input name="id" size="6">
+  <p>[% terms.Bug %] номер: <input name="id" size="6" required>
   <input type="submit" name="action" value="Преглед" id="action">
   </p>
 </form>
 
+<form method="get" action="attachment.cgi">
+  <p>Или създайте нова приставка с въвеждането на найния [% terms.bug %] номер отдолу:</p>
+  <p>[% terms.Bug %] номер: <input name="bugid" size="6" required>
+    <button name="action" value="enter" id="action">Нова приставка</button>
+  </p>
+</form>
 [% PROCESS global/footer.html.tmpl %]
