@@ -10,6 +10,11 @@
 <input type="hidden" name="dontchange" value="[% dontchange FILTER html %]">
 <input type="hidden" name="token" value="[% token FILTER html %]">
 
+<input type="button" id="uncheck_all" value="Uncheck All"
+       class="bz_default_hidden" onclick="SetCheckboxes(false);">
+<input type="button" id="check_all" value="Check All"
+       class="bz_default_hidden" onclick="SetCheckboxes(true);">
+
 <script type="text/javascript">
   function SetCheckboxes(value) {
       var elements = document.forms.changeform.getElementsByTagName('input'),
@@ -22,30 +27,38 @@
           }
       }
   }
-  document.write(' <input type="button" name="uncheck_all" value="Махни всички отметки" onclick="SetCheckboxes(false);">');
-  document.write(' <input type="button" name="check_all" value="Отметни всички" onclick="SetCheckboxes(true);">');
+  YAHOO.util.Dom.removeClass("check_all", "bz_default_hidden");
+  YAHOO.util.Dom.removeClass("uncheck_all", "bz_default_hidden");
 </script>
 
 <hr>
 
-<p style="font-size:smaller">
- За да промените няколко [% terms.abug %]:</p>
-<ol style="font-size:smaller">
-  <li>Отметнете [% terms.bugs %]те, които искате да промените по-горе.</li>
-  <li>Направете промените в полетата на формата по-долу. Ако промяната,
-      която правите, изисква обяснение включете го в
-      кутията за коментари.</li>
-  <li>Щракнете върху бутона <em>Изпращане</em>.</li>
-</ol>
+<div class="bz_info">
+  За да промените няколко [% terms.abug %]:
+  <ol>
+    <li>Отметнете [% terms.bugs %]те, които искате да промените по-горе.</li>
+    <li>Направете промените в полетата на формата по-долу. Ако промяната,
+        която правите, изисква обяснение включете го в
+        кутията за коментари.</li>
+    <li>Щракнете върху бутона <em>Изпращане</em>.</li>
+  </ol>
+</div>
+
+[% IF excluded_values %]
+  <p class="extra_info">Показани са стойности достъпни за всички продукти на
+  [%+ terms.bugs %]те отгоре.</p>
+[% END %]
 
 <table id="form">
   <tr>
 
     <th><label for="product">Продукт:</label></th>
     <td>
-      [% PROCESS selectmenu menuname = "product"
-                            menuitems = products
-                            property = "name" %]
+      [% INCLUDE "global/product-select.html.tmpl"
+         id         => "product"
+         name       => "product"
+         dontchange => dontchange
+       %]
     </td>
 
     <th><label for="version">Версия:</label></th>
@@ -116,7 +129,7 @@
       <th><label for="target_milestone">Целево събитие:</label></th>
       <td>
         [% PROCESS selectmenu menuname = "target_milestone"
-                              menuitems = targetmilestones %]
+                              menuitems = milestones %]
       </td>
     [% END %]
   </tr>
@@ -259,11 +272,11 @@
 
   [% IF Param('usestatuswhiteboard') %]
     <tr>
-      <td align="right">
-        <b>Бяла дъска:</b>
-      </td>
+      <th>
+        <label for="status_whiteboard">Бяла дъска:</label>
+      </th>
       <td colspan="7">
-        <input name="status_whiteboard" 
+        <input name="status_whiteboard" id="status_whiteboard"
                value="[% dontchange FILTER html %]" size="60">
       </td>
     </tr>
@@ -288,7 +301,7 @@
 [% IF user.is_insider %]
   <input type="checkbox" name="comment_is_private" value="1"
          id="newcommentprivacy"
-         onClick="updateCommentTagControl(this, 'comment')"/>
+         onClick="updateCommentTagControl(this, 'comment')">
    <label for="newcommentprivacy">
      Правене на коментара частен (видим само за членове на
      група <strong>[% Param('insidergroup') FILTER html %]</strong>)
@@ -308,6 +321,13 @@
   </script>
 [% END %]
 
+[% IF flag_types %]
+<b><label for="flags">Флагове:</label></b><br>
+[% PROCESS "flag/list.html.tmpl"
+           edit_multiple_bugs = 1
+           flag_no_header = 1 %]
+[% END %]
+
 [% Hook.process('before_groups') %]
 
 [% IF groups.size > 0 %]
@@ -322,23 +342,23 @@
   </script>
 
   <b>Групи:</b><br>
-  <table border="1">
+  <table id="groups_edit_multiple">
     <tr>
-      <th>Премахване<br>на [% terms.bugs %]<br>от<br>групата</th>
-      <th>Добавяне<br>на [% terms.bugs %]<br>към<br>групата</th>
+      <th class="narrow_column">Премахване на [% terms.bugs %] от групата</th>
+      <th class="narrow_column">Добавяне на [% terms.bugs %] към групата</th>
       <th>Име на група:</th>
     </tr>
 
     [% FOREACH group = groups %]
     <tr>
-      <td align="center">
+      <td class="center">
         <input type="checkbox" name="defined_groups" 
                id="defined_group_[% group.id %]"
                value="[% group.name FILTER html %]"
                onchange="turn_off(this, 'group_[% group.id %]')">
       </td>
       [% IF group.is_active %]
-        <td align="center">
+        <td class="center">
           <input type="checkbox" name="groups" 
                  id="group_[% group.id FILTER html %]"
                  value="[% group.name FILTER html %]"
@@ -360,7 +380,7 @@
   </table>
 
   [% IF foundinactive %]
-    <p style="font-size:smaller">(Забележка: [% terms.Bugs %] не могат да бъдат добавяни към  [% FILTER inactive %]неактивни
+    <p class="bz_info">(Забележка: [% terms.Bugs %] не могат да бъдат добавяни към  [% FILTER inactive %]неактивни
     групи[% END %], само премахвани.)</p>
   [% END %]
 
