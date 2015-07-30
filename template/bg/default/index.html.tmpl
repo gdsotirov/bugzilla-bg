@@ -14,57 +14,18 @@
    title = "$terms.Bugzilla Главна страница"
    header = "Главна страница" 
    header_addl_info = "версия $constants.BUGZILLA_VERSION"
-   style_urls = [ 'skins/standard/index.css' ]
 %]
-
-
-<script type="text/javascript">
-<!--
-function onLoadActions() {
-  quicksearchHelpText('quicksearch_main', 'show');
-  if( window.external.AddSearchProvider ){
-    YAHOO.util.Dom.removeClass('quicksearch_plugin', 'bz_default_hidden');
-  }
-  document.getElementById('quicksearch_top').focus();
-}
-var quicksearch_message = "Въведете [% terms.bug %] № или термини за търсене";
-
-function checkQuicksearch( form ) {
-  if (form.quicksearch.value == '' || form.quicksearch.value == quicksearch_message ) { 
-    alert('Моля, първо въведете един или повече термина за търсене.');
-    return false; 
-  }
-  return true;         
-}
-
-function quicksearchHelpText(el_id, action){
-  var el = document.getElementById(el_id);
-  if ( action == "show") {
-    if( el.value == "" ) {
-      el.value = quicksearch_message
-      YAHOO.util.Dom.addClass(el, "quicksearch_help_text");
-    }
-  } else {
-    if( el.value == quicksearch_message ) {
-      el.value = "";
-      YAHOO.util.Dom.removeClass(el, "quicksearch_help_text");
-    }
-  }
-}
-YAHOO.util.Event.onDOMReady(onLoadActions);
-//-->
-</script>
 
 [% IF release %]
   <div id="new_release">
     [% IF release.data %]
       [% IF release.deprecated %]
-        <p>[% terms.Bugzilla %] [%+ release.deprecated FILTER html %] не се поддръжа
+        <p>Bugzilla [%+ release.deprecated FILTER html %] не се поддръжа
         вече. Силно ви насърчаваме да надградите, за да запазите
         системата си сигурна.</p>
       [% END %]
 
-      <p>Нова [% terms.Bugzilla %] версия ([% release.data.latest_ver FILTER html %])
+      <p>Нова Bugzilla версия ([% release.data.latest_ver FILTER html %])
       е достъпна от
       <a href="[% release.data.url FILTER html %]">[% release.data.url FILTER html %]</a>.<br>
       Дата на пускане: [% release.data.date FILTER html %]</p>
@@ -101,73 +62,102 @@ YAHOO.util.Event.onDOMReady(onLoadActions);
 [% END %]
 
 <div id="page-index">
-  <table>
-    <tr>
-      <td>
-        <h1 id="welcome"> Добре дошли в [% terms.Bugzilla %]</h1>
-        <div class="intro">[% Hook.process('intro') %]</div>
+  <h1 id="welcome"> Добре дошли в [% terms.Bugzilla %]</h1>
+  <div class="intro">[% Hook.process('intro') %]</div>
 
-        <div class="bz_common_actions">
-          <ul>
-            <li>
-              <a id="enter_bug" href="enter_bug.cgi"><span>Въвеждане
-              на [% terms.bug %]</span></a>
-            </li>
-            <li>
-              <a id="query" href="query.cgi"><span>Търсене</span></a>
-            </li>
-            <li>
-              <a id="account"
-                 [% IF user.id %]
-                   href="userprefs.cgi"><span>Потребителски предпочитания</span></a>
-                 [% ELSIF Param('createemailregexp')
-                          && user.authorizer.user_can_create_account 
-                 %]
-                   href="createaccount.cgi"><span>Отваряне на нова сметка</span></a>
-                 [% ELSE %]
-                   href="?GoAheadAndLogIn=1"><span>Вход</span></a>
-                 [% END %]
-            </li>
-          </ul>
-        </div>
+  <div class="bz_common_actions">
+    <ul>
+      <li>
+        <a id="enter_bug" href="enter_bug.cgi"><span>Въвеждане на [% terms.bug %]</span></a>
+      </li>
+      <li>
+        <a id="query" href="query.cgi"><span>Търсене</span></a>
+      </li>
+      <li>
+        <a id="account"
+          [% IF user.id %]
+            href="userprefs.cgi"><span>Потребителски предпочитания</span></a>
+          [% ELSIF Param('createemailregexp') && user.authorizer.user_can_create_account %]
+            href="createaccount.cgi"><span>Отваряне на нова сметка</span></a>
+          [% ELSE %]
+            href="?GoAheadAndLogIn=1"><span>Вход</span></a>
+          [% END %]
+      </li>
+      <li>
+        <a id="help" href="[% docs_urlbase FILTER html %]using/index.html"><span>Документация</span></a>
+      </li>
+    </ul>
+  </div>
 
-        <form id="quicksearchForm" name="quicksearchForm" action="buglist.cgi"
-              onsubmit="return checkQuicksearch(this);">
-          <div>
-            <input id="quicksearch_main" type="text" name="quicksearch"
-              title="Бързо търсене" 
-              onfocus="quicksearchHelpText(this.id, 'hide');"
-              onblur="quicksearchHelpText(this.id, 'show');"
-            >
-            <input id="find" type="submit" value="Бързо търсене">
-            <ul class="additional_links" id="quicksearch_links">
-              <li>
-                <a href="page.cgi?id=quicksearch.html">Помощ за бързо търсене</a>
-              </li>
-              <li class="bz_default_hidden" id="quicksearch_plugin">
-                |
-                <a href="javascript:window.external.AddSearchProvider('[% urlbase FILTER html %]search_plugin.cgi')">
-                 Инсталиране на добавка Бързо Търсене
-                </a>
-              </li>
-            </ul>
-            <ul class="additional_links">
-              <li>
-                <a href="[% docs_urlbase FILTER html %]using.html">
-                  [%- terms.Bugzilla %] Ръководство на потребителя</a>
-              </li>
-              <li>
-                |
-                <a href="page.cgi?id=release-notes.html">Бележки към версията</a>
-              </li>
-              [% Hook.process('additional_links') %]
-            </ul>
-          </div>
-        </form>
-        <div class="outro">[% Hook.process('outro') %]</div>
-      </td>
-    </tr>
-  </table>
+  <div>
+    <form id="quicksearchForm" name="quicksearchForm" action="buglist.cgi">
+      <input id="quicksearch_main" name="quicksearch" title="Бързо търсене" 
+             placeholder="Enter [% terms.abug %] # or some search terms"
+             autofocus required>
+      <input id="find" type="submit" value="Бързо търсене">
+      <a href="page.cgi?id=quicksearch.html" title="Помощ за бързо търсене">[?]</a>
+    </form>
+
+    <ul class="additional_links">
+      [% Hook.process('additional_links') %]
+    </ul>
+  </div>
+
+  <div id="common_queries">
+    <h4>Обичайни запитвания:</h4>
+    <ul>
+      [% IF user.id %]
+        <li>
+          [% title = BLOCK %]Отворени [% terms.bugs %] назначени на мен[% END %]
+          <a href="buglist.cgi?f1=assigned_to&amp;o1=equals&amp;v1=%25user%25&amp;resolution=---">
+            [% title FILTER html %]</a> ([% assignee_count FILTER html %])
+          <a href="buglist.cgi?f1=assigned_to&amp;o1=equals&amp;v1=%25user%25&amp;resolution=---&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+             class="rss">&nbsp;</a>
+        </li>
+        <li>
+          [% title = BLOCK %]Отворени [% terms.bugs %] докладвани от мен[% END %]
+          <a href="buglist.cgi?f1=reporter&amp;o1=equals&amp;v1=%25user%25&amp;resolution=---">
+            [% title FILTER html %]</a> ([% reporter_count FILTER html %])
+          <a href="buglist.cgi?f1=reporter&amp;o1=equals&amp;v1=%25user%25&amp;resolution=---&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+             class="rss">&nbsp;</a>
+        </li>
+        [% IF Bugzilla.has_flags %]
+          <li>
+            [% title = BLOCK %]Заявки отправени към мен[% END %]
+            <a href="request.cgi?action=queue&amp;requestee=[% user.login FILTER uri %]&amp;group=type&amp;do_union=0">
+              [% title FILTER html %]</a> ([% requestee_count FILTER html %])
+            <a href="buglist.cgi?f1=requestees.login_name&amp;o1=equals&amp;v1=%25user%25&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+               class="rss">&nbsp;</a>
+          </li>
+        [% END %]
+      [% END %]
+
+      <li>
+        [% terms.Bugs %] докладвани в
+        <a href="buglist.cgi?chfield=%5BBug%20creation%5D&amp;chfieldfrom=24h">последните 24 часа</a>
+        [% title = BLOCK %][% terms.Bugs %] докладвани в последните 24 часа[% END %]
+        <a href="buglist.cgi?chfield=%5BBug%20creation%5D&amp;chfieldfrom=24h&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+           class="rss">&nbsp;</a>
+        | <a href="buglist.cgi?chfield=%5BBug%20creation%5D&amp;chfieldfrom=7d">последните 7 дни</a>
+        [% title = BLOCK %][% terms.Bugs %] докладвани в последните 7 дни[% END %]
+        <a href="buglist.cgi?chfield=%5BBug%20creation%5D&amp;chfieldfrom=7d&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+           class="rss">&nbsp;</a>
+      </li>
+      <li>
+        [% terms.Bugs %] променени в
+        <a href="buglist.cgi?chfieldfrom=24h">последните 24 часа</a>
+        [% title = BLOCK %][% terms.Bugs %] променени в последните 24 часа[% END %]
+        <a href="buglist.cgi?chfieldfrom=24h&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+           class="rss">&nbsp;</a>
+        | <a href="buglist.cgi?chfieldfrom=7d">последните 7 дни</a>
+        [% title = BLOCK %][% terms.Bugs %] променени в последните 7 дни[% END %]
+        <a href="buglist.cgi?chfieldfrom=7d&amp;ctype=atom&amp;title=[% title FILTER uri %]"
+           class="rss">&nbsp;</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="outro">[% Hook.process('outro') %]</div>
 </div>
 
 [% PROCESS global/footer.html.tmpl %]

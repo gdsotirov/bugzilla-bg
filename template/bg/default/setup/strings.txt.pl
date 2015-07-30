@@ -83,17 +83,19 @@ END
 END
     feature_auth_ldap         => 'LDAP удостоверяване',
     feature_auth_radius       => 'RADIUS удостоверяване',
+    feature_documentation     => 'Документация',
     feature_graphical_reports => 'Графични доклади',
     feature_html_desc         => 'Повече HTML в описанията на Продукт/Група',
     feature_inbound_email     => 'Входяща е-поща',
     feature_jobqueue          => 'Поща във фонов режим',
     feature_jsonrpc           => 'Интерфейс JSON-RPC',
-    feature_jsonrpc_faster    => 'Прави JSON-RPC по-бърз',
     feature_new_charts        => 'Нови графики',
     feature_old_charts        => 'Стари графики',
+    feature_memcached         => 'Memcached поддръжка',
     feature_mod_perl          => 'mod_perl',
     feature_moving            => 'Преместване на бъгове между инсталации',
     feature_patch_viewer      => 'Преглед на кръпки',
+    feature_rest              => 'REST интерфейс',
     feature_smtp_auth         => 'SMTP удостоверяване',
     feature_smtp_ssl          => 'SSL поддръжка за SMTP',
     feature_updates           => 'Автоматични уведомления за обновяване',
@@ -153,10 +155,6 @@ END
 
 Ако е зададено на 0, checksetup.pl няма да създаде .htaccess файлове.
 END
-    localconfig_cvsbin => <<'END',
-Ако желаете да използвате интеграцията с CVS на Прегледа на кръпки, моля укажете
-пълния път до "cvs" изпълнимия файл тук.
-END
     localconfig_db_check => <<'END',
 Трябва ли checksetup.pl да се опита да провери дали настройката на базата данни е правилна?
 С някои комбинации от сървър за база данни/Perl модули/фази на луната това
@@ -195,6 +193,22 @@ END
 искате това.
 END
     localconfig_db_user => "Като кой се свързваме към базата данни.",
+    localconfig_db_mysql_ssl_ca_file => <<'END',
+Път до PEM файл със списък на достоверните SSL CA сертификати.
+Файла трябва да е четим за потребителя на web сървъра.
+END
+    localconfig_db_mysql_ssl_ca_path => <<'END',
+Път до папка съдържаща достоверни SSL CA сертификати в PEM формат.
+Папката и файловете в нея трябва да са четими за потребителя на web сървъра.
+END
+    localconfig_db_mysql_ssl_client_cert => <<'END',
+Пълен път до клиентския SSL сертификат в PEM формат който ще се предоставя на сървъра за бази от данни.
+Файла трябва да е четим за потребителя на web сървъра.
+END
+    localconfig_db_mysql_ssl_client_key => <<'END',
+Пълен път до частния ключ отговарящ на клиентския SSL сертификат.
+Файла не трябва да е защитен с парола и трябва да бъде четим за потребителя на web сървъра.
+END
     localconfig_diffpath => <<'END',
 За да работи възможността за "Разлики между две кръпки", трябва да се знае
 в коя папка е "diff" командата. (Необходимо е да зададете това само ако
@@ -272,11 +286,14 @@ EOT
 ***********************************************************************
 * APACHE МОДУЛИ                                                       *
 ***********************************************************************
-* Обикновено, когато Bugzilla е надградена, всичките ѝ потребители    *
-* трябва да изчистят кеша на браузъра си или тя ще се чупи. Ако раз-  *
-* решите определени модули в настройката си на Apache (обичайно файл- *
-* лове именувани httpd.conf или apache2.conf), тогава няма да има нуж-*
-* да потребителите ви да чистят кеша си когато надграждате Bugzilla.  *
+* Някои Apache модули позволяват разширени Bugzilla функционалности.  *
+* Тези модули могат да се разрешат в конфигурациония файл на Apache   *
+* (обикновенно именуван httpd.conf или apache2.conf).                 *
+* - mod_headers, mod_env и mod_expires позволяват автоматично опресня-*
+*   ване на браузър кеша на потребителите при надграждане на Bugzilla.*
+* - mod_rewrite позволява кратки URLта при ползване на REST API.      *
+* - mod_version позволява писането на правила в .htaccess специфично  *
+*   за Apache 2.2 или 2.4.                                            *
 * Модулите които трябва да разрешите са:                              *
 *                                                                     *
 END
@@ -342,8 +359,7 @@ END
          препоръчваме да спрете checksetup.pl СЕГА и пуснете contrib/recode.pl.
 END
     no_checksetup_from_cgi => <<END,
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-          "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
   <head>
     <title>checksetup.pl не може да работи в web търсачка</title>
@@ -354,8 +370,8 @@ END
     <p>
       <b>Не трябва</b> изпълнявате този скрипт от web търсачката си.
       За да инсталирате или надградите Bugzilla, пуснете скрипта от
-      командния ред (напр. <tt>bash</tt> или <tt>ssh</tt> под Linux
-      или <tt>cmd.exe</tt> под Windows) и следвайте указанията дадени там.
+      командния ред (напр. <kbd>bash</kbd> или <kbd>ssh</kbd> под Linux
+      или <kbd>cmd.exe</kbd> под Windows) и следвайте указанията дадени там.
     </p>
 
     <p>
@@ -371,7 +387,7 @@ END
 две кръпки' на Bugzilla (която изисква Perl модула PatchReader
 също така), трябва да инсталирате patchutils от:
 
-    http://cyberelk.net/tim/patchutils/
+    http://cyberelk.net/tim/software/patchutils/
 END
     template_precompile   => "Предварителна компилация на шаблони...",
     template_removal_failed => <<END,

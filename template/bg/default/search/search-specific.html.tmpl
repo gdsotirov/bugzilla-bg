@@ -8,14 +8,15 @@
 
 [% PROCESS global/header.html.tmpl 
   title = "Просто търсене"
-  style_urls = [ "skins/standard/search_form.css" ]
+  style_urls = ['skins/standard/buglist.css']
+  doc_section = "using/finding.html"
 %]
 
 [% WRAPPER search/tabs.html.tmpl %]
 
 <p>
 Търсете определен [% terms.bug %] с въвеждане на думи, които го описват.  
-[% terms.Bugzilla %] ще търси в описанията и коментарите към всеки [% terms.bug %]
+Bugzilla ще търси в описанията и коментарите към всеки [% terms.bug %]
 за тези думи и ще върне списък на съвпадащите [% terms.bugs %] подредени
 по уместност.
 </p>
@@ -36,7 +37,7 @@
   }
 </script>
 
-<table summary="Search fields" class="bz_simple_search_form">
+<table class="bz_simple_search_form">
   <tr>
     <th>
       <label for="bug_status">[% field_descs.bug_status FILTER html %]:</label>
@@ -60,30 +61,11 @@
       <label for="product">[% field_descs.product FILTER html %]:</label>
     </th>
     <td>
-      <select name="product" id="product">
-        <option value="">Всички</option>
-        [% IF Param('useclassification') %]
-          [% FOREACH c = classification %]
-            <optgroup label="[% c.name FILTER html %]">
-            [% FOREACH p = user.get_selectable_products(c.id) %]
-              [% IF p.components.size %]
-                <option value="[% p.name FILTER html %]"
-                  [% " selected" IF default.product.contains(p.name) %]>
-                  [% p.name FILTER html %]
-                </option>
-              [% END %]
-            [% END %]
-            </optgroup>
-          [% END %]
-        [% ELSE %]
-          [% FOREACH p = product %]
-            <option value="[% p.name FILTER html %]"
-              [% " selected" IF default.product.contains(p.name) %]>
-              [% p.name FILTER html %]
-            </option>
-          [% END %]
-        [% END %]
-      </select>
+      [% INCLUDE "global/product-select.html.tmpl"
+         id   => "product"
+         name => "product"
+         add  => "Всички"
+      %]
     </td>
   </tr>
   <tr>
@@ -91,28 +73,14 @@
       <label for="content">Думи:</label>
     </th>
     <td>
-      <input name="content" size="40" id="content"
-             value="[% default.content.0 FILTER html %]">
-      <script type="text/javascript"> <!--
-          document.forms['queryform'].content.focus(); 
-      // -->
-      </script>
+      <input name="content" size="40" id="content" autofocus
+             value="[% default.content.0 FILTER html %]"
+             [%- " required" UNLESS Param('search_allow_no_criteria') %]>
     </td>
   </tr>
   <tr>
     <td></td>
-    <td>
-    
-      [% IF Param('search_allow_no_criteria') %]
-        <input type="submit" id="search" value="Търсене">
-      [% ELSE %]
-        <input type="submit" id="search" value="Търсене"
-             onclick="if (this.form.content.value == '')
-                      {alert('Полето Думи не може да бъде празно. Трябва да ' +
-                             'въведете поне една дума в критериите си за търсене.');
-                       return false;} return true;">
-      [% END %]
-    </td>
+    <td><input type="submit" id="search" value="Търсене"></td>
   </tr>
 </table>
 </form>

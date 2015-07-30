@@ -23,11 +23,11 @@
 [% PROCESS global/header.html.tmpl
   title = title
   style_urls = ['skins/standard/admin.css']
-  doc_section = "whining.html"
+  doc_section = "using/index.html"
 %]
 
 <p>
-  "Хленч" е тогава, когато [% terms.Bugzilla %] изпълнява съхранено търсене
+  "Хленч" е тогава, когато Bugzilla изпълнява съхранено търсене
   на определен промеждутък от време и изпраща получения списък от  [% terms.bugs %] по е-поща.
 </p>
 
@@ -47,9 +47,9 @@
 
 <p>
   Заявките идват от съхранените търсения, които са създадени чрез изпълняване на <a
-  href="query.cgi">търсене</a>, след което указване на [% terms.Bugzilla %] да запомни
-  търсенето под определено име. Можете да добавите запитване чрез "Добавяне на ново
-  запитване" и избирането на името на желаното съхранено търсене под "Търсене" и добавяне
+  href="query.cgi">търсене</a>, след което указване на Bugzilla да запомни
+  търсенето под определено име. Можете да добавите търсене чрез "Добавяне на ново
+  търсене" и избирането на името на желаното съхранено търсене под "Търсене" и добавяне
   на заглавие за [% terms.bug %] таблицата. Незадължителното число въвеждано под
   "Подредба" ще определи реда на изпълнение (по-малко към по-голямо) ако са описани
   няколко заявки. Ако отметнете "Писмо за всеки [% terms.bug %]", всеки [%
@@ -63,29 +63,25 @@
 <form method="post" action="editwhines.cgi">
 [%# This hidden submit button must be here to set default behavior when
     the user presses return on a form input field #%]
-<input type="submit" value="Обновяване / Изпращане" name="commit"
-       style="display: none;" id="commit">
+<input type="submit" value="Обновяване / Изпращане" id="commit" name="commit"
+       class="bz_default_hidden">
 <input type="hidden" name="update" value="1">
 <input type="hidden" name="token" value="[% token FILTER html %]">
 
 [% FOREACH event = events %]
 
-<table cellspacing="2" cellpadding="2" style="border: 1px solid;">
+<table class="whining_list">
   <tr>
-    <th align="left">
-      Събитие:
-    </th>
-    <td align="right" colspan="2">
-      <input type="submit" value="Премахване на събитието"
+    <th class="subtitle">Събитие:</th>
+    <th colspan="2">
+      <input type="submit" value="Премахване на събитие"
              name="remove_event_[% event.key %]"
              id="remove_event_[% event.key %]">
-    </td>
+    </th>
   </tr>
 
   <tr>
-    <td valign="top" align="right">
-      Тема на писмото:
-    </td>
+    <th>Тема на писмото:</th>
     <td colspan="2">
       <input type="text" name="event_[% event.key %]_subject"
              size="60" maxlength="128" value="
@@ -94,9 +90,7 @@
   </tr>
 
   <tr>
-    <td valign="top" align="right">
-      Описателен текст изпращан заедно с хленч писмото:
-    </td>
+    <th>Описателен текст изпращан заедно с хленч писмото:</th>
     <td colspan="2">
       [% INCLUDE global/textarea.html.tmpl
          name           = "event_${event.key}_body"
@@ -110,9 +104,7 @@
   </tr>
 
   <tr>
-    <td valign="top" align="right">
-      Изпращане на съобщение дори да няма [% terms.bugs %] в резултата от търснето:
-    </td>
+    <th>Изпращане на съобщение дори да няма [% terms.bugs %] в резултата от търснето:</th>
     <td colspan="2">
       <input type="checkbox" name="event_[% event.key %]_mailifnobugs"
         [%- IF event.value.mailifnobugs == 1 %] checked [% END %]>
@@ -122,9 +114,7 @@
   [% IF event.value.schedule.size == 0 %]
 
     <tr>
-      <td valign="top" align="right">
-        Разписание:
-      </td>
+      <th>Разписание:</th>
       <td class="unset" colspan="2">
         Не е разписано за пускане<br>
         <input type="submit" value="Добавяне на ново разписание"
@@ -136,28 +126,23 @@
   [% ELSE %]
 
     <tr>
-      <td valign="top" align="right">
-        Разписание:
-      </td>
+      <th>Разписание:</th>
       <td class="set" colspan="2">
 
-        <table>
+        <table class="schedule_list">
           <tr>
-            <th>
-              Промеждутък
-            </th>
+            <th>Промеждутък</th>
             <th>
               [% IF mail_others %]
                 Поща до
               [% END %]
             </th>
-            <th>
-            </th>
+            <th></th>
           </tr>
+
           [% FOREACH schedule = event.value.schedule %]
             <tr>
-              <td align="left">
-
+              <td>
                 [%# these hidden fields allow us to compare old values instead
                     of reading the database to tell if a field has changed %]
 
@@ -168,7 +153,7 @@
                 [% PROCESS day_field val=schedule.day %]
                 [% PROCESS time_field val=schedule.time %]
               </td>
-              <td align="left">
+              <td>
                 [% IF mail_others %]
                   <input type="hidden" name="orig_mailto_type_[% schedule.id %]"
                          value="[% schedule.mailto_type FILTER html %]">
@@ -186,7 +171,7 @@
                          value="[% schedule.mailto FILTER html %]" size="30">
                 [% END %]
               </td>
-              <td align="left">
+              <td>
                 <input type="submit" value="Премахване"
                        name="remove_schedule_[% schedule.id %]"
                        id="remove_schedule_[% schedule.id %]">
@@ -211,16 +196,14 @@
   [% IF event.value.queries.size == 0 %]
 
     <tr>
-      <td valign="top" align="right">
-        Търсения:
-      </td>
-      <td align="left">
+      <th>Търсения:</th>
+      <td>
         Няма търсения <br>
-        <input type="submit" value="Добавяне на ново запитване"
+        <input type="submit" value="Добавяне на ново търсене"
                name="add_query_[% event.key %]"
                id="add_query_[% event.key %]">
       </td>
-      <td align="right" valign="bottom">
+      <td class="right">
         <input type="submit" value="Обновяване / Изпращане" name="commit" id="update">
       </td>
     </tr>
@@ -228,42 +211,39 @@
   [% ELSE %]
 
     <tr>
-      <td valign="top" align="right">
-        Търсения:
-      </td>
-      <td align="left" colspan="2">
+      <th>Търсения:</th>
+      <td colspan="2">
 
-        <table>
+        <table class="search_list">
           <tr>
             <th>Подредба</th>
             <th>Търсене</th>
             <th>Заглавие</th>
-            <th></th>
-            <th></th>
+            <th colspan="2"></th>
           </tr>
 
           [% FOREACH query = event.value.queries %]
 
             <tr>
-              <td align="left">
+              <td>
                 <input type="text" name="query_sort_[% query.id %]"
                        size="3" value="[% query.sort %]">
                 <input type="hidden" value="[% query.sort %]"
                        name="orig_query_sort_[% query.id %]">
               </td>
-              <td align="left">
+              <td>
                 <input type="hidden" value="[% query.name FILTER html %]"
                        name="orig_query_name_[% query.id %]">
                 [% PROCESS query_field thisquery=query.name %]
               </td>
-              <td align="left">
+              <td>
                 <input type="hidden" value="[% query.title FILTER html %]"
                        name="orig_query_title_[% query.id %]">
                 <input type="text" name="query_title_[% query.id %]"
                        size="50" value="[% query.title FILTER html %]"
                        maxlength="64">
               </td>
-              <td align="left">
+              <td>
                 <input type="hidden" value="[% query.onemailperbug FILTER html %]"
                        name="orig_query_onemailperbug_[% query.id %]">
                 <input type="checkbox" [% IF query.onemailperbug == 1 %] checked [% END %]
@@ -271,7 +251,7 @@
                        name="query_onemailperbug_[% query.id %]">
                 <label for="query_onemailperbug_[% query.id %]">Писмо за всеки [% terms.bug %]</label>
               </td>
-              <td align="right">
+              <td>
                 <input type="submit" value="Премахване"
                        name="remove_query_[% query.id %]"
                        id="remove_query_[% query.id %]">
@@ -282,11 +262,11 @@
 
           <tr>
             <td colspan="3">
-              <input type="submit" value="Добавяне на ново запитване"
+              <input type="submit" value="Добавяне на ново търсене"
                      name="add_query_[% event.key %]"
                      id="add_query_[% event.key %]">
             </td>
-            <td align="right" colspan="2">
+            <td colspan="2" class="right">
               <input type="submit" value="Обновяване / Предаване" name="commit" id="update">
             </td>
           </tr>
@@ -301,7 +281,7 @@
 
 [% END %]
 
-<p align="left">
+<p>
   <input type="submit" value="Добавяне на ново събитие" name="add_event" id="add_event">
 </p>
 
@@ -322,7 +302,7 @@
     </select>
 
   [% ELSE %]
-    Моля, посетете страницата за <a href="query.cgi">търсене</a> и съхранете запитване
+    Моля, посетете страницата за <a href="query.cgi">търсене</a> и съхранете търсене
   [% END %]
 
 [%+ END %]
