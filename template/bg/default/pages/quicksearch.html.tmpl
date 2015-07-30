@@ -7,9 +7,8 @@
   #%]
 
 [% INCLUDE global/header.html.tmpl
-   title  = "$terms.Bugzilla Бързо Търсене",
-   style_urls = ['skins/standard/page.css']         
-   onload = 'document.forms[\'f\'].quicksearch.focus()'
+  title  = "$terms.Bugzilla Бързо Търсене",
+  bodyclasses = ['narrow_page']
  %]
 
 [% USE Bugzilla %]
@@ -17,11 +16,8 @@
 <p><label for="quicksearch">Въведете една или повече думи (или части от думи)
   за търсене:</label></p>
 
-<form name="f" action="buglist.cgi" method="get"
-      onsubmit="if (this.quicksearch.value == '')
-                { alert('Моля, първо въведете едни или повече термини за търсене.');
-                  return false; } return true;">
-  <input type="text" size="40" name="quicksearch" id="quicksearch">
+<form name="f" action="buglist.cgi" method="get">
+  <input size="40" name="quicksearch" id="quicksearch" autofocus required>
   <input type="submit" value="Търсене" id="find">
 </form>
 
@@ -38,7 +34,7 @@
 
 <ul class="qs_help">
   <li>Ако просто поставите дума или няколко думи в полето за търсене, 
-    [%+ terms.Bugzilla %] ще търси в полета 
+    Bugzilla ще търси в полета 
     [%+ field_descs.product FILTER html %],
     [%+ field_descs.component FILTER html %], 
     [%+ IF use_keywords %][%+ field_descs.keywords FILTER html %],[% END %]
@@ -53,14 +49,14 @@
   </li>
 
   <li>Добавянето на повече термини <strong>ограничава</strong> търсенето, а не го
-     разширява. (С други думи, [% terms.Bugzilla %] търси за 
+     разширява. (С други думи, Bugzilla търси за 
      [%+ terms.bugs %] които отговарят на <em>всичките</em> ви условия, а не
      [%+ terms.bugs %] които отговарят на <em>което и да е</em> от условията ви.)</li>
 
   <li>Търсенето е <strong>нечувствително към регистъра</strong>. Така че <kbd>таблица</kbd>,
     <kbd>Таблица</kbd> и <kbd>ТАБЛИЦА</kbd> са едно и също.</li>
 
-  <li>[% terms.Bugzilla %] не просто търси за точната дума, въведена от вас,
+  <li>Bugzilla не просто търси за точната дума, въведена от вас,
     но също за всяка дума която я <strong>съдържа</strong>.
     Така например, търсенето за "кат" ще намери също [% terms.bugs %]
     които я съдържат като част от други думи &mdash; например, [% terms.bug %]
@@ -128,7 +124,7 @@
     се назове така 
     <kbd>[% first_field.name.replace('^cf_') FILTER html %]</kbd>,
     също. Обаче, ако това предизвика противоречие между установените
-    имена на полета на [%+ terms.Bugzilla %] и имената на потребителското поле,
+    имена на полета на Bugzilla и имената на потребителското поле,
     установените имена на полета винаги имат предимство.</p>
 [% END %]
 
@@ -139,7 +135,7 @@
 [% END %]
 
 
-<table cellspacing="0" cellpadding="0" border="0" class="qs_fields">
+<table class="qs_fields">
   <thead>
     <tr>
       <th class="field_name">Поле</th>
@@ -213,6 +209,52 @@
       (<kbd>url</kbd> OR <kbd>location</kbd>) AND (<kbd>bar</kbd> OR 
       <kbd>field</kbd>) AND (NOT <kbd>focus</kbd>)</p>
   </li>
+
+  <li>
+    Оператора по подразбиране, двоеточие (:), извършва съвпадение с <strong>подниз</strong>
+    на стойността. Поддържат се следните оператори:
+    <ul>
+      <li>
+        <strong>:</strong> (substring):<br>
+        <kbd><em>summary:foo</em></kbd> ще търси за [% terms.bugs %]
+        където <kbd>summary</kbd> съдържа <kbd>foo</kbd>.
+      </li>
+      <li>
+        <strong>=</strong> (equals):<br>
+        <kbd><em>summary=foo</em></kbd> ще търси за [% terms.bugs %]
+        където <kbd>summary</kbd> е точно <kbd>foo</kbd>.
+      </li>
+      <li>
+        <strong>!=</strong> (notequals):<br>
+        <kbd><em>summary!=foo</em></kbd> ще търси за [% terms.bugs %]
+        където <kbd>summary</kbd> не е <kbd>foo</kbd>.
+      </li>
+      <li>
+        <strong>&gt;</strong> (greaterthan):<br>
+        <kbd><em>creation_ts&gt;-2w</em></kbd> ще търси за [% terms.bugs %]
+        които са били създадени от преди две седмици до сега, изключвайки [%
+        terms.bugs %] създадени преди точно две седмици.
+      </li>
+      <li>
+        <strong>&gt;=</strong> (greaterthaneq):<br>
+        <kbd><em>creation_ts&gt;=-2w</em></kbd> ще търси за [% terms.bugs %]
+        които са били създадени от преди две седмици до сега, включвайки [%
+        terms.bugs %] създадени преди точно две седмици.
+      </li>
+      <li>
+        <strong>&lt;</strong> (lessthan):<br>
+        <kbd><em>creation_ts&lt;-2w</em></kbd> ще търси за [% terms.bugs %]
+        които са били създадени преди повече от две седмици, изключвайки [%
+        terms.bugs %] създадени преди точно две седмици.
+      </li>
+      <li>
+        <strong>&lt;=</strong> (lessthaneq):<br>
+        <kbd><em>creation_ts&lt;=-2w</em></kbd> ще търси за [% terms.bugs %]
+        които са били създадени преди повече от две седмици, включвайки [%
+        terms.bugs %] създадени преди точно две седмици.
+      </li>
+    </ul>
+  </li>
 </ul>
 
 <h2 id="shortcuts">Разширени съкращения</h2>
@@ -221,7 +263,7 @@
   по определени полета, има известни символи или думи които можете
   да ползвате като "преки пътища" за търсене по определени полета:</p>
 
-<table cellspacing="0" cellpadding="0" border="0" class="qs_fields">
+<table class="qs_fields">
   <thead>
     <tr>
       <th class="field_name">Поле</th>
@@ -304,7 +346,7 @@
   <a href="query.cgi?format=advanced">Разширено търсене</a>.</p>
 
 <ul class="qs_help">
-  <li>Всички [% terms.bugs %] докладвани от userA@company.com или назначени му
+  <li>Всички [% terms.bugs %] докладвани от userA@company.com или назначени им
     (началния @ е съкращения за назначения, вижте
     секцията <a href="#shortcuts">Разширени съкращения</a> отгоре):<br>
     <kbd>ALL @userA@company.com OR reporter:userA@company.com</kbd></li>
