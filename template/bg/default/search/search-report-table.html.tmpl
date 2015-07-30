@@ -32,9 +32,9 @@ var queryform = "reportform"
   [% terms.bugs %] използвайки остатъка от формата.
 </p>
 
-[% button_name = "Създаване на доклада" %]
+[% button_name = "Създаване на доклад" %]
 
-<form method="get" action="report.cgi" name="reportform">
+<form method="get" action="report.cgi" name="reportform" id="reportform">
 
 <table align="center">
   <tr>
@@ -55,7 +55,7 @@ var queryform = "reportform"
       <table border="1" width="100%">
         <tr>
           <td align="center" valign="middle" height="150">
-            <b>Съставна таблица:</b><br>
+            <b>Множество таблици:</b><br>
             [% PROCESS select name = 'z_axis_field' %]
           </td>
         </tr>

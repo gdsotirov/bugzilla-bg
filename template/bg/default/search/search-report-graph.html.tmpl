@@ -49,7 +49,7 @@ var queryform = "reportform"
 // -->
 </script>
 
-[% button_name = "Създаване на доклада" %]
+[% button_name = "Създаване на доклад" %]
 
 <form method="get" action="report.cgi" name="reportform">
 
@@ -63,16 +63,16 @@ var queryform = "reportform"
         <b>Изчертаване на наборите с данни:</b><br>
         <input type="radio" name="cumulate" value="0"
         [% " checked" IF default.cumulate.0 != "1" %]>
-        Единично<br>
+        Поотделно<br>
         <input type="radio" name="cumulate" value="1"
         [% " checked" IF default.cumulate.0 == "1" %]>
-        Съвокупно
+        Един върху друг
     </td>
     <td width="150" height="150">
       <table border="1" width="100%" height="100%">
         <tr>
           <td align="center" valign="middle">
-            <b>Съставни изображения:</b><br>
+            <b>Множество изображения:</b><br>
             [% PROCESS select name = 'z_axis_field' %]
           </td>
         </tr>
@@ -81,9 +81,9 @@ var queryform = "reportform"
     <td rowspan="2">
       <b>Формат:</b><br>
       [% chart_formats = [
-        { name => "line", description => "Графика 'линия'" },
-        { name => "bar",  description => "Графика 'лента'" },
-        { name => "pie",  description => "Графика 'пита'" } ] %]
+        { name => "line", description => "Графика линия" },
+        { name => "bar",  description => "Графика лента" },
+        { name => "pie",  description => "Графика пита" } ] %]
       [% default.chart_format.0 = default.chart_format.0 || "bar" %]
 
       [% FOREACH chart_format = chart_formats %]
