@@ -20,7 +20,7 @@
   header_addl_info = time
 %]
 
-<div align="center">
+<div class="center">
 
   [% imageurl = BLOCK %]chart.cgi?
     [% imagebase FILTER html %]&amp;ctype=png&amp;action=plot&amp;width=
@@ -36,7 +36,7 @@
     <a href="[% sizeurl %]&amp;width=[% width %]&amp;height=
              [% height + 100 %]">По-висока</a><br>
     <a href="[% sizeurl %]&amp;width=[% width - 100 %]&amp;height=
-             [% height %]">По-тънка</a> * 
+             [% height %]">По-тънка</a> | 
     <a href="[% sizeurl %]&amp;width=[% width + 100 %]&amp;height=
              [% height %]">По-дебела</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
     <a href="[% sizeurl %]&amp;width=[% width %]&amp;height=

@@ -16,8 +16,8 @@
 [% END %]
 
 [% PROCESS global/header.html.tmpl 
-  style_urls = [ "skins/standard/reports.css" ]
-  title = title 
+  style_urls = ['skins/standard/buglist.css']
+  title = title
 %]
 
 [% IF Param("useqacontact") %]
@@ -26,39 +26,23 @@
   [% numcols = 2 %]
 [% END %]
 
-<table cellpadding="0" cellspacing="0" id="components_header_table">
-  <tr>
-    <td class="instructions">
-      Изберете съставна част, за да видите отворени [% terms.bugs %] в нея:
-    </td>
-    <td class="product_container">
-      <span class="product_name">[% product.name FILTER html %]</span>
-      <div class="product_desc">
-        [% product.description FILTER html_light %]
-      </div>
-    </td>
-  </tr>
-</table>
+<h1>[% product.name FILTER html %]</h1>
 
-<span class="components_header">Съставни части</span>
+<div id="product_desc">[% product.description FILTER html_light %]</div>
+<p>Изберете съставна част, за да видите отворени [% terms.bugs %] в нея.</p>
 
-<table summary="Таблица със съставни части"
-       class="component_table" cellspacing="0" cellpadding="0">
-  <thead>
+<table id="component_table">
   <tr>
-    <th>&nbsp;</th>
+    <th>Съставна част</th>
     <th>Подразбиращ се назначен</th>
     [% IF Param("useqacontact") %]
       <th>Подразбиращ се качествен контрол</th>
     [% END %]
   </tr>
-  </thead>
 
-  <tbody>
   [% FOREACH comp = product.components %]
     [% INCLUDE describe_comp %]
   [% END %]
-  </tbody>
 </table>
 
 [% PROCESS global/footer.html.tmpl %]

@@ -17,16 +17,14 @@
 [% PROCESS "reports/series-common.html.tmpl"
    newtext = "Нов (името по-долу)" 
  %]
-  
-<table cellpadding="2" cellspacing="2" border="0"
-       style="text-align: left; margin-left: 20px">
-  <tbody>
+
+<table id="edit_series">
     <tr>
-      <th>Категория:</th>
+      <th>Категория</th>
       <th></th>
-      <th>Под-категоря:</th>
-      <th>Име:</th>
-      <td></td>
+      <th>Под-категория</th>
+      <th>Име</th>
+      <th></th>
     </tr>
     <tr>
       [% PROCESS series_select sel = { name => 'category',
@@ -38,41 +36,40 @@
                    id="action-edit">
           </noscript>
         </td>
-        
+
       [% PROCESS series_select sel = { name => 'subcategory', 
                                        size => 5,
                                        onchange => "checkNewState()" } %]
-        
-      <td valign="top" name="name">
+
+      <td>
         <input type="text" name="name" maxlength="64" 
                value="[% default.name.0 FILTER html %]" size="25">
       </td>
 
-      <td valign="top">
-        <span style="font-weight: bold;">Пускане на всеки</span> &nbsp;
-        <input type="text" size="2" name="frequency"
+      <td>
+        Пускане на всеки
+        <input type="text" size="2" id="frequency" name="frequency"
                value="[% (default.frequency.0 OR 7) FILTER html %]">
-        <span style="font-weight: bold;">&nbsp;day(s)</span><br>
+        ден(дни)<br>
         [%# Change 'admin' here and in Series.pm, or remove the check
             completely, if you want to change who can make series public. %]
-        [% IF user.in_group('admin') %]      
+        [% IF user.in_group('admin') %]
           <input type="checkbox" name="public"
                  [%+ "checked='checked'" IF default.public.0 %]>
-          <span style="font-weight: bold;">Видимо за всички<br>
-          (within group restrictions)</span> 
+          Видимо за всички<br>
+          (в зависимост от груповите ограничения)
         [% END %]
       </td>
     </tr>
 
     <tr>
       <td>
-        <input type="text" style="width: 100%" name="newcategory" 
-               maxlength="64" value="[% default.newcategory.0 FILTER html %]">
+        <input type="text" name="newcategory" maxlength="64"
+               value="[% default.newcategory.0 FILTER html %]">
       </td>
-        <td></td>
+      <td></td>
       <td>
-        <input type="text" style="width: 100%" name="newsubcategory"
-               maxlength="64" 
+        <input type="text" name="newsubcategory" maxlength="64"
                value="[% default.newsubcategory.0 FILTER html %]">
       </td>
       <td></td>
@@ -81,5 +78,4 @@
                value="[% button_name FILTER html %]">
       </td>
     </tr>
-  </tbody>
 </table>
