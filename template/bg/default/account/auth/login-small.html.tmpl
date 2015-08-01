@@ -26,21 +26,10 @@
   [% script_url = login_target _ connector _ "GoAheadAndLogIn=1" %]
   <a id="login_link[% qs_suffix %]" href="[% script_url FILTER html %]"
      onclick="return show_mini_login_form('[% qs_suffix %]')">Вход</a>
-<<<<<<< local
-<<<<<<< local
-=======
->>>>>>> other
 
   [% Hook.process('additional_methods') %]
-<<<<<<< local
 
   <form action="[% login_target FILTER html %]" method="POST"
-=======
-=======
-  
->>>>>>> other
-  <form action="[% login_target FILTER html %]" method="POST" 
->>>>>>> other
         class="mini_login bz_default_hidden"
         id="mini_login[% qs_suffix FILTER html %]">
     <input id="Bugzilla_login[% qs_suffix FILTER html %]" required
@@ -78,20 +67,13 @@
       [% IF Param('emailsuffix') %]
         placeholder="Вашето име"
       [% ELSE %]
-        type="email" placeholder="Вашият е-пощенски адрес"
+        type="email" placeholder="Вашия е-пощенски адрес"
       [% END %]>
     <input id="forgot_button[% qs_suffix %]" value="Нулиране на парола" 
            type="submit">
     <input type="hidden" name="a" value="reqpw">
-<<<<<<< local
-<<<<<<< local
     <input type="hidden" id="token[% qs_suffix FILTER html %]" name="token"
            value="[% issue_hash_token(['reqpw']) FILTER html %]">
-=======
->>>>>>> other
-=======
-    <input type="hidden" id="token[% qs_suffix FILTER html %]" name="token" value="[% issue_hash_token(['reqpw']) FILTER html %]">
->>>>>>> other
     <a href="#" onclick="return hide_forgot_form('[% qs_suffix %]')">[x]</a>
   </form>
 </li>
