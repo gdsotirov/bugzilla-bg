@@ -47,25 +47,15 @@
   <hr>
 [% END %]
 
-[% IF votes_recorded %]
-  <p>
-    <font color="red">
-      Промените по вашите гласове бяха запазени.
-    </font>
-  </p>
-[% ELSE %]
-  <br>
-[% END %]
-
 [% IF products.size %]
   <form name="voting_form" method="post" action="page.cgi?id=voting/user.html">
     <input type="hidden" name="action" value="vote">
     <input type="hidden" name="token" value="[% issue_hash_token(['vote']) FILTER html %]">
-    <table cellspacing="4">
+    <table id="user_votes">
       <tr>
-        <td></td>
+        <th></th>
         <th>Гласове</th>
-        <th>[% terms.Bug %] №</th>
+        <th>[% terms.Bug %]&nbsp;№</th>
         <th>Резюме</th>
       </tr>
 
@@ -95,8 +85,7 @@
         </tr>
 
         [% FOREACH bug = product.bugs %]
-          <tr [% IF bug.id == this_bug.id && canedit %] 
-            class="bz_bug_being_voted_on" [% END %]>
+          <tr [% IF bug.id == this_bug.id && canedit %] class="bz_bug_being_voted_on"[% END %]>
             <td>
               [% IF bug.id == this_bug.id && canedit %]
                 [% IF product.onevoteonly %]
@@ -106,25 +95,27 @@
                 [% END %]
               [%- END %]
             </td>
-            <td align="right"><a name="vote_[% bug.id FILTER html %]">
+            <td>
+              <a name="vote_[% bug.id FILTER none %]">
               [% IF canedit %]
                 [% IF product.onevoteonly %]
-                  <input type="checkbox" name="[% bug.id FILTER html %]" value="1"
-                    [% " checked" IF bug.count %] id="bug_[% bug.id FILTER html %]">
+                  <input type="checkbox" name="[% bug.id FILTER none %]" value="1"
+                    [% " checked" IF bug.count %] id="bug_[% bug.id FILTER none %]">
                 [% ELSE %]
-                  <input name="[% bug.id FILTER html %]" value="[% bug.count FILTER html %]"
-                         size="2" id="bug_[% bug.id FILTER html %]">
+                  <input name="[% bug.id FILTER none %]" value="[% bug.count FILTER html %]"
+                         size="2" id="bug_[% bug.id FILTER none %]">
                 [% END %]
               [% ELSE %]
                 [% bug.count FILTER html %]
               [% END %]
-            </a></td>
-            <td align="center">
-              [% bug.id FILTER bug_link(bug) FILTER none %]
+              </a>
+            </td>
+            <td class="right">
+              [% PROCESS bug/link.html.tmpl bug = bug, link_text = bug.id %]
             </td>
             <td>
-              [% bug.summary FILTER html %]
-              (<a href="page.cgi?id=voting/bug.html&amp;bug_id=[% bug.id FILTER uri %]">Показване на гласове</a>)
+              [% bug.short_desc FILTER html %]
+              (<a href="page.cgi?id=voting/bug.html&amp;bug_id=[% bug.id FILTER none %]">Показване на гласове</a>)
             </td>
           </tr>
         [% END %]
@@ -132,7 +123,7 @@
         <tr>
           <td></td>
           <td colspan="3">[% product.total %] глас
-            [% "а" IF product.total != 1 %] използван[% "и" IF product.total != 1 %] от [% product.maxvotes %]
+            [% "а" IF product.total != 1 %] използван[% "и" IF product.total != 1 %] от [% product.maxvotes FILTER html %]
             разрешен[% "и" IF product.maxvotes != 1 %].
             <br>
             <br>
@@ -149,7 +140,7 @@
       <br>
       За да промените гласовете си,
       [% IF multivoteproduct %]
-        въведете нови числа (използвайки нула като без гласове)
+        въведете нови числа (използвайки нула в смисъл на без гласове)
         [% " или " IF onevoteproduct %]
       [% END %]
       [% IF onevoteproduct %]

@@ -6,11 +6,8 @@
   # defined by the Mozilla Public License, v. 2.0.
   #%]
 
-[% USE date %]
+[%
+    tabs.push({ name => 'newsearch', label => "Ново търсене",
+                link => "query.cgi?format=newsearch" })
+%]
 
-<p class="center">
-  <em>[% component.callers.first FILTER html %]</em> обработен
-  на [% date.format(date.now, '%Y-%m-%d в %H:%M:%S') FILTER html %].
-  <br>
-  (информация предоставена от разширението Example).
-</p>

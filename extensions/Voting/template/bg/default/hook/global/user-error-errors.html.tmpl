@@ -30,14 +30,14 @@
     [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
     Можете да използвате най-много [% max FILTER html %] гласа за един
     [%+ terms.bug %] в
-    продукта <tt>[% product FILTER html %]</tt>, но се опитвате да
+    продукта <em>[% product FILTER html %]</em>, но се опитвате да
     ползвате [% votes FILTER html %].
 
 [% ELSIF error == "voting_too_many_votes_for_product" %]
     [% title = "Недействителен глас" %]
     [% admindocslinks = {'voting.html' => 'Настройване на възможността за гласуване'} %]
     Опитахте се да ползвате [% votes FILTER html %] гласа в
-    продукта <tt>[% product FILTER html %]</tt>, което надхвърля максимума от
+    продукта <em>[% product FILTER html %]</em>, което надхвърля максимума от
     [%+ max FILTER html %] гласа за него.
 
 [% END %]
