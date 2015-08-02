@@ -13,7 +13,7 @@
     <div id="bz_ctag_div" class="bz_default_hidden">
       <a href="javascript:void(0)" onclick="YAHOO.bugzilla.commentTagging.hideInput()">x</a>
       <div>
-        <input id="bz_ctag_add" size="10" placeholder="add tag"
+        <input id="bz_ctag_add" size="10" placeholder="добавяне на етикет"
               maxlength="[% constants.MAX_COMMENT_TAG_LENGTH FILTER html %]">
         <span id="bz_ctag_autocomp"></span>
       </div>
@@ -29,7 +29,7 @@
       YAHOO.bugzilla.commentTagging.init([% user.can_tag_comments ? 'true' : 'false' %]);
       YAHOO.bugzilla.commentTagging.min_len = [% constants.MIN_COMMENT_TAG_LENGTH FILTER js %];
       YAHOO.bugzilla.commentTagging.max_len = [% constants.MAX_COMMENT_TAG_LENGTH FILTER js %];
-      YAHOO.bugzilla.commentTagging.label = 'Маркери на коментар:';
+      YAHOO.bugzilla.commentTagging.label = 'Етикети на коментар:';
       YAHOO.bugzilla.commentTagging.min_len_error =
         'Comment tags must be at least
         [%~ " " _ constants.MIN_COMMENT_TAG_LENGTH FILTER js %] characters.';
@@ -878,11 +878,11 @@
       [% IF bug.alias.size %]
         [% bug.alias.join(', ') FILTER html %]
       [% ELSE %]
-        None
+        Няма
       [% END %]
       [% IF bug.check_can_change_field('alias', 0, 1) %]
         <span id="alias_edit_area_showhide_container" class="bz_default_hidden">
-          (<a href="#" id="alias_edit_area_showhide">edit</a>)
+          (<a href="#" id="alias_edit_area_showhide">промяна</a>)
         </span>
         <br>
         <div id="alias_edit_area">
@@ -1032,7 +1032,7 @@
     [% IF bug.check_can_change_field(field.name, 0, 1) %]
       <span id="[% field.name FILTER html %]_edit_container" 
             class="edit_me bz_default_hidden">
-        (<a href="#" id="[% field.name FILTER html %]_edit_action">edit</a>)
+        (<a href="#" id="[% field.name FILTER html %]_edit_action">промяна</a>)
       </span>
       <script type="text/javascript">
         hideEditableField('[% field.name FILTER js %]_edit_container', 
