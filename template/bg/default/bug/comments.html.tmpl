@@ -15,7 +15,7 @@
 <!--
   /* Adds the reply text to the `comment' textarea */
   function replyToComment(id, real_id, name) {
-      var prefix = "(В отговор на " + name + " от коментар #" + id + ")\n";
+      var prefix = "(В отговор на " + name + " от коментар №" + id + ")\n";
       var replytext = "";
       [% IF user.settings.quote_replies.value == 'quoted_reply' %]
         /* pre id="comment_name_N" */
@@ -127,7 +127,7 @@
                 [% IF user.settings.quote_replies.value != 'off' %]
                   onclick="replyToComment('[% comment.count %]', '[% comment.id %]', '[% comment.author.name || comment.author.nick FILTER html FILTER js %]'); return false;"
                 [% END %]
-              >reply</a>]
+              >отговор</a>]
             [% END %]
             <script type="text/javascript"><!--
               addCollapseLink([% comment.count %], 'Превключване показването на коментар'); // -->
