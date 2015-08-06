@@ -11,7 +11,7 @@
 [% PROCESS global/header.html.tmpl
   title = 'Управление на типове флагове'
   style_urls = ['skins/standard/admin.css']
-  onload="var f = document.flagtype_form; selectProduct(f.product, f.component, null, null, '__All__');"
+  onload="var f = document.flagtype_form; selectProduct(f.product, f.component, null, null, '__Всички__');"
   javascript_urls=["js/productform.js"]
   doc_section = "administering/flags.html"
 %]
@@ -42,8 +42,8 @@
     [% INCLUDE "global/product-select.html.tmpl"
       id       => "product"
       name     => "product"
-      add      => "__Който и да е__"
-      onchange => "selectProduct(this, this.form.component, null, null, '__Any__');"
+      add      => "__Всеки__"
+      onchange => "selectProduct(this, this.form.component, null, null, '__Всяка__');"
       products => products
     %]
   </div>
@@ -51,7 +51,7 @@
   <div class="inline">
     <label for="component">Съставна част:</label>
     <select name="component">
-      <option value="">__Която и да е__</option>
+      <option value="">__Всяка__</option>
       [% FOREACH comp = components %]
         <option value="[% comp FILTER html %]"
           [%+ 'selected="selected"' IF selected_component == comp %]>
@@ -66,7 +66,7 @@
     <label for="show_flag_counts">Показване на бройки флагове</label>
   </div>
 
-  <input type="submit" id="submit" value="Филтър"></td>
+  <input type="submit" id="submit" value="Филтър">
 </form>
 
 <h3>Типове флагове за [% terms.bugs %]</h3>

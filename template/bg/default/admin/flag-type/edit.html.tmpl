@@ -23,7 +23,7 @@
   title = title
   style_urls = ['skins/standard/admin.css']
   onload="var f = document.forms['flagtype_properties'];
-          selectProduct(f.product, f.component, null, null, '_Всеки_');"
+          selectProduct(f.product, f.component, null, null, '__Всяка__');"
   javascript_urls=["js/productform.js"]
   doc_section = "administering/flags.html"
 %]
@@ -91,12 +91,12 @@
               [% INCLUDE "global/product-select.html.tmpl"
                 id       => "product"
                 name     => "product"
-                add      => "__Който и да е__"
-                onchange => "selectProduct(this, this.form.component, null, null, '__Any__');"
+                add      => "__Всеки__"
+                onchange => "selectProduct(this, this.form.component, null, null, '__Всяка__');"
                 products => products
               %]<br>
               <select name="component">
-                <option value="">__Която и да е__</option>
+                <option value="">__Всяка__</option>
                 [% FOREACH comp = components %]
                   <option value="[% comp FILTER html %]">[% comp FILTER html %]</option>
                 [% END %]

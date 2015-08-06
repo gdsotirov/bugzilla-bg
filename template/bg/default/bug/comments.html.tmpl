@@ -122,7 +122,7 @@
             [% IF can_edit_comments %]
               [% IF user.can_tag_comments %]
                 [<a href="#"
-                    onclick="YAHOO.bugzilla.commentTagging.toggle([% comment.id %], [% comment.count %]);return false">маркер</a>]
+                    onclick="YAHOO.bugzilla.commentTagging.toggle([% comment.id %], [% comment.count %]);return false">етикет</a>]
               [% END %]
               [<a class="bz_reply_link" href="#add_comment"
                 [% IF user.settings.quote_replies.value != 'off' %]
