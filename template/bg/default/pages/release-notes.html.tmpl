@@ -45,6 +45,26 @@
 
 <h2 id="v44_point">Обновления в тази 4.4.x версия</h2>
 
+<h3>4.4.10</h3>
+
+<p>Тази версия оправя един проблем със сигурността. Вижте
+  <a href="https://www.bugzilla.org/security/4.2.14/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Тази версия също съдържа следните поправки на [% terms.bugs %]:</p>
+
+<ul>
+  <li>Атрибута <kbd>email_enabled</kbd> подаван към <kbd>User.update</kbd>
+    WebService метода беше неправилно взиман в предвид. Логиката му беше запазена.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1162334">[% terms.Bug %] 1162334</a>)</li>
+  <li>Perl модула <kbd>DateTime::TimeZone::Local::Win32</kbd> вече се изисква
+    под Windows за правилно установяване на местната часова зона.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1124401">[% terms.Bug %] 1124401</a>)</li>
+  <li>[% terms.Bugzilla %] вече е защитена срещу атака от типa "billion laughs",
+    която може да предизвика отказ от услуга при използване на XML-RPC API.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1031035">[% terms.Bug %] 1031035</a>)</li>
+</ul>
+
 <h3>4.4.9</h3>
 
 <p>Тази версия съдържа следните попрвки на [% terms.bugs %]:</p>
