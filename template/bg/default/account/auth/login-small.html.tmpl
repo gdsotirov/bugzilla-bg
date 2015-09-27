@@ -34,7 +34,7 @@
         id="mini_login[% qs_suffix FILTER html %]">
     <input id="Bugzilla_login[% qs_suffix FILTER html %]" required
            name="Bugzilla_login" class="bz_login"
-      [% IF Param('emailsuffix') %]
+      [% IF login_not_email %]
         placeholder="Потребителско име"
       [% ELSE %]
         type="email" placeholder="Е-пощенски адрес"
@@ -64,7 +64,7 @@
         class="mini_forgot bz_default_hidden">
     <label for="login[% qs_suffix FILTER html %]">Потребителско име:</label>
     <input name="loginname" size="20" id="login[% qs_suffix FILTER html %]" required
-      [% IF Param('emailsuffix') %]
+      [% IF login_not_email %]
         placeholder="Вашето име"
       [% ELSE %]
         type="email" placeholder="Вашия е-пощенски адрес"

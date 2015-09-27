@@ -7,14 +7,14 @@
   #%]
 
 From: [% Param('mailfrom') %]
-To: [% emailaddress %]
+To: [% newemailaddress %]
 Subject: [% terms.Bugzilla %] Заявка за смяна на електронен пощенски адрес
 X-Bugzilla-Type: admin
 
 [%+ terms.Bugzilla %] получи заявка за смяна на електронния пощенски адрес
-за сметката [% oldemailaddress %] на вашия адрес.
+за сметката [% user.email %] на вашия адрес.
 
-За да потрвърдите промяната, посетете следващата препратка:
+За да потвърдите промяната, посетете следващата препратка:
 
 [%+ urlbase %]token.cgi?t=[% token FILTER uri %]&a=cfmem
 

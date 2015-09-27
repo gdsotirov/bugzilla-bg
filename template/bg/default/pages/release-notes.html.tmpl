@@ -41,6 +41,49 @@
   вашата версия и тази, <strong>особено секцията Надграждане от бележките към изданието
   на всяка версия</strong>.</p>
 
+<h2 id="point">Обновления в тази 5.0.x версия</h2>
+
+<h3>5.0.1</h3>
+
+<p>Тази версия оправя един проблем със сигурността. Вижте
+  <a href="https://www.bugzilla.org/security/4.2.14/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Тази версия също съдържа следните поправки на [% terms.bugs %]:</p>
+
+<ul>
+  <li>Потребители чиито имена за вход не са адрес за е-поща не могат да влязат в
+    инсталации които ползват <abbr lang="en" title="Lightweight Directory Access Protocol">LDAP</abbr> за удостоверяване на потребители.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1179160">[% terms.Bug %] 1179160</a>)</li>
+  <li>Ако задължително потребителско поле беше скрито, не беше възможно да се създава
+    нов [% terms.bug %] или променя съществуващ.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1183398">[% terms.Bug %] 1183398</a>
+    и <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1196969">[% terms.bug %] 1196969</a>)</li>
+  <li>Потребител променящ името си за вход да сочи към несъществуващ е-пощенски адрес
+    може да предизвика Bugzilla да спре работа, причинявайки отказ от услуга.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1194987">[% terms.Bug %] 1194987</a>)</li>
+  <li>Е-писма създавани по време на транзакция караха PostgreSQL да спре да работи.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1186700">[% terms.Bug %] 1186700</a>)</li>
+  <li>[% terms.Bugs %] съдържащи коментар с препратка към [% terms.bug %]
+    идентификатор по-големи от 2^31 вече не могат да бъдат показвани при ползване на PostgreSQL.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1191937">[% terms.Bug %] 1191937</a>)</li>
+  <li>Е-писма изпращани от [% terms.Bugzilla %] сега са правилно кодирани като UTF-8.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=714724">[% terms.Bug %] 714724</a>)</li>
+  <li>Избирането на дата в "Сбор на времето" страницата беше счупено.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1181649">[% terms.Bug %] 1181649</a>)</li>
+  <li>Ако <kbd>Test::Taint</kbd> или който и да е друг Perl модул необходим за използване на
+    JSON-RPC API не беше инсталиран или беше твърде стар, потребителския интерфейс за етикиране на коментари беше
+    показван въпреки това и можехте да слагате етикети на коментари, но етикетите не бяха постоянни
+    (изгубваха се при презареждане на страницата). Сега потребителския интерфейс за етикиране на коментари не се показва
+    въобще докато липсващите Perl модули са инсталирани и актуални.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1183227">[% terms.Bug %] 1183227</a>)</li>
+  <li>Потребителски полета от тип <kbd>INTEGER</kbd> сега приемат отрицателни цели числа.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1198659">[% terms.Bug %] 1198659</a>)</li>
+  <li>Под Windows, скрипта за инсталация <kbd>checksetup.pl</kbd> вече не
+    пита за <abbr lang="en" title="Simple Mail Transfer Protocol">SMTP</abbr> сървър. Той може да бъде зададен след приключване на инсталацията.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1191255">[% terms.Bug %] 1191255</a>)</li>
+</ul>
+
 <h2 id="req">Минимални изисквания</h2>
 
 <p>Всички изисквания които са нови спрямо 4.4 ще изглеждат
@@ -333,7 +376,7 @@
   <li>Bugzilla кода сега ползва <kbd>use parent</kbd> вместо <kbd>use base</kbd>
     на всички места където е приложимо.</li>
   <li>Нова кука именувана <kbd>cgi_headers</kbd> беше добавена, за да позволи
-    персонализиране на връщаните <abbr lang="en" title="HyperText Transfer Protocol">HTTP</abbr> заглавки.</kbd>
+    персонализиране на връщаните <abbr lang="en" title="HyperText Transfer Protocol">HTTP</abbr> заглавки.</li>
   <li>Нова кука именувана <kbd>user_check_account_creation</kbd> беше добавена
     с цел вмъкването на допълнителни проверки преди приемане създаването на нова потребителска сметка.</li>
 </ul>
