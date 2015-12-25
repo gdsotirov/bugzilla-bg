@@ -118,12 +118,6 @@
         и час, и получаване на резултатите от тях директно по е-поща. Това е
         добър начин за създаване на напомняния и следене на дейността в инсталацията ви.</dd>
 
-        [% IF Param('use_mailer_queue') %]
-          [% class = user.in_group('admin') ? "" : "forbidden" %]
-          <dt id="view_job_queue" class="[% class %]"><a href="view_job_queue.cgi">Опашка със задачи</a></dt>
-          <dd class="[% class %]">Преглед на опашката с недоставени/отложени задачи/е-поща.</dd>
-        [% END %]
-
         <dt id="release_notes">
           <a href="page.cgi?id=release-notes.html">Бележки към версията</a></dt>
         <dd>Подробна информация свързана с тази версия на Bugzilla.</dd>
