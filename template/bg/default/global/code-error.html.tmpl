@@ -49,7 +49,7 @@
     грешката [% bug.error FILTER html %].
     
   [% ELSIF error == "chart_data_not_generated" %]
-    [% admindocslinks = {'extraconfig.html' => 'Настройване на графики'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Настройване на графики'} %]
     [% IF product.id %]
       Графиките за продукта <em>[% product.name FILTER html %]</em> не са
       достъпни все още, защото не са събирани данни за него откакто
@@ -289,6 +289,14 @@
     Функцията <code>[% function FILTER html %]</code> изисква
     аргумента <code>[% param FILTER html %]</code>, а
     той не е бил зададен.
+
+  [% ELSIF error == "param_integer_required" %]
+    Функцията <code>[% function FILTER html %]</code> изисква
+    <code>[% param FILTER html %]</code> да бъде цяло число.
+
+  [% ELSIF error == "param_scalar_array_required" %]
+    Параметъра <code>[% param FILTER html %]</code> трябва да бъде масив от скаларни стойности
+    (цели числа и/или низове).
 
   [% ELSIF error == "params_required" %]
     [% title = "Липсващ параметър" %]

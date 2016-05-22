@@ -119,7 +119,7 @@
 
   [% ELSIF error == "auth_failure" %]
     [% title = "Необходимо е удостоверяване" %]
-    [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
+    [% admindocslinks = {'groups.html#groups' => 'Групова сигурност'} %]
     Съжалявам,
     [% IF group %]
       не сте член на групата '[% group FILTER html %]',
@@ -257,12 +257,12 @@
 
   [% ELSIF error == "bug_access_denied" %]
     [% title = "Достъп до $terms.Bug отказан" %]
-    [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
+    [% admindocslinks = {'groups.html#groups' => 'Групова сигурност'} %]
     Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
 
   [% ELSIF error == "bug_access_query" %]
     [% title = "Достъп до $terms.Bug отказан" %]
-    [% docslinks = {'myaccount.html' => 'Създаване на сметка'} %]
+    [% docslinks = {'administering/users.html#creating-new-users' => 'Създаване на сметка'} %]
     Не ви е позволен достъп до [% terms.bug %] №[% bug_id FILTER html %].
     За да видите този [% terms.bug %] първо
     трябва <a href="show_bug.cgi?id=
@@ -303,8 +303,8 @@
 
   [% ELSIF error == "buglist_parameters_required" %]
     [% title = "Необходими са параметри" %]
-    [% docslinks = {'query.html' => "Търсене за $terms.bugs",
-                    'query.html#list' => "$terms.Bug списъци"} %]
+    [% docslinks = {'using/finding.html' => "Търсене за $terms.bugs",
+                    'using/finding.html#list' => "$terms.Bug списъци"} %]
     Не можете да търсите или да създавате съхранени търсения без никакви термини за търсене.
 
   [% ELSIF error == "cc_remove_denied" %]
@@ -497,7 +497,7 @@
   
   [% ELSIF error == "entry_access_denied" %]
     [% title = "Достъпът отказан" %]
-[% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
+[% admindocslinks = {'categorization.html#product-group-controls' => 'Групова сигурност'} %]
     Съжалявам, или продукта <em>[% product FILTER html %]</em>
     не съществува или не сте упълномощен да
     въвеждате [% terms.bug %] за него.
@@ -695,10 +695,9 @@
 
   [% ELSIF error == "flag_requestee_unauthorized" %]
     [% title = "Изпълнителя на заявката за флаг не е упълномощен" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администрация на флагове',
-                         'groups.html' => 'Групова сигурност'} %]
-    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
-                    'flags.html' => 'Използване на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администрация на флагове',
+                         'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
+    [% docslinks = {'using/understanding.html#flags' => 'Използване на флагове'} %]
 
     Пискахте от [% requestee.identity FILTER html %]
     задаване на флага <code>[% flag_type.name FILTER html %]</code> върху [% terms.bug %] 
@@ -712,10 +711,9 @@
 
   [% ELSIF error == "flag_requestee_unauthorized_attachment" %]
     [% title = "Изпълнителя на заявката за флаг не е упълномощен" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове',
-                         'groups.html' => 'Групова сигурност'} %]
-    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
-                    'flags.html' => 'Използване на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администриране на флагове',
+                         'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
+    [% docslinks = {'using/understanding.html#flags' => 'Използване на флагове'} %]
 
     Поискахте от [% requestee.identity FILTER html %]
     задаване на флага <code>[% flag_type.name FILTER html %]</code> на 
@@ -745,7 +743,7 @@
 
   [% ELSIF error == "flag_type_cc_list_invalid" %]
     [% title = "Невалиден ТК списък на тип флаг" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администриране на флагове'} %]
     Списъка <abbr title="Точно Копие">ТК</abbr> [% cc_list FILTER html %] трябва да бъде дълъг не повече от 200 символа.
 
   [% ELSIF error == "flag_type_component_without_product" %]
@@ -754,12 +752,12 @@
 
   [% ELSIF error == "flag_type_description_invalid" %]
     [% title = "Невалидно описание на тип флаг" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администриране на флагове'} %]
     Трябва да въведете описание за типа флаг.
 
   [% ELSIF error == "flag_type_name_invalid" %]
     [% title = "Невалидно име на тип флаг" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администриране на флагове'} %]
     Името <em>[% name FILTER html %]</em> трябва да бъде дълго между 1 и 50
     символа и не трябва да съдържа запетайки или интервали.
 
@@ -779,17 +777,15 @@
     Трябва да укажете идентификатора на типа, за да го обновите или добавите.
 
   [% ELSIF error == "flag_type_not_multiplicable" %]
-    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
-                    'flags.html' => 'Използване на флагове'} %]
+    [% docslinks = {'using/understanding.html#flags' => 'Използване на флагове'} %]
     Не можете да имате няколко флага <em>[% type.name FILTER html %]</em>
     за [% IF attachment %] тази приставка [% ELSE %] този [% terms.bug %] [% END %].
 
   [% ELSIF error == "flag_update_denied" %]
     [% title = "Забранена промяна на флаг" %]
-    [% admindocslinks = {'flags-overview.html#flags-admin'  => 'Администриране на флагове',
-                         'groups.html' => 'Групова сигурност'} %]
-    [% docslinks = {'flags-overview.html' => 'Преглед на флаговете',
-                    'flags.html' => 'Използване на флагове'} %]
+    [% admindocslinks = {'flags.html' => 'Администриране на флагове',
+                         'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
+    [% docslinks = {'using/understanding.html#flags' => 'Използване на флагове'} %]
     Опитахте се да [% IF status == "+" %] зададете [% ELSIF status == "-" %] отнемете
     [% ELSIF status == "X" %] изчистите [% ELSE %] заявите [% END %]
     <code>[% name FILTER html %]
@@ -947,7 +943,7 @@
     
   [% ELSIF error == "illegal_group_control_combination" %]
     [% title = "Комбинацията ви за групов контрол е недействителна" %]
-    [% admindocslinks = {'groups.html' => 'Задаване на групови контроли към продукти'} %]
+    [% admindocslinks = {'categorization.html#assigning-group-controls-to-productsl' => 'Задаване на групови контроли към продукти'} %]
     Комбинацията за групов контрол за групата &quot;
     [% groupname FILTER html %]&quot; е недействителна.
 
@@ -964,12 +960,12 @@
     &lt;, &gt;, &amp;.
 
   [% ELSIF error == "illegal_series_creation" %]
-    [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
+    [% admindocslinks = {'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
     [% docslinks = {'reporting.html' => 'Доклади'} %]
     Не сте упълномощен да създавате редици.
         
   [% ELSIF error == "illegal_series_edit" %]
-    [% admindocslinks = {'groups.html' => 'Групова сигурност'} %]
+    [% admindocslinks = {'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
     [% docslinks = {'reporting.html' => 'Доклади'} %]
     Не сте упълномощен да редактирате тези редици. За да направите това
     трябва да сте или техния създател или администратор.
@@ -987,7 +983,7 @@
     Грешката беше: [% dberror FILTER html %].
         
   [% ELSIF error == "insufficient_data_points" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.htmll' => 'Доклади'} %]
     Нямаме достатъчно единици данни за направата на графика (все още).
         
   [% ELSIF error == "invalid_attach_id" %]
@@ -1192,8 +1188,8 @@
 
   [% ELSIF error == "milestone_already_exists" %]
     [% title = "Целевото събитие вече съществува" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти',
-                         'milestones.html' => 'За целевите събития'} %]
+    [% admindocslinks = {'categorization.html#products'   => 'Администриране на продукти',
+                         'categorization.html#milestones' => 'За целевите събития'} %]
     Събитието '[% name FILTER html %]' вече съществува за продукта '
     [%- product FILTER html %]'.
 
@@ -1203,8 +1199,8 @@
 
   [% ELSIF error == "milestone_is_default" %]
     [% title = "Подразбиращото се събитие е неизтриваемо" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти',
-                         'milestones.html' => 'За целевите събития'} %]
+    [% admindocslinks = {'categorization.html#products'   => 'Администриране на продукти',
+                         'categorization.html#milestones' => 'За целевите събития'} %]
     Съжалявам, но [% milestone.name FILTER html %] е подразбиращото се събитие
     за продукта '[% milestone.product.name FILTER html %]', така че не може да бъде
     изтрито.
@@ -1251,8 +1247,8 @@
 
   [% ELSIF error == "missing_component" %]
     [% title = "Липсваща съставна част" %]
-    [% admindocslinks = {'products.html'   => 'Администриране на продукти',
-                         'components.html' => 'Създаване на продукт'} %]
+    [% admindocslinks = {'categorization.html#products'   => 'Администриране на продукти',
+                         'categorization.html#milestones' => 'Създаване на продукт'} %]
     Съжалявам, продукта <em>[% product.name FILTER html %]</em>
     трябва да има поне една действуваща съставна част, за да можете да
     въвеждате [% terms.bug %] в него.<br>
@@ -1275,26 +1271,26 @@
     Съжалявам, изглежда съм загубила бисквитката, в която са записани
     резултатите от последното ви търсене. Страхувам се, че ще трябва да
     започнете отново на <a href="query.cgi">страницата за търсене</a>.
-          
+
   [% ELSIF error == "missing_datasets" %]
     [% title = "Няма избрани набори данни" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Доклади'} %]
     Трябва да укажете един или повече набора данни за изчертаване.
-    
+
   [% ELSIF error == "missing_frequency" %]
     [% title = "Липсваща честота" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Доклади'} %]
     Не сте указали правилна честота за тези поредици.
-                
+
   [% ELSIF error == "missing_name" %]
     [% title = "Липсващо име" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Доклади'} %]
     Не сте указали име за тези поредици.
-                
+
   [% ELSIF error == "missing_query" %]
     [% title = "Липсващо търсене" %]
-    [% docslinks = {'query.html' => "Търсене на $terms.bugs",
-                    'query.html#list'  => "$terms.Bug списъци"} %]
+    [% docslinks = {'using/finding.html' => "Търсене на $terms.bugs",
+                    'using/finding.html#bug-lists' => "$terms.Bug списъци"} %]
     Търсенето именувано <em>[% name FILTER html %]</em>
     [% IF sharer_id && sharer_id != user.id %]
       не е направено видимо за вас.
@@ -1317,7 +1313,7 @@
                 
   [% ELSIF error == "missing_version" %]
     [% title = "Липсваща версия" %]
-    [% admindocslinks = {'versions.html' => 'Определяне на версии'} %]
+    [% admindocslinks = {'categorization.html#versions' => 'Определяне на версии'} %]
     Съжалявам, продукта <em>[% product.name FILTER html %]</em>
     трябва да има поне една действуваща версия, за да можете да
     въвеждате [% terms.bug %] в него.<br>
@@ -1335,7 +1331,7 @@
 
   [% ELSIF error == "need_quip" %]
     [% title = "Изисква се остроумие" %]
-    [% docslinks = {'quips.html' => 'За остроумията'} %]
+    [% docslinks = {'administering/quips.html' => 'За остроумията'} %]
     Моля, въведете остроумие в текстовото поле.
 
   [% ELSIF error == "new_password_missing" %]
@@ -1344,7 +1340,7 @@
 
   [% ELSIF error == "no_axes_defined" %]
     [% title = "Не са определени оси" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Доклади'} %]
     Не сте определили никакви оси за изчертаване.
 
   [% ELSIF error == "no_bugs_chosen" %]
@@ -1383,9 +1379,11 @@
 
   [% ELSIF error == "no_products" %]
     [% title = "Няма продукти" %]
-    [% admindocslinks = {'products.html'   => 'Настройване на продукт',
-                         'components.html' => 'Добавяне на съставни части към продукт',
-                         'groups.html'     => 'Групова сигурност'} %]
+    [% admindocslinks = {
+      'categorization.html#creating-new-products'  => 'Настройване на продукт',
+      'categorization.html#components'             => 'Добавяне на съставни части към продукт',
+      'categorization.html#product-group-controls' => 'Групова сигурност'
+    } %]
     Или не са определени продукти, за които да въвеждате [% terms.bugs %] или не
     Ви е даден достъп до никой.
 
@@ -1501,12 +1499,12 @@
 
   [% ELSIF error == "product_name_already_in_use" %]
     [% title = "Името на продукта вече съществува" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Името '[% product FILTER html %]' вече съществува.
   
   [% ELSIF error == "product_name_diff_in_case" %]
     [% title = "Името на продукта се различава само по регистър" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Името '[% product FILTER html %]' се различава от името на 
     продукта '[% existing_product FILTER html %]' само по регистър.
 
@@ -1517,8 +1515,8 @@
 
   [% ELSIF error == "product_must_define_defaultmilestone" %]
     [% title = "Необходимост от определяне на подразбиращо се целево събитие" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти',
-                         'milestones.html' => 'За важните събития'} %]
+    [% admindocslinks = {'categorization.html#products'   => 'Администриране на продукти',
+                         'categorization.html#milestones' => 'За важните събития'} %]
     Трябва да <a href="editmilestones.cgi?action=add&amp;product=[% product FILTER uri %]">
     създадете важното събитие '[% milestone FILTER html %]'</a> преди
     то да може да бъде направено подразбиращо се за продукта '[% product FILTER html %]'.
@@ -1529,38 +1527,38 @@
 
   [% ELSIF error == "product_blank_name" %]
     [% title = "Не е позволено празно име на продукт" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Трябва да въведете име за продукта
   
   [% ELSIF error == "product_disabled" %]
     [% title = BLOCK %]Продукта е затворен за въвеждане на [% terms.bugs %][% END %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Съжалявам, въвеждането на [% terms.bugs %] в
     продукта <em>[% product.name FILTER html %]</em> беше забранено.
 
   [% ELSIF error == "product_edit_denied" %]
     [% title = "Отказан достъп за редактиране на продукт" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти',
-                         'groups.html'   => 'Групова сигурност'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти',
+                         'categorization.html#assigning-group-controls-to-products' => 'Групова сигурност'} %]
     Не ви е разрешено да редактирате [% terms.bugs %] в продукта 
     [%+ product FILTER html %].
 
   [% ELSIF error == "product_has_bugs" %]
     [% title = BLOCK %]Продукта има [% terms.bugs %][% END %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Съществуват [% nb FILTER html %] [%+ terms.abug %] въведени за този продукт!
     Трябва да преместите тези [% terms.bugs %] в друг продукт преди да можете
     да изтриете този.
 
   [% ELSIF error == "product_must_have_description" %]
     [% title = "Продукта има нужда от описание" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти'} %]
     Трябва да въведете описание за този продукт.
 
   [% ELSIF error == "product_must_have_version" %]
     [% title = "Продукта има нужда от версия" %]
-    [% admindocslinks = {'products.html' => 'Администриране на продукти',
-                         'versions.html' => 'Администриране на версии'} %]
+    [% admindocslinks = {'categorization.html#products' => 'Администриране на продукти',
+                         'categorization.html#versions' => 'Администриране на версии'} %]
     Трябва да въведете правилна версия за създаването на нов продукт.
 
   [% ELSIF error == "product_unknown_component" %]
@@ -1574,7 +1572,7 @@
 
   [% ELSIF error == "query_name_missing" %]
     [% title = "Не е указано има не търсене" %]
-    [% docslinks = {'query.html#list' => "За $terms.bug списъците"} %]
+    [% docslinks = {'using/finding.html#bug-lists' => "За $terms.bug списъците"} %]
     Трябва да укажете име за вашето търсене.
 
   [% ELSIF error == "query_name_too_long" %]
@@ -1683,7 +1681,7 @@
 
   [% ELSIF error == "saved_search_used_by_whines" %]
     [% title = "Съхраненото търсене се използва" %]
-    [% docslinks = {'whining.html' => 'За хленча'} %]
+    [% docslinks = {'administering/whining.html' => 'За хленча'} %]
     Съхраненото търсене <em>[% search_name FILTER html %]</em> се използва 
     от <a href="editwhines.cgi">Хленч събития</a> със следните теми:
     [%+ subjects FILTER html %]
@@ -1717,7 +1715,7 @@
 
   [% ELSIF error == "series_already_exists" %]
     [% title = "Редиците вече съществуват" %]
-    [% docslinks = {'reporting.html' => 'Доклади'} %]
+    [% docslinks = {'using/reports-and-charts.html' => 'Доклади'} %]
       Редиците именувани <em>[% series.category FILTER html %] /
       [%+ series.subcategory FILTER html %] / 
       [%+ series.name FILTER html %]</em>
@@ -1820,7 +1818,7 @@
 
   [% ELSIF error == "version_already_exists" %]
     [% title = "Версията вече съществува" %]
-    [% admindocslinks = {'versions.html' => 'Администриране на версии'} %]
+    [% admindocslinks = {'categorization.html#versions' => 'Администриране на версии'} %]
     Версията '[% name FILTER html %]' вече съществува за продукта '
     [%- product FILTER html %]'.
 
@@ -1841,12 +1839,12 @@
 
   [% ELSIF error == "users_deletion_disabled" %]
     [% title = "Изтриването не действа" %]
-    [% admindocslinks = {'useradmin.html' => 'Администриране на потребители'} %]
+    [% admindocslinks = {'users.html#deleting-users' => 'Администриране на потребители'} %]
     Съжалявам, изтриването на потребители не е разрешено.
 
   [% ELSIF error == "user_has_responsibility" %]
     [% title = "Изтриването на потребителя невъзможно" %]
-    [% admindocslinks = {'useradmin.html' => 'Администриране на потребители'} %]
+    [% admindocslinks = {'users.html#deleting-users' => 'Администриране на потребители'} %]
     Потребителя, който искате да изтриете, е зададен като подразбиращ се назначен
     за [% terms.bugs %]
     [% IF Param('useqacontact') %]
@@ -1867,7 +1865,7 @@
 
   [% ELSIF error == "user_login_required" %]
     [% title = "Необходимо е потребителско име" %]
-    [% admindocslinks = {'useradmin.html' => 'Администриране на потребители'} %]
+    [% admindocslinks = {'users.html' => 'Администриране на потребители'} %]
     Трябва да въведете име за вход за новия потребител.
 
   [% ELSIF error == "user_match_failed" %]
