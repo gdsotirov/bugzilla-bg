@@ -43,6 +43,27 @@
 
 <h2 id="point">Обновления в тази 5.0.x версия</h2>
 
+<h3>5.0.4</h3>
+
+<p>Тази версия оправя един проблем със сигурността. Вижте
+  <a href="https://www.bugzilla.org/security/4.4.12/">Бюлетина по сигурността</a>
+  за подробности.</p>
+
+<p>Тази версия съдържа също следните поправки на [% terms.bugs %]:</p>
+
+<ul>
+  <li><kbd>checksetup.pl</kbd> се проваляше да обнови формата за съхранение на графики при надграждане от пред-3.6 към 5.0.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1273846">[% terms.Bug %] 1273846</a>)</li>
+  <li><kbd>editflagtypes.cgi</kbd> се чупеше когато са разрешени класификации и
+    потребителя нямаше глобална <kbd>editcomponents</kbd> привилегия.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1310728">[% terms.Bug %] 1310728</a>)</li>
+  <li>Модулът <kbd>File::Slurp</kbd> предизвикваше предупреждения с Perl 5.24.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1301887">[% terms.Bug %] 1301887</a>)</li>
+  <li>Всички записи на време в колоната 'when' имаха правилната дата, но времето
+    беше заковано на 00:00 при използване на Sqlite.
+    (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1303702">[% terms.Bug %] 1303702</a>)</li>
+</ul>
+
 <h3>5.0.3</h3>
 
 <p>Тази версия оправя един проблем със сигурността. Вижте
