@@ -122,7 +122,7 @@
 
         <tr>
           <td></td>
-          <td colspan="3">[% product.total %] глас
+          <td colspan="3">[% product.total FILTER html %] глас
             [% "а" IF product.total != 1 %] използван[% "и" IF product.total != 1 %] от [% product.maxvotes FILTER html %]
             разрешен[% "и" IF product.maxvotes != 1 %].
             <br>
