@@ -5,8 +5,6 @@
 # This Source Code Form is "Incompatible With Secondary Licenses", as
 # defined by the Mozilla Public License, v. 2.0.
 
-%strings = (
-  feature_example_acme => 'Примерно разширение: Acme функционалност',
-);
+%strings = (feature_example_acme => 'Примерно разширение: Acme функционалност',);
 
 1;

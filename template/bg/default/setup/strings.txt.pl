@@ -16,15 +16,15 @@
 # Please keep the strings in alphabetical order by their name.
 
 %strings = (
-    any  => 'всяка',
-    apachectl_failed => <<END,
+  any              => 'всяка',
+  apachectl_failed => <<END,
 ПРЕДУПРЕЖДЕНИЕ: Не можем да проверим настройката на Apache. Това понякога
 се случва когато не пускате checksetup.pl като ##root##. За да видите
 проблема на който се натъкнахме, пуснете: ##command##
 END
-    bad_executable => 'недействителен изпълним файл: ##bin##',
-    blacklisted => '(в черния списък)',
-    bz_schema_exists_before_220 => <<'END',
+  bad_executable              => 'недействителен изпълним файл: ##bin##',
+  blacklisted                 => '(в черния списък)',
+  bz_schema_exists_before_220 => <<'END',
 Надграждате от версия преди 2.20, но bz_schema таблицата
 вече съществува. Това означава, че сте възстановили mysqldump в Bugzilla
 базата данни без първо да премахнете вече съществуващата Bugzilla база данни,
@@ -36,34 +36,33 @@ END
 свържете към MySQL базата си данни и да махнете таблица bz_schema, като последна
 възмоност.
 END
-    checking_for => 'Проверка за',
-    checking_dbd      => 'Проверка на наличните Perl DBD модули...',
-    checking_optional => 'Следните Perl модули са незадължителни:',
-    checking_modules  => 'Проверка на Perl модули...',
-    chmod_failed      => '##path##: Пропадна смяна на права: ##error##',
-    chown_failed      => '##path##: Пропадна смяна на собственост: ##error##',
-    commands_dbd      => <<EOT,
+  checking_for      => 'Проверка за',
+  checking_dbd      => 'Проверка на наличните Perl DBD модули...',
+  checking_optional => 'Следните Perl модули са незадължителни:',
+  checking_modules  => 'Проверка на Perl модули...',
+  chmod_failed      => '##path##: Пропадна смяна на права: ##error##',
+  chown_failed      => '##path##: Пропадна смяна на собственост: ##error##',
+  commands_dbd      => <<EOT,
 ТРЯБВА ДА ПУСНЕТЕ ЕДНА ОТ СЛЕДНИТЕ КОМАНДИ (в зависимост от това коя база данни
 използвате):
 EOT
-    commands_optional => 'КОМАНДИ ЗА ИНСТАЛИРАНЕ НА НЕЗАДЪЛЖИТЕЛНИ МОДУЛИ:',
-    commands_required => <<EOT,
+  commands_optional => 'КОМАНДИ ЗА ИНСТАЛИРАНЕ НА НЕЗАДЪЛЖИТЕЛНИ МОДУЛИ:',
+  commands_required => <<EOT,
 КОМАНДИ ЗА ИНСТАЛИРАНЕ НА ЗАДЪЛЖИТЕЛНИ МОДУЛИ (*Трябва да* пуснете всички тези команди
 и пуснете отново checksetup.pl):
 EOT
-    continue_without_answers => <<'END',
+  continue_without_answers => <<'END',
 Пуснете checksetup.pl в интерактивен режим (без 'answers' файл),
 за да продължите.
 END
-    cpan_bugzilla_home => 
-        "ПРЕДУПРЕЖДЕНИЕ: Използване на папката на Bugzilla като CPAN домашна папка.",
-    db_enum_setup  => "Задаване на избори за стандартни полета тип падащ списък:",
-    db_schema_init => "Инициализиране на bz_schema...",
-    db_table_new   => "Добавяне на нова таблица ##table##...",
-    db_table_setup => "Създаване на таблици...",
-    done => 'готово.',
-    enter_or_ctrl_c => "Натиснете Enter за продължаване или Ctrl-C за изход...",
-    error_localconfig_read => <<'END',
+  cpan_bugzilla_home => "ПРЕДУПРЕЖДЕНИЕ: Използване на папката на Bugzilla като CPAN домашна папка.",
+  db_enum_setup      => "Задаване на избори за стандартни полета тип падащ списък:",
+  db_schema_init     => "Инициализиране на bz_schema...",
+  db_table_new       => "Добавяне на нова таблица ##table##...",
+  db_table_setup     => "Създаване на таблици...",
+  done               => 'готово.',
+  enter_or_ctrl_c    => "Натиснете Enter за продължаване или Ctrl-C за изход...",
+  error_localconfig_read => <<'END',
 Възникна грешка при четенето ##localconfig## файла.  Текста на
 съобщението за грешка е:
 
@@ -76,38 +75,38 @@ localconfig файл:
   $ mv -f localconfig localconfig.old
   $ ./checksetup.pl
 END
-    extension_must_return_name => <<END,
+  extension_must_return_name => <<END,
 ##file## върна ##returned##, което не е правилно име на разширение.
 Разширенията трябва да върнат името си, а не <code>1</code> или друго число. Вижте
 документацията на Bugzilla::Extension за подробности.
 END
-    feature_auth_ldap         => 'LDAP удостоверяване',
-    feature_auth_radius       => 'RADIUS удостоверяване',
-    feature_documentation     => 'Документация',
-    feature_graphical_reports => 'Графични доклади',
-    feature_html_desc         => 'Повече HTML в описанията на Продукт/Група',
-    feature_inbound_email     => 'Входяща е-поща',
-    feature_jobqueue          => 'Поща във фонов режим',
-    feature_jsonrpc           => 'Интерфейс JSON-RPC',
-    feature_new_charts        => 'Нови графики',
-    feature_old_charts        => 'Стари графики',
-    feature_memcached         => 'Memcached поддръжка',
-    feature_mod_perl          => 'mod_perl',
-    feature_moving            => 'Преместване на бъгове между инсталации',
-    feature_patch_viewer      => 'Преглед на кръпки',
-    feature_rest              => 'REST интерфейс',
-    feature_smtp_auth         => 'SMTP удостоверяване',
-    feature_smtp_ssl          => 'SSL поддръжка за SMTP',
-    feature_updates           => 'Автоматични уведомления за обновяване',
-    feature_xmlrpc            => 'Интерфейс XML-RPC',
-    feature_detect_charset    => 'Автоматично установяване на кодова таблица за приставки',
-    feature_typesniffer       => 'Установяване на MIME типа на приставки',
+  feature_auth_ldap         => 'LDAP удостоверяване',
+  feature_auth_radius       => 'RADIUS удостоверяване',
+  feature_documentation     => 'Документация',
+  feature_graphical_reports => 'Графични доклади',
+  feature_html_desc         => 'Повече HTML в описанията на Продукт/Група',
+  feature_inbound_email     => 'Входяща е-поща',
+  feature_jobqueue          => 'Поща във фонов режим',
+  feature_jsonrpc           => 'Интерфейс JSON-RPC',
+  feature_new_charts        => 'Нови графики',
+  feature_old_charts        => 'Стари графики',
+  feature_memcached         => 'Memcached поддръжка',
+  feature_mod_perl          => 'mod_perl',
+  feature_moving            => 'Преместване на бъгове между инсталации',
+  feature_patch_viewer      => 'Преглед на кръпки',
+  feature_rest              => 'REST интерфейс',
+  feature_smtp_auth         => 'SMTP удостоверяване',
+  feature_smtp_ssl          => 'SSL поддръжка за SMTP',
+  feature_updates           => 'Автоматични уведомления за обновяване',
+  feature_xmlrpc            => 'Интерфейс XML-RPC',
+  feature_detect_charset    => 'Автоматично установяване на кодова таблица за приставки',
+  feature_typesniffer       => 'Установяване на MIME типа на приставки',
 
-    file_remove => 'Премахване на ##name##...',
-    file_rename => 'Преименуване от ##from## на ##to##...',
-    header => "* Това е Bugzilla ##bz_ver## на perl ##perl_ver##\n"
-            . "* Работеща на ##os_name## ##os_ver##",
-    install_all => <<EOT,
+  file_remove => 'Премахване на ##name##...',
+  file_rename => 'Преименуване от ##from## на ##to##...',
+  header      => "* Това е Bugzilla ##bz_ver## на perl ##perl_ver##\n"
+    . "* Работеща на ##os_name## ##os_ver##",
+  install_all => <<EOT,
 
 За да опитате автоматична инсталация на всеки задължителен и незадължителен модул
 с една команда, изпълнете:
@@ -115,23 +114,23 @@ END
   ##perl## install-module.pl --all
 
 EOT
-    install_data_too_long => <<EOT,
+  install_data_too_long => <<EOT,
 ПРЕДУПРЕЖДЕНИЕ: Някои от данните в колоната ##table##.##column## са по-дълги от
 новото ѝ ограничение за дължина от ##max_length## символа. Данните, които трябва да
 се оправят са отпечатани отдолу, като първо е стойността на колоната ##id_column##, а
 след това е стойността на колоната ##column##, която трябва да се оправи:
 
 EOT
-    install_module => 'Инсталиране на ##module## версия ##version##...',
-    installation_failed => '*** Провалена инсталация. Прочетете предходното съобщение. ***',
-    install_no_compiler => <<END,
+  install_module      => 'Инсталиране на ##module## версия ##version##...',
+  installation_failed => '*** Провалена инсталация. Прочетете предходното съобщение. ***',
+  install_no_compiler => <<END,
 ГРЕШКА: Използването на install-module.pl изисква инсталирането на компилатор, като
 gcc.
 END
-    install_no_make => <<END,
+  install_no_make => <<END,
 ГРЕШКА: Използването на install-module.pl изисква инсталирането на "make".
 END
-    lc_new_vars => <<'END',
+  lc_new_vars => <<'END',
 Тази версия на Bugzilla съдържа някои променливи които може да искате да
 промените и приспособите към местните си настройки. Следните променливи са
 нов за ##localconfig## от последното пускане на checksetup.pl:
@@ -141,11 +140,11 @@ END
 Моля, променете файла ##localconfig## и пуснете отново checksetup.pl
 за завършване на инсталацията.
 END
-    lc_old_vars => <<'END',
+  lc_old_vars => <<'END',
 Следните променливи вече не се използват в ##localconfig## и
 бяха преместени в ##old_file##: ##vars##
 END
-    localconfig_create_htaccess => <<'END',
+  localconfig_create_htaccess => <<'END',
 Ако използвате Apache като web сървър, Bugzilla може да създаде .htaccess
 файлове за вас, което ще предпази този файл (localconfig) и други
 поверителни файлове от четенето им през мрежата.
@@ -155,66 +154,66 @@ END
 
 Ако е зададено на 0, checksetup.pl няма да създаде .htaccess файлове.
 END
-    localconfig_db_check => <<'END',
+  localconfig_db_check => <<'END',
 Трябва ли checksetup.pl да се опита да провери дали настройката на базата данни е правилна?
 С някои комбинации от сървър за база данни/Perl модули/фази на луната това
 не работи, затова можете да опитате да го зададете на 0, за да може checksetup.pl
 да мине.
 END
-    localconfig_db_driver => <<'END',
+  localconfig_db_driver => <<'END',
 Каква SQL база данни да се ползва. По подразбиране е mysql. Списък на поддържаните бази данни
 може да се получи от съдържанието на Bugzilla/DB справочника - всеки модул отговаря
 на една поддържана база данни и името му (преди ".pm")
 отговаря на действителна стойност за променливата.
 END
-    localconfig_db_host => <<'END',
+  localconfig_db_host => <<'END',
 DNS името или IP адреса на хоста на който върви сървъра на бази данни.
 END
-    localconfig_db_name => <<'END',
+  localconfig_db_name => <<'END',
 Името на базата данни. За Oracle, това е SID на базата данни. За
 SQLite, това е име (или път) за DB файла.
 END
-    localconfig_db_pass => <<'END',
+  localconfig_db_pass => <<'END',
 Въведете паролата на базата си дани тук. Нормално се препоръчва да зададете
 парола за bugzilla потребителя на базата данни.
 Ако използвате апостроф (') или наклонена черта (\) в паролата си, ще
 трябва да го избегнете с предхождащ '\' символ. (\') или (\)
 (Доста по-просто е просто да не използвате тези символи.)
 END
-    localconfig_db_port => <<'END',
+  localconfig_db_port => <<'END',
 Понякога сървъра на бази данни работи на нестандартен порт. Ако това
 е случая с сървъра ви на бази данни, затайте това с номера на порта на който
 сървъра ви на бази данни работи. Задаването с 0 означава "използвай порта по
 подразбиране за сървъра ми на бази данни."
 END
-    localconfig_db_sock => <<'END',
+  localconfig_db_sock => <<'END',
 Само за MySQL: Въведете път до unix гнездото за MySQL. Ако е
 празно, тогава компилираната стойност по подразбиране в MySQL ще бъде използвана. Вероятно
 искате това.
 END
-    localconfig_db_user => "Като кой се свързваме към базата данни.",
-    localconfig_db_mysql_ssl_ca_file => <<'END',
+  localconfig_db_user              => "Като кой се свързваме към базата данни.",
+  localconfig_db_mysql_ssl_ca_file => <<'END',
 Път до PEM файл със списък на достоверните SSL CA сертификати.
 Файла трябва да е четим за потребителя на web сървъра.
 END
-    localconfig_db_mysql_ssl_ca_path => <<'END',
+  localconfig_db_mysql_ssl_ca_path => <<'END',
 Път до папка съдържаща достоверни SSL CA сертификати в PEM формат.
 Папката и файловете в нея трябва да са четими за потребителя на web сървъра.
 END
-    localconfig_db_mysql_ssl_client_cert => <<'END',
+  localconfig_db_mysql_ssl_client_cert => <<'END',
 Пълен път до клиентския SSL сертификат в PEM формат който ще се предоставя на сървъра за бази от данни.
 Файла трябва да е четим за потребителя на web сървъра.
 END
-    localconfig_db_mysql_ssl_client_key => <<'END',
+  localconfig_db_mysql_ssl_client_key => <<'END',
 Пълен път до частния ключ отговарящ на клиентския SSL сертификат.
 Файла не трябва да е защитен с парола и трябва да бъде четим за потребителя на web сървъра.
 END
-    localconfig_diffpath => <<'END',
+  localconfig_diffpath => <<'END',
 За да работи възможността за "Разлики между две кръпки", трябва да се знае
 в коя папка е "diff" командата. (Необходимо е да зададете това само ако
 използвате тази възможност на Преглед на кръпки.)
 END
-    localconfig_index_html => <<'END',
+  localconfig_index_html => <<'END',
 Повечето web сървъри ще ви позволят да използвате index.cgi като индексен
 указател, а много идват предварително конфигурирани така, но ако вашия не е
 тогава ще имате нужда от index.html файл който предоставя пренасочване към
@@ -224,19 +223,19 @@ checksetup.pl да създаде index.html за вас ако той не съ
       искате checksetup.pl да създаде такъв за вас трябва
       да се уверите, че index.html вече не съществува.
 END
-    localconfig_interdiffbin => <<'END',
+  localconfig_interdiffbin => <<'END',
 Ако желаете да използвате възможността за "Разлика между две кръпки" на
 Преглед на кръпки, моля укажете пълния път до "interdiff" изпълнимия файл
 тук.
 END
-    localconfig_site_wide_secret => <<'END',
+  localconfig_site_wide_secret => <<'END',
 Тайния ключ се използва от инсталацията ви за създаване и
 потвърждаване на кодирани белези. Тези белези се използват за осъществяване на
 функционалността за сигурност в Bugzilla, за защита срещу определени видове нападения.
 Случаен низ е създаден по подразбиране. Много е важно този ключ
 да бъде пазен в тайна. Той също така трябва да е много дълъг.
 END
-    localconfig_use_suexec => <<'END',
+  localconfig_use_suexec => <<'END',
 Задайте 1 ако Bugzilla се изпълнява в Apache SuexecUserGroup среда.
 
 Ако web сървъра ви работи с софтуер за контролен панел (cPanel, Plesk или подобен),
@@ -251,7 +250,7 @@ END
 Ако е зададено 1, checksetup.pl ще зададе файлови права, така че Bugzilla
 да работи в SuexecUserGroup среда. 
 END
-    localconfig_webservergroup => <<'END',
+  localconfig_webservergroup => <<'END',
 Името на групата с която работи web сървъра ви. На Red Hat
 дистрибуции, това е обичайно "apache". На Debian/Ubuntu, тя е 
 обичайно "www-data".
@@ -271,18 +270,18 @@ END
 Ако зададете с нещо друго освен "", ще трябва да пуснете checksetup.pl
 като ##root## или като потребител който е член на указаната група.
 END
-    max_allowed_packet => <<EOT,
+  max_allowed_packet => <<EOT,
 ПРЕДУПРЕЖДЕНИЕ: Трябва да зададете параметъра max_allowed_packet в MySQL
 настройката си до поне ##needed##. В момента той е зададен на ##current##.
 Можете да зададете параметъра в секцията [mysqld] на вашия MySQL
 файл с настройки.
 EOT
-    min_version_required => "Необходима минимална версия: ",
+  min_version_required => "Необходима минимална версия: ",
 
 # Note: When translating these "modules" messages, don't change the formatting
 # if possible, because there is hardcoded formatting in 
 # Bugzilla::Install::Requirements to match the box formatting.
-    modules_message_apache => <<END,
+  modules_message_apache => <<END,
 ***********************************************************************
 * APACHE МОДУЛИ                                                       *
 ***********************************************************************
@@ -297,7 +296,7 @@ EOT
 * Модулите които трябва да разрешите са:                              *
 *                                                                     *
 END
-    modules_message_db => <<EOT,
+  modules_message_db => <<EOT,
 ***********************************************************************
 * ДОСТЪП ДО БАЗИ ДАННИ                                                *
 ***********************************************************************
@@ -306,7 +305,7 @@ END
 * ползвате. Вижте отдолу за правилната команда пускаща инсталацията   *
 * на подходящия модул за вашата база данни.                           *
 EOT
-    modules_message_optional => <<EOT,
+  modules_message_optional => <<EOT,
 ***********************************************************************
 * НЕЗАДЪЛЖИТЕЛНИ МОДУЛИ                                               *
 ***********************************************************************
@@ -318,7 +317,7 @@ EOT
 * отдолу, с името на възможността която разрешават. Под тази таблица  *
 * са командите за инсталирането на всеки модул.                       *
 EOT
-    modules_message_required => <<EOT,
+  modules_message_required => <<EOT,
 ***********************************************************************
 * ЗАДЪЛЖИТЕЛНИ МОДУЛИ                                                 *
 ***********************************************************************
@@ -327,23 +326,23 @@ EOT
 * Вижте отдолу за команди за инсталирането им.                        *
 EOT
 
-    module_found => "открита v##ver##",
-    module_not_found => "не е открит",
-    module_ok => 'ok',
-    module_unknown_version => "открита непозната версия",
-    no_such_module => "Не съществува Perl модул в CPAN с име ##module##.",
-    mysql_innodb_disabled => <<'END',
+  module_found           => "открита v##ver##",
+  module_not_found       => "не е открит",
+  module_ok              => 'ok',
+  module_unknown_version => "открита непозната версия",
+  no_such_module         => "Не съществува Perl модул в CPAN с име ##module##.",
+  mysql_innodb_disabled  => <<'END',
 InnoDB е забранена в MySQL инсталацията ви.
 Bugzilla изисква InnoDB да бъде разрешена.
 Моля, разрешете я и пуснете отново checksetup.pl.
 END
-    mysql_index_renaming => <<'END',
+  mysql_index_renaming => <<'END',
 Предстои преименуване на стари индекси. Очакваното време за извършване на
 преименуване е ##minutes## минути. Не можете да прекъснете действието веднъж
 след като е започнало. Ако желаете да отмените, натиснете Ctrl-C сега...
 (Чакане 45 секунди...)
 END
-    mysql_utf8_conversion => <<'END',
+  mysql_utf8_conversion => <<'END',
 ПРЕДУПРЕЖДЕНИЕ: Предстои превръщане на формата за съхранение на таблиците ви в UTF-8. Това
          позволява на Bugzilla да съхранява правилно и подрежда международни символи.
          Обаче, ако имате някакви различни от UTF-8 данни в базата ви данни,
@@ -358,7 +357,7 @@ END
          Ако някога сте използвали версия на Bugzilla преди 2.22, СИЛНО
          препоръчваме да спрете checksetup.pl СЕГА и пуснете contrib/recode.pl.
 END
-    no_checksetup_from_cgi => <<END,
+  no_checksetup_from_cgi => <<END,
 <!DOCTYPE html>
 <html>
   <head>
@@ -382,49 +381,49 @@ END
   </body>
 </html>
 END
-    patchutils_missing => <<'END',
+  patchutils_missing => <<'END',
 НЕЗАДЪЛЖИТЕЛНА ЗАБЕЛЕЖКА: Ако желаете да можете да използвате възможността за 'разлика между
 две кръпки' на Bugzilla (която изисква Perl модула PatchReader
 също така), трябва да инсталирате patchutils от:
 
     http://cyberelk.net/tim/software/patchutils/
 END
-    template_precompile   => "Предварителна компилация на шаблони...",
-    template_removal_failed => <<END,
+  template_precompile     => "Предварителна компилация на шаблони...",
+  template_removal_failed => <<END,
 ПРЕДУПРЕЖДЕНИЕ: Папката '##template_cache##' не може да бъде премахната.
          Тя беше преместена в '##deleteme##', като трябва да бъде
          изтрита ръчно за икономия на дисково пространство.
 END
-    template_removing_dir => "Премахване на съществуващите компилирани шаблони...",
-    update_cf_invalid_name => 
-        "Премахване на потребителско поле '##field##', защото има недействително име...",
-    update_flags_bad_name => <<'END',
+  template_removing_dir => "Премахване на съществуващите компилирани шаблони...",
+  update_cf_invalid_name =>
+    "Премахване на потребителско поле '##field##', защото има недействително име...",
+  update_flags_bad_name => <<'END',
 "##flag##" не е действително име за флаг. Преименувайте го така, че да няма никакви интервали
 или запетаии.
 END
-    update_nomail_bad => <<'END',
+  update_nomail_bad => <<'END',
 ПРЕДУПРЕЖДЕНИЕ: Следните потребители бяха описани в ##data##/nomail, но
 нямат сметка тук. Неотговарящите описания бяха преместени в 
 ##data##/nomail.bad:
 END
-    update_summary_truncate_comment => 
-        "Изначалната стойност на полето Резюме беше по-дълга от 255"
-        . " символа и затова беше отрязана при надграждане."
-        . " Изначалното резюме беше:\n\n##summary##",
-    update_summary_truncated => <<'END',
+  update_summary_truncate_comment =>
+    "Изначалната стойност на полето Резюме беше по-дълга от 255"
+    . " символа и затова беше отрязана при надграждане."
+    . " Изначалното резюме беше:\n\n##summary##",
+  update_summary_truncated => <<'END',
 ПРЕДУПРЕЖДЕНИЕ: Някои от бъговете ви имат резюмета по-дълги от 255 символа.
 Тяхното изначално резюме беше копирано в коментар и тогава
 резюмето беше отрязано до 255 символа. Номерата на засегнатите бъгове са:
 END
-    update_quips => <<'END',
+  update_quips => <<'END',
 Остроумия сега са съхраняват в базата данни, вместо във външен файл.
 Остроумията преди съхранявани в ##data##/comments бяха копирани в
 базата с данни, а файла беше преименуван на ##data##/comments.bak
 Можете да изтриете преименувания файл веднъж след като се уверите, че всичките ви
 остроумия са преместени успешно.
 END
-    update_queries_to_tags => "Попълване на новата 'tag' таблица:",
-    webdot_bad_htaccess => <<END,
+  update_queries_to_tags => "Попълване на новата 'tag' таблица:",
+  webdot_bad_htaccess    => <<END,
 ПРЕДУПРЕЖДЕНИЕ: Изображенията с графики на зависимости не са достъпни.
 Изтрийте ##dir##/.htaccess и пуснете отново checksetup.pl.
 END
