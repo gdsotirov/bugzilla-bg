@@ -16,6 +16,18 @@ translated. Currently supported versions are:
 * [Bugzilla 4.4.13](https://github.com/gdsotirov/bugzilla-bg/releases/tag/bugzilla-bg-4.4.13) (old stable);
 * [Bugzilla 5.0.6](https://github.com/gdsotirov/bugzilla-bg/releases/tag/bugzilla-bg-5.0.6) (current stable).
 
+# Usage
+
+Follow these instructions to install:
+
+  * download a tarball for your Bugzilla version (see [Supported versions](#supported-versions) above);
+  * unpack into your Bugzilla installation (e.g. `tar -xvf bugzilla-bg-x.y.z.tar.gz`);
+  * run `checksetup.pl` script to compile the templates (e.g. `./checksetup.pl`).
+
+Navigate your browser to your Bugzilla installation. Your language is detected
+from browser settings and you could also change it from the menu in the header
+of every page.
+
 # History
 
 In the spring of 2005 I was evaluating [Bugzilla](https://www.bugzilla.org/)
@@ -46,7 +58,7 @@ with access to the SVN repository since March). In November 2012, as I tried
 to update the translation for Bugzilla 3.6.10, 4.0.7 and 4.2.2 releases, I
 found out that the SVN repository was moved silently to a
 [Trac](https://trac.edgewall.org/) installation, but I could not use it. So
-Ognyan converted it to [Mercurial](https://www.mercurial-scm.org/) (Hg) in
+Ognyan converted it to [Mercurial](https://www.mercurial-scm.org/) (Hg)
 and uploaded it to [his account](https://bitbucket.org/ogi/mozilla.bg/)
 at [BitBucket](https://bitbucket.org/). I was given permissions and the work
 continued like this for the next 7 years.
