@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/gdsotirov/bugzilla-bg.svg?branch=master)](https://travis-ci.com/gdsotirov/bugzilla-bg)
+[![Action Status](https://github.com/gdsotirov/bugzilla-bg/workflows/Perl-CI/badge.svg)](https://github.com/gdsotirov/bugzilla-bg/actions?query=workflow%3APerl-CI)
+
 # Bugzilla in Bulgarian
 
 This is the official translation of [Bugzilla](https://www.bugzilla.org/) in
