@@ -20,6 +20,7 @@
 
 # Avoid configuration metadata file
 ^MYMETA\.
+^META\.
 
 # Avoid Module::Build generated and utility files.
 \bBuild$
@@ -32,3 +33,10 @@
 
 # Avoid archives of this distribution
 \bbugzilla-bg-[\d\.\_]+
+
+# Avoid everything else that should be in the tarball
+Build.PL
+COPYING
+MANIFEST
+README.+
+

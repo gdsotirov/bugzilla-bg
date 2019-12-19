@@ -1,5 +1,3 @@
-Build.PL
-COPYING
 extensions/Example/template/bg/default/account/prefs/my_tab.html.tmpl
 extensions/Example/template/bg/default/admin/params/example.html.tmpl
 extensions/Example/template/bg/default/hook/account/prefs/prefs-tabs.html.tmpl
@@ -40,8 +38,6 @@ extensions/Voting/template/bg/default/pages/voting/bug.html.tmpl
 extensions/Voting/template/bg/default/pages/voting/user.html.tmpl
 extensions/Voting/template/bg/default/voting/delete-all.html.tmpl
 extensions/Voting/template/bg/default/voting/votes-removed.txt.tmpl
-MANIFEST			This list of files
-README.md
 t/001templates.t
 t/Test/Files.pm
 template/bg/default/account/auth/login-small.html.tmpl
