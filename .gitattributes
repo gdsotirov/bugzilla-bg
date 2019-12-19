@@ -1,0 +1,9 @@
+*.atom.tmpl linguist-language=XML linguist-detectable=true
+*.html.tmpl linguist-language=HTML
+*.js.tmpl linguist-language=JavaScript
+*.pl linguist-language=Perl
+*.pm.tmpl linguist-language=Perl
+*.rdf.tmpl  linguist-language=XML linguist-detectable=true
+*.rst.tmpl linguist-language=reStructuredText 
+*.txt.tmpl linguist-language=Text
+*.xml.tmpl  linguist-language=XML linguist-detectable=true
