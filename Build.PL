@@ -29,8 +29,9 @@ my $build = Module::Build->new
   dist_version       => "5.0.6",
   dist_author        => "Georgi D. Sotirov",
   license            => 'mozilla',
-  requires           => {'perl'                 => '>= 5.10.1',
-                         'Template'             => '2.24',
+  configure_requires => {'Module::Build'  => '0.42'},
+  requires           => {'perl'           => '>= 5.10.1',
+                         'Template'       => '2.24',
                         },
   create_readme      => 0,
   create_makefile_pl => 0
