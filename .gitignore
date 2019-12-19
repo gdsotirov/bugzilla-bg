@@ -1,3 +1,6 @@
+*.bak
 Build
+META*
 MYMETA*
 _build/*
+*.tar*
