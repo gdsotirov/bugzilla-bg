@@ -3,7 +3,7 @@
 
 # Bugzilla in Bulgarian
 
-This is the official translation of [Bugzilla](https://www.bugzilla.org/) in
+This is the official localization of [Bugzilla](https://www.bugzilla.org/) in
 Bulgarian language. The project provides translated templates with clarification
 of common technical abbreviations (e.g. HTTP, LDAP, etc.).
 
@@ -16,8 +16,8 @@ The translation effort began in the summer of 2005, so
 [all versions](https://www.bugzilla.org/releases/) since Bugzilla 2.18.1 are
 translated. Currently supported versions are:
 
-* [Bugzilla 4.4.13](https://github.com/gdsotirov/bugzilla-bg/releases/tag/bugzilla-bg-4.4.13) (old stable);
-* [Bugzilla 5.0.6](https://github.com/gdsotirov/bugzilla-bg/releases/tag/bugzilla-bg-5.0.6) (current stable).
+* [Bugzilla 5.0.6](https://ftp.sotirov-bg.net/pub/contrib/mozilla/bugzilla/l10n/5.0/) (current stable).
+* [Bugzilla 4.4.13](https://ftp.sotirov-bg.net/pub/contrib/mozilla/bugzilla/l10n/4.4/) (old stable);
 
 # Usage
 
@@ -30,6 +30,10 @@ Follow these instructions to install:
 Navigate your browser to your Bugzilla installation. Your language is detected
 from browser settings and you could also change it from the menu in the header
 of every page.
+
+_Note_: This procedure does not work for the release tarballs from GitHub,
+because their root directory is `bugzilla-bg-x.y.z`, so they cannot be
+directly extracted into Bugzilla installation directory.
 
 # History
 
