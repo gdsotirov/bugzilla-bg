@@ -38,8 +38,6 @@ extensions/Voting/template/bg/default/pages/voting/bug.html.tmpl
 extensions/Voting/template/bg/default/pages/voting/user.html.tmpl
 extensions/Voting/template/bg/default/voting/delete-all.html.tmpl
 extensions/Voting/template/bg/default/voting/votes-removed.txt.tmpl
-t/001templates.t
-t/Test/Files.pm
 template/bg/default/account/auth/login-small.html.tmpl
 template/bg/default/account/auth/login.html.tmpl
 template/bg/default/account/cancel-token.txt.tmpl
