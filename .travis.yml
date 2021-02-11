@@ -7,5 +7,5 @@ perl:
   - "5.22"
 branches:
   only:
-  - master
+  - main
 
